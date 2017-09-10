@@ -31,6 +31,7 @@ export default new Router({
       path: '/post/:post_id',
       name: 'PostDetail',
       component: PostDetail,
+      props: true,
     },
     {
       path: '/post',
