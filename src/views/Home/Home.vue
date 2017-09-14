@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <aside>
-      <img class="img banner" alt="광고">
+      <img class="banner" alt="광고">
     </aside>
     <div class="columns is-multiline">
       <div class="column is-6">
@@ -35,9 +35,8 @@ export default {
 <style scoped>
 .banner {
   width: 100%;
-  height: 86px;
+  height: 68px;
   color: white;
-  padding: 12px;
   border-color: transparent;
   background-color: grey;
 }
