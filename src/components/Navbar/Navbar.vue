@@ -5,7 +5,7 @@
       <router-link to="/login">로그인</router-link>
       <router-link to="/post/create">글쓰기</router-link>
       <router-link to="/post/0">글 내용</router-link>
-      <router-link to="/post">게시판</router-link>
+      <router-link to="/posts/all/1">게시판</router-link>
       <router-link to="/setting">세팅</router-link>
     </ul>
   </div>

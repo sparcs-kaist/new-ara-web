@@ -34,7 +34,7 @@ export default new Router({
       props: true,
     },
     {
-      path: '/post',
+      path: '/posts/:board/:page',
       name: 'PostList',
       component: PostList,
     },
