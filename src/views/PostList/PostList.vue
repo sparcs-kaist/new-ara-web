@@ -85,6 +85,7 @@ export default {
         },
       })
       .then((req) => {
+        this.error = false;
         this.post_items = req.data.results;
         this.page_num = req.num_pages;
       })
