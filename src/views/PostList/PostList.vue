@@ -74,7 +74,7 @@ export default {
       let url = '';
       this.board = board;
 
-      if (this.board !== 'all') url += `?parent_board_in=${['talk', 'love', 'play'].indexOf(this.board)}`;
+      if (this.board !== 'all') url += `?parent_board=${['talk', 'love', 'play'].indexOf(this.board) + 1}`;
       if (!page) this.curr_page = 1;
       else {
         this.curr_page = page;
