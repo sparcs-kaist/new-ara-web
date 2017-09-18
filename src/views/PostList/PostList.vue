@@ -29,7 +29,13 @@
         <router-link v-for="page in page_list" :to="`/posts/${board}/${page}`" :key="page_list_index(page)">{{ page }}</router-link>
       </p>
       <div>
-        search search search
+        <select id="search_type" name="search_type">
+          <option value="title" selected>제목</option>
+          <option value="content">내용</option>
+          <option value="created_by">글쓴이</option>
+        </select>
+        <input id="search_query" type="text" />
+        <button type="button" @click="searchArticles()">검색</button>
       </div>
     </div>
     <div v-else>
@@ -65,22 +71,20 @@ export default {
   },
   methods: {
     board_list_index(board) {
-      return this.board_list.indexOf(board) + 1;
+      return this.board_list.indexOf(board);
     },
     page_list_index(page) {
       return this.page_list.indexOf(page) + 1;
     },
-    refresh(board, page) {
-      let url = '';
-      this.board = board;
-
-      if (this.board !== 'all') url += `?parent_board=${['talk', 'love', 'play'].indexOf(this.board) + 1}`;
-      if (!page) this.curr_page = 1;
-      else {
-        this.curr_page = page;
-        if (url !== '') url += `&page=${this.curr_page}`;
-        else url += `?page=${this.curr_page}`;
+    refresh(condition) {
+      let url = '?';
+      const keys = Object.keys(condition);
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i];
+        url += `${key}=${condition[key]}&`;
       }
+      if (this.board !== 'all') url += `parent_board=${this.board_list_index(this.board)}&`;
+      url += `page=${this.curr_page}`;
 
       axios.get(`http://13.124.216.27:8000/api/articles/${url}`, {
         auth: {
@@ -97,17 +101,38 @@ export default {
         this.error = true;
       });
     },
+    searchArticles() {
+      const searchTypeElement = document.getElementById('search_type');
+      const searchType = searchTypeElement.options[searchTypeElement.selectedIndex].value;
+      const searchInputElement = document.getElementById('search_query');
+      const queryStr = searchInputElement.value;
+      const condition = {};
+
+      if (searchType === 'title') condition.title__contains = queryStr;
+      else if (searchType === 'content') condition.content__contains = queryStr;
+      else if (searchType === 'created_by') condition.created_by = queryStr;
+
+      this.refresh(condition);
+      searchTypeElement.selectedIndex = 0;
+      searchInputElement.value = '';
+    },
   },
   components: {
     PostItem,
   },
   watch: {
     $route(to) {
-      this.refresh(to.params.board, to.params.page);
+      this.board = to.params.board;
+      this.curr_page = to.params.page;
+
+      this.refresh({});
     },
   },
   mounted() {
-    this.refresh(this.$route.params.board, this.$route.params.page);
+    this.board = this.$route.params.board;
+    this.curr_page = this.$route.params.page;
+
+    this.refresh({});
   },
 };
 </script>
