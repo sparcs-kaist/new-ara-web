@@ -1,7 +1,9 @@
 <template>
   <div>
     <div v-if="!error">
-      <h1>{{ board }}</h1>
+      <p>
+        <router-link v-for="board in board_list" :to="`/posts/${board}/1`" :key="board_list_index(board)"><h1>{{ board }}</h1></router-link>
+      </p>
       <div>
         <div class="oneline">
           작성자
@@ -45,6 +47,7 @@ export default {
   data() {
     return {
       board: 'all',
+      board_list: ['all', 'talk', 'love', 'play'],
       curr_page: 0,
       page_num: 0,
       post_items: [],
