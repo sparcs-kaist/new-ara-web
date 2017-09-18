@@ -26,7 +26,7 @@
       </div>
       <post-item v-for="item in post_items" :board="board" :item="item" :key="item.id"></post-item>
       <p class="paging">
-        <router-link v-for="page in page_list" :to="`/posts/${board}/${page}`">{{ page }}</router-link>
+        <router-link v-for="page in page_list" :to="`/posts/${board}/${page}`" :key="page_list_index(page)">{{ page }}</router-link>
       </p>
       <div>
         search search search
