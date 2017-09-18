@@ -14,7 +14,7 @@
         <div class="navbar-start">
           <router-link class="navbar-item" to="/post/create">글쓰기</router-link>
           <router-link class="navbar-item" to="/post/0">글 내용</router-link>
-          <router-link class="navbar-item" to="/post">게시판</router-link>
+          <router-link class="navbar-item" to="/posts/all/1">게시판</router-link>
         </div>
 
         <div class="navbar-end">
