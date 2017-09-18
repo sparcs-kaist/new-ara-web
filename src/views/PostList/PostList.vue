@@ -64,10 +64,11 @@ export default {
     },
   },
   methods: {
-    changePage(page) {
-      const data = Object.assign({}, this.$route.query);
-      data.page = page;
-      this.$router.push({ path: '/post', query: data });
+    board_list_index(board) {
+      return this.board_list.indexOf(board) + 1;
+    },
+    page_list_index(page) {
+      return this.page_list.indexOf(page) + 1;
     },
     refresh(board, page) {
       let url = '';
