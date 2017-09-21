@@ -27,6 +27,11 @@ export default new Router({
       component: PostCreate,
     },
     {
+      path: '/posts/:board/:page',
+      name: 'Board',
+      component: Board,
+    },
+    {
       path: '/posts/:board/:page/:post_id',
       name: 'Board',
       component: Board,
