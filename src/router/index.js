@@ -2,9 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/views/Home/Home';
 import Login from '@/views/Login/Login';
+import Board from '@/views/Board/Board';
 import PostCreate from '@/views/PostCreate/PostCreate';
-import PostDetail from '@/views/PostDetail/PostDetail';
-import PostList from '@/views/PostList/PostList';
 import Setting from '@/views/Setting/Setting';
 
 Vue.use(Router);
@@ -28,15 +27,9 @@ export default new Router({
       component: PostCreate,
     },
     {
-      path: '/post/:post_id',
-      name: 'PostDetail',
-      component: PostDetail,
-      props: true,
-    },
-    {
-      path: '/posts/:board/:page',
-      name: 'PostList',
-      component: PostList,
+      path: '/posts/:board/:page/:post_id',
+      name: 'Board',
+      component: Board,
     },
     {
       path: '/setting',
