@@ -1,8 +1,10 @@
 <template>
-  <div>
-    <post :post_id="post_id"></post>
-    <post-comment :post_id="post_id"></post-comment>
-    <post-list></post-list>
+  <div class="container">
+    <section class="section">
+      <post :post_id="post_id"></post>
+      <post-comment :post_id="post_id"></post-comment>
+      <post-list></post-list>
+    </section>
   </div>
 </template>
 
