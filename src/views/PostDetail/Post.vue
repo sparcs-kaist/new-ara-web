@@ -4,15 +4,15 @@
       Database error
     </div>
     <h1>{{ post_item.title }}</h1>
-    <p>작성자 : {{ post_item.created_by }}<p>
+    <p>작성자 : {{ post_item.created_by }}</p>
     <p>{{ post_item.content }}</p>
-    <!-- <post-action :isArticle="true"></post-action> -->
+    <post-action :isArticle="true"></post-action>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import axios from 'axios';
+import PostAction from './PostAction';
 
 export default {
   props: ['post_id'],
@@ -23,8 +23,8 @@ export default {
       post_item: {},
     };
   },
-  computed: {
-    ...mapState(['language']),
+  components: {
+    PostAction,
   },
   mounted() {
     axios.get(`http://13.124.216.27:8000/api/articles/${this.post_id}/`, {
