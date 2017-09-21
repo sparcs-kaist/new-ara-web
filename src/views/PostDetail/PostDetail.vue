@@ -1,13 +1,16 @@
 <template>
   <div>
-    <h1>글 내용</h1>
-    {{ msg }} <br/>
-    {{ language }}
+    <post :post_id="post_id"></post>
+    <post-comment :post_id="post_id"></post-comment>
+    <post-list></post-list>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import Post from './Post';
+import PostComment from './PostComment';
+import PostList from './../PostList/PostList';
 
 export default {
   props: ['post_id'],
@@ -18,6 +21,11 @@ export default {
   },
   computed: {
     ...mapState(['language']),
+  },
+  components: {
+    Post,
+    PostComment,
+    PostList,
   },
 };
 </script>

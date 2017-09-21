@@ -66,6 +66,7 @@ export default {
       return '말머리';
     },
     page_list() {
+      // TODO: return correct page list
       return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     },
   },
@@ -92,10 +93,10 @@ export default {
           password: 'asdfasdf1234',
         },
       })
-      .then((req) => {
+      .then((res) => {
         this.error = false;
-        this.post_items = req.data.results;
-        this.page_num = req.num_pages;
+        this.post_items = res.data.results;
+        this.page_num = res.num_pages;
       })
       .catch(() => {
         this.error = true;
