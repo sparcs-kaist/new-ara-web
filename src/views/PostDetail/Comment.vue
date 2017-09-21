@@ -2,7 +2,8 @@
   <div class="comment-container">
     <div class="author"> {{ author }} </div>
     <div class="comment"> {{ comment }} </div>
-    <a v-if="isExpanded" class="expand" @click="toggleExpand"> 답글 보기 </a>
+    <post-action :is-article="false" />
+    <a v-if="!isExpanded" class="expand" @click="toggleExpand"> 답글 보기 </a>
     <div v-else class="recomments-container">
       <recomment v-for="n in 3" :key="n"/>
     </div>
@@ -11,6 +12,7 @@
 
 <script>
 import Recomment from './Recomment';
+import PostAction from './PostAction';
 
 export default {
   props: {
@@ -18,7 +20,7 @@ export default {
     comment: String,
   },
   components: {
-    Recomment,
+    Recomment, PostAction,
   },
   data() {
     return {
