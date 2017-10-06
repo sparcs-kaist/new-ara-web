@@ -110,6 +110,20 @@ export default {
   margin-bottom: 2rem;
 }
 
+.ql-container {
+  font-size: 16px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-color: #b5b5b5;
+  box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+}
+
+.ql-toolbar.ql-snow {
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-color: #b5b5b5;
+}
+
 @media screen and (max-width: 1023px) {
   .quillWrapper {
     border-top: 1px solid #ccc;

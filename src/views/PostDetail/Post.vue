@@ -3,9 +3,11 @@
     <div v-if="error">
       Database error
     </div>
-    <h1>{{ post.title }}</h1>
-    <p>작성자 : {{ post.created_by }}</p>
-    <p>{{ post.content }}</p>
+    <h1 class="title">{{ post.title }}</h1>
+    <p class="subtitle">작성자 : {{ post.created_by }}</p>
+    <div class="ql-container ql-snow">
+      <div v-html="post.content" class="ql-editor"></div>
+    </div>
     <post-action :isArticle="true"></post-action>
   </div>
 </template>
@@ -27,6 +29,9 @@ export default {
 };
 </script>
 
-<style>
-
+<style scoped>
+.ql-container {
+  font-size: 16px;
+  border: 0;
+}
 </style>
