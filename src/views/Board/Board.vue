@@ -6,9 +6,15 @@
       </p>
       <post-detail v-if="post_id" :post_id="post_id"></post-detail>
       <post-list :board="board" :page="page" :post_items="post_items"></post-list>
-      <p class="paging">
-        <router-link v-for="page in page_list" :to="`/posts/${board}/${page}`" :key="page_list_index(page)">{{ page }}</router-link>
-      </p>
+      <div>
+        <router-link v-if="page > 10" :to="`/posts/${board}/${page_base}`">&lt;</router-link>
+        <span v-else>&lt;</span>
+        <span class="paging">
+          <router-link v-for="page in page_list" :to="`/posts/${board}/${page}`" :key="page_list_index(page)">{{ page }}</router-link>
+        </span>
+        <router-link v-if="page_base + 10 < num_pages" :to="`/posts/${board}/${page_base + 11}`">&lt;</router-link>
+        <span v-else>&gt;</span>
+      </div>
       <div>
         <select id="search_type" name="search_type">
           <option value="title" selected>제목</option>
@@ -44,9 +50,12 @@ export default {
     };
   },
   computed: {
+    page_base() {
+      return (this.page - 1) - ((this.page - 1) % 10);
+    },
     page_list() {
       // TODO: return correct page list
-      const base = (this.page - 1) - ((this.page - 1) % 10);
+      const base = this.page_base;
       const pageList = [];
       const pageListMax = (this.num_pages < base + 10 ? this.num_pages : base + 10);
       for (let i = base + 1; i < pageListMax; i += 10) {
