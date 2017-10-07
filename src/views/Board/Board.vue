@@ -5,15 +5,20 @@
         <router-link v-for="board in board_list" :to="`/posts/${board}/1`" :key="board_list_index(board)"><h1>{{ board }}</h1></router-link>
       </p>
       <post-detail v-if="post_id" :post_id="post_id"></post-detail>
-      <post-list :board="board" :page="page" :post_items="post_items"></post-list>
+      <post-list :board="board" :page="currPage" :post_items="post_items"></post-list>
       <div>
-        <router-link v-if="page > 10" :to="`/posts/${board}/${page_base}`">&lt;</router-link>
+        <router-link :to="new_url(1)">«</router-link>
+        <router-link v-if="currPage > 10" :to="new_url(page_base)">&lt;</router-link>
         <span v-else>&lt;</span>
         <span class="paging">
-          <router-link v-for="page in page_list" :to="`/posts/${board}/${page}`" :key="page_list_index(page)">{{ page }}</router-link>
+          <div v-for="page in page_list" style="display: inline-block">
+            <router-link v-if="page != currPage" :to="new_url(page)" :key="page_list_index(page)">{{ page }}</router-link>
+            <span v-else>{{ page }}</span>
+          </div>
         </span>
-        <router-link v-if="page_base + 10 < num_pages" :to="`/posts/${board}/${page_base + 11}`">&lt;</router-link>
+        <router-link v-if="page_base + 10 < num_pages" :to="new_url(page_base + 11)">&lt;</router-link>
         <span v-else>&gt;</span>
+        <router-link :to="new_url(num_pages)">»</router-link>
       </div>
       <div>
         <select id="search_type" name="search_type">
@@ -42,7 +47,7 @@ export default {
     return {
       board: 'all',
       board_list: ['all', 'talk', 'love', 'play'],
-      page: 0,
+      currPage: 0,
       num_pages: 0,
       post_items: [],
       post_id: 0,
@@ -51,14 +56,14 @@ export default {
   },
   computed: {
     page_base() {
-      return (this.page - 1) - ((this.page - 1) % 10);
+      return (this.currPage - 1) - ((this.currPage - 1) % 10);
     },
     page_list() {
       // TODO: return correct page list
       const base = this.page_base;
       const pageList = [];
       const pageListMax = (this.num_pages < base + 10 ? this.num_pages : base + 10);
-      for (let i = base + 1; i < pageListMax; i += 10) {
+      for (let i = base + 1; i <= pageListMax; i += 10) {
         pageList.push(i);
       }
       return pageList;
@@ -71,6 +76,10 @@ export default {
     page_list_index(page) {
       return this.page_list.indexOf(page) + 1;
     },
+    new_url(page) {
+      if (!this.post_id) return `/posts/${this.board}/${page}`;
+      return `/posts/${this.board}/${page}/${this.post_id}`;
+    },
     refresh(condition) {
       let url = '?';
       const keys = Object.keys(condition);
@@ -79,7 +88,7 @@ export default {
         url += `${key}=${condition[key]}&`;
       }
       if (this.board !== 'all') url += `parent_board=${this.board_list_index(this.board)}&`;
-      url += `page=${this.page}`;
+      url += `page=${this.currPage}`;
 
       axios.get(`http://13.124.216.27:8000/api/articles/${url}`, {
         auth: {
@@ -90,7 +99,7 @@ export default {
       .then((res) => {
         this.error = false;
         this.post_items = res.data.results;
-        this.num_pages = res.num_pages;
+        this.num_pages = res.data.num_pages;
       })
       .catch(() => {
         this.error = true;
@@ -119,7 +128,7 @@ export default {
   watch: {
     $route(to) {
       this.board = to.params.board;
-      this.page = to.params.page;
+      this.currPage = to.params.page;
       this.post_id = to.params.post_id;
 
       this.refresh({});
@@ -127,7 +136,7 @@ export default {
   },
   mounted() {
     this.board = this.$route.params.board;
-    this.page = this.$route.params.page;
+    this.currPage = this.$route.params.page;
     this.post_id = this.$route.params.post_id;
 
     this.refresh({});
