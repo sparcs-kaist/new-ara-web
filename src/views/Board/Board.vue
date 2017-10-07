@@ -37,7 +37,7 @@ export default {
       board: 'all',
       board_list: ['all', 'talk', 'love', 'play'],
       page: 0,
-      page_num: 0,
+      num_pages: 0,
       post_items: [],
       post_id: 0,
       error: false,
@@ -46,7 +46,13 @@ export default {
   computed: {
     page_list() {
       // TODO: return correct page list
-      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      const base = (this.page - 1) - ((this.page - 1) % 10);
+      const pageList = [];
+      const pageListMax = (this.num_pages < base + 10 ? this.num_pages : base + 10);
+      for (let i = base + 1; i < pageListMax; i += 10) {
+        pageList.push(i);
+      }
+      return pageList;
     },
   },
   methods: {
@@ -75,7 +81,7 @@ export default {
       .then((res) => {
         this.error = false;
         this.post_items = res.data.results;
-        this.page_num = res.num_pages;
+        this.num_pages = res.num_pages;
       })
       .catch(() => {
         this.error = true;
