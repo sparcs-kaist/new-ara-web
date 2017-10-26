@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       board: 'all',
-      board_list: ['all', 'talk', 'love', 'play'],
+      board_list: ['all', 'talk', 'love', 'play'], // TODO: api에서 받아오기
       currPage: 0,
       num_pages: 0,
       post_items: [],
