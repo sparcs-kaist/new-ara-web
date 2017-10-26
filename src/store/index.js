@@ -24,9 +24,19 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    fetchPost({ state, commit }, postId) {
+    fetchPost({ state, commit }, payload) {
       const auth = state.auth;
-      axios.get(`${apiUrl}/articles/${postId}/`, {
+      const postId = payload.postId;
+      const context = payload.context;
+      let url = '?';
+
+      const keys = Object.keys(context);
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i];
+        url += `${key}=${context[key]}&`;
+      }
+
+      axios.get(`${apiUrl}/articles/${postId}/${url}`, {
         auth,
       }).then((res) => {
         console.log(res);

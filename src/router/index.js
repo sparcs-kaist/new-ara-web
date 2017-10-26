@@ -30,11 +30,13 @@ export default new Router({
       path: '/posts/:board/:page',
       name: 'Board',
       component: Board,
+      props: true,
     },
     {
       path: '/posts/:board/:page/:post_id',
       name: 'Board',
       component: Board,
+      props: true,
     },
     {
       path: '/setting',
