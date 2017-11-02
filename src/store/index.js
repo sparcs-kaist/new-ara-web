@@ -17,10 +17,18 @@ export default new Vuex.Store({
       // postDetail: {},
       // postComment: [],
     },
+    board: '',
+    page: 0,
   },
   mutations: {
     updatePost(state, post) {
       state.post = post;
+    },
+    updateBoard(state, board) {
+      state.board = board;
+    },
+    updatePage(state, page) {
+      state.page = page;
     },
   },
   actions: {
@@ -30,21 +38,42 @@ export default new Vuex.Store({
       const context = payload.context;
       let url = '?';
 
-      const keys = Object.keys(context);
-      for (let i = 0; i < keys.length; i += 1) {
-        const key = keys[i];
-        url += `${key}=${context[key]}&`;
+      if (context) {
+        const keys = Object.keys(context);
+        for (let i = 0; i < keys.length; i += 1) {
+          const key = keys[i];
+          url += `${key}=${context[key]}&`;
+        }
       }
-
-      axios.get(`${apiUrl}/articles/${postId}/${url}`, {
-        auth,
-      }).then((res) => {
-        console.log(res);
-        commit('updatePost', res.data);
-      }).catch((err) => {
-        console.error(err);
-        commit('updatePost', undefined);
-      });
+      if (postId === undefined) {
+        axios.get(`${apiUrl}/articles/${url}`, {
+          auth,
+        }).then((res) => {
+          console.log(res);
+          // commit('updatePost', res.data);
+          // TODO: update page, board
+        }).catch((err) => {
+          console.error(err);
+          commit('updatePost', undefined);
+        });
+      } else {
+        axios.get(`${apiUrl}/articles/${postId}/${url}`, {
+          auth,
+        }).then((res) => {
+          console.log(res);
+          commit('updatePost', res.data);
+          // TODO: update post, page, board
+        }).catch((err) => {
+          console.error(err);
+          commit('updatePost', undefined);
+        });
+      }
+    },
+    updateBoard({ state, commit }, board) {
+      commit('updateBoard', board);
+    },
+    updatePage({ state, commit }, page) {
+      commit('updatePage', page);
     },
   },
 });
