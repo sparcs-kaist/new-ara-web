@@ -107,12 +107,9 @@ export default {
   mounted() {
     this.post_id = this.$route.params.post_id;
     this.$axios({
-      url: `${this.apiUrl}/api/articles/${this.post_id}`,
+      url: `${this.apiUrl}/articles/${this.post_id}`,
       method: 'GET',
-      auth: {
-        username: 'sparcs',
-        password: 'newara@sparcs',
-      },
+      auth: this.auth,
     })
     .then((res) => {
       this.title = res.data.title;
