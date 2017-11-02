@@ -64,7 +64,7 @@ export default {
       const base = this.page_base;
       const pageList = [];
       const pageListMax = (this.num_pages < base + 10 ? this.num_pages : base + 10);
-      for (let i = base + 1; i <= pageListMax; i += 10) {
+      for (let i = base + 1; i <= pageListMax; i += 1) {
         pageList.push(i);
       }
       return pageList;
