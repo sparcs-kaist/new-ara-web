@@ -44,7 +44,6 @@ export default new Vuex.Store({
       const context = payload.context;
       let url = '?';
 
-
       if (context) {
         const keys = Object.keys(context);
         for (let i = 0; i < keys.length; i += 1) {
@@ -68,7 +67,6 @@ export default new Vuex.Store({
           auth,
         }).then((res) => {
           // console.log(res);
-          console.log('fuck2');
           commit('updatePost', res.data);
           // TODO: update post, page, board
         }).catch((err) => {

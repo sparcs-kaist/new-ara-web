@@ -4,7 +4,7 @@
       <p>
         <router-link v-for="board in board_list" :to="`/posts/${board}/1`" :key="board_list_index(board)"><h1>{{ board }}</h1></router-link>
       </p>
-      <post-detail v-if="post_id"></post-detail>
+      <post-detail v-if="post"></post-detail>
       <post-list></post-list>
     </div>
     <div v-else>
@@ -65,7 +65,6 @@ export default {
     this.updatePage(this.$route.params.page);
     this.post_id = this.$route.params.post_id;
     this.fetchPost({ postId: this.post_id });
-
     //
     // this.refresh({});
   },
