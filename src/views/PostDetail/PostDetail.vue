@@ -19,7 +19,7 @@ export default {
       'post',
     ]),
     post_number() {
-      return Number(this.post.post_id);
+      return Number(this.post.id);
     },
   },
   components: {

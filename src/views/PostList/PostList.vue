@@ -84,7 +84,7 @@ export default {
     },
     new_url(page) {
       if (!this.post) return `/posts/${this.board}/${page}`;
-      return `/posts/${this.board}/${page}/${this.post.post_id}`;
+      return `/posts/${this.board}/${page}/${this.post.id}`;
     },
     ...mapActions([
       'updateBoard',
