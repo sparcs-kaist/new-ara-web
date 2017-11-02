@@ -30,15 +30,6 @@ export default {
   methods: {
     ...mapActions(['fetchPost']),
   },
-  watch: {
-    // 'post.post_id': () => {
-    //   this.fetchPost(7);
-    //   // TODO: scroll up to the top
-    // },
-  },
-  mounted() {
-    this.fetchPost(7);
-  },
 };
 </script>
 
