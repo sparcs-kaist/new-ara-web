@@ -56,19 +56,6 @@ export default {
       if (this.board === 'all') return '게시판';
       return '말머리';
     },
-    ...mapState({
-      post: 'post',
-      board: 'board',
-      page: 'page',
-    }),
-  },
-  methods: {
-    board_list_index(board) {
-      return ['all', 'talk', 'love', 'play'].indexOf(board);
-    },
-    page_list_index(page) {
-      return this.page_list.indexOf(page) + 1;
-    },
     page_base() {
       return (this.page - 1) - ((this.page - 1) % 10);
     },
@@ -81,6 +68,19 @@ export default {
         pageList.push(i);
       }
       return pageList;
+    },
+    ...mapState({
+      post: 'post',
+      board: 'board',
+      page: 'page',
+    }),
+  },
+  methods: {
+    board_list_index(board) {
+      return ['all', 'talk', 'love', 'play'].indexOf(board);
+    },
+    page_list_index(page) {
+      return this.page_list.indexOf(page) + 1;
     },
     new_url(page) {
       if (!this.post) return `/posts/${this.board}/${page}`;
