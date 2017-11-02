@@ -4,8 +4,8 @@
       <p>
         <router-link v-for="board in board_list" :to="`/posts/${board}/1`" :key="board_list_index(board)"><h1>{{ board }}</h1></router-link>
       </p>
-      <post-detail v-if="post_id" :post_id="post_id"></post-detail>
-      <post-list :post_items="post_items"></post-list>
+      <post-detail v-if="post_id"></post-detail>
+      <post-list></post-list>
     </div>
     <div v-else>
       Database error
