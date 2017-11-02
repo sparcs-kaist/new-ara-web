@@ -17,6 +17,7 @@ export default new Vuex.Store({
       // postDetail: {},
       // postComment: [],
     },
+    apiUrl: 'http://13.124.216.27:8000/api',
     board: '',
     page: 0,
   },
