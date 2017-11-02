@@ -87,6 +87,7 @@ export default {
       return `/posts/${this.board}/${page}/${this.post.id}`;
     },
     ...mapActions([
+      'fetchPost',
       'updateBoard',
       'updatePage',
     ]),
@@ -127,6 +128,8 @@ export default {
       this.refresh(condition);
       searchTypeElement.selectedIndex = 0;
       searchInputElement.value = '';
+      this.fetchPost(undefined);
+      // TODO: should change URL, too.
     },
   },
   components: {

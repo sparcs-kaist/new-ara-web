@@ -2,7 +2,7 @@
   <div>
     <div v-if="!error">
       <p>
-        <router-link v-for="board in board_list" :to="`/posts/${board}/1`" :key="board_list_index(board)"><h1>{{ board }}</h1></router-link>
+        <router-link v-for="board in board_list" :to="`/posts/${board}/1`" :key="board_list_index(board)" @click.native="resetPost"><h1>{{ board }}</h1></router-link>
       </p>
       <post-detail v-if="post"></post-detail>
       <post-list></post-list>
@@ -41,9 +41,14 @@ export default {
       'fetchPost',
       'updateBoard',
       'updatePage',
+      'resetPost',
     ]),
     board_list_index(board) {
       return this.board_list.indexOf(board);
+    },
+    resetPost() {
+      console.log('hihi!');
+      this.fetchPost(undefined);
     },
   },
   components: {
