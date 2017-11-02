@@ -4,6 +4,7 @@ import Home from '@/views/Home/Home';
 import Login from '@/views/Login/Login';
 import Board from '@/views/Board/Board';
 import PostCreate from '@/views/PostCreate/PostCreate';
+import PostEdit from '@/views/PostEdit/PostEdit';
 import Setting from '@/views/Setting/Setting';
 
 Vue.use(Router);
@@ -40,6 +41,11 @@ export default new Router({
       path: '/setting',
       name: 'Setting',
       component: Setting,
+    },
+    {
+      path: '/post/edit/:post_id',
+      name: 'PostEdit',
+      component: PostEdit,
     },
   ],
 });
