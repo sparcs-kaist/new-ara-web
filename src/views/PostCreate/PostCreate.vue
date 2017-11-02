@@ -62,7 +62,7 @@ export default {
     postArticleHandler() {
       this.pending = true;
       this.$axios({
-        url: `${this.apiUrl}/api/articles/`,
+        url: `${this.apiUrl}/articles/`,
         method: 'POST',
         data: {
           title: this.title,
@@ -71,11 +71,12 @@ export default {
           is_content_sexual: true,
           is_content_social: false,
           use_signature: false,
-          parent_board: 2,
+          parent_board: 1,
         },
         auth: this.auth,
       }).then((result) => {
         this.pending = false;
+        // this.$router.push(`/post/{post_id??}`)
         console.log(result);
       })
       .catch((err) => {
