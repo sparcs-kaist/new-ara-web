@@ -102,8 +102,8 @@ export default {
 
       axios.get(`http://13.124.216.27:8000/api/articles/${url}`, {
         auth: {
-          username: 'jsh56son',
-          password: 'asdfasdf1234',
+          username: 'sparcs',
+          password: 'newara@sparcs',
         },
       })
       .then((res) => {

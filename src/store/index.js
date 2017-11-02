@@ -10,8 +10,8 @@ export default new Vuex.Store({
   state: {
     // language: 'ko_KR',
     auth: {
-      username: 'jsh56son',
-      password: 'asdfasdf1234',
+      username: 'sparcs',
+      password: 'newara@sparcs',
     },
     post: {
       // postDetail: {},
