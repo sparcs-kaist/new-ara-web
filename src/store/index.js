@@ -13,10 +13,11 @@ export default new Vuex.Store({
       username: 'sparcs',
       password: 'newara@sparcs',
     },
-    post: {
-      // postDetail: {},
-      // postComment: [],
-    },
+    post: undefined,
+    // {
+    //   postDetail: {},
+    //   postComment: [],
+    // },
     apiUrl: 'http://13.124.216.27:8000/api',
     board: '',
     page: 0,
@@ -34,10 +35,15 @@ export default new Vuex.Store({
   },
   actions: {
     fetchPost({ state, commit }, payload) {
+      if (!payload) {
+        commit('updatePost', undefined);
+        return;
+      }
       const auth = state.auth;
       const postId = payload.postId;
       const context = payload.context;
       let url = '?';
+
 
       if (context) {
         const keys = Object.keys(context);
@@ -49,8 +55,8 @@ export default new Vuex.Store({
       if (postId === undefined) {
         axios.get(`${apiUrl}/articles/${url}`, {
           auth,
-        }).then((res) => {
-          console.log(res);
+        }).then(() => {
+          // console.log(res);
           // commit('updatePost', res.data);
           // TODO: update page, board
         }).catch((err) => {
@@ -61,7 +67,8 @@ export default new Vuex.Store({
         axios.get(`${apiUrl}/articles/${postId}/${url}`, {
           auth,
         }).then((res) => {
-          console.log(res);
+          // console.log(res);
+          console.log('fuck2');
           commit('updatePost', res.data);
           // TODO: update post, page, board
         }).catch((err) => {
