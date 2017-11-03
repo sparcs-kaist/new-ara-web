@@ -53,7 +53,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(['apiUrl', 'auth']),
+    ...mapState([
+      'apiUrl',
+      'auth',
+    ]),
   },
   components: {
     VueEditor,

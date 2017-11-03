@@ -11,13 +11,24 @@
 
 <script>
 import axios from 'axios';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   props: [
     'context',
     'isArticle',
   ],
+  computed: {
+    ...mapState([
+      'apiUrl',
+      'auth',
+      'post',
+    ]),
+  },
   methods: {
+    ...mapActions([
+      'fetchPost',
+    ]),
     action(type) {
       let contextType;
       let voteTypeBool;
@@ -35,18 +46,23 @@ export default {
         voteTypeStr = 'vote_negative';
       }
       if (this.context.my_vote === voteTypeBool) {
-        alert('you already voted');
+        if (voteTypeBool) {
+          alert('you already voted positive');
+        } else {
+          alert('you already voted negative');
+        }
       } else {
-        axios.post(`http://13.124.216.27:8000/api/${contextType}/${this.context.id}/${voteTypeStr}/`, {
-          auth: {
-            username: 'sparcs',
-            password: 'newara@sparcs',
-          },
+        axios({
+          url: `${this.apiUrl}/${contextType}/${this.context.id}/${voteTypeStr}/`,
+          method: 'POST',
+          auth: this.auth,
         })
-          .then((res) => {
-            console.log(res.data);
+          .then(() => {
+            this.fetchPost({ postId: this.post.id });
           })
-          .catch(() => {
+          .catch((err) => {
+            alert('failed to vote');
+            console.log(err);
           });
       }
     },
