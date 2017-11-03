@@ -1,8 +1,8 @@
 <template>
   <div class="recomment-container">
-    <div class="author">@yuijngaya</div>
-    <div class="recomment">댓글 내용 댓글 내용 댓글 내용 댓글 내용</div>
-    <post-action :is-article="false" />
+    <div class="author"> {{ this.recomment.created_by }} </div>
+    <div class="recomment"> {{ this.recomment.content }} </div>
+    <post-action :context="this.recomment" :is-article="false" />
   </div>
 </template>
 
@@ -13,6 +13,9 @@ export default {
   components: {
     PostAction,
   },
+  props: [
+    'recomment',
+  ],
 };
 </script>
 

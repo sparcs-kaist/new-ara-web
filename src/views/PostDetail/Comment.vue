@@ -1,11 +1,11 @@
 <template>
   <div class="comment-container">
-    <div class="author"> {{ author }} </div>
-    <div class="comment"> {{ comment }} </div>
-    <post-action :is-article="false" />
+    <div class="author"> {{ this.comment.created_by }} </div>
+    <div class="comment"> {{ this.comment.content }} </div>
+    <post-action :context="this.comment" :is-article="false" />
     <a v-if="!isExpanded" class="expand" @click="toggleExpand"> 답글 보기 </a>
     <div v-else class="recomments-container">
-      <recomment v-for="n in 3" :key="n"/>
+      <recomment v-for="recomment in this.comment.comments" :key="recomment.id" :recomment="recomment"/>
     </div>
   </div>
 </template>
@@ -15,10 +15,9 @@ import Recomment from './Recomment';
 import PostAction from './PostAction';
 
 export default {
-  props: {
-    author: String,
-    comment: String,
-  },
+  props: [
+    'comment',
+  ],
   components: {
     Recomment, PostAction,
   },
