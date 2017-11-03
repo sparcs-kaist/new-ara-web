@@ -2,7 +2,7 @@
   <div class="recomment-container">
     <div class="author"> {{ this.recomment.created_by }} </div>
     <div class="recomment"> {{ this.recomment.content }} </div>
-    <post-action :is-article="false" />
+    <post-action :context="this.recomment" :is-article="false" />
   </div>
 </template>
 

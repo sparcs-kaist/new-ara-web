@@ -2,7 +2,7 @@
   <div class="comment-container">
     <div class="author"> {{ this.comment.created_by }} </div>
     <div class="comment"> {{ this.comment.content }} </div>
-    <post-action :is-article="false" />
+    <post-action :context="this.comment" :is-article="false" />
     <a v-if="!isExpanded" class="expand" @click="toggleExpand"> 답글 보기 </a>
     <div v-else class="recomments-container">
       <recomment v-for="recomment in this.comment.comments" :key="recomment.id" :recomment="recomment"/>
