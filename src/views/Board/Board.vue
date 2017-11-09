@@ -6,6 +6,7 @@
       </p>
       <post-detail v-if="post"></post-detail>
       <post-list></post-list>
+      <button @click="$router.push('/post/create')">글쓰기</button>
     </div>
     <div v-else>
       Database error
