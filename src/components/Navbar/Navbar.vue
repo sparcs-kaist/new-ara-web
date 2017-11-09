@@ -12,7 +12,7 @@
       </div>
       <div class="navbar-menu" :class="{'is-active': menuVisibility}">
         <div class="navbar-start">
-          <router-link class="navbar-item" to="/posts/all/1" @click.native="resetPost">게시판</router-link>
+          <router-link class="navbar-item" to="/posts/all" @click.native="resetPost">게시판</router-link>
         </div>
 
         <div class="navbar-end">

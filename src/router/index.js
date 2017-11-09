@@ -33,13 +33,13 @@ export default new Router({
       component: PostEdit,
     },
     {
-      path: '/posts/:board/:page',
+      path: '/posts/:board',
       name: 'PostList',
       component: Board,
       props: true,
     },
     {
-      path: '/posts/:board/:page/:post_id',
+      path: '/posts/:board/:post_id',
       name: 'PostDetail',
       component: Board,
       props: true,

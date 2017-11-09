@@ -68,6 +68,7 @@ export default new Vuex.Store({
         }).then((res) => {
           // console.log(res);
           commit('updatePost', res.data);
+          commit('updatePage', res.data.current_article_page);
           // TODO: update post, page, board
         }).catch((err) => {
           console.error(err);

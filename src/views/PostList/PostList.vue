@@ -8,22 +8,22 @@
       <div class="oneline">조회수</div>
       <div class="oneline">작성일자</div>
     </div>
-      <router-link v-for="item in post_items" :to="{ name: 'PostDetail', params: { board, page, post_id: item.id }, query: $route.query }" :key="item.id">
-      <post-item :board="board" :item="item" ></post-item>
-    </router-link>
+      <router-link v-for="item in post_items" :to="{ name: 'PostDetail', params: { board, post_id: item.id }, query: $route.query }" :key="item.id">
+        <post-item :board="board" :item="item" ></post-item>
+      </router-link>
     <div>
-      <router-link :to="new_url(1)">«</router-link>
-      <router-link v-if="page > 10" :to="new_url(page_base)">&lt;</router-link>
+      <a @click.native="updatePage(1)">«</a>
+      <a v-if="page > 10" @click.native="updatePage(page_base)">&lt;</a>
       <span v-else>&lt;</span>
       <span class="paging">
         <div v-for="iter_page in page_list" style="display: inline-block">
-          <router-link v-if="iter_page != page" :to="new_url(iter_page)" :key="page_list_index(iter_page)">{{ iter_page }}</router-link>
+          <a v-if="iter_page != page" @click.native="updatePage(iter_page)" :key="page_list_index(iter_page)">{{ iter_page }}</a>
           <span v-else>{{ iter_page }}</span>
         </div>
       </span>
-      <router-link v-if="page_base + 10 < num_pages" :to="new_url(page_base + 11)">&lt;</router-link>
+      <a v-if="page_base + 10 < num_pages" @click.native="updatePage(page_base + 11)">&lt;</a>
       <span v-else>&gt;</span>
-      <router-link :to="new_url(num_pages)">»</router-link>
+      <a @click.native="updatePage(num_pages)">»</a>
     </div>
     <div>
       <select id="search_type" name="search_type">
@@ -82,10 +82,6 @@ export default {
     page_list_index(page) {
       return this.page_list.indexOf(page) + 1;
     },
-    new_url(page) {
-      if (!this.post) return { name: 'PostList', params: { board: this.board, page }, query: this.$route.query };
-      return { name: 'PostDetail', params: { board: this.board, page, post_id: this.post.id }, query: this.$route.query };
-    },
     ...mapActions([
       'fetchPost',
       'updateBoard',
@@ -124,7 +120,7 @@ export default {
       searchInputElement.value = '';
       this.$router.push({
         name: 'PostList',
-        params: { board: this.board, page: 1 },
+        params: { board: this.board },
         query: { searchType, query },
       });
     },
@@ -133,14 +129,17 @@ export default {
     PostItem,
   },
   watch: {
-    $route(to) {
+    $route(to, from) {
       const condition = {};
       if (this.$route.query.searchType === 'title') condition.title__contains = this.$route.query.query;
       else if (this.$route.query.searchType === 'content') condition.content__contains = this.$route.query.query;
       else if (this.$route.query.searchType === 'created_by') condition.created_by = this.$route.query.query;
 
-      this.updateBoard(to.params.board);
-      this.updatePage(to.params.page);
+      if (from.params.board !== to.params.board) {
+        this.updateBoard(to.params.board);
+        this.updatePage(1);
+      }
+
       this.refresh(condition);
     },
   },
@@ -150,8 +149,11 @@ export default {
     else if (this.$route.query.searchType === 'content') condition.content__contains = this.$route.query.query;
     else if (this.$route.query.searchType === 'created_by') condition.created_by = this.$route.query.query;
 
-    this.updateBoard(this.$route.params.board);
-    this.updatePage(this.$route.params.page);
+    if (this.board !== this.$route.params.board) {
+      this.updateBoard(this.$route.params.board);
+      this.updatePage(1);
+    }
+
     this.refresh(condition);
   },
 };
