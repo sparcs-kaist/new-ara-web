@@ -3,6 +3,7 @@
     <template v-if="post">
     <h1 class="title">{{ post.title }}</h1>
     <p class="subtitle">작성자 : {{ post.created_by }}</p>
+    <button id="edit_btn" @click="$router.push(`/post/edit/${post.id}`)">글 수정</button>
     <div class="ql-container ql-snow">
       <div v-html="post.content" class="ql-editor"></div>
     </div>
@@ -29,6 +30,15 @@ export default {
 </script>
 
 <style scoped>
+#edit_btn {
+  display: inline-block;
+  float: right;
+}
+
+.subtitle {
+  display: inline-block;
+}
+
 .ql-container {
   font-size: 16px;
   border: 0;
