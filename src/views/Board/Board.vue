@@ -56,13 +56,17 @@ export default {
     PostList,
   },
   watch: {
-    $route(to) {
+    $route(to, from) {
       this.updateBoard(to.params.board);
       this.updatePage(to.params.page);
       this.post_id = to.params.post_id;
       this.fetchPost({ postId: this.post_id });
       //
       // this.refresh({});
+      if (from.params.post_id !== to.params.post_id
+          || from.params.board !== to.params.board) {
+        window.scrollTo(0, 0);
+      }
     },
   },
   mounted() {
