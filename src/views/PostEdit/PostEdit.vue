@@ -64,7 +64,7 @@ export default {
       this.pending = true;
       this.$axios({
         url: `${this.apiUrl}/articles/`,
-        method: 'POST',
+        method: 'PUT',
         data: {
           title: this.title,
           content: this.content,
