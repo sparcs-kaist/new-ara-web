@@ -5,6 +5,7 @@ import Login from '@/views/Login/Login';
 import Board from '@/views/Board/Board';
 import PostCreate from '@/views/PostCreate/PostCreate';
 import Setting from '@/views/Setting/Setting';
+import NotFound from '@/views/NotFound/NotFound';
 
 Vue.use(Router);
 
@@ -43,5 +44,11 @@ export default new Router({
       name: 'Setting',
       component: Setting,
     },
+    {
+      path: '*',
+      name: 'NotFound',
+      component: NotFound,
+    },
+
   ],
 });
