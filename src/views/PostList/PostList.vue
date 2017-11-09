@@ -8,7 +8,7 @@
       <div class="oneline">조회수</div>
       <div class="oneline">작성일자</div>
     </div>
-    <router-link v-for="item in post_items" :to="`/posts/${board}/${page}/${item.id}`" :key="item.id">
+      <router-link v-for="item in post_items" :to="{ name: 'PostDetail', params: { board, page, post_id: item.id }, query: $route.query }" :key="item.id">
       <post-item :board="board" :item="item" ></post-item>
     </router-link>
     <div>
@@ -83,8 +83,8 @@ export default {
       return this.page_list.indexOf(page) + 1;
     },
     new_url(page) {
-      if (!this.post) return `/posts/${this.board}/${page}`;
-      return `/posts/${this.board}/${page}/${this.post.id}`;
+      if (!this.post) return { name: 'PostList', params: { board: this.board, page }, query: this.$route.query };
+      return { name: 'PostDetail', params: { board: this.board, page, post_id: this.post.id }, query: this.$route.query };
     },
     ...mapActions([
       'fetchPost',
