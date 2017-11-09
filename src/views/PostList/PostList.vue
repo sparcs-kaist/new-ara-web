@@ -118,18 +118,15 @@ export default {
       const searchTypeElement = document.getElementById('search_type');
       const searchType = searchTypeElement.options[searchTypeElement.selectedIndex].value;
       const searchInputElement = document.getElementById('search_query');
-      const queryStr = searchInputElement.value;
-      const condition = {};
+      const query = searchInputElement.value;
 
-      if (searchType === 'title') condition.title__contains = queryStr;
-      else if (searchType === 'content') condition.content__contains = queryStr;
-      else if (searchType === 'created_by') condition.created_by = queryStr;
-
-      this.refresh(condition);
       searchTypeElement.selectedIndex = 0;
       searchInputElement.value = '';
-      this.fetchPost(undefined);
-      // TODO: should change URL, too.
+      this.$router.push({
+        name: 'PostList',
+        params: { board: this.board, page: 1 },
+        query: { searchType, query },
+      });
     },
   },
   components: {
