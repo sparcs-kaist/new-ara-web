@@ -134,18 +134,25 @@ export default {
   },
   watch: {
     $route(to) {
+      const condition = {};
+      if (this.$route.query.searchType === 'title') condition.title__contains = this.$route.query.query;
+      else if (this.$route.query.searchType === 'content') condition.content__contains = this.$route.query.query;
+      else if (this.$route.query.searchType === 'created_by') condition.created_by = this.$route.query.query;
+
       this.updateBoard(to.params.board);
       this.updatePage(to.params.page);
-      this.refresh({});
-      // this.post_id = to.params.post_id;
-      //
-      // this.refresh({});
+      this.refresh(condition);
     },
   },
   mounted() {
+    const condition = {};
+    if (this.$route.query.searchType === 'title') condition.title__contains = this.$route.query.query;
+    else if (this.$route.query.searchType === 'content') condition.content__contains = this.$route.query.query;
+    else if (this.$route.query.searchType === 'created_by') condition.created_by = this.$route.query.query;
+
     this.updateBoard(this.$route.params.board);
     this.updatePage(this.$route.params.page);
-    this.refresh({});
+    this.refresh(condition);
   },
 };
 </script>
