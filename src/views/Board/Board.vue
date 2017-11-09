@@ -63,6 +63,10 @@ export default {
       this.fetchPost({ postId: this.post_id });
       //
       // this.refresh({});
+      if (!this.post_id) {
+        this.fetchPost(undefined);
+      }
+
       if (from.params.post_id !== to.params.post_id
           || from.params.board !== to.params.board) {
         window.scrollTo(0, 0);
