@@ -31,7 +31,7 @@
         <option value="content">내용</option>
         <option value="created_by">글쓴이</option>
       </select>
-      <input id="search_query" type="text" />
+      <input id="search_query" @keyup.enter="searchArticles()" type="text" />
       <button type="button" @click="searchArticles()">검색</button>
     </div>
   </div>
