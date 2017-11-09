@@ -2,7 +2,7 @@
   <div>
     <div v-if="!error">
       <p>
-        <router-link v-for="board in board_list" :to="`/posts/${board}/1`" :key="board_list_index(board)" @click.native="resetPost"><h1>{{ board }}</h1></router-link>
+        <router-link v-for="board in board_list" :to="`/posts/${board}`" :key="board_list_index(board)" @click.native="resetPost"><h1>{{ board }}</h1></router-link>
       </p>
       <post-detail v-if="post"></post-detail>
       <post-list></post-list>
