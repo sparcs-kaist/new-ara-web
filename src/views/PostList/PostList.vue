@@ -69,11 +69,11 @@ export default {
       }
       return pageList;
     },
-    ...mapState({
-      post: 'post',
-      board: 'board',
-      page: 'page',
-    }),
+    ...mapState([
+      'post',
+      'board',
+      'page',
+    ]),
   },
   methods: {
     board_list_index(board) {
