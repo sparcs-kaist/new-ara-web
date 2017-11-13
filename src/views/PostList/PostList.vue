@@ -12,18 +12,18 @@
         <post-item :board="board" :item="item" ></post-item>
       </router-link>
     <div>
-      <a @click.native="updatePage(1)">«</a>
-      <a v-if="page > 10" @click.native="updatePage(page_base)">&lt;</a>
+      <a @click="updatePageAndFetch(1)">«</a>
+      <a v-if="page > 10" @click="updatePageAndFetch(page_base)">&lt;</a>
       <span v-else>&lt;</span>
       <span class="paging">
         <div v-for="iter_page in page_list" style="display: inline-block">
-          <a v-if="iter_page != page" @click.native="updatePage(iter_page)" :key="page_list_index(iter_page)">{{ iter_page }}</a>
+          <a v-if="iter_page != page" @click="updatePageAndFetch(iter_page)" :key="page_list_index(iter_page)">{{ iter_page }}</a>
           <span v-else>{{ iter_page }}</span>
         </div>
       </span>
-      <a v-if="page_base + 10 < num_pages" @click.native="updatePage(page_base + 11)">&lt;</a>
+      <a v-if="page_base + 10 < num_pages" @click="updatePageAndFetch(page_base + 11)">&gt;</a>
       <span v-else>&gt;</span>
-      <a @click.native="updatePage(num_pages)">»</a>
+      <a @click="updatePageAndFetch(num_pages)">»</a>
     </div>
     <div>
       <select id="search_type" name="search_type">
@@ -34,7 +34,6 @@
       <input id="search_query" @keyup.enter="searchArticles()" type="text" />
       <button type="button" @click="searchArticles()">검색</button>
     </div>
-  </div>
   </div>
 </template>
 
@@ -123,6 +122,10 @@ export default {
         params: { board: this.board },
         query: { searchType, query },
       });
+    },
+    updatePageAndFetch(page) {
+      this.updatePage(page);
+      this.refresh(this.$route.query);
     },
   },
   components: {
