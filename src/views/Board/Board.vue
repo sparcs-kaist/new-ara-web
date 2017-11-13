@@ -48,7 +48,6 @@ export default {
       return this.board_list.indexOf(board);
     },
     resetPost() {
-      console.log('hihi!');
       this.fetchPost(undefined);
     },
   },
@@ -59,7 +58,6 @@ export default {
   watch: {
     $route(to, from) {
       this.updateBoard(to.params.board);
-      this.updatePage(to.params.page);
       this.post_id = to.params.post_id;
       this.fetchPost({ postId: this.post_id });
       //
@@ -76,7 +74,6 @@ export default {
   },
   mounted() {
     this.updateBoard(this.$route.params.board);
-    this.updatePage(this.$route.params.page);
     this.post_id = this.$route.params.post_id;
     this.fetchPost({ postId: this.post_id });
     //
