@@ -35,7 +35,7 @@ export default new Vuex.Store({
   },
   actions: {
     fetchPost({ state, commit }, payload) {
-      if (!payload) {
+      if (!payload || !payload.postId) {
         commit('updatePost', undefined);
         return;
       }
@@ -51,30 +51,17 @@ export default new Vuex.Store({
           url += `${key}=${context[key]}&`;
         }
       }
-      if (postId === undefined) {
-        axios.get(`${apiUrl}/articles/${url}`, {
-          auth,
-        }).then(() => {
-          // console.log(res);
-          // commit('updatePost', res.data);
-          // TODO: update page, board
-        }).catch((err) => {
-          console.error(err);
-          commit('updatePost', undefined);
-        });
-      } else {
-        axios.get(`${apiUrl}/articles/${postId}/${url}`, {
-          auth,
-        }).then((res) => {
-          // console.log(res);
-          commit('updatePost', res.data);
-          commit('updatePage', res.data.current_article_page);
-          // TODO: update post, page, board
-        }).catch((err) => {
-          console.error(err);
-          commit('updatePost', undefined);
-        });
-      }
+      axios.get(`${apiUrl}/articles/${postId}/${url}`, {
+        auth,
+      }).then((res) => {
+        // console.log(res);
+        commit('updatePost', res.data);
+        commit('updatePage', res.data.article_current_page);
+        // TODO: update post, page, board
+      }).catch((err) => {
+        console.error(err);
+        commit('updatePost', undefined);
+      });
     },
     updateBoard({ state, commit }, board) {
       commit('updateBoard', board);
