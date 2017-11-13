@@ -61,7 +61,7 @@ export default {
             this.fetchPost({ postId: this.post.id });
           })
           .catch((err) => {
-            alert('failed to vote');
+            alert('failed to vote. please retry.');
             console.log(err);
           });
       }
