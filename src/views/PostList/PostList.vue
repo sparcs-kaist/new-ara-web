@@ -118,17 +118,23 @@ export default {
       const searchTypeElement = document.getElementById('search_type');
       const searchType = searchTypeElement.options[searchTypeElement.selectedIndex].value;
       const searchInputElement = document.getElementById('search_query');
-      const query = searchInputElement.value;
+      const queryStr = searchInputElement.value;
+      const query = {};
+
+      if (searchType === 'title') query.title__contains = queryStr;
+      else if (searchType === 'content') query.content__contains = queryStr;
+      else if (searchType === 'created_by') query.created_by = queryStr;
 
       searchTypeElement.selectedIndex = 0;
       searchInputElement.value = '';
+
+      this.fetchPost(undefined);
+      this.updatePage(1);
       this.$router.push({
         name: 'PostList',
         params: { board: this.board },
-        query: { searchType, query },
+        query,
       });
-      this.fetchPost(undefined);
-      this.updatePage(1);
     },
     updatePageAndFetch(page) {
       const condition = {};
@@ -137,7 +143,7 @@ export default {
       else if (this.$route.query.searchType === 'created_by') condition.created_by = this.$route.query.query;
 
       this.updatePage(page);
-      this.refresh(condition);
+      this.refresh(this.$route.query);
     },
   },
   components: {
@@ -155,7 +161,7 @@ export default {
         this.updatePage(1);
       }
 
-      this.refresh(condition);
+      this.refresh(this.$route.query);
     },
   },
   mounted() {
@@ -169,7 +175,7 @@ export default {
       this.updatePage(1);
     }
 
-    this.refresh(condition);
+    this.refresh(this.$route.query);
   },
 };
 </script>
