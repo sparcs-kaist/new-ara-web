@@ -126,8 +126,13 @@ export default {
       this.updatePage(1);
     },
     updatePageAndFetch(page) {
+      const condition = {};
+      if (this.$route.query.searchType === 'title') condition.title__contains = this.$route.query.query;
+      else if (this.$route.query.searchType === 'content') condition.content__contains = this.$route.query.query;
+      else if (this.$route.query.searchType === 'created_by') condition.created_by = this.$route.query.query;
+
       this.updatePage(page);
-      this.refresh(this.$route.query);
+      this.refresh(condition);
     },
   },
   components: {
