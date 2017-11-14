@@ -58,7 +58,7 @@ export default {
           auth: this.auth,
         })
           .then(() => {
-            this.fetchPost({ postId: this.post.id });
+            this.fetchPost({ postId: this.post.id, context: this.$route.query });
           })
           .catch((err) => {
             alert('failed to vote');

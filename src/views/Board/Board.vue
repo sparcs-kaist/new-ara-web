@@ -59,7 +59,7 @@ export default {
     $route(to, from) {
       this.updateBoard(to.params.board);
       this.post_id = to.params.post_id;
-      this.fetchPost({ postId: this.post_id });
+      this.fetchPost({ postId: this.post_id, context: this.$route.query });
 
       if (from.params.post_id !== to.params.post_id
         || from.params.board !== to.params.board) {
@@ -70,9 +70,7 @@ export default {
   mounted() {
     this.updateBoard(this.$route.params.board);
     this.post_id = this.$route.params.post_id;
-    this.fetchPost({ postId: this.post_id });
-    //
-    // this.refresh({});
+    this.fetchPost({ postId: this.post_id, context: this.$route.query });
   },
 };
 </script>
