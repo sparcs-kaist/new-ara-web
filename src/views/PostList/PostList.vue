@@ -8,9 +8,14 @@
       <div class="oneline">조회수</div>
       <div class="oneline">작성일자</div>
     </div>
-      <router-link v-for="item in post_items" :to="{ name: 'PostDetail', params: { board, post_id: item.id }, query: $route.query }" :key="item.id">
-        <post-item :board="board" :item="item" ></post-item>
-      </router-link>
+      <div v-for="item in post_items" :key="item.id">
+        <router-link v-if="item.id !== post.id" :to="{ name: 'PostDetail', params: { board, post_id: item.id }, query: $route.query }">
+          <post-item :board="board" :item="item" ></post-item>
+        </router-link>
+        <span v-else>
+          <post-item :board="board" :item="item" ></post-item>
+        </span>
+      </div>
     <div>
       <a @click="updatePageAndFetch(1)">«</a>
       <a v-if="page > 10" @click="updatePageAndFetch(page_base)">&lt;</a>
