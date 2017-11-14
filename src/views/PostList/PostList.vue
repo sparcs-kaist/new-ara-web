@@ -122,6 +122,8 @@ export default {
         params: { board: this.board },
         query: { searchType, query },
       });
+      this.fetchPost(undefined);
+      this.updatePage(1);
     },
     updatePageAndFetch(page) {
       this.updatePage(page);
