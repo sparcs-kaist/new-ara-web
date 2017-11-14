@@ -51,7 +51,7 @@ export default new Vuex.Store({
           url += `${key}=${context[key]}&`;
         }
       }
-      axios.get(`${apiUrl}/articles/${postId}/${url}`, {
+      axios.get(`${apiUrl}/articles/${postId}/${url.slice(0, -1)}`, {
         auth,
       }).then((res) => {
         // console.log(res);
