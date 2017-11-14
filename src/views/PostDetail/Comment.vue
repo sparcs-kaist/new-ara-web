@@ -9,7 +9,7 @@
     </div>
     <a v-if="!isAddCommentExpanded" class="expand" @click="toggleExpand('addcomment')"> 답글 달기 </a>
     <div v-else>
-      <add-comment></add-comment>
+      <add-comment :context="this.comment" :isArticle="false"></add-comment>
     </div>
   </div>
 </template>
