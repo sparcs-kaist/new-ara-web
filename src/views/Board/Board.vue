@@ -49,6 +49,7 @@ export default {
     },
     resetPost() {
       this.fetchPost(undefined);
+      this.updatePage(1);
     },
   },
   components: {
