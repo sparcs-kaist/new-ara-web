@@ -9,7 +9,7 @@
       <div class="oneline">작성일자</div>
     </div>
       <div v-for="item in post_items" :key="item.id">
-        <router-link v-if="item.id !== post.id" :to="{ name: 'PostDetail', params: { board, post_id: item.id }, query: $route.query }">
+        <router-link v-if="!post || item.id !== post.id" :to="{ name: 'PostDetail', params: { board, post_id: item.id }, query: $route.query }">
           <post-item :board="board" :item="item" ></post-item>
         </router-link>
         <span v-else>
