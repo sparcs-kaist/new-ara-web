@@ -77,12 +77,13 @@ export default {
       'board',
       'page',
       'auth',
+      'boardList',
     ]),
   },
   methods: {
     boardListIndex(board) {
       const boardNameList = ['all'];
-      this.boardList.foreach((e) => {
+      this.boardList.forEach((e) => {
         boardNameList.push(e.ko_name);
       });
       return boardNameList.indexOf(board);
