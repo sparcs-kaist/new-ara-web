@@ -12,10 +12,7 @@
       </div>
       <div class="navbar-menu" :class="{'is-active': menuVisibility}">
         <div class="navbar-start">
-          <router-link class="navbar-item" to="/post/create">글쓰기</router-link>
-          <router-link class="navbar-item" to="/post/edit/1">글 수정하기</router-link>
-          <router-link class="navbar-item" to="/post/0">글 내용</router-link>
-          <router-link class="navbar-item" to="/posts/all/1">게시판</router-link>
+          <router-link class="navbar-item" to="/posts/all" @click.native="resetPost">게시판</router-link>
         </div>
 
         <div class="navbar-end">
@@ -39,6 +36,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   data() {
     return {
@@ -46,8 +45,12 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['fetchPost']),
     toggleMenuVisibility() {
       this.menuVisibility = !this.menuVisibility;
+    },
+    resetPost() {
+      this.fetchPost(undefined);
     },
   },
 };

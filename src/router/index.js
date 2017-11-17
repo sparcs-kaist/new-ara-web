@@ -4,6 +4,7 @@ import Home from '@/views/Home/Home';
 import Login from '@/views/Login/Login';
 import Board from '@/views/Board/Board';
 import PostCreate from '@/views/PostCreate/PostCreate';
+import PostEdit from '@/views/PostEdit/PostEdit';
 import Setting from '@/views/Setting/Setting';
 import NotFound from '@/views/NotFound/NotFound';
 
@@ -28,14 +29,19 @@ export default new Router({
       component: PostCreate,
     },
     {
-      path: '/posts/:board/:page',
-      name: 'Board',
+      path: '/post/edit/:post_id',
+      name: 'PostEdit',
+      component: PostEdit,
+    },
+    {
+      path: '/posts/:board',
+      name: 'PostList',
       component: Board,
       props: true,
     },
     {
-      path: '/posts/:board/:page/:post_id',
-      name: 'Board',
+      path: '/posts/:board/:post_id',
+      name: 'PostDetail',
       component: Board,
       props: true,
     },

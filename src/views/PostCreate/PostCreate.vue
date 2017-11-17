@@ -53,7 +53,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(['apiUrl', 'auth']),
+    ...mapState([
+      'apiUrl',
+      'auth',
+    ]),
   },
   components: {
     VueEditor,
@@ -74,10 +77,10 @@ export default {
           parent_board: 1,
         },
         auth: this.auth,
-      }).then((result) => {
+      }).then(() => {
         this.pending = false;
         // this.$router.push(`/post/{post_id??}`)
-        console.log(result);
+        // console.log(result);
       })
       .catch((err) => {
         this.pending = false;

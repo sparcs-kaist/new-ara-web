@@ -13,10 +13,11 @@ export default new Vuex.Store({
       username: 'sparcs',
       password: 'newara@sparcs',
     },
-    post: {
-      // postDetail: {},
-      // postComment: [],
-    },
+    post: undefined,
+    // {
+    //   postDetail: {},
+    //   postComment: [],
+    // },
     apiUrl: 'http://13.124.216.27:8000/api',
     board: '',
     page: 0,
@@ -34,6 +35,10 @@ export default new Vuex.Store({
   },
   actions: {
     fetchPost({ state, commit }, payload) {
+      if (!payload || !payload.postId) {
+        commit('updatePost', undefined);
+        return;
+      }
       const auth = state.auth;
       const postId = payload.postId;
       const context = payload.context;
@@ -46,29 +51,17 @@ export default new Vuex.Store({
           url += `${key}=${context[key]}&`;
         }
       }
-      if (postId === undefined) {
-        axios.get(`${apiUrl}/articles/${url}`, {
-          auth,
-        }).then((res) => {
-          console.log(res);
-          // commit('updatePost', res.data);
-          // TODO: update page, board
-        }).catch((err) => {
-          console.error(err);
-          commit('updatePost', undefined);
-        });
-      } else {
-        axios.get(`${apiUrl}/articles/${postId}/${url}`, {
-          auth,
-        }).then((res) => {
-          console.log(res);
-          commit('updatePost', res.data);
-          // TODO: update post, page, board
-        }).catch((err) => {
-          console.error(err);
-          commit('updatePost', undefined);
-        });
-      }
+      axios.get(`${apiUrl}/articles/${postId}/${url.slice(0, -1)}`, {
+        auth,
+      }).then((res) => {
+        // console.log(res);
+        commit('updatePost', res.data);
+        commit('updatePage', res.data.article_current_page);
+        // TODO: update post, page, board
+      }).catch((err) => {
+        console.error(err);
+        commit('updatePost', undefined);
+      });
     },
     updateBoard({ state, commit }, board) {
       commit('updateBoard', board);

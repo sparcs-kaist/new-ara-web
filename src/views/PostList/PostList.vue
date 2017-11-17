@@ -8,22 +8,27 @@
       <div class="oneline">조회수</div>
       <div class="oneline">작성일자</div>
     </div>
-    <router-link v-for="item in post_items" :to="`/posts/${board}/${page}/${item.id}`" :key="item.id">
-      <post-item :board="board" :item="item" ></post-item>
-    </router-link>
+      <div v-for="item in post_items" :key="item.id">
+        <router-link v-if="!post || item.id !== post.id" :to="{ name: 'PostDetail', params: { board, post_id: item.id }, query: $route.query }">
+          <post-item :board="board" :item="item" ></post-item>
+        </router-link>
+        <span v-else>
+          <post-item :board="board" :item="item" ></post-item>
+        </span>
+      </div>
     <div>
-      <router-link :to="new_url(1)">«</router-link>
-      <router-link v-if="page > 10" :to="new_url(page_base)">&lt;</router-link>
+      <a @click="updatePageAndFetch(1)">«</a>
+      <a v-if="page > 10" @click="updatePageAndFetch(page_base)">&lt;</a>
       <span v-else>&lt;</span>
       <span class="paging">
         <div v-for="iter_page in page_list" style="display: inline-block">
-          <router-link v-if="iter_page != page" :to="new_url(iter_page)" :key="page_list_index(iter_page)">{{ iter_page }}</router-link>
+          <a v-if="iter_page != page" @click="updatePageAndFetch(iter_page)" :key="page_list_index(iter_page)">{{ iter_page }}</a>
           <span v-else>{{ iter_page }}</span>
         </div>
       </span>
-      <router-link v-if="page_base + 10 < num_pages" :to="new_url(page_base + 11)">&lt;</router-link>
+      <a v-if="page_base + 10 < num_pages" @click="updatePageAndFetch(page_base + 11)">&gt;</a>
       <span v-else>&gt;</span>
-      <router-link :to="new_url(num_pages)">»</router-link>
+      <a @click="updatePageAndFetch(num_pages)">»</a>
     </div>
     <div>
       <select id="search_type" name="search_type">
@@ -31,10 +36,9 @@
         <option value="content">내용</option>
         <option value="created_by">글쓴이</option>
       </select>
-      <input id="search_query" type="text" />
+      <input id="search_query" @keyup.enter="searchArticles()" type="text" />
       <button type="button" @click="searchArticles()">검색</button>
     </div>
-  </div>
   </div>
 </template>
 
@@ -64,16 +68,16 @@ export default {
       const base = this.page_base;
       const pageList = [];
       const pageListMax = (this.num_pages < base + 10 ? this.num_pages : base + 10);
-      for (let i = base + 1; i <= pageListMax; i += 10) {
+      for (let i = base + 1; i <= pageListMax; i += 1) {
         pageList.push(i);
       }
       return pageList;
     },
-    ...mapState({
-      post: 'post',
-      board: 'board',
-      page: 'page',
-    }),
+    ...mapState([
+      'post',
+      'board',
+      'page',
+    ]),
   },
   methods: {
     board_list_index(board) {
@@ -82,11 +86,8 @@ export default {
     page_list_index(page) {
       return this.page_list.indexOf(page) + 1;
     },
-    new_url(page) {
-      if (!this.post) return `/posts/${this.board}/${page}`;
-      return `/posts/${this.board}/${page}/${this.post.post_id}`;
-    },
     ...mapActions([
+      'fetchPost',
       'updateBoard',
       'updatePage',
     ]),
@@ -118,34 +119,63 @@ export default {
       const searchType = searchTypeElement.options[searchTypeElement.selectedIndex].value;
       const searchInputElement = document.getElementById('search_query');
       const queryStr = searchInputElement.value;
-      const condition = {};
+      const query = {};
 
-      if (searchType === 'title') condition.title__contains = queryStr;
-      else if (searchType === 'content') condition.content__contains = queryStr;
-      else if (searchType === 'created_by') condition.created_by = queryStr;
+      if (searchType === 'title') query.title__contains = queryStr;
+      else if (searchType === 'content') query.content__contains = queryStr;
+      else if (searchType === 'created_by') query.created_by = queryStr;
 
-      this.refresh(condition);
       searchTypeElement.selectedIndex = 0;
       searchInputElement.value = '';
+
+      this.fetchPost(undefined);
+      this.updatePage(1);
+      this.$router.push({
+        name: 'PostList',
+        params: { board: this.board },
+        query,
+      });
+    },
+    updatePageAndFetch(page) {
+      const condition = {};
+      if (this.$route.query.searchType === 'title') condition.title__contains = this.$route.query.query;
+      else if (this.$route.query.searchType === 'content') condition.content__contains = this.$route.query.query;
+      else if (this.$route.query.searchType === 'created_by') condition.created_by = this.$route.query.query;
+
+      this.updatePage(page);
+      this.refresh(this.$route.query);
     },
   },
   components: {
     PostItem,
   },
   watch: {
-    $route(to) {
-      this.updateBoard(to.params.board);
-      this.updatePage(to.params.page);
-      this.refresh({});
-      // this.post_id = to.params.post_id;
-      //
-      // this.refresh({});
+    $route(to, from) {
+      const condition = {};
+      if (this.$route.query.searchType === 'title') condition.title__contains = this.$route.query.query;
+      else if (this.$route.query.searchType === 'content') condition.content__contains = this.$route.query.query;
+      else if (this.$route.query.searchType === 'created_by') condition.created_by = this.$route.query.query;
+
+      if (from.params.board !== to.params.board) {
+        this.updateBoard(to.params.board);
+        this.updatePage(1);
+      }
+
+      this.refresh(this.$route.query);
     },
   },
   mounted() {
-    this.updateBoard(this.$route.params.board);
-    this.updatePage(this.$route.params.page);
-    this.refresh({});
+    const condition = {};
+    if (this.$route.query.searchType === 'title') condition.title__contains = this.$route.query.query;
+    else if (this.$route.query.searchType === 'content') condition.content__contains = this.$route.query.query;
+    else if (this.$route.query.searchType === 'created_by') condition.created_by = this.$route.query.query;
+
+    if (this.board !== this.$route.params.board) {
+      this.updateBoard(this.$route.params.board);
+      this.updatePage(1);
+    }
+
+    this.refresh(this.$route.query);
   },
 };
 </script>

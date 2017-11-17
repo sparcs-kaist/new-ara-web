@@ -2,10 +2,11 @@
   <div>
     <div v-if="!error">
       <p>
-        <router-link v-for="board in board_list" :to="`/posts/${board}/1`" :key="board_list_index(board)"><h1>{{ board }}</h1></router-link>
+        <router-link v-for="board in board_list" :to="`/posts/${board}`" :key="board_list_index(board)" @click.native="resetPost"><h1>{{ board }}</h1></router-link>
       </p>
-      <post-detail v-if="post_id"></post-detail>
+      <post-detail v-if="post"></post-detail>
       <post-list></post-list>
+      <button @click="$router.push('/post/create')">글쓰기</button>
     </div>
     <div v-else>
       Database error
@@ -41,9 +42,14 @@ export default {
       'fetchPost',
       'updateBoard',
       'updatePage',
+      'resetPost',
     ]),
     board_list_index(board) {
       return this.board_list.indexOf(board);
+    },
+    resetPost() {
+      this.fetchPost(undefined);
+      this.updatePage(1);
     },
   },
   components: {
@@ -51,23 +57,21 @@ export default {
     PostList,
   },
   watch: {
-    $route(to) {
+    $route(to, from) {
       this.updateBoard(to.params.board);
-      this.updatePage(to.params.page);
       this.post_id = to.params.post_id;
-      this.fetchPost({ postId: this.post_id });
-      //
-      // this.refresh({});
+      this.fetchPost({ postId: this.post_id, context: this.$route.query });
+
+      if (from.params.post_id !== to.params.post_id
+        || from.params.board !== to.params.board) {
+        window.scrollTo(0, 0);
+      }
     },
   },
   mounted() {
     this.updateBoard(this.$route.params.board);
-    this.updatePage(this.$route.params.page);
     this.post_id = this.$route.params.post_id;
-    this.fetchPost({ postId: this.post_id });
-
-    //
-    // this.refresh({});
+    this.fetchPost({ postId: this.post_id, context: this.$route.query });
   },
 };
 </script>

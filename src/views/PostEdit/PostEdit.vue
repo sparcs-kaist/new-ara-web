@@ -64,7 +64,7 @@ export default {
       this.pending = true;
       this.$axios({
         url: `${this.apiUrl}/articles/`,
-        method: 'POST',
+        method: 'PUT',
         data: {
           title: this.title,
           content: this.content,
@@ -75,10 +75,10 @@ export default {
           parent_board: 1,
         },
         auth: this.auth,
-      }).then((result) => {
+      }).then(() => {
         this.pending = false;
         // this.$router.push(`/post/{post_id??}`)
-        console.log(result);
+        // console.log(result);
       })
       .catch((err) => {
         this.pending = false;
