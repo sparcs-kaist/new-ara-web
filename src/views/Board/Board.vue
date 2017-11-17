@@ -2,7 +2,8 @@
   <div>
     <div v-if="!error">
       <p>
-        <router-link v-for="board in board_list" :to="`/posts/${board}`" :key="board_list_index(board)" @click.native="resetPost"><h1>{{ board }}</h1></router-link>
+        <router-link to="/posts/all" @click.native="resetPost"><h1>all</h1></router-link>
+        <router-link v-for="board in boardList" :to="`/posts/${board.ko_name}`" :key="board.id" @click.native="resetPost"><h1>{{ board.ko_name }}</h1></router-link>
       </p>
       <post-detail v-if="post"></post-detail>
       <post-list></post-list>
@@ -23,7 +24,6 @@ export default {
   name: 'Board',
   data() {
     return {
-      board_list: ['all', 'talk', 'love', 'play'], // TODO: api에서 받아오기
       num_pages: 0,
       post_items: [],
       post_id: 0,
@@ -45,9 +45,6 @@ export default {
       'updatePage',
       'resetPost',
     ]),
-    board_list_index(board) {
-      return this.board_list.indexOf(board);
-    },
     resetPost() {
       this.fetchPost(undefined);
       this.updatePage(1);
