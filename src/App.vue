@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import Navbar from './components/Navbar/Navbar';
 import Foot from './components/Foot/Foot';
 
@@ -14,6 +15,14 @@ export default {
   name: 'app',
   components: {
     Navbar, Foot,
+  },
+  methods: {
+    ...mapActions([
+      'updateBoardList',
+    ]),
+  },
+  mounted() {
+    this.updateBoardList();
   },
 };
 </script>
