@@ -79,10 +79,10 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
-    updateBoard({ state, commit }, board) {
+    updateBoard({ commit }, board) {
       commit('updateBoard', board);
     },
-    updatePage({ state, commit }, page) {
+    updatePage({ commit }, page) {
       commit('updatePage', page);
     },
   },
