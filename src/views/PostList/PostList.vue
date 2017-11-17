@@ -2,13 +2,13 @@
   <div>
     <div>
       <div class="oneline">작성자</div>
-      <div class="oneline">{{ board_or_heading }}</div>
+      <div class="oneline">{{ boardOrHeading }}</div>
       <div class="oneline">제목</div>
       <div class="oneline">추천/반대</div>
       <div class="oneline">조회수</div>
       <div class="oneline">작성일자</div>
     </div>
-      <div v-for="item in post_items" :key="item.id">
+      <div v-for="item in postItems" :key="item.id">
         <router-link v-if="!post || item.id !== post.id" :to="{ name: 'PostDetail', params: { board, post_id: item.id }, query: $route.query }">
           <post-item :board="board" :item="item" ></post-item>
         </router-link>
@@ -18,17 +18,17 @@
       </div>
     <div>
       <a @click="updatePageAndFetch(1)">«</a>
-      <a v-if="page > 10" @click="updatePageAndFetch(page_base)">&lt;</a>
+      <a v-if="page > 10" @click="updatePageAndFetch(pageBase)">&lt;</a>
       <span v-else>&lt;</span>
       <span class="paging">
-        <div v-for="iter_page in page_list" style="display: inline-block">
-          <a v-if="iter_page != page" @click="updatePageAndFetch(iter_page)" :key="page_list_index(iter_page)">{{ iter_page }}</a>
-          <span v-else>{{ iter_page }}</span>
+        <div v-for="iterPage in pageList" style="display: inline-block">
+          <a v-if="iterPage != page" @click="updatePageAndFetch(iterPage)" :key="pageListIndex(iterPage)">{{ iterPage }}</a>
+          <span v-else>{{ iterPage }}</span>
         </div>
       </span>
-      <a v-if="page_base + 10 < num_pages" @click="updatePageAndFetch(page_base + 11)">&gt;</a>
+      <a v-if="pageBase + 10 < numPages" @click="updatePageAndFetch(pageBase + 11)">&gt;</a>
       <span v-else>&gt;</span>
-      <a @click="updatePageAndFetch(num_pages)">»</a>
+      <a @click="updatePageAndFetch(numPages)">»</a>
     </div>
     <div>
       <select id="search_type" name="search_type">
@@ -51,23 +51,22 @@ export default {
   name: 'PostList',
   data() {
     return {
-      post_items: [],
-      num_pages: 0,
+      postItems: [],
+      numPages: 0,
     };
   },
   computed: {
-    board_or_heading() {
+    boardOrHeading() {
       if (this.board === 'all') return '게시판';
       return '말머리';
     },
-    page_base() {
+    pageBase() {
       return (this.page - 1) - ((this.page - 1) % 10);
     },
-    page_list() {
-      // TODO: return correct page list
-      const base = this.page_base;
+    pageList() {
+      const base = this.pageBase;
       const pageList = [];
-      const pageListMax = (this.num_pages < base + 10 ? this.num_pages : base + 10);
+      const pageListMax = (this.numPages < base + 10 ? this.numPages : base + 10);
       for (let i = base + 1; i <= pageListMax; i += 1) {
         pageList.push(i);
       }
@@ -77,14 +76,15 @@ export default {
       'post',
       'board',
       'page',
+      'auth',
     ]),
   },
   methods: {
     board_list_index(board) {
       return ['all', 'talk', 'love', 'play'].indexOf(board);
     },
-    page_list_index(page) {
-      return this.page_list.indexOf(page) + 1;
+    pageListIndex(page) {
+      return this.pageList.indexOf(page) + 1;
     },
     ...mapActions([
       'fetchPost',
@@ -98,18 +98,13 @@ export default {
         const key = keys[i];
         url += `${key}=${condition[key]}&`;
       }
-      if (this.board !== 'all') url += `parent_board=${this.board_list_index(this.board)}&`;
+      if (this.board !== 'all') url += `parent_board=${this.boardListIndex(this.board)}&`;
       url += `page=${this.page}`;
 
-      axios.get(`http://13.124.216.27:8000/api/articles/${url}`, {
-        auth: {
-          username: 'sparcs',
-          password: 'newara@sparcs',
-        },
-      })
+      axios.get(`http://13.124.216.27:8000/api/articles/${url}`, { auth: this.auth })
       .then((res) => {
-        this.post_items = res.data.results;
-        this.num_pages = res.data.num_pages;
+        this.postItems = res.data.results;
+        this.numPages = res.data.num_pages;
       })
       .catch(() => {
       });
