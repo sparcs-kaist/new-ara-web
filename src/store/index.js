@@ -21,6 +21,7 @@ export default new Vuex.Store({
     apiUrl: 'http://13.124.216.27:8000/api',
     board: '',
     page: 0,
+    boardList: [],
   },
   mutations: {
     updatePost(state, post) {
@@ -31,6 +32,9 @@ export default new Vuex.Store({
     },
     updatePage(state, page) {
       state.page = page;
+    },
+    updateBoardList(state, boardList) {
+      state.boardList = boardList;
     },
   },
   actions: {
@@ -62,6 +66,18 @@ export default new Vuex.Store({
         console.error(err);
         commit('updatePost', undefined);
       });
+    },
+    updateBoardList({ commit, state }, callback) {
+      axios.get(`${apiUrl}/boards`, { auth: state.auth })
+        .then((res) => {
+          commit('updateBoardList', res.data.results);
+          if (callback) {
+            callback();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     updateBoard({ state, commit }, board) {
       commit('updateBoard', board);

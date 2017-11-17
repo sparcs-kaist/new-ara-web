@@ -77,11 +77,16 @@ export default {
       'board',
       'page',
       'auth',
+      'boardList',
     ]),
   },
   methods: {
-    board_list_index(board) {
-      return ['all', 'talk', 'love', 'play'].indexOf(board);
+    boardListIndex(board) {
+      const boardNameList = ['all'];
+      this.boardList.forEach((e) => {
+        boardNameList.push(e.ko_name);
+      });
+      return boardNameList.indexOf(board);
     },
     pageListIndex(page) {
       return this.pageList.indexOf(page) + 1;
@@ -90,10 +95,12 @@ export default {
       'fetchPost',
       'updateBoard',
       'updatePage',
+      'updateBoardList',
     ]),
-    refresh(condition) {
-      let url = '?';
+    refresh() {
+      const condition = this.$route.query;
       const keys = Object.keys(condition);
+      let url = '?';
       for (let i = 0; i < keys.length; i += 1) {
         const key = keys[i];
         url += `${key}=${condition[key]}&`;
@@ -132,13 +139,8 @@ export default {
       });
     },
     updatePageAndFetch(page) {
-      const condition = {};
-      if (this.$route.query.searchType === 'title') condition.title__contains = this.$route.query.query;
-      else if (this.$route.query.searchType === 'content') condition.content__contains = this.$route.query.query;
-      else if (this.$route.query.searchType === 'created_by') condition.created_by = this.$route.query.query;
-
       this.updatePage(page);
-      this.refresh(this.$route.query);
+      this.updateBoardList(this.refresh);
     },
   },
   components: {
@@ -146,31 +148,19 @@ export default {
   },
   watch: {
     $route(to, from) {
-      const condition = {};
-      if (this.$route.query.searchType === 'title') condition.title__contains = this.$route.query.query;
-      else if (this.$route.query.searchType === 'content') condition.content__contains = this.$route.query.query;
-      else if (this.$route.query.searchType === 'created_by') condition.created_by = this.$route.query.query;
-
       if (from.params.board !== to.params.board) {
         this.updateBoard(to.params.board);
         this.updatePage(1);
       }
-
-      this.refresh(this.$route.query);
+      this.updateBoardList(this.refresh);
     },
   },
   mounted() {
-    const condition = {};
-    if (this.$route.query.searchType === 'title') condition.title__contains = this.$route.query.query;
-    else if (this.$route.query.searchType === 'content') condition.content__contains = this.$route.query.query;
-    else if (this.$route.query.searchType === 'created_by') condition.created_by = this.$route.query.query;
-
     if (this.board !== this.$route.params.board) {
       this.updateBoard(this.$route.params.board);
       this.updatePage(1);
     }
-
-    this.refresh(this.$route.query);
+    this.updateBoardList(this.refresh);
   },
 };
 </script>
