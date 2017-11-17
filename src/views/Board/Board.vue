@@ -31,11 +31,12 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      post: 'post',
-      board: 'board',
-      page: 'page',
-    }),
+    ...mapState([
+      'post',
+      'board',
+      'boardList',
+      'page',
+    ]),
   },
   methods: {
     ...mapActions([
