@@ -21,12 +21,48 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters } from 'vuex';
 import HitArticle from './HitArticle';
 import RecentArticle from './RecentArticle';
 
 export default {
+  data() {
+    return {
+      todayBest: [],
+      weeklyBest: [],
+      articles: {},
+    };
+  },
+  computed: {
+    ...mapState([
+      'auth',
+      'apiUrl',
+    ]),
+    ...mapGetters([
+      'boardNameList',
+    ]),
+  },
+  methods: {
+    ...mapActions([
+      'updateBoardList',
+    ]),
+    getArticles() {
+      this.$axios.get(`${this.apiUrl}/api/articles/home`, { auth: this.auth })
+        .then((res) => {
+          this.todayBest = res.data.todayBest;
+          this.weeklyBest = res.data.weeklyBest;
+          this.articles = res.data.articles;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
   components: {
     HitArticle, RecentArticle,
+  },
+  mounted() {
+    this.updateBoardList(this.getArticles);
   },
 };
 
