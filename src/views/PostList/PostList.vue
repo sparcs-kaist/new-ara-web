@@ -80,8 +80,12 @@ export default {
     ]),
   },
   methods: {
-    board_list_index(board) {
-      return ['all', 'talk', 'love', 'play'].indexOf(board);
+    boardListIndex(board) {
+      const boardNameList = ['all'];
+      this.boardList.foreach((e) => {
+        boardNameList.push(e.ko_name);
+      });
+      return boardNameList.indexOf(board);
     },
     pageListIndex(page) {
       return this.pageList.indexOf(page) + 1;
