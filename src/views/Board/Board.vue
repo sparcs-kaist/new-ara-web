@@ -2,8 +2,13 @@
   <div>
     <div v-if="!error">
       <p>
-        <router-link to="/posts/all" @click.native="resetPost"><h1>all</h1></router-link>
-        <router-link v-for="board in boardList" :to="`/posts/${board.ko_name}`" :key="board.id" @click.native="resetPost"><h1>{{ board.ko_name }}</h1></router-link>
+        <router-link v-if="board !== 'all'" to="/posts/all" @click.native="resetPost"><h1>all</h1></router-link>
+        <span v-else><h1>all</h1></span>
+        <span v-for="iterBoard in boardList" :key="iterBoard.id">
+          <router-link v-if="board !== iterBoard.ko_name" :to="`/posts/${iterBoard.ko_name}`" :key="iterBoard.id" @click.native="resetPost"><h1>{{ iterBoard.ko_name }}</h1></router-link>
+          <span v-else><h1>{{ iterBoard.ko_name }}</h1></span>
+        </span>
+
       </p>
       <post-detail v-if="post"></post-detail>
       <post-list></post-list>
