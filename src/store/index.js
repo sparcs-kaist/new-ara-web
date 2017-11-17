@@ -67,10 +67,13 @@ export default new Vuex.Store({
         commit('updatePost', undefined);
       });
     },
-    updateBoardList({ commit, state }) {
+    updateBoardList({ commit, state }, callback) {
       axios.get(`${apiUrl}/boards`, { auth: state.auth })
         .then((res) => {
           commit('updateBoardList', res.data.results);
+          if (callback) {
+            callback();
+          }
         })
         .catch((err) => {
           console.log(err);
