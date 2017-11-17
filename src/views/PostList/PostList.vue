@@ -44,7 +44,7 @@
 
 <script>
 import axios from 'axios';
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import PostItem from './PostItem';
 
 export default {
@@ -79,15 +79,11 @@ export default {
       'auth',
       'boardList',
     ]),
+    ...mapGetters([
+      'boardNameList',
+    ]),
   },
   methods: {
-    boardListIndex(board) {
-      const boardNameList = ['all'];
-      this.boardList.forEach((e) => {
-        boardNameList.push(e.ko_name);
-      });
-      return boardNameList.indexOf(board);
-    },
     pageListIndex(page) {
       return this.pageList.indexOf(page) + 1;
     },
@@ -105,7 +101,7 @@ export default {
         const key = keys[i];
         url += `${key}=${condition[key]}&`;
       }
-      if (this.board !== 'all') url += `parent_board=${this.boardListIndex(this.board)}&`;
+      if (this.board !== 'all') url += `parent_board=${this.boardNameList.indexOf(this.board) + 1}&`;
       url += `page=${this.page}`;
 
       axios.get(`http://13.124.216.27:8000/api/articles/${url}`, { auth: this.auth })

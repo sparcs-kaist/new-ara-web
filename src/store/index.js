@@ -86,4 +86,13 @@ export default new Vuex.Store({
       commit('updatePage', page);
     },
   },
+  getters: {
+    boardNameList(state) {
+      const boardNameList = [];
+      state.boardList.forEach((board) => {
+        boardNameList.push(board.en_name);
+      });
+      return boardNameList;
+    },
+  },
 });
