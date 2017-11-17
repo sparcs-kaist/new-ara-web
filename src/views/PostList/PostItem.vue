@@ -26,8 +26,8 @@ export default {
   props: ['board', 'item'],
   computed: {
     heading() {
-      if (this.board === 'all') return this.item.parent_board.ko_name;
-      if (this.item.parent_topic !== null) return this.item.parent_topic.ko_name;
+      if (this.board === 'all') return this.item.parent_board.en_name;
+      if (this.item.parent_topic !== null) return this.item.parent_topic.en_name;
       return '';
     },
   },

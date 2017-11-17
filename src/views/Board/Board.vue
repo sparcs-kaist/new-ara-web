@@ -5,8 +5,8 @@
         <router-link v-if="board !== 'all'" to="/posts/all" @click.native="resetPost"><h1>all</h1></router-link>
         <span v-else><h1>all</h1></span>
         <span v-for="iterBoard in boardList" :key="iterBoard.id">
-          <router-link v-if="board !== iterBoard.ko_name" :to="`/posts/${iterBoard.ko_name}`" :key="iterBoard.id" @click.native="resetPost"><h1>{{ iterBoard.ko_name }}</h1></router-link>
-          <span v-else><h1>{{ iterBoard.ko_name }}</h1></span>
+          <router-link v-if="board !== iterBoard.en_name" :to="`/posts/${iterBoard.en_name}`" :key="iterBoard.id" @click.native="resetPost"><h1>{{ iterBoard.en_name }}</h1></router-link>
+          <span v-else><h1>{{ iterBoard.en_name }}</h1></span>
         </span>
 
       </p>
