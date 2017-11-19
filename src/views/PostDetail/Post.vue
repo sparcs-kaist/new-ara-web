@@ -9,7 +9,7 @@
       <post-action :context="this.post" :isArticle="true"></post-action>
       <a v-if="!isAddCommentExpanded" class="expand" @click="toggleExpand('addcomment')"> 답글 달기 </a>
       <div v-else>
-        <add-comment :context="this.post" :isArticle="true"></add-comment>
+        <add-comment v-on:successAdd="toggleExpand('addcomment')" :context="this.post" :isArticle="true"></add-comment>
       </div>
     </template>
     <template v-else>

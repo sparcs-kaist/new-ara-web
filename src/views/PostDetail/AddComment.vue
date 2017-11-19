@@ -52,7 +52,7 @@
               <div class="file has-name is-fullwidth">
                 <label class="file-label">
                   <!--TODO: Make file input available-->
-                  <input class="file-input" type="file" name="resume">
+                  <input class="file-input" type="file" @change="onFileChange">
                   <span class="file-cta">
                     <span class="file-icon">
                       <!--TODO: Add Font Awesome link-->
@@ -63,7 +63,7 @@
                     </span>
                   </span>
                   <span class="file-name">
-                    Screen Shot 2017-07-29 at 15.54.25.png
+                      {{ filename }}
                   </span>
                 </label>
               </div>
@@ -88,6 +88,7 @@ export default {
       is_anonymous: false,
       use_signature: false,
       attachment: '',
+      filename: '',
     };
   },
   props: [
@@ -105,8 +106,33 @@ export default {
     ...mapActions([
       'fetchPost',
     ]),
+    onFileChange(e) {
+      const files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+
+      const formData = new FormData();
+      formData.append('file', files[0]);
+      axios({
+        url: `${this.apiUrl}/attachments/`,
+        method: 'POST',
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        auth: this.auth,
+      })
+        .then((res) => {
+          this.filename = files[0].name;
+          this.attachment = res.data.id;
+        })
+        .catch((err) => {
+          alert('failed to attach a file. please retry.');
+          console.log(err);
+        });
+    },
     addCommentHandler() {
       this.pending = true;
+      console.log(this.attachment);
       if (this.isArticle) {
         axios({
           url: `${this.apiUrl}/comments/`,
@@ -117,14 +143,14 @@ export default {
             content: this.content,
             is_anonymous: this.is_anonymous,
             use_signature: this.use_signature,
-//            attachment: this.attachment,
+            attachment: this.attachment,
           },
           auth: this.auth,
         })
           .then(() => {
             this.pending = false;
             this.fetchPost({ postId: this.post.id });
-//            TODO: After Adding Commment, make AddComment component invisible
+            this.$emit('successAdd');
           })
           .catch((err) => {
             this.pending = false;
@@ -141,13 +167,14 @@ export default {
             content: this.content,
             is_anonymous: this.isAnonymous,
             use_signature: this.useSignature,
-//            attachment: this.attachment,
+            attachment: this.attachment,
           },
           auth: this.auth,
         })
           .then(() => {
             this.pending = false;
             this.fetchPost({ postId: this.post.id });
+            this.$emit('successAdd');
           })
           .catch((err) => {
             this.pending = false;
