@@ -6,15 +6,15 @@
     <div class="columns is-multiline">
       <div class="column is-6">
         <h2>오늘 화제</h2>
-        <hit-article v-for="article in todayBest" :key="article.id" :title="article.title" :hit="article.hit_count"></hit-article>
+        <hit-article v-for="article in bestArticles" :key="article.id" :title="article.title" :hit="article.hit_count"></hit-article>
       </div>
       <div class="column is-6">
-        <h2>이번주 화제</h2>
-        <hit-article v-for="article in weeklyBest" :key="article.id" :title="article.title" :hit="article.hit_count"></hit-article>
+        <h2>오늘 화제</h2>
+        <hit-article v-for="article in bestArticles" :key="article.id" :title="article.title" :hit="article.hit_count"></hit-article>
       </div>
-      <div class="column is-6" v-for="boardName in boardNameList" :key="boardName">
-        <h2>{{ boardName }}</h2>
-        <recent-article v-for="article in articles[boardName]" :key="article.id" :title="article.title" :time="'3시간 전'" :no-comments="2"></recent-article>
+      <div class="column is-6" v-for="board in articles" :key="board.id">
+        <h2>{{ boardNameList[board.id - 1] }}</h2>
+        <recent-article v-for="article in board.recent_articles" :key="article.id" :title="article.title" :time="elapsedTime(article.created_at)" :id="article.id"></recent-article>
       </div>
     </div>
   </div>
@@ -28,8 +28,7 @@ import RecentArticle from './RecentArticle';
 export default {
   data() {
     return {
-      todayBest: [],
-      weeklyBest: [],
+      bestArticles: [],
       articles: {},
     };
   },
@@ -47,15 +46,28 @@ export default {
       'updateBoardList',
     ]),
     getArticles() {
-      this.$axios.get(`${this.apiUrl}/api/articles/home`, { auth: this.auth })
+      this.$axios.get(`${this.apiUrl}/home`, { auth: this.auth })
         .then((res) => {
-          this.todayBest = res.data.todayBest;
-          this.weeklyBest = res.data.weeklyBest;
-          this.articles = res.data.articles;
+          this.bestArticles = res.data.best_articles;
+          this.articles = res.data.boards;
         })
         .catch((err) => {
           console.log(err);
         });
+    },
+    elapsedTime(createdAt) {
+      const created = new Date(createdAt);
+      const elapsed = new Date() - created;
+      if (elapsed < 1000 * 60) {
+        return '방금 전';
+      } else if (elapsed < 1000 * 60 * 60) {
+        return `${elapsed / 1000 / 60}분 전`;
+      } else if (elapsed < 1000 * 60 * 60 * 24) {
+        return `${elapsed / 1000 / 60 / 60}시간 전`;
+      } else if (elapsed < 1000 * 60 * 60 * 24 * 3) {
+        return `${elapsed / 1000 / 60 / 60 / 24}일 전`;
+      }
+      return `${created.getMonth() + 1}월 ${created.getDate()}일`;
     },
   },
   components: {
