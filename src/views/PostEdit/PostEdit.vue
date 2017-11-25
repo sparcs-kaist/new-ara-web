@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { VueEditor } from 'vue2-editor';
 
 export default {
@@ -50,11 +50,18 @@ export default {
         ['image', 'video'],
       ],
       pending: false,
-      post_id: 0,
+      postId: 0,
+      board: -1,
     };
   },
   computed: {
-    ...mapState(['apiUrl', 'auth']),
+    ...mapState([
+      'apiUrl',
+      'auth',
+    ]),
+    ...mapGetters([
+      'boardNameList',
+    ]),
   },
   components: {
     VueEditor,
@@ -63,7 +70,7 @@ export default {
     postArticleHandler() {
       this.pending = true;
       this.$axios({
-        url: `${this.apiUrl}/articles/`,
+        url: `${this.apiUrl}/articles/${this.postId}`,
         method: 'PUT',
         data: {
           title: this.title,
@@ -72,12 +79,13 @@ export default {
           is_content_sexual: true,
           is_content_social: false,
           use_signature: false,
-          parent_board: 1,
+          parent_board: Number(this.board),
         },
         auth: this.auth,
-      }).then(() => {
+      }).then((res) => {
         this.pending = false;
-        // this.$router.push(`/post/{post_id??}`)
+        console.log(res);
+        this.$router.push(`/posts/${this.board > 1 ? this.boardNameList[this.board - 1] : 'all'}/${this.postId}`);
         // console.log(result);
       })
       .catch((err) => {
@@ -105,15 +113,16 @@ export default {
     },
   },
   mounted() {
-    this.post_id = this.$route.params.post_id;
+    this.postId = this.$route.params.post_id;
     this.$axios({
-      url: `${this.apiUrl}/articles/${this.post_id}`,
+      url: `${this.apiUrl}/articles/${this.postId}`,
       method: 'GET',
       auth: this.auth,
     })
     .then((res) => {
       this.title = res.data.title;
       this.content = res.data.content;
+      this.board = res.data.parent_board.id;
     })
     .catch((err) => {
       console.log(err);
