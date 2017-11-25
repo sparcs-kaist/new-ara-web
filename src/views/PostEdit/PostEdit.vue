@@ -70,16 +70,13 @@ export default {
     postArticleHandler() {
       this.pending = true;
       this.$axios({
-        url: `${this.apiUrl}/articles/${this.postId}`,
+        url: `${this.apiUrl}/articles/${this.postId}/`,
         method: 'PUT',
         data: {
           title: this.title,
           content: this.content,
-          is_anonymous: false,
           is_content_sexual: true,
           is_content_social: false,
-          use_signature: false,
-          parent_board: Number(this.board),
         },
         auth: this.auth,
       }).then((res) => {
