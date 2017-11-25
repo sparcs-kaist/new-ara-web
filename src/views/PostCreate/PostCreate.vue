@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { VueEditor } from 'vue2-editor';
 
 export default {
@@ -57,6 +57,9 @@ export default {
       'apiUrl',
       'auth',
     ]),
+    ...mapGetters([
+      'boardNameList',
+    ]),
   },
   components: {
     VueEditor,
@@ -77,9 +80,9 @@ export default {
           parent_board: 1,
         },
         auth: this.auth,
-      }).then(() => {
+      }).then((res) => {
         this.pending = false;
-        // this.$router.push(`/post/{post_id??}`)
+        this.$router.push(`/posts/${res.data.parent_board.id > 0 ? this.boardNameList[res.data.parent_board.id - 1] : 'all'}/${res.data.id}`);
         // console.log(result);
       })
       .catch((err) => {
