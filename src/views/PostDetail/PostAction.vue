@@ -5,7 +5,24 @@
     <button class="button" :class="{ 'is-danger': context.my_vote === false }" @click="action('dislike')">반대</button>
     <span>{{ this.context.negative_vote_count }}</span>
     <span v-if="isArticle" @click="action('scrap')">스크랩</span>
-    <button class="button" @click="report">신고</button>
+    <button class="button" @click="openReportModal">신고</button>
+    <div class="modal" :class="{ 'is-active': reportToggle }">
+      <div class="modal-background" @click="reportToggle = false"></div>
+      <div class="modal-content">
+        <div class="modal-card">
+          <section class="modal-card-body">
+            <p>신고할 대상 : {{ isArticle ? context.title : context.content }}</p>
+            <p>신고 사유</p>
+            <input class="input" v-model="reportContent" />
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button is-danger" @click="report">신고하기</button>
+            <button class="button" @click="reportToggle = false">취소</button>
+          </footer>
+        </div>
+      </div>
+      <button class="modal-close is-large" aria-label="close"></button>
+    </div>
   </div>
 </template>
 
@@ -18,6 +35,12 @@ export default {
     'context',
     'isArticle',
   ],
+  data() {
+    return {
+      reportToggle: false,
+      reportContent: '',
+    };
+  },
   computed: {
     ...mapState([
       'apiUrl',
@@ -73,9 +96,16 @@ export default {
           });
       }
     },
+    openReportModal() {
+      if (this.context.my_report) {
+        alert(`You've already reported this ${this.isArticle ? 'article' : 'comment'}!`);
+      } else {
+        this.reportToggle = true;
+      }
+    },
     report() {
       const data = {
-        content: '그냥그냥그냥',
+        content: this.reportContent,
       };
       if (this.isArticle) {
         data.parent_article = this.context.id;
@@ -88,12 +118,15 @@ export default {
         data,
         auth: this.auth,
       })
-        .then(() => {
+        .then((res) => {
           alert('report accepted!');
+          this.context.my_report = res.data;
         })
         .catch(() => {
-          alert('report failed...');
+          alert('');
         });
+      this.reportContent = '';
+      this.reportToggle = false;
     },
   },
 };
