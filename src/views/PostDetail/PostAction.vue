@@ -1,8 +1,8 @@
 <template>
   <div>
-    <button class="button" @click="action('like')">추천</button>
+    <button class="button" :class="{ 'is-danger': context.my_vote === true }" @click="action('like')">추천</button>
     <span>{{ this.context.positive_vote_count }}</span>
-    <button class="button" @click="action('dislike')">반대</button>
+    <button class="button" :class="{ 'is-danger': context.my_vote === false }" @click="action('dislike')">반대</button>
     <span>{{ this.context.negative_vote_count }}</span>
     <span v-if="isArticle" @click="action('scrap')">스크랩</span>
     <button class="button" @click="report">신고</button>
