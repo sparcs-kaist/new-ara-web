@@ -5,7 +5,7 @@
     <button class="button" @click="action('dislike')">반대</button>
     <span>{{ this.context.negative_vote_count }}</span>
     <span v-if="isArticle" @click="action('scrap')">스크랩</span>
-    <span @click="action('report')">신고</span>
+    <button class="button" @click="report">신고</button>
   </div>
 </template>
 
@@ -61,10 +61,32 @@ export default {
             this.fetchPost({ postId: this.post.id, context: this.$route.query });
           })
           .catch((err) => {
-            alert('failed to vote');
+            alert('failed to vote. please retry.');
             console.log(err);
           });
       }
+    },
+    report() {
+      const data = {
+        content: '그냥그냥그냥',
+      };
+      if (this.isArticle) {
+        data.parent_article = this.context.id;
+      } else {
+        data.parent_comment = this.context.id;
+      }
+      this.$axios({
+        url: `${this.apiUrl}/reports/`,
+        method: 'POST',
+        data,
+        auth: this.auth,
+      })
+        .then(() => {
+          alert('report accepted!');
+        })
+        .catch(() => {
+          alert('report failed...');
+        });
     },
   },
 };
