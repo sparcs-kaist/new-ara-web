@@ -45,16 +45,6 @@ export default {
     ...mapActions([
       'updateBoardList',
     ]),
-    getArticles() {
-      this.$axios.get(`${this.apiUrl}/home`, { auth: this.auth })
-        .then((res) => {
-          this.bestArticles = res.data.best_articles;
-          this.articles = res.data.boards;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
     elapsedTime(createdAt) {
       const created = new Date(createdAt);
       const elapsed = new Date() - created;
@@ -73,8 +63,16 @@ export default {
   components: {
     HitArticle, RecentArticle,
   },
-  mounted() {
-    this.updateBoardList(this.getArticles);
+  async mounted() {
+    await this.updateBoardList();
+    this.$axios.get(`${this.apiUrl}/home`, { auth: this.auth })
+      .then((res) => {
+        this.bestArticles = res.data.best_articles;
+        this.articles = res.data.boards;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 

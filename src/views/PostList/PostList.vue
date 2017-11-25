@@ -134,29 +134,32 @@ export default {
         query,
       });
     },
-    updatePageAndFetch(page) {
+    async updatePageAndFetch(page) {
       this.updatePage(page);
-      this.updateBoardList(this.refresh);
+      await this.updateBoardList();
+      this.refresh();
     },
   },
   components: {
     PostItem,
   },
   watch: {
-    $route(to, from) {
+    async $route(to, from) {
       if (from.params.board !== to.params.board) {
         this.updateBoard(to.params.board);
         this.updatePage(1);
       }
-      this.updateBoardList(this.refresh);
+      await this.updateBoardList();
+      this.refresh();
     },
   },
-  mounted() {
+  async mounted() {
     if (this.board !== this.$route.params.board) {
       this.updateBoard(this.$route.params.board);
       this.updatePage(1);
     }
-    this.updateBoardList(this.refresh);
+    await this.updateBoardList();
+    this.refresh();
   },
 };
 </script>
