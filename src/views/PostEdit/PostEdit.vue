@@ -82,7 +82,7 @@ export default {
       }).then((res) => {
         this.pending = false;
         console.log(res);
-        this.$router.push(`/posts/${this.board > 1 ? this.boardNameList[this.board - 1] : 'all'}/${this.postId}`);
+        this.$router.push(`/posts/${this.board > 0 ? this.boardNameList[this.board - 1] : 'all'}/${this.postId}`);
         // console.log(result);
       })
       .catch((err) => {
