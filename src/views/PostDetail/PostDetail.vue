@@ -8,10 +8,9 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import Post from './Post';
 import PostComment from './PostComment';
-import PostList from './../PostList/PostList';
 
 export default {
   computed: {
@@ -25,10 +24,6 @@ export default {
   components: {
     Post,
     PostComment,
-    PostList,
-  },
-  methods: {
-    ...mapActions(['fetchPost']),
   },
 };
 </script>
