@@ -46,11 +46,18 @@ export default {
         voteTypeStr = 'vote_negative';
       }
       if (this.context.my_vote === voteTypeBool) {
-        if (voteTypeBool) {
-          alert('you already voted positive');
-        } else {
-          alert('you already voted negative');
-        }
+        this.$axios({
+          url: `${this.apiUrl}/${contextType}/${this.context.id}/vote_cancel/`,
+          method: 'POST',
+          auth: this.auth,
+        })
+          .then(() => {
+            this.fetchPost({ postId: this.post.id, context: this.$route.query });
+          })
+          .catch((err) => {
+            alert('failed to cancel vote. please retry.');
+            console.log(err);
+          });
       } else {
         axios({
           url: `${this.apiUrl}/${contextType}/${this.context.id}/${voteTypeStr}/`,
