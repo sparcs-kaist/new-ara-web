@@ -3,6 +3,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import AsyncComputed from 'vue-async-computed';
 
 import App from './App';
 import router from './router';
@@ -11,6 +12,7 @@ import store from './store';
 
 Vue.config.productionTip = false;
 Vue.use(Vuex);
+Vue.use(AsyncComputed);
 Vue.prototype.$axios = axios;
 
 /* eslint-disable no-new */
