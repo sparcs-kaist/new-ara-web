@@ -1,21 +1,36 @@
 <template>
   <div class="container">
-    <aside>
-      <img class="banner" alt="광고">
-    </aside>
-    <div class="columns is-multiline">
+    <div class="columns">
+      <div class="column is-2"></div>
       <div class="column is-6">
-        <h2>오늘 화제</h2>
-        <hit-article v-for="article in bestArticles" :key="article.id" :title="article.title" :hit="article.hit_count"></hit-article>
+        <div class="columns is-multiline">
+          <div class="column is-6">
+            <h4 class="hit-title">오늘 화제</h4>
+            <hit-article class="article-item" v-for="article in bestArticles" :key="article.id" :article="article"></hit-article>
+          </div>
+          <div class="column is-6">
+            <h4 class="hit-title">오늘 화제</h4>
+            <hit-article class="article-item" v-for="article in bestArticles" :key="article.id" :article="article"></hit-article>
+          </div>
+          <div class="column is-6" v-for="board in articles" :key="board.id">
+            <hr>
+            <h4 class="board-title">
+              <router-link class="board-title-router" :to="{ name: 'PostList', params: { board: boardNameList[board.id - 1] }}">
+                {{ boardNameList[board.id - 1] }}
+              </router-link>
+            </h4>
+            <recent-article class="article-item" v-for="article in board.recent_articles" :key="article.id" :article="article"></recent-article>
+          </div>
+        </div>
       </div>
-      <div class="column is-6">
-        <h2>오늘 화제</h2>
-        <hit-article v-for="article in bestArticles" :key="article.id" :title="article.title" :hit="article.hit_count"></hit-article>
+      <div class="column is-2">
+        <aside>
+          <img class="banner" alt="광고">
+          <div style="border: 1px black solid; height: 120px;">광고광고</div>
+          <div style="background-color: green; height: 80px">광고광고</div>
+        </aside>
       </div>
-      <div class="column is-6" v-for="board in articles" :key="board.id">
-        <h2>{{ boardNameList[board.id - 1] }}</h2>
-        <recent-article v-for="article in board.recent_articles" :key="article.id" :title="article.title" :time="elapsedTime(article.created_at)" :id="article.id"></recent-article>
-      </div>
+      <div class="column is-2"></div>
     </div>
   </div>
 </template>
@@ -45,20 +60,6 @@ export default {
     ...mapActions([
       'updateBoardList',
     ]),
-    elapsedTime(createdAt) {
-      const created = new Date(createdAt);
-      const elapsed = new Date() - created;
-      if (elapsed < 1000 * 60) {
-        return '방금 전';
-      } else if (elapsed < 1000 * 60 * 60) {
-        return `${Math.floor(elapsed / 1000 / 60)}분 전`;
-      } else if (elapsed < 1000 * 60 * 60 * 24) {
-        return `${Math.floor(elapsed / 1000 / 60 / 60)}시간 전`;
-      } else if (elapsed < 1000 * 60 * 60 * 24 * 3) {
-        return `${Math.floor(elapsed / 1000 / 60 / 60 / 24)}일 전`;
-      }
-      return `${created.getMonth() + 1}월 ${created.getDate()}일`;
-    },
   },
   components: {
     HitArticle, RecentArticle,
@@ -79,11 +80,46 @@ export default {
 </script>
 
 <style scoped>
-.banner {
-  width: 100%;
-  height: 68px;
-  color: white;
-  border-color: transparent;
-  background-color: grey;
-}
+  .banner {
+    width: 100%;
+    height: 68px;
+    color: white;
+    border-color: transparent;
+    background-color: grey;
+  }
+
+  .hit-title {
+    background-color: black;
+    color: white;
+    font-size: 18px;
+    padding-left: 16px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-bottom: 20px;
+  }
+
+  .article-item {
+    padding-left: 16px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+
+  .board-title {
+    font-size: 18px;
+    padding-left: 16px;
+    margin-bottom: 20px;
+  }
+
+  .board-title-router {
+    color: #4a4a4a;
+  }
+
+  .board-title-router:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .container {
+    font-size: 13px;
+  }
 </style>

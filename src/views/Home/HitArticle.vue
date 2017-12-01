@@ -1,16 +1,32 @@
 <template>
   <div>
-    <span class="post-hit">{{ hit }}</span>
-    <span class="post-title">{{ title }}</span>
+    <router-link class="router-link" :to="{ name: 'PostDetail', params: { board: boardNameList[article.parent_board.id - 1], post_id: article.id }}">
+      <span class="post-hit">{{ article.hit_count }}</span>
+      <span class="post-title">{{ article.title }}</span>
+    </router-link>
   </div>
 </template>
 
 <script>
-export default {
-  props: ['hit', 'title'],
-};
+  import { mapGetters } from 'vuex';
+
+  export default {
+    props: ['article'],
+    computed: {
+      ...mapGetters([
+        'boardNameList',
+      ]),
+    },
+  };
 </script>
 
-<style>
+<style scoped="">
+  .router-link {
+    color: #4a4a4a;
+  }
 
+  .router-link:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 </style>

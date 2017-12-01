@@ -1,30 +1,51 @@
 <template>
   <div>
-    <span class="post-title">{{ title }}</span>
-    <span class="post-no-comments">({{ commentNumber }})</span>
-    <span class="post-time">{{ time }}</span>
+    <router-link class="router-link" :to="{ name: 'PostDetail', params: { board: boardNameList[article.parent_board.id - 1], post_id: article.id }}">
+      <span class="post-title">{{ article.title }}</span>
+      <span class="post-no-comments">({{ commentNumber }})</span>
+      <span class="post-time">{{ elapsedTime(article.created_at) }}</span>
+    </router-link>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
-  props: ['title', 'time', 'id'],
+  props: ['article'],
   computed: {
     ...mapState([
       'auth',
       'apiUrl',
     ]),
+    ...mapGetters([
+      'boardNameList',
+    ]),
   },
   asyncComputed: {
     commentNumber() {
       return new Promise((resolve) => {
-        this.$axios.get(`${this.apiUrl}/comments/?parent_article=${this.id}`, { auth: this.auth })
+        this.$axios.get(`${this.apiUrl}/comments/?parent_article=${this.article.id}`, { auth: this.auth })
           .then((res) => {
             resolve(res.data.results.length);
           });
       });
+    },
+  },
+  methods: {
+    elapsedTime(createdAt) {
+      const created = new Date(createdAt);
+      const elapsed = new Date() - created;
+      if (elapsed < 1000 * 60) {
+        return '방금 전';
+      } else if (elapsed < 1000 * 60 * 60) {
+        return `${Math.floor(elapsed / 1000 / 60)}분 전`;
+      } else if (elapsed < 1000 * 60 * 60 * 24) {
+        return `${Math.floor(elapsed / 1000 / 60 / 60)}시간 전`;
+      } else if (elapsed < 1000 * 60 * 60 * 24 * 3) {
+        return `${Math.floor(elapsed / 1000 / 60 / 60 / 24)}일 전`;
+      }
+      return `${created.getMonth() + 1}월 ${created.getDate()}일`;
     },
   },
 };
@@ -35,5 +56,14 @@ export default {
 
 .post-no-comments {
   color: $theme-red;
+}
+
+.router-link {
+  color: #4a4a4a;
+}
+
+.router-link:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>
