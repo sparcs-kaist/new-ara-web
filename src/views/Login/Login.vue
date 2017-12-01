@@ -20,11 +20,14 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   computed: {
+    ...mapState(['apiUrl']),
     loginUrl() {
       // return this.$route.fullPath;
-      return `http://13.124.216.27:8000/login/?next=${location.protocol}//${location.host}`;
+      return `${this.apiUrl}/login/?next=${location.protocol}//${location.host}`;
     },
   },
 };

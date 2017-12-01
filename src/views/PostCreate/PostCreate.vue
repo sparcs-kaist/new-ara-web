@@ -65,7 +65,7 @@ export default {
     postArticleHandler() {
       this.pending = true;
       this.$axios({
-        url: `${this.apiUrl}/articles/`,
+        url: `${this.apiUrl}/api/articles/`,
         method: 'POST',
         data: {
           title: this.title,

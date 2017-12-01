@@ -53,7 +53,7 @@ export default {
         }
       } else {
         axios({
-          url: `${this.apiUrl}/${contextType}/${this.context.id}/${voteTypeStr}/`,
+          url: `${this.apiUrl}/api/${contextType}/${this.context.id}/${voteTypeStr}/`,
           method: 'POST',
           auth: this.auth,
         })

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-const apiUrl = 'http://13.124.216.27:8000/api';
+const apiUrl = 'http://13.124.216.27:8000';
 
 export default new Vuex.Store({
   state: {
@@ -18,7 +18,7 @@ export default new Vuex.Store({
     //   postDetail: {},
     //   postComment: [],
     // },
-    apiUrl: 'http://13.124.216.27:8000/api',
+    apiUrl,
     board: '',
     page: 0,
   },
