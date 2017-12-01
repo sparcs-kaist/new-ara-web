@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <navbar/>
+    <navbar v-if="shouldHideShell"/>
     <router-view></router-view>
-    <foot/>
+    <foot v-if="shouldHideShell"/>
   </div>
 </template>
 
@@ -15,6 +15,11 @@ export default {
   components: {
     Navbar, Foot,
   },
+  computed: {
+    shouldHideShell() {
+      return this.$route.name !== 'Login';
+    },
+  },
 };
 </script>
 
@@ -26,4 +31,5 @@ export default {
 $primary: $theme-red;
 
 @import '~bulma';
+@import '~mdi/css/materialdesignicons.css';
 </style>

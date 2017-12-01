@@ -113,7 +113,7 @@ export default {
       const formData = new FormData();
       formData.append('file', files[0]);
       axios({
-        url: `${this.apiUrl}/attachments/`,
+        url: `${this.apiUrl}/api/attachments/`,
         method: 'POST',
         data: formData,
         headers: {
@@ -135,7 +135,7 @@ export default {
       console.log(this.attachment);
       if (this.isArticle) {
         axios({
-          url: `${this.apiUrl}/comments/`,
+          url: `${this.apiUrl}/api/comments/`,
           method: 'POST',
           data: {
             parent_article: this.context.id,
@@ -159,7 +159,7 @@ export default {
           });
       } else {
         axios({
-          url: `${this.apiUrl}/comments/`,
+          url: `${this.apiUrl}/api/comments/`,
           method: 'POST',
           data: {
             parent_article: null,

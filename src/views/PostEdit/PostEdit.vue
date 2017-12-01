@@ -70,7 +70,7 @@ export default {
     postArticleHandler() {
       this.pending = true;
       this.$axios({
-        url: `${this.apiUrl}/articles/${this.postId}/`,
+        url: `${this.apiUrl}/api/articles/${this.postId}/`,
         method: 'PUT',
         data: {
           title: this.title,
@@ -112,7 +112,7 @@ export default {
   mounted() {
     this.postId = this.$route.params.post_id;
     this.$axios({
-      url: `${this.apiUrl}/articles/${this.postId}`,
+      url: `${this.apiUrl}/api/articles/${this.postId}`,
       method: 'GET',
       auth: this.auth,
     })

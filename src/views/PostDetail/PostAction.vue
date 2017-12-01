@@ -70,7 +70,7 @@ export default {
       }
       if (this.context.my_vote === voteTypeBool) {
         this.$axios({
-          url: `${this.apiUrl}/${contextType}/${this.context.id}/vote_cancel/`,
+          url: `${this.apiUrl}/api/${contextType}/${this.context.id}/vote_cancel/`,
           method: 'POST',
           auth: this.auth,
         })
@@ -83,7 +83,7 @@ export default {
           });
       } else {
         axios({
-          url: `${this.apiUrl}/${contextType}/${this.context.id}/${voteTypeStr}/`,
+          url: `${this.apiUrl}/api/${contextType}/${this.context.id}/${voteTypeStr}/`,
           method: 'POST',
           auth: this.auth,
         })
@@ -113,7 +113,7 @@ export default {
         data.parent_comment = this.context.id;
       }
       this.$axios({
-        url: `${this.apiUrl}/reports/`,
+        url: `${this.apiUrl}/api/reports/`,
         method: 'POST',
         data,
         auth: this.auth,

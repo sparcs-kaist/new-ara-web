@@ -4,7 +4,7 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-const apiUrl = 'http://13.124.216.27:8000/api';
+const apiUrl = 'http://13.124.216.27:8000';
 
 export default new Vuex.Store({
   state: {
@@ -18,7 +18,7 @@ export default new Vuex.Store({
     //   postDetail: {},
     //   postComment: [],
     // },
-    apiUrl: 'http://13.124.216.27:8000/api',
+    apiUrl,
     board: '',
     page: 0,
     boardList: [],
@@ -55,7 +55,7 @@ export default new Vuex.Store({
           url += `${key}=${context[key]}&`;
         }
       }
-      axios.get(`${apiUrl}/articles/${postId}/${url.slice(0, -1)}`, {
+      axios.get(`${apiUrl}/api/articles/${postId}/${url.slice(0, -1)}`, {
         auth,
       }).then((res) => {
         // console.log(res);
@@ -69,7 +69,7 @@ export default new Vuex.Store({
     },
     async updateBoardList({ commit, state }) {
       return new Promise((resolve) => {
-        axios.get(`${apiUrl}/boards`, { auth: state.auth })
+        axios.get(`${apiUrl}/api/boards`, { auth: state.auth })
           .then((res) => {
             commit('updateBoardList', res.data.results);
             resolve();
