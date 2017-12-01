@@ -17,11 +17,12 @@
             <div class="navbar-start">
               <router-link class="navbar-item" to="/posts/all" @click.native="resetPost">게시판</router-link>
             </div>
-
             <div class="navbar-end">
-              <span class="icon is-medium">
-                <i class="mdi mdi-24px mdi-bell"></i>
-              </span>
+              <div class="navbar-item" style="padding-left: 0px; padding-right: 0px;">
+                <span class="icon is-medium">
+                  <i class="mdi mdi-24px mdi-bell"></i>
+                </span>
+              </div>
               <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
                   김유진님
