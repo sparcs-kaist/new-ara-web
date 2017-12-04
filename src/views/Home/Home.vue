@@ -82,7 +82,6 @@ export default {
 <style scoped>
   .container {
     font-size: 13px;
-    padding: 10px;
   }
 
   .banner {
