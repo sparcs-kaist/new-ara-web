@@ -5,15 +5,8 @@
       <div class="column is-8">
         <nav class="navbar" role="navigation" aria-label="main navigation">
           <div class="navbar-brand">
-            <router-link class="navbar-item" to="/">홈</router-link>
+            <router-link class="navbar-item" to="/">Ara</router-link>
           </div>
-          <div class="navbar-start">
-            <div class="navbar-tabs" :class="{'is-active': menuVisibility}">
-              <router-link class="navbar-item" to="/posts/all" @click.native="resetPost">모아보기</router-link>
-              <router-link v-for="board in boardList" class="navbar-item" :to="`/posts/${board.en_name}`" @click.native="resetPost">{{ board.ko_name }}</router-link>
-            </div>
-          </div>
-
           <div class="navbar-end">
             <div class="navbar-item" style="padding-left: 0px; padding-right: 0px;">
               <span class="icon is-medium">
@@ -33,6 +26,16 @@
             </div>
           </div>
         </nav>
+        <div class="tabs">
+          <ul>
+            <li>
+              <router-link class="" to="/posts/all" @click.native="resetPost">모아보기</router-link>
+            </li>
+            <li v-for="board in boardList">
+              <router-link :to="`/posts/${board.en_name}`" @click.native="resetPost">{{ board.ko_name }}</router-link>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="column is-2 placeholder"></div>
     </div>
@@ -69,11 +72,13 @@ export default {
     }
   }
 
-  @media (max-width: 1023px) {
-    /*.navbar-tabs {*/
-      /*diaplay  */
-    /*}*/
+  @media (min-width: 769px) {
+    .tabs {
+      margin-bottom: 1rem;
+    }
+  }
 
+  @media (max-width: 1023px) {
     .navbar {
       -webkit-box-align: stretch;
       -ms-flex-align: stretch;
