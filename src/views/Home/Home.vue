@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="columns">
-      <div class="column is-2"></div>
+      <div class="column is-2 placeholder"></div>
       <div class="column is-6">
         <div class="columns is-multiline">
           <div class="column is-6">
@@ -30,7 +30,7 @@
           <div style="background-color: green; height: 80px">광고광고</div>
         </aside>
       </div>
-      <div class="column is-2"></div>
+      <div class="column is-2 placeholder"></div>
     </div>
   </div>
 </template>
@@ -122,10 +122,6 @@ export default {
     cursor: pointer;
   }
 
-  .is-2 {
-    padding: 0;
-  }
-
   @media (min-width: 769px) {
     .hit-title {
       padding-left: 16px;
@@ -141,6 +137,14 @@ export default {
   }
 
   @media (max-width: 768px) {
+    .placeholder {
+      padding: 0;
+    }
+
+    .container {
+      padding: 10px;
+    }
+
     .hit-title {
       padding-left: 6px;
     }

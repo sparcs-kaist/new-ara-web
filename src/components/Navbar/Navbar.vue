@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="columns">
-      <div class="column is-2"></div>
+      <div class="column is-2 placeholder"></div>
       <div class="column is-8">
         <nav class="navbar" role="navigation" aria-label="main navigation">
           <div class="navbar-brand">
@@ -34,7 +34,7 @@
           </div>
         </nav>
       </div>
-      <div class="column is-2"></div>
+      <div class="column is-2 placeholder"></div>
     </div>
   </div>
 </template>
@@ -45,7 +45,6 @@ import { mapState, mapActions } from 'vuex';
 export default {
   data() {
     return {
-      menuVisibility: false,
       onhover: false,
     };
   },
@@ -64,8 +63,10 @@ export default {
 </script>
 
 <style scoped>
-  .navbar {
-    margin-bottom: 2rem;
+  @media (max-width: 768px) {
+    .placeholder {
+      padding: 0;
+    }
   }
 
   @media (max-width: 1023px) {
