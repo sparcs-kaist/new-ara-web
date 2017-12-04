@@ -80,6 +80,11 @@ export default {
 </script>
 
 <style scoped>
+  .container {
+    font-size: 13px;
+    padding: 10px;
+  }
+
   .banner {
     width: 100%;
     height: 68px;
@@ -99,14 +104,12 @@ export default {
   }
 
   .article-item {
-    padding-left: 16px;
     padding-top: 3px;
     padding-bottom: 3px;
   }
 
   .board-title {
     font-size: 18px;
-    padding-left: 16px;
     margin-bottom: 20px;
   }
 
@@ -119,7 +122,39 @@ export default {
     cursor: pointer;
   }
 
-  .container {
-    font-size: 13px;
+  .is-2 {
+    padding: 0;
+  }
+
+  @media (min-width: 769px) {
+    .hit-title {
+      padding-left: 16px;
+    }
+
+    .article-item {
+      padding-left: 16px;
+    }
+
+    .board-title {
+      padding-left: 16px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hit-title {
+      padding-left: 6px;
+    }
+
+    .article-item {
+      padding-left: 6px;
+    }
+
+    .board-title {
+      padding-left: 6px;
+    }
+
+    hr {
+      display: none;
+    }
   }
 </style>
