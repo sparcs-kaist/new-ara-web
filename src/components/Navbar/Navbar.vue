@@ -13,11 +13,11 @@
                 <i class="mdi mdi-24px mdi-bell"></i>
               </span>
             </div>
-            <div class="navbar-item has-dropdown is-hoverable" @mouseout="onhover = false">
-              <a class="navbar-link" @mouseover="onhover = true">
+            <div class="navbar-item has-dropdown is-hoverable" @mouseover="onhover = true" @mouseout="onhover = false">
+              <a class="navbar-link">
                 김유진님
               </a>
-              <div class="navbar-dropdown is-right" :class="{ 'show': onhover }">
+              <div class="navbar-dropdown is-right" :class="{ 'show': onhover }" @mouseover="onhover = true" @mouseout="onhover = false">
                 <router-link class="navbar-item" to="/setting">세팅</router-link>
                 <router-link class="navbar-item" to="/login">로그인</router-link>
                 <hr class="navbar-divider">
@@ -135,6 +135,10 @@ export default {
       position: absolute;
       top: 100%;
       z-index: 20;
+    }
+
+    .navbar-divider {
+      display: block;
     }
 
     .navbar-dropdown a.navbar-item {
