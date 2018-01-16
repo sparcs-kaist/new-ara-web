@@ -5,7 +5,7 @@
       <div class="column is-8">
         <nav class="navbar" role="navigation" aria-label="main navigation">
           <div class="navbar-brand">
-            <router-link class="navbar-item" to="/">Ara</router-link>
+            <router-link class="navbar-item" to="/">아라</router-link>
           </div>
           <div class="navbar-end">
             <div class="navbar-item" style="padding-left: 0px; padding-right: 0px;">
@@ -31,7 +31,7 @@
             <li>
               <router-link class="" to="/posts/all" @click.native="resetPost">모아보기</router-link>
             </li>
-            <li v-for="board in boardList">
+            <li v-for="board in boardList" :key="board.en_name">
               <router-link :to="`/posts/${board.en_name}`" @click.native="resetPost">{{ board.ko_name }}</router-link>
             </li>
           </ul>
@@ -65,7 +65,13 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.navbar-brand {
+  font-weight: bold;
+  & .navbar-item:hover {
+    background-color: white;
+  }
+}
   @media (max-width: 768px) {
     .placeholder {
       padding: 0;
