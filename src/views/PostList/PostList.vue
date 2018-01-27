@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { mapState, mapActions, mapGetters } from 'vuex';
 import PostItem from './PostItem';
 
@@ -104,13 +103,13 @@ export default {
       if (this.board !== 'all') url += `parent_board=${this.boardNameList.indexOf(this.board) + 1}&`;
       url += `page=${this.page}`;
 
-      axios.get(`http://13.124.216.27:8000/api/articles/${url}`, { auth: this.auth })
-      .then((res) => {
-        this.postItems = res.data.results;
-        this.numPages = res.data.num_pages;
-      })
-      .catch(() => {
-      });
+      this.$axios.get(`http://13.124.216.27:8000/api/articles/${url}`)
+        .then((res) => {
+          this.postItems = res.data.results;
+          this.numPages = res.data.num_pages;
+        })
+        .catch(() => {
+        });
     },
     searchArticles() {
       const searchTypeElement = document.getElementById('search_type');

@@ -78,7 +78,6 @@ export default {
           is_content_sexual: true,
           is_content_social: false,
         },
-        auth: this.auth,
       }).then((res) => {
         this.pending = false;
         console.log(res);
@@ -114,7 +113,6 @@ export default {
     this.$axios({
       url: `${this.apiUrl}/api/articles/${this.postId}`,
       method: 'GET',
-      auth: this.auth,
     })
     .then((res) => {
       this.title = res.data.title;

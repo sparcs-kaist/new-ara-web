@@ -20,6 +20,13 @@ export default {
       return this.$route.name !== 'Login';
     },
   },
+  beforeCreate() {
+    if (this.$route.query.jwt) {
+      localStorage.setItem('jwtToken', this.$route.query.jwt);
+      this.$router.replace(this.$route.path);
+      location.reload();
+    }
+  },
 };
 </script>
 

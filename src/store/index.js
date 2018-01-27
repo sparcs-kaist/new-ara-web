@@ -8,16 +8,7 @@ const apiUrl = 'http://13.124.216.27:8000';
 
 export default new Vuex.Store({
   state: {
-    // language: 'ko_KR',
-    auth: {
-      username: 'sparcs',
-      password: 'newara@sparcs',
-    },
     post: undefined,
-    // {
-    //   postDetail: {},
-    //   postComment: [],
-    // },
     apiUrl,
     board: '',
     page: 0,
@@ -38,12 +29,11 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    fetchPost({ state, commit }, payload) {
+    fetchPost({ commit }, payload) {
       if (!payload || !payload.postId) {
         commit('updatePost', undefined);
         return;
       }
-      const auth = state.auth;
       const postId = payload.postId;
       const context = payload.context;
       let url = '?';
@@ -55,8 +45,12 @@ export default new Vuex.Store({
           url += `${key}=${context[key]}&`;
         }
       }
-      axios.get(`${apiUrl}/api/articles/${postId}/${url.slice(0, -1)}`, {
-        auth,
+      axios({
+        method: 'GET',
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('jwtToken')}`,
+        },
+        url: `${apiUrl}/api/articles/${postId}/${url.slice(0, -1)}`,
       }).then((res) => {
         // console.log(res);
         commit('updatePost', res.data);
@@ -67,16 +61,21 @@ export default new Vuex.Store({
         commit('updatePost', undefined);
       });
     },
-    async updateBoardList({ commit, state }) {
+    async updateBoardList({ commit }) {
       return new Promise((resolve) => {
-        axios.get(`${apiUrl}/api/boards`, { auth: state.auth })
-          .then((res) => {
-            commit('updateBoardList', res.data.results);
-            resolve();
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        axios({
+          method: 'GET',
+          headers: {
+            Authorization: `JWT ${localStorage.getItem('jwtToken')}`,
+          },
+          url: `${apiUrl}/api/boards`,
+        }).then((res) => {
+          commit('updateBoardList', res.data.results);
+          resolve();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       });
     },
     updateBoard({ commit }, board) {

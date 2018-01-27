@@ -21,7 +21,7 @@
                 <router-link class="navbar-item" to="/setting">세팅</router-link>
                 <router-link class="navbar-item" to="/login">로그인</router-link>
                 <hr class="navbar-divider">
-                <router-link class="navbar-item" to="/login">로그아웃</router-link>
+                <router-link class="navbar-item" @click.native="logout" to="/login">로그아웃</router-link>
               </div>
             </div>
           </div>
@@ -60,6 +60,9 @@ export default {
     ...mapActions(['fetchPost']),
     resetPost() {
       this.fetchPost(undefined);
+    },
+    logout() {
+      localStorage.setItem('jwtToken', null);
     },
   },
 };

@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { mapState, mapActions } from 'vuex';
 
 export default {
@@ -72,7 +71,6 @@ export default {
         this.$axios({
           url: `${this.apiUrl}/api/${contextType}/${this.context.id}/vote_cancel/`,
           method: 'POST',
-          auth: this.auth,
         })
           .then(() => {
             this.fetchPost({ postId: this.post.id, context: this.$route.query });
@@ -82,10 +80,9 @@ export default {
             console.log(err);
           });
       } else {
-        axios({
+        this.$axios({
           url: `${this.apiUrl}/api/${contextType}/${this.context.id}/${voteTypeStr}/`,
           method: 'POST',
-          auth: this.auth,
         })
           .then(() => {
             this.fetchPost({ postId: this.post.id, context: this.$route.query });
@@ -116,7 +113,6 @@ export default {
         url: `${this.apiUrl}/api/reports/`,
         method: 'POST',
         data,
-        auth: this.auth,
       })
         .then((res) => {
           alert('report accepted!');

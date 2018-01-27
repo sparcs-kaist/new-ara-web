@@ -66,7 +66,7 @@ export default {
   },
   async mounted() {
     await this.updateBoardList();
-    this.$axios.get(`${this.apiUrl}/api/home`, { auth: this.auth })
+    this.$axios.get(`${this.apiUrl}/api/home`)
       .then((res) => {
         this.bestArticles = res.data.best_articles;
         this.articles = res.data.boards;

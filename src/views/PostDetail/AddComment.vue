@@ -79,7 +79,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import axios from 'axios';
 
 export default {
   data() {
@@ -112,14 +111,13 @@ export default {
 
       const formData = new FormData();
       formData.append('file', files[0]);
-      axios({
+      this.$axios({
         url: `${this.apiUrl}/api/attachments/`,
         method: 'POST',
         data: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-        auth: this.auth,
       })
         .then((res) => {
           this.filename = files[0].name;
@@ -134,7 +132,7 @@ export default {
       this.pending = true;
       console.log(this.attachment);
       if (this.isArticle) {
-        axios({
+        this.$axios({
           url: `${this.apiUrl}/api/comments/`,
           method: 'POST',
           data: {
@@ -145,7 +143,6 @@ export default {
             use_signature: this.use_signature,
             attachment: this.attachment,
           },
-          auth: this.auth,
         })
           .then(() => {
             this.pending = false;
@@ -158,7 +155,7 @@ export default {
             console.log(err);
           });
       } else {
-        axios({
+        this.$axios({
           url: `${this.apiUrl}/api/comments/`,
           method: 'POST',
           data: {
@@ -169,7 +166,6 @@ export default {
             use_signature: this.useSignature,
             attachment: this.attachment,
           },
-          auth: this.auth,
         })
           .then(() => {
             this.pending = false;
