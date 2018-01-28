@@ -1,12 +1,13 @@
 <template>
-  <div id="app">
-    <navbar v-if="shouldHideShell"/>
+  <div id="app" v-if="isLoginView || jwtTokenVerified">
+    <navbar v-if="!isLoginView"/>
     <router-view></router-view>
-    <foot v-if="shouldHideShell"/>
+    <foot v-if="!isLoginView"/>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Navbar from './components/Navbar/Navbar';
 import Foot from './components/Foot/Foot';
 
@@ -15,12 +16,38 @@ export default {
   components: {
     Navbar, Foot,
   },
+  data() {
+    return {
+      jwtTokenVerified: false,
+    };
+  },
   computed: {
-    shouldHideShell() {
-      return this.$route.name !== 'Login';
+    ...mapState(['apiUrl']),
+    isLoginView() {
+      return this.$route.name === 'Login';
     },
   },
-  beforeCreate() {
+  mounted() {
+    /* Check if verified token exists in localStorage. */
+    if (this.$route.path !== '/login') {
+      this.$axios({
+        method: 'POST',
+        url: `${this.apiUrl}/verify-jwt-token/`,
+        data: {
+          token: localStorage.getItem('jwtToken'),
+        },
+      }).then((res) => {
+        if (res.data.token === localStorage.getItem('jwtToken')) {
+          this.jwtTokenVerified = true;
+        } else {
+          this.$router.replace('/login');
+        }
+      }).catch(() => {
+        this.$router.replace('/login');
+      });
+    }
+
+    /* If url contains jwt info, save it into localStorage and refresh the page. */
     if (this.$route.query.jwt) {
       localStorage.setItem('jwtToken', this.$route.query.jwt);
       this.$router.replace(this.$route.path);
