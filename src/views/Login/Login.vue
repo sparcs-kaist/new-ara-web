@@ -1,5 +1,10 @@
 <template>
   <section class="hero is-fullheight">
+    <article v-if="sessionExpired" class="message is-danger">
+      <div class="message-body">
+        시간이 오래 지나 다시 로그인하셔야 합니다.
+      </div>
+    </article>
     <div class="hero-body">
       <div class="container has-text-centered">
         <h1 class="title is-login">아라</h1>
@@ -28,6 +33,9 @@ export default {
     loginUrl() {
       // return this.$route.fullPath;
       return `${this.apiUrl}/login/?next=${location.protocol}//${location.host}`;
+    },
+    sessionExpired() {
+      return Object.keys(this.$route.query).includes('session_expired');
     },
   },
 };

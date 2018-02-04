@@ -84,10 +84,8 @@ export default {
         this.$router.push(`/posts/${this.board > 0 ? this.boardNameList[this.board - 1] : 'all'}/${this.postId}`);
         // console.log(result);
       })
-      .catch((err) => {
+      .catch(() => {
         this.pending = false;
-        console.log(err);
-        alert(err);
       });
     },
     imageUploadHandler(file, Editor, cursorLocation) {

@@ -75,9 +75,7 @@ export default {
           .then(() => {
             this.fetchPost({ postId: this.post.id, context: this.$route.query });
           })
-          .catch((err) => {
-            alert('failed to cancel vote. please retry.');
-            console.log(err);
+          .catch(() => {
           });
       } else {
         this.$axios({
@@ -87,9 +85,7 @@ export default {
           .then(() => {
             this.fetchPost({ postId: this.post.id, context: this.$route.query });
           })
-          .catch((err) => {
-            alert('failed to vote. please retry.');
-            console.log(err);
+          .catch(() => {
           });
       }
     },
@@ -119,7 +115,6 @@ export default {
           this.context.my_report = res.data;
         })
         .catch(() => {
-          alert('');
         });
       this.reportContent = '';
       this.reportToggle = false;

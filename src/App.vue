@@ -66,4 +66,9 @@ $primary: $theme-red;
 
 @import '~bulma';
 @import '~mdi/css/materialdesignicons.css';
+
+.modal.is-warning {
+  bottom: auto;
+  top: 40px;
+}
 </style>

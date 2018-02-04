@@ -82,12 +82,9 @@ export default {
       }).then((res) => {
         this.pending = false;
         this.$router.push(`/posts/${res.data.parent_board.id > 0 ? this.boardNameList[res.data.parent_board.id - 1] : 'all'}/${res.data.id}`);
-        // console.log(result);
       })
-      .catch((err) => {
+      .catch(() => {
         this.pending = false;
-        console.log(err);
-        alert(err);
       });
     },
     imageUploadHandler(file, Editor, cursorLocation) {

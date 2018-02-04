@@ -123,9 +123,7 @@ export default {
           this.filename = files[0].name;
           this.attachment = res.data.id;
         })
-        .catch((err) => {
-          alert('failed to attach a file. please retry.');
-          console.log(err);
+        .catch(() => {
         });
     },
     addCommentHandler() {
@@ -149,10 +147,8 @@ export default {
             this.fetchPost({ postId: this.post.id });
             this.$emit('successAdd');
           })
-          .catch((err) => {
+          .catch(() => {
             this.pending = false;
-            alert('failed to add comment. please retry.');
-            console.log(err);
           });
       } else {
         this.$axios({
@@ -172,10 +168,8 @@ export default {
             this.fetchPost({ postId: this.post.id });
             this.$emit('successAdd');
           })
-          .catch((err) => {
+          .catch(() => {
             this.pending = false;
-            alert('failed to add comment. please retry.');
-            console.log(err);
           });
       }
     },
