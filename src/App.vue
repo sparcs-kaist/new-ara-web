@@ -8,6 +8,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import Vue from 'vue';
 import Navbar from './components/Navbar/Navbar';
 import Foot from './components/Foot/Foot';
 
@@ -28,6 +29,13 @@ export default {
     },
   },
   mounted() {
+    /* If url contains jwt info, save it into localStorage and refresh the page. */
+    if (this.$route.query.jwt) {
+      localStorage.setItem('jwtToken', this.$route.query.jwt);
+      Vue.prototype.$axios.defaults.headers.common.Authorization = `JWT ${localStorage.getItem('jwtToken')}`;
+      this.$router.replace(this.$route.path);
+    }
+
     /* Check if verified token exists in localStorage. */
     if (this.$route.path !== '/login') {
       this.$axios({
@@ -45,13 +53,6 @@ export default {
       }).catch(() => {
         this.$router.replace('/login');
       });
-    }
-
-    /* If url contains jwt info, save it into localStorage and refresh the page. */
-    if (this.$route.query.jwt) {
-      localStorage.setItem('jwtToken', this.$route.query.jwt);
-      this.$router.replace(this.$route.path);
-      location.reload();
     }
   },
 };
