@@ -1,15 +1,6 @@
 <template>
   <div>
     <div v-if="!error">
-      <p>
-        <router-link v-if="board !== 'all'" to="/posts/all" @click.native="resetPost"><h1>all</h1></router-link>
-        <span v-else><h1>all</h1></span>
-        <span v-for="iterBoard in boardList" :key="iterBoard.id">
-          <router-link v-if="board !== iterBoard.en_name" :to="`/posts/${iterBoard.en_name}`" :key="iterBoard.id" @click.native="resetPost"><h1>{{ iterBoard.en_name }}</h1></router-link>
-          <span v-else><h1>{{ iterBoard.en_name }}</h1></span>
-        </span>
-
-      </p>
       <post-detail v-if="post"></post-detail>
       <post-list></post-list>
       <button @click="$router.push('/post/create')">글쓰기</button>
