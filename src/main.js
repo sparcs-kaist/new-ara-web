@@ -13,6 +13,7 @@ import store from './store';
 Vue.config.productionTip = false;
 Vue.use(Vuex);
 Vue.use(AsyncComputed);
+localStorage.setItem('jwtToken', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFyYSIsImV4cCI6MTUyMDg1MDAwMywiZW1haWwiOiIiLCJvcmlnX2lhdCI6MTUyMDc2MzYwM30._WGSfAWxrHPGahh317MEcz3t-Q2TXFqTrXBiWnZyXzk');
 axios.defaults.headers.common = {
   Authorization: `JWT ${localStorage.getItem('jwtToken')}`,
 };
