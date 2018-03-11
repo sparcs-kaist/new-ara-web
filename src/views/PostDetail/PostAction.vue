@@ -1,28 +1,32 @@
 <template>
   <div>
-    <button class="button" :class="{ 'is-danger': context.my_vote === true }" @click="action('like')">추천</button>
-    <span>{{ this.context.positive_vote_count }}</span>
-    <button class="button" :class="{ 'is-danger': context.my_vote === false }" @click="action('dislike')">반대</button>
-    <span>{{ this.context.negative_vote_count }}</span>
-    <span v-if="isArticle" @click="action('scrap')">스크랩</span>
-    <button class="button" @click="openReportModal">신고</button>
-    <div class="modal" :class="{ 'is-active': reportToggle }">
-      <div class="modal-background" @click="reportToggle = false"></div>
-      <div class="modal-content">
-        <div class="modal-card">
-          <section class="modal-card-body">
-            <p>신고할 대상 : {{ isArticle ? context.title : context.content }}</p>
-            <p>신고 사유</p>
-            <input class="input" v-model="reportContent" />
-          </section>
-          <footer class="modal-card-foot">
-            <button class="button is-danger" @click="report">신고하기</button>
-            <button class="button" @click="reportToggle = false">취소</button>
-          </footer>
-        </div>
-      </div>
-      <button class="modal-close is-large" aria-label="close"></button>
-    </div>
+    <span class="action-container">
+      <i class="mdi mdi-18px mdi-thumb-up" @click="action('like')" />
+      <span :class="{ 'voted': context.my_vote === true }">{{ context.positive_vote_count }}</span>
+    </span>
+    <span class="action-container">
+      <i class="mdi mdi-18px mdi-thumb-down" @click="action('dislike')" />
+      <span :class="{ 'voted': context.my_vote === false }">{{ context.negative_vote_count }}</span>
+    </span>
+    <!--<span v-if="isArticle" @click="action('scrap')">스크랩</span>-->
+    <!--<button class="button" @click="openReportModal">신고</button>-->
+    <!--<div class="modal" :class="{ 'is-active': reportToggle }">-->
+      <!--<div class="modal-background" @click="reportToggle = false"></div>-->
+      <!--<div class="modal-content">-->
+        <!--<div class="modal-card">-->
+          <!--<section class="modal-card-body">-->
+            <!--<p>신고할 대상 : {{ isArticle ? context.title : context.content }}</p>-->
+            <!--<p>신고 사유</p>-->
+            <!--<input class="input" v-model="reportContent" />-->
+          <!--</section>-->
+          <!--<footer class="modal-card-foot">-->
+            <!--<button class="button is-danger" @click="report">신고하기</button>-->
+            <!--<button class="button" @click="reportToggle = false">취소</button>-->
+          <!--</footer>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<button class="modal-close is-large" aria-label="close"></button>-->
+    <!--</div>-->
   </div>
 </template>
 
@@ -123,6 +127,14 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+  @import '../../styles/variables.scss';
 
+  .voted {
+    color: $theme-red;
+  }
+
+  .action-container {
+    margin-right: 20px;
+  }
 </style>

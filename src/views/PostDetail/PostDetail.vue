@@ -2,7 +2,11 @@
   <div class="container">
     <section class="section">
       <post/>
-      <post-comment :post_id="post_number"></post-comment>
+      <div>
+        <h3 class="title">댓글</h3>
+        <comment v-for="comment in this.post.comments" :key="comment.id" :comment="comment" />
+      </div>
+      <add-comment :context="this.post" :isArticle="true"></add-comment>
     </section>
   </div>
 </template>
@@ -10,20 +14,19 @@
 <script>
 import { mapState } from 'vuex';
 import Post from './Post';
-import PostComment from './PostComment';
+import Comment from './Comment';
+import AddComment from './AddComment';
 
 export default {
   computed: {
     ...mapState([
       'post',
     ]),
-    post_number() {
-      return Number(this.post.id);
-    },
   },
   components: {
     Post,
-    PostComment,
+    Comment,
+    AddComment,
   },
 };
 </script>

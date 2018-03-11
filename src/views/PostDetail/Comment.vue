@@ -5,12 +5,17 @@
     <post-action :context="this.comment" :is-article="false" />
     <a v-if="!isRecommentExpanded" class="expand" @click="toggleExpand('recomment')"> 답글 보기 </a>
     <div v-else class="recomments-container">
-      <recomment v-for="recomment in this.comment.comments" :key="recomment.id" :recomment="recomment"/>
+      <template v-for="recomment in this.comment.comments">
+        <hr />
+        <recomment :key="recomment.id" :recomment="recomment"/>
+      </template>
+      <a v-if="!isAddCommentExpanded" class="expand" @click="toggleExpand('addcomment')"> 답글 달기 </a>
+      <div v-else>
+        <hr />
+        <add-comment :context="this.comment" :isArticle="false"></add-comment>
+      </div>
     </div>
-    <a v-if="!isAddCommentExpanded" class="expand" @click="toggleExpand('addcomment')"> 답글 달기 </a>
-    <div v-else>
-      <add-comment :context="this.comment" :isArticle="false"></add-comment>
-    </div>
+    <hr />
   </div>
 </template>
 
@@ -57,6 +62,10 @@ export default {
 
 .recomments-container {
   margin-top: 0.5rem;
-  margin-left: 1rem;
+  margin-left: 5vw;
 }
+
+  .author {
+    font-weight: bold;
+  }
 </style>

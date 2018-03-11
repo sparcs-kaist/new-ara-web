@@ -1,17 +1,17 @@
 <template>
-  <div>
+  <div class="section">
     <template v-if="post">
       <h1 class="title">{{ post.title }}</h1>
-      <p class="subtitle">작성자 : {{ post.created_by }}</p>
-      <button id="edit_btn" @click="$router.push(`/post/edit/${post.id}`)">글 수정</button>
+      <span>
+        <span class="subtitle-detail">{{ board }}</span>
+        <span class="subtitle-detail">{{ post.created_by }}</span>
+        <span class="subtitle-detail">{{ postCreatedAt }}</span>
+      </span>
+      <button class="button" id="edit_btn" @click="$router.push(`/post/edit/${post.id}`)">글 수정</button>
       <div class="ql-container ql-snow">
         <div v-html="post.content" class="ql-editor"></div>
       </div>
       <post-action :context="this.post" :isArticle="true"></post-action>
-      <a v-if="!isAddCommentExpanded" class="expand" @click="toggleExpand('addcomment')"> 답글 달기 </a>
-      <div v-else>
-        <add-comment v-on:successAdd="toggleExpand('addcomment')" :context="this.post" :isArticle="true"></add-comment>
-      </div>
     </template>
     <template v-else>
       게시글을 찾을 수 없습니다.
@@ -29,19 +29,14 @@ export default {
     PostAction,
     AddComment,
   },
-  data() {
-    return {
-      isAddCommentExpanded: false,
-    };
-  },
   computed: {
-    ...mapState(['post']),
-  },
-  methods: {
-    toggleExpand(type) {
-      if (type === 'addcomment') {
-        this.isAddCommentExpanded = !this.isAddCommentExpanded;
-      }
+    ...mapState([
+      'post',
+      'board',
+    ]),
+    postCreatedAt() {
+      const createdDate = new Date(this.post.created_at);
+      return `${createdDate.getMonth() + 1}월 ${createdDate.getDate()}일`;
     },
   },
 };
@@ -53,12 +48,17 @@ export default {
   float: right;
 }
 
-.subtitle {
-  display: inline-block;
+.subtitle-detail {
+  margin-right: 20px;
 }
 
 .ql-container {
+  padding: 40px 0;
   font-size: 16px;
   border: 0;
 }
+
+  .section {
+    padding: 48px 0;
+  }
 </style>
