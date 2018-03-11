@@ -85,6 +85,7 @@ export default {
       use_signature: false,
       attachment: '',
       filename: '',
+      pending: false,
     };
   },
   props: [
@@ -143,6 +144,7 @@ export default {
             this.pending = false;
             this.fetchPost({ postId: this.post.id });
             this.$emit('successAdd');
+            this.resetForm();
           })
           .catch(() => {
             this.pending = false;
@@ -164,11 +166,20 @@ export default {
             this.pending = false;
             this.fetchPost({ postId: this.post.id });
             this.$emit('successAdd');
+            this.resetForm();
           })
           .catch(() => {
             this.pending = false;
           });
       }
+    },
+    resetForm() {
+      this.content = '';
+      this.is_anonymous = false;
+      this.use_signature = false;
+      this.attachment = '';
+      this.filename = '';
+      this.pending = false;
     },
   },
 };
