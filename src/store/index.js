@@ -4,7 +4,7 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-const apiUrl = 'http://13.124.216.27:8000';
+const apiUrl = 'http://13.125.195.85';
 
 export default new Vuex.Store({
   state: {

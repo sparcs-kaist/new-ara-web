@@ -77,6 +77,7 @@ export default {
       'page',
       'auth',
       'boardList',
+      'apiUrl',
     ]),
     ...mapGetters([
       'boardNameList',
@@ -103,7 +104,7 @@ export default {
       if (this.board !== 'all') url += `parent_board=${this.boardNameList.indexOf(this.board) + 1}&`;
       url += `page=${this.page}`;
 
-      this.$axios.get(`http://13.124.216.27:8000/api/articles/${url}`)
+      this.$axios.get(`${this.apiUrl}/api/articles/${url}`)
         .then((res) => {
           this.postItems = res.data.results;
           this.numPages = res.data.num_pages;
