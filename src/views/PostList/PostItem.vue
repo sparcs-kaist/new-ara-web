@@ -1,23 +1,17 @@
 <template>
-  <div>
-    <div class="oneline">
-      {{ item.created_by }}
-    </div>
-    <div class="oneline">
-      {{ heading }}
-    </div>
-    <div class="oneline">
-      {{ item.title }}
-    </div>
-    <div class="oneline">
+  <div class="columns">
+    <div class="column is-2 placeholder"></div>
+    <div class="column is-1">{{ item.created_by }}</div>
+    <div class="column is-1">{{ heading }}</div>
+    <div class="column is-3">{{ item.title }}</div>
+    <div class="column is-1">
       {{ item.positive_vote_count }}/{{ item.negative_vote_count }}
     </div>
-    <div class="oneline">
-      {{ item.hit_count }}
-    </div>
-    <div class="oneline">
+    <div class="column is-1">{{ item.hit_count }}</div>
+    <div class="column is-1">
       {{ item.created_at }}
     </div>
+    <div class="column is-2 placeholder"></div>
   </div>
 </template>
 
@@ -35,7 +29,4 @@ export default {
 </script>
 
 <style>
-  .oneline {
-    display: inline-block;
-  }
 </style>

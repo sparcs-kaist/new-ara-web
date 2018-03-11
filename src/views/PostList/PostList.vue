@@ -1,12 +1,14 @@
 <template>
-  <div>
-    <div>
-      <div class="oneline">작성자</div>
-      <div class="oneline">{{ boardOrHeading }}</div>
-      <div class="oneline">제목</div>
-      <div class="oneline">추천/반대</div>
-      <div class="oneline">조회수</div>
-      <div class="oneline">작성일자</div>
+  <div class="container">
+    <div class="columns">
+      <div class="column is-2 placeholder"></div>
+      <div class="column is-1">작성자</div>
+      <div class="column is-1">{{ boardOrHeading }}</div>
+      <div class="column is-3">제목</div>
+      <div class="column is-1">추천/반대</div>
+      <div class="column is-1">조회수</div>
+      <div class="column is-2">작성일자</div>
+      <div class="column is-2 placeholder"></div>
     </div>
       <div v-for="item in postItems" :key="item.id">
         <router-link v-if="!post || item.id !== post.id" :to="{ name: 'PostDetail', params: { board, post_id: item.id }, query: $route.query }">
