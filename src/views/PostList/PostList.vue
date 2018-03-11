@@ -5,8 +5,7 @@
       <div class="column is-1">작성자</div>
       <div class="column is-1">{{ boardOrHeading }}</div>
       <div class="column is-3">제목</div>
-      <div class="column is-1">추천/반대</div>
-      <div class="column is-1">조회수</div>
+      <div class="column is-1">반응</div>
       <div class="column is-2">작성일자</div>
       <div class="column is-2 placeholder"></div>
     </div>

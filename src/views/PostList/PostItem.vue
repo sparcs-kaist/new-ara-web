@@ -5,17 +5,18 @@
     <div class="column is-1">{{ heading }}</div>
     <div class="column is-3">{{ item.title }}</div>
     <div class="column is-1">
-      {{ item.positive_vote_count }}/{{ item.negative_vote_count }}
+      <span class="vote-up">+{{ item.positive_vote_count }}</span>
+      <a class="vote-down">-{{ item.negative_vote_count }}</a>
     </div>
-    <div class="column is-1">{{ item.hit_count }}</div>
-    <div class="column is-1">
-      {{ item.created_at }}
-    </div>
+    <!-- <div class="column is-1">{{ item.hit_count }}</div> -->
+    <div class="column is-1">{{ item.created_at }}</div>
     <div class="column is-2 placeholder"></div>
   </div>
 </template>
 
 <script>
+import timeago from 'timeago';
+
 export default {
   props: ['board', 'item'],
   computed: {
@@ -25,8 +26,20 @@ export default {
       return '';
     },
   },
+  methods: {
+    formatTime(rawdate) {
+      return timeago.format(rawdate);
+    },
+  },
 };
 </script>
 
-<style>
+<style scoped>
+.vote-up {
+  font-weight: bold;
+}
+.vote-down {
+  font-weight: bold;
+  color: darkcyan;
+}
 </style>
