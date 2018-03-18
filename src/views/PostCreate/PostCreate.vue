@@ -8,7 +8,7 @@
           <div class="columns">
             <div class="column is-3">
               <div class="field">
-                <label class="label">Subject</label>
+                <label class="label">게시판</label>
                 <div class="control">
                   <div class="select">
                     <select v-model="board">
