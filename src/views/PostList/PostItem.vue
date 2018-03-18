@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import timeago from 'timeago';
 
 export default {
   props: ['board', 'item'],
@@ -25,12 +24,7 @@ export default {
       if (this.item.parent_topic !== null) return this.item.parent_topic.en_name;
       return '';
     },
-  },
-  methods: {
-    formatTime(rawdate) {
-      return timeago.format(rawdate);
-    },
-  },
+  }
 };
 </script>
 
