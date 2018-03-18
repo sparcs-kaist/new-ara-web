@@ -1,5 +1,5 @@
 <template>
-  <div class="section">
+  <div>
     <template v-if="post">
       <h1 class="title">{{ post.title }}</h1>
       <span>
@@ -49,16 +49,20 @@ export default {
 }
 
 .subtitle-detail {
-  margin-right: 20px;
+  margin-right: 8px;
 }
 
 .ql-container {
-  padding: 40px 0;
+  padding: 28px 0;
   font-size: 16px;
   border: 0;
 }
 
-  .section {
-    padding: 48px 0;
+.ql-editor {
+  padding: 0;
+}
+
+  .title {
+    margin-bottom: 4px;
   }
 </style>
