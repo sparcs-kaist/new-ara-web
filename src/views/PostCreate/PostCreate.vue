@@ -74,7 +74,7 @@ export default {
           title: this.title,
           content: this.content,
           is_anonymous: false,
-          is_content_sexual: true,
+          is_content_sexual: false,
           is_content_social: false,
           use_signature: false,
           parent_board: 1,
