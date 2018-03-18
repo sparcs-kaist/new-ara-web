@@ -45,7 +45,7 @@ import { VueEditor } from 'vue2-editor';
 export default {
   data() {
     return {
-      board: '',
+      board: '',/* TODO: 현재 게시판 default로 설정 */
       title: '',
       content: ' ',
       customToolbar: [
@@ -95,6 +95,9 @@ export default {
       .catch(() => {
         this.pending = false;
       });
+    },
+    validateInput() {
+      return this.board !== '' && this.title !== '' && this.content.trim() !== '';
     },
     imageUploadHandler(file, Editor, cursorLocation) {
       const formData = new FormData();
