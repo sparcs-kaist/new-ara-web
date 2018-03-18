@@ -1,22 +1,17 @@
 <template>
-  <div class="container">
-    <div class="columns">
-      <div class="column is-2 placeholder"></div>
-      <div class="column is-1">작성자</div>
-      <div class="column is-1">{{ boardOrHeading }}</div>
-      <div class="column is-3">제목</div>
-      <div class="column is-1">반응</div>
-      <div class="column is-2">작성일자</div>
-      <div class="column is-2 placeholder"></div>
-    </div>
-      <div v-for="item in postItems" :key="item.id">
-        <router-link v-if="!post || item.id !== post.id" :to="{ name: 'PostDetail', params: { board, post_id: item.id }, query: $route.query }">
-          <post-item :board="board" :item="item" ></post-item>
-        </router-link>
-        <span v-else>
-          <post-item :board="board" :item="item" ></post-item>
-        </span>
-      </div>
+  <div>
+    <table class="table centerh">
+      <tr>
+        <th>.</th>
+        <th class="w-102">{{ boardOrHeading }}</th>
+        <th class="w-313">제목</th>
+        <th class="w-102">작성자</th>
+        <th class="w-60">추천</th>
+        <th class="w-60">조회</th>
+        <th class="w-102">시간</th>
+      </tr>
+      <post-item v-for="item in postItems" :key="item.id" :board="board" :item="item" :post="post"></post-item>
+    </table>
     <div>
       <a @click="updatePageAndFetch(1)">«</a>
       <a v-if="page > 10" @click="updatePageAndFetch(pageBase)">&lt;</a>
@@ -166,5 +161,12 @@ export default {
 </script>
 
 <style>
-
+.oneline { display: inline-block;}
+.bold { font-weight: 800;}
+.w-35 { width:35px;}
+.w-60 { width: 60px;}
+.w-102 { width: 102px;}
+.w-313 { width: 313px;}
+.w-780 { width: 780px;}
+.centerh { margin: 0 auto;}
 </style>
