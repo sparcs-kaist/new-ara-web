@@ -1,76 +1,80 @@
 <template>
   <div>
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">
-        <label class="label"> 본문 </label>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control">
-            <textarea v-model="content" class="textarea"></textarea>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">
-        <label class="label"> 익명 </label>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control">
-            <label class="checkbox">
-              <input v-model="is_anonymous" type="checkbox">
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">
-        <label class="label"> 서명 사용 </label>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control">
-            <label class="checkbox">
-              <input v-model="use_signature" type="checkbox">
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">
-        <label class="label"> 첨부 파일 </label>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control">
-            <div class="file has-name is-fullwidth">
-              <label class="file-label">
-                <!--TODO: Make file input available-->
-                <input class="file-input" type="file" @change="onFileChange">
-                <span class="file-cta">
-                  <span class="file-icon">
-                    <!--TODO: Add Font Awesome link-->
-                    <i class="fa fa-upload"></i>
-                  </span>
-                  <span class="file-label">
-                    Choose a file…
-                  </span>
-                </span>
-                <span class="file-name">
-                    {{ filename }}
-                </span>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button :class="{'is-loading': pending}" @click="addCommentHandler" id="button-add-comment" class="button is-primary is-pulled-right">댓글쓰기</button>
-    <div class="is-clearfix"></div>
+    <!---->
+    <!--<div class="field is-horizontal">-->
+      <!--<div class="field-label is-normal">-->
+        <!--<label class="label"> 본문 </label>-->
+      <!--</div>-->
+      <!--<div class="field-body">-->
+        <!--<div class="field">-->
+          <!--<div class="control">-->
+            <!--<textarea v-model="content" class="textarea"></textarea>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="field is-horizontal">-->
+      <!--<div class="field-label is-normal">-->
+        <!--<label class="label"> 익명 </label>-->
+      <!--</div>-->
+      <!--<div class="field-body">-->
+        <!--<div class="field">-->
+          <!--<div class="control">-->
+            <!--<label class="checkbox">-->
+              <!--<input v-model="is_anonymous" type="checkbox">-->
+            <!--</label>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="field is-horizontal">-->
+      <!--<div class="field-label is-normal">-->
+        <!--<label class="label"> 서명 사용 </label>-->
+      <!--</div>-->
+      <!--<div class="field-body">-->
+        <!--<div class="field">-->
+          <!--<div class="control">-->
+            <!--<label class="checkbox">-->
+              <!--<input v-model="use_signature" type="checkbox">-->
+            <!--</label>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="field is-horizontal">-->
+      <!--<div class="field-label is-normal">-->
+        <!--<label class="label"> 첨부 파일 </label>-->
+      <!--</div>-->
+      <!--<div class="field-body">-->
+        <!--<div class="field">-->
+          <!--<div class="control">-->
+            <!--<div class="file has-name is-fullwidth">-->
+              <!--<label class="file-label">-->
+                <!--&lt;!&ndash;TODO: Make file input available&ndash;&gt;-->
+                <!--<input class="file-input" type="file" @change="onFileChange">-->
+                <!--<span class="file-cta">-->
+                  <!--<span class="file-icon">-->
+                    <!--&lt;!&ndash;TODO: Add Font Awesome link&ndash;&gt;-->
+                    <!--<i class="fa fa-upload"></i>-->
+                  <!--</span>-->
+                  <!--<span class="file-label">-->
+                    <!--Choose a file…-->
+                  <!--</span>-->
+                <!--</span>-->
+                <!--<span class="file-name">-->
+                    <!--{{ filename }}-->
+                <!--</span>-->
+              <!--</label>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<button :class="{'is-loading': pending}" @click="addCommentHandler" id="button-add-comment" class="button is-primary is-pulled-right">댓글쓰기</button>-->
+    <!--<div class="is-clearfix"></div>-->
+
+    <textarea v-model="content" class="textarea"></textarea>
+    <button :class="{'is-loading': pending}" @click="addCommentHandler" id="button-add-comment" class="button is-dark is-normal">댓글달기</button>
   </div>
 </template>
 
@@ -186,5 +190,7 @@ export default {
 </script>
 
 <style scoped>
-
+  #button-add-comment {
+    margin-top: 16px;
+  }
 </style>

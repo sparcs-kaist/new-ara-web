@@ -56,7 +56,7 @@ export default {
 }
 
 .comment-container {
-  margin-bottom: 1rem;
+  margin-bottom: 40px;
 }
 
 .recomments-container {
