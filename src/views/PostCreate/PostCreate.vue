@@ -45,7 +45,7 @@ import { VueEditor } from 'vue2-editor';
 export default {
   data() {
     return {
-      board: '',/* TODO: 현재 게시판 default로 설정 */
+      board: '', /* TODO: 현재 게시판 default로 설정 */
       title: '',
       content: ' ',
       customToolbar: [
@@ -74,6 +74,11 @@ export default {
   },
   methods: {
     postArticleHandler() {
+      if (!this.validateInput()) {
+        /* TODO: Modal로 변경 */
+        alert('게시판과 제목, 내용을 모두 적으셔야 합니다.');
+        return;
+      }
       this.pending = true;
       this.$axios({
         url: `${this.apiUrl}/api/articles/`,
