@@ -24,7 +24,7 @@ export default {
       if (this.item.parent_topic !== null) return this.item.parent_topic.en_name;
       return '';
     },
-  }
+  },
 };
 </script>
 

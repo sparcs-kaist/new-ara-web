@@ -51,7 +51,7 @@ axios.interceptors.response.use(res => res, (err) => {
 
     return Promise.reject(err);
   }
-  return axios.post('http://13.125.195.85/refresh-jwt-token/', { token: localStorage.getItem('token') })
+  return axios.post('http://13.125.91.142/refresh-jwt-token/', { token: localStorage.getItem('token') })
     .then((resRefreshToken) => {
       /* Retry original request with new jwt token. */
       localStorage.setItem('token', resRefreshToken.data.token);
