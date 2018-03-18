@@ -1,34 +1,40 @@
 <template>
   <div class="container">
-    <section class="section">
-      <h1 class="title">글쓰기</h1>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label"> 제목 </label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <input v-model="title" class="input" type="text" placeholder="제목">
+    <div class="columns">
+      <div class="column is-2 placeholder"></div>
+      <div class="column is-6">
+        <div class="article-container">
+          <h1 class="title">글쓰기</h1>
+          <div class="columns">
+            <div class="column is-3">
+              <div class="field">
+                <label class="label">Subject</label>
+                <div class="control">
+                  <div class="select">
+                    <select v-model="board">
+                      <option v-for="boardName in boardNameList">{{ boardName }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column is-9">
+              <div class="field">
+                <label class="label">제목</label>
+                <div class="control">
+                  <input v-model="title" class="input input-field" type="text" placeholder="제목" />
+                </div>
+              </div>
             </div>
           </div>
+          <vue-editor v-model="content" :editorToolbar="customToolbar" @imageAdded="imageUploadHandler(file, Editor, cursorLocation)"></vue-editor>
+          <button :class="{'is-loading': pending}" @click="postArticleHandler" id="button-post-create" class="button is-primary">게시</button>
+          <div class="is-clearfix"></div>
         </div>
       </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label"> 내용 </label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <vue-editor v-model="content" :editorToolbar="customToolbar" @imageAdded="imageUploadHandler (file, Editor, cursorLocation)" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <button :class="{'is-loading': pending}" @click="postArticleHandler" id="button-post-create"class="button is-primary is-pulled-right">게시하기</button>
-      <div class="is-clearfix"></div>
-    </section>
+      <div class="column is-2 advertisement">광고</div>
+      <div class="column is-2 placeholder"></div>
+    </div>
   </div>
 </template>
 
@@ -39,6 +45,7 @@ import { VueEditor } from 'vue2-editor';
 export default {
   data() {
     return {
+      board: '',
       title: '',
       content: ' ',
       customToolbar: [
@@ -138,7 +145,26 @@ export default {
 }
 
 #button-post-create {
-  margin-top: 1.5em;
+  margin-top: 16px;
+  padding: 5px 60px;
 }
+
+  .advertisement {
+    background-color: #999999;
+    color: #ffffff;
+  }
+
+  .label {
+    color: #888888;
+    font-weight: normal;
+  }
+
+  .select select {
+    padding-left: 16px;
+  }
+
+  .input-field {
+    padding-left: 16px;
+  }
 
 </style>
