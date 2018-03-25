@@ -1,11 +1,11 @@
 <template>
   <div>
-    <span class="action-container">
-      <i class="mdi mdi-18px mdi-thumb-up" @click="action('like')" />
+    <span class="action-container" @click="action('like')">
+      <i class="mdi mdi-18px mdi-thumb-up"/>
       <span :class="{ 'voted': context.my_vote === true }">{{ context.positive_vote_count }}</span>
     </span>
-    <span class="action-container">
-      <i class="mdi mdi-18px mdi-thumb-down" @click="action('dislike')" />
+    <span class="action-container" @click="action('dislike')">
+      <i class="mdi mdi-18px mdi-thumb-down"/>
       <span :class="{ 'voted': context.my_vote === false }">{{ context.negative_vote_count }}</span>
     </span>
     <!--<span v-if="isArticle" @click="action('scrap')">스크랩</span>-->
@@ -56,21 +56,17 @@ export default {
       'fetchPost',
     ]),
     action(type) {
-      let contextType;
-      let voteTypeBool;
-      let voteTypeStr;
-      if (this.isArticle) {
-        contextType = 'articles';
-      } else {
-        contextType = 'comments';
-      }
-      if (type === 'like') {
-        voteTypeBool = true;
-        voteTypeStr = 'vote_positive';
-      } else if (type === 'dislike') {
-        voteTypeBool = false;
-        voteTypeStr = 'vote_negative';
-      }
+      const contextType = (() => {
+        if (this.isArticle) return 'articles';
+        return 'comments';
+      })();
+
+      const [voteTypeBool, voteTypeStr] = (() => {
+        if (type === 'like') return [true, 'vote_positive'];
+        else if (type === 'dislike') return [false, 'vote_negative'];
+        return [];
+      })();
+
       if (this.context.my_vote === voteTypeBool) {
         this.$axios({
           url: `${this.apiUrl}/api/${contextType}/${this.context.id}/vote_cancel/`,
@@ -135,6 +131,10 @@ export default {
   }
 
   .action-container {
-    margin-right: 20px;
+    cursor: pointer;
+    padding: 0.5em 0.5em;
+    &:hover {
+      background-color: whitesmoke;
+    }
   }
 </style>
