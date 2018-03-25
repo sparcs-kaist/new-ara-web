@@ -12,7 +12,7 @@
       </tr>
       <post-item v-for="item in postItems" :key="item.id" :board="board" :item="item" :post="post"></post-item>
     </table>
-    <div>
+    <div class="centerh">
       <a @click="updatePageAndFetch(1)">«</a>
       <a v-if="page > 10" @click="updatePageAndFetch(pageBase)">&lt;</a>
       <span v-else>&lt;</span>
@@ -26,7 +26,7 @@
       <span v-else>&gt;</span>
       <a @click="updatePageAndFetch(numPages)">»</a>
     </div>
-    <div>
+    <div class="centerh">
       <select id="search_type" name="search_type">
         <option value="title" selected>제목</option>
         <option value="content">내용</option>
@@ -168,5 +168,5 @@ export default {
 .w-102 { width: 102px;}
 .w-313 { width: 313px;}
 .w-780 { width: 780px;}
-.centerh { margin: 0 auto;}
+.centerh { margin: 0 auto; text-align: center;}
 </style>
