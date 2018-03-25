@@ -8,18 +8,22 @@
             <router-link class="navbar-item" to="/">아라</router-link>
           </div>
           <div class="navbar-end">
-            <div class="navbar-item" style="padding-left: 0px; padding-right: 0px;">
-              <span class="icon is-medium">
-                <i class="mdi mdi-24px mdi-bell"></i>
-              </span>
+            <div class="navbar-item has-dropdown is-hoverable" @mouseover="onhoverAlert=true" @mouseout="onhoverAlert = false">
+              <a class="navbar-item">
+                <span class="icon is-medium">
+                  <i class="mdi mdi-24px mdi-bell"></i>
+                </span>
+              </a>
+              <div class="navbar-dropdown is-right" :class="{ 'show': onhoverAlert }" @mouseover="onhoverAlert=true" @mouseout="onhoverAlert=false">
+                <router-link class="navbar-item" to="/setting">알림알림알림</router-link>
+              </div>
             </div>
-            <div class="navbar-item has-dropdown is-hoverable" @mouseover="onhover = true" @mouseout="onhover = false">
+            <div class="navbar-item has-dropdown is-hoverable" @mouseover="onhoverName=true" @mouseout="onhoverName = false">
               <a class="navbar-link">
                 김유진님
               </a>
-              <div class="navbar-dropdown is-right" :class="{ 'show': onhover }" @mouseover="onhover = true" @mouseout="onhover = false">
-                <router-link class="navbar-item" to="/setting">세팅</router-link>
-                <router-link class="navbar-item" to="/login">로그인</router-link>
+              <div class="navbar-dropdown is-right" :class="{ 'show': onhoverName }" @mouseover="onhoverName = true" @mouseout="onhoverName = false">
+                <router-link class="navbar-item" to="/setting">설정</router-link>
                 <hr class="navbar-divider">
                 <router-link class="navbar-item" @click.native="logout" to="/login">로그아웃</router-link>
               </div>
@@ -48,7 +52,8 @@ import { mapState, mapActions } from 'vuex';
 export default {
   data() {
     return {
-      onhover: false,
+      onhoverName: false,
+      onhoverAlert: false,
     };
   },
   computed: {
