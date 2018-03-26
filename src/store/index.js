@@ -2,9 +2,9 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 
-Vue.use(Vuex);
+import { apiUrl } from '../config';
 
-const apiUrl = 'http://13.125.91.142';
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {

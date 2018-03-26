@@ -5,6 +5,7 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import AsyncComputed from 'vue-async-computed';
 
+import { apiUrl } from './config';
 import App from './App';
 import router from './router';
 import store from './store';
@@ -50,7 +51,7 @@ axios.interceptors.response.use(res => res, (err) => {
 
     return Promise.reject(err);
   }
-  return axios.post('http://13.125.91.142/refresh-jwt-token/', { token: localStorage.getItem('token') })
+  return axios.post(`${apiUrl}/refresh-jwt-token/`, { token: localStorage.getItem('token') })
     .then((resRefreshToken) => {
       /* Retry original request with new jwt token. */
       localStorage.setItem('token', resRefreshToken.data.token);
