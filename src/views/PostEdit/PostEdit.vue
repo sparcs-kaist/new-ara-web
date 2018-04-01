@@ -75,7 +75,7 @@ export default {
         data: {
           title: this.title,
           content: this.content,
-          is_content_sexual: true,
+          is_content_sexual: false,
           is_content_social: false,
         },
       }).then((res) => {
