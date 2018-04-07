@@ -161,8 +161,8 @@ export default {
             parent_article: null,
             parent_comment: this.context.id,
             content: this.content,
-            is_anonymous: this.isAnonymous,
-            use_signature: this.useSignature,
+            is_anonymous: this.is_anonymous,
+            use_signature: this.use_signature,
             attachment: this.attachment,
           },
         })
