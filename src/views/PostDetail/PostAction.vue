@@ -8,6 +8,9 @@
       <i class="mdi mdi-18px mdi-thumb-down"/>
       <span :class="{ 'voted': context.my_vote === false }">{{ context.negative_vote_count }}</span>
     </span>
+    <span>
+      <a><u>신고하기</u></a>
+    </span>
     <!--<span v-if="isArticle" @click="action('scrap')">스크랩</span>-->
     <!--<button class="button" @click="openReportModal">신고</button>-->
     <!--<div class="modal" :class="{ 'is-active': reportToggle }">-->
