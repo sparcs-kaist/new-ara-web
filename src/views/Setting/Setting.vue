@@ -123,7 +123,7 @@ export default {
         data: formData,
       }).then((res) => {
         this.pending = false;
-        //floating
+        // floating
         console.log(res);
       })
       .catch(() => {
