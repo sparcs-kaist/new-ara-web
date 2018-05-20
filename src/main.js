@@ -51,10 +51,10 @@ axios.interceptors.response.use(res => res, (err) => {
 
     return Promise.reject(err);
   }
-  return axios.post(`${apiUrl}/refresh-jwt-token/`, { token: localStorage.getItem('token') })
+  return axios.post(`${apiUrl}/refresh-jwt-token/`, { token: localStorage.getItem('jwtToken') })
     .then((resRefreshToken) => {
       /* Retry original request with new jwt token. */
-      localStorage.setItem('token', resRefreshToken.data.token);
+      localStorage.setItem('jwtToken', resRefreshToken.data.token);
       axios(err.config)
         .then(resRetry => resRetry)
         .catch(errRetry => Promise.reject(errRetry));
