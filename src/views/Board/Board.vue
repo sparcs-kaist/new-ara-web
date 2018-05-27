@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div v-if="!error">
+    <div v-if="!error" class="w-888 centerh">
       <post-detail v-if="post"></post-detail>
       <post-list></post-list>
-      <button @click="$router.push('/post/create')">글쓰기</button>
+      <button class="button" @click="$router.push('/post/create')" style="float:right">글쓰기</button>
     </div>
     <div v-else>
       Database error
@@ -71,5 +71,6 @@ export default {
 </script>
 
 <style>
-
+.w-888 { width: 888px;}
+.centerh { margin: 0 auto;}
 </style>

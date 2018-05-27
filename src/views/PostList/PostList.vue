@@ -36,7 +36,7 @@
       <button type="button" @click="searchArticles()">검색</button>
     </div>
 
-    <div class="field has-addons centerh">
+    <!-- <div class="field has-addons centerh">
       <p class="control">
         <span class="select">
           <select v-model="searchType">
@@ -47,12 +47,12 @@
         </span>
       </p>
       <div class="control">
-        <input class="input" type="text" placeholder="검색" v-model="searchText" v-on:input="typing" @keyup.enter="search()" />
+        <input class="input" type="text" placeholder="검색" v-model="searchText" v-on:input="typing" @keyup.enter="searchArticles()" />
       </div>
       <div class="control">
-        <a class="button is-info" @click="search()">검색</a>
+        <a class="button is-info" @click="searchArticles()">검색</a>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -206,6 +206,5 @@ export default {
 .w-60 { width: 60px;}
 .w-102 { width: 102px;}
 .w-313 { width: 313px;}
-.w-780 { width: 780px;}
 .centerh { margin: 0 auto; text-align: center;}
 </style>
