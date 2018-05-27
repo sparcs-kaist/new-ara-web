@@ -67,6 +67,21 @@
       <button :class="{'is-loading': pending}" @click="postProfileHandler" id="button-post-create" class="button is-primary is-pulled-right">수정하기</button>
       <div class="is-clearfix"></div>
     </section>
+
+    <div class="modal is-active" v-if="showModal">
+      <div class = "modal-content">
+        <article class="message is-success">
+          <div class="message-header">
+            <p>Complete</p>
+            <button class="delete" aria-labe="delete" @click="deleteModalHandler"></button>
+          </div>
+          <div class="message-body">
+            업로드 완료
+          </div>
+        </article>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -85,6 +100,7 @@ export default {
       see_social: '',
       pending: false,
       userid: 0,
+      showModal: false,
     };
   },
   computed: {
@@ -123,6 +139,7 @@ export default {
         data: formData,
       }).then((res) => {
         this.pending = false;
+        this.showModal = true;
         // floating
         console.log(res);
       })
@@ -130,21 +147,34 @@ export default {
         this.pending = false;
       });
     },
-    imageUploadHandler(e) {
-      const files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-
-      this.newpicture = files[0];
-      const reader = new FileReader();
-
-      reader.onload = function (event) {
-        this.picture = event.target.result;
-      };
-      reader.readAsDataURL(files[0]);
+    // imageUploadHandler(e) {
+    //   const files = e.target.files || e.dataTransfer.files;
+    //   if (!files.length) return;
+    //
+    //   this.newpicture = files[0];
+    //   const reader = new FileReader();
+    //
+    //   reader.onload = function (event) {
+    //     this.picture = event.target.result;
+    //   };
+    //   reader.readAsDataURL(files[0]);
+    // },
+    imageUploadHandler(event) {
+      const input = event.target;
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.picture = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
+    deleteModalHandler() {
+      this.showModal = false;
     },
   },
   mounted() {
-    this.userid = 3; // TODO: need to fix as real user_id
+    this.userid = 11; // TODO: need to fix as real user_id
     this.$axios({
       url: `${this.apiUrl}/api/user_profiles/${this.userid}`,
       method: 'GET',
