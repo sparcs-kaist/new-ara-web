@@ -35,24 +35,6 @@
       <input id="search_query" @keyup.enter="searchArticles()" type="text" />
       <button type="button" @click="searchArticles()">검색</button>
     </div>
-
-    <!-- <div class="field has-addons centerh">
-      <p class="control">
-        <span class="select">
-          <select v-model="searchType">
-            <option value="title" selected>제목</option>
-            <option value="content">내용</option>
-            <option value="created_by">글쓴이</option>
-          </select>
-        </span>
-      </p>
-      <div class="control">
-        <input class="input" type="text" placeholder="검색" v-model="searchText" v-on:input="typing" @keyup.enter="searchArticles()" />
-      </div>
-      <div class="control">
-        <a class="button is-info" @click="searchArticles()">검색</a>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -131,25 +113,6 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
-    },
-    typing(e) {
-      this.searchText = e.target.value;
-    },
-    search() {
-      const query = {};
-
-      if (this.searchType === 'title') query.title__contains = this.searchText;
-      else if (this.searchType === 'content') query.content__contains = this.searchText;
-      else if (this.searchType === 'created_by') query.created_by = this.searchText;
-      this.searchText = '';
-
-      this.fetchPost(undefined);
-      this.updatePage(1);
-      this.$router.push({
-        name: 'PostList',
-        params: { board: this.board },
-        query,
-      });
     },
     searchArticles() {
       const searchTypeElement = document.getElementById('search_type');

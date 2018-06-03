@@ -43,12 +43,7 @@ export default {
       'fetchPost',
       'updateBoard',
       'updatePage',
-      'resetPost',
     ]),
-    resetPost() {
-      this.fetchPost(undefined);
-      this.updatePage(1);
-    },
   },
   components: {
     PostDetail,
