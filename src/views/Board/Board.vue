@@ -52,6 +52,7 @@ export default {
   watch: {
     async $route(to, from) {
       this.updateBoard(to.params.board);
+      if (to.params.board !== from.params.board) this.updatePage(1);
       this.post_id = to.params.post_id;
 
       this.isLoading = true;

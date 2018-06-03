@@ -146,16 +146,6 @@ export default {
   components: {
     PostItem,
   },
-  watch: {
-    async $route(to, from) {
-      if (from.params.board !== to.params.board) {
-        this.updateBoard(to.params.board);
-        this.updatePage(1);
-      }
-      await this.updateBoardList();
-      this.refresh();
-    },
-  },
   async mounted() {
     if (this.board !== this.$route.params.board) {
       this.updateBoard(this.$route.params.board);
