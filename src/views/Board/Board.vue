@@ -2,7 +2,7 @@
   <div>
     <div v-if="!error" class="w-888 centerh">
       <post-detail v-if="post"></post-detail>
-      <post-list></post-list>
+      <post-list v-if="!isLoading"></post-list>
       <div>
         <button class="button" @click="$router.push('/post/create')" style="float:right">글쓰기</button>
         <div style="clear: both"></div>
@@ -27,6 +27,7 @@ export default {
       post_items: [],
       post_id: 0,
       error: false,
+      isLoading: false,
     };
   },
   computed: {
@@ -54,10 +55,13 @@ export default {
     PostList,
   },
   watch: {
-    $route(to, from) {
+    async $route(to, from) {
       this.updateBoard(to.params.board);
       this.post_id = to.params.post_id;
-      this.fetchPost({ postId: this.post_id, context: this.$route.query });
+
+      this.isLoading = true;
+      await this.fetchPost({ postId: this.post_id, context: this.$route.query });
+      this.isLoading = false;
 
       if (from.params.post_id !== to.params.post_id
         || from.params.board !== to.params.board) {
@@ -65,10 +69,13 @@ export default {
       }
     },
   },
-  mounted() {
+  async mounted() {
     this.updateBoard(this.$route.params.board);
     this.post_id = this.$route.params.post_id;
-    this.fetchPost({ postId: this.post_id, context: this.$route.query });
+
+    this.isLoading = true;
+    await this.fetchPost({ postId: this.post_id, context: this.$route.query });
+    this.isLoading = false;
   },
 };
 </script>

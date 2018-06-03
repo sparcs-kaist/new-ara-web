@@ -32,7 +32,7 @@ export default new Vuex.Store({
     fetchPost({ commit }, payload) {
       if (!payload || !payload.postId) {
         commit('updatePost', undefined);
-        return;
+        return Promise.resolve();
       }
       const postId = payload.postId;
       const context = payload.context;
@@ -45,20 +45,22 @@ export default new Vuex.Store({
           url += `${key}=${context[key]}&`;
         }
       }
-      axios({
-        method: 'GET',
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('jwtToken')}`,
-        },
-        url: `${apiUrl}/api/articles/${postId}/${url.slice(0, -1)}`,
-      }).then((res) => {
-        // console.log(res);
-        commit('updatePost', res.data);
-        commit('updatePage', res.data.article_current_page);
-        // TODO: update post, page, board
-      }).catch((err) => {
-        console.error(err);
-        commit('updatePost', undefined);
+      return new Promise((resolve, reject) => {
+        axios({
+          method: 'GET',
+          headers: {
+            Authorization: `JWT ${localStorage.getItem('jwtToken')}`,
+          },
+          url: `${apiUrl}/api/articles/${postId}/${url.slice(0, -1)}`,
+        }).then((res) => {
+          commit('updatePost', res.data);
+          commit('updatePage', res.data.article_current_page);
+          resolve();
+          // TODO: update post, page, board
+        }).catch((err) => {
+          commit('updatePost', undefined);
+          reject(err);
+        });
       });
     },
     async updateBoardList({ commit }) {

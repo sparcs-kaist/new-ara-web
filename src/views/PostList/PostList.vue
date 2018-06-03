@@ -10,7 +10,7 @@
         <th class="w-60">조회</th>
         <th class="w-102">시간</th>
       </tr>
-      <post-item v-for="item in postItems" :key="item.id" :board="board" :item="item" :post="post"></post-item>
+      <post-item v-if="!isLoading" v-for="item in postItems" :key="item.id" :board="board" :item="item" :post="post"></post-item>
     </table>
     <div class="centerh">
       <a @click="updatePageAndFetch(1)">«</a>
@@ -68,6 +68,7 @@ export default {
       numPages: 0,
       searchType: 'title',
       searchText: '',
+      isLoading: false,
     };
   },
   computed: {
@@ -126,6 +127,9 @@ export default {
           this.numPages = res.data.num_pages;
         })
         .catch(() => {
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
     typing(e) {
@@ -170,6 +174,7 @@ export default {
       });
     },
     async updatePageAndFetch(page) {
+      this.isLoading = true;
       this.updatePage(page);
       await this.updateBoardList();
       this.refresh();
