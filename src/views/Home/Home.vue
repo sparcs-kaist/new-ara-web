@@ -6,11 +6,11 @@
         <div class="columns is-multiline">
           <div class="column is-6">
             <h4 class="hit-title">오늘 화제</h4>
-            <hit-article class="article-item" v-for="article in bestArticles" :key="article.id" :article="article"></hit-article>
+            <hit-article-list :articles="bestArticles['daily']"></hit-article-list>
           </div>
           <div class="column is-6">
-            <h4 class="hit-title">오늘 화제</h4>
-            <hit-article class="article-item" v-for="article in bestArticles" :key="article.id" :article="article"></hit-article>
+            <h4 class="hit-title">이번 주 화제</h4>
+            <hit-article-list :articles="bestArticles['weekly']"></hit-article-list>
           </div>
           <div class="column is-6" v-for="board in articles" :key="board.id">
             <hr>
@@ -37,13 +37,16 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
-import HitArticle from './HitArticle';
+import HitArticleList from './HitArticleList';
 import RecentArticle from './RecentArticle';
 
 export default {
   data() {
     return {
-      bestArticles: [],
+      bestArticles: {
+        daily: [],
+        weekly: [],
+      },
       articles: {},
     };
   },
@@ -62,13 +65,16 @@ export default {
     ]),
   },
   components: {
-    HitArticle, RecentArticle,
+    HitArticleList, RecentArticle,
   },
   async mounted() {
     await this.updateBoardList();
     this.$axios.get(`${this.apiUrl}/api/home`)
       .then((res) => {
-        this.bestArticles = res.data.best_articles;
+        this.bestArticles = {
+          daily: res.data.daily_bests,
+          weekly: res.data.weekly_bests,
+        };
         this.articles = res.data.boards;
       })
       .catch((err) => {
@@ -99,7 +105,6 @@ export default {
     padding-left: 16px;
     padding-top: 4px;
     padding-bottom: 4px;
-    margin-bottom: 20px;
   }
 
   .article-item {
