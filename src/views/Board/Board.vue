@@ -3,7 +3,10 @@
     <div v-if="!error" class="w-888 centerh">
       <post-detail v-if="post"></post-detail>
       <post-list></post-list>
-      <button class="button" @click="$router.push('/post/create')" style="float:right">글쓰기</button>
+      <div>
+        <button class="button" @click="$router.push('/post/create')" style="float:right">글쓰기</button>
+        <div style="clear: both"></div>
+      </div>
     </div>
     <div v-else>
       Database error
