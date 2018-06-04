@@ -12,7 +12,7 @@
                 <div class="control">
                   <div class="select">
                     <select v-model="board">
-                      <option v-for="boardName in boardNameList">{{ boardName }}</option>
+                      <option v-for="boardName in boardNameList" :selected="board === boardName">{{ boardName }}</option>
                     </select>
                   </div>
                 </div>
@@ -65,6 +65,9 @@ export default {
       'apiUrl',
       'auth',
     ]),
+    ...mapState({
+      defaultBoard: 'board',
+    }),
     ...mapGetters([
       'boardNameList',
     ]),
@@ -127,6 +130,7 @@ export default {
   },
   mounted() {
     this.updateBoardList();
+    this.board = this.defaultBoard || this.boardNameList[0];
   },
 };
 </script>
