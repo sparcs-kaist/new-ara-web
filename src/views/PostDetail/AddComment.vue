@@ -99,7 +99,6 @@ export default {
   computed: {
     ...mapState([
       'apiUrl',
-      'auth',
       'post',
     ]),
   },

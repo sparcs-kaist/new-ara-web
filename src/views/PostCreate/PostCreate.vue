@@ -63,7 +63,6 @@ export default {
     ...mapState([
       'boardList',
       'apiUrl',
-      'auth',
     ]),
     ...mapState({
       defaultBoard: 'board',

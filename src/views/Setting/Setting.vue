@@ -106,7 +106,6 @@ export default {
   computed: {
     ...mapState([
       'apiUrl',
-      'auth',
     ]),
     ...mapGetters([
       'boardNameList',

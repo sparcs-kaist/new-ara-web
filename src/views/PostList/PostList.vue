@@ -74,7 +74,6 @@ export default {
       'post',
       'board',
       'page',
-      'auth',
       'boardList',
       'apiUrl',
     ]),

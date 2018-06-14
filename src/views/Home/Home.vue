@@ -52,7 +52,6 @@ export default {
   },
   computed: {
     ...mapState([
-      'auth',
       'apiUrl',
     ]),
     ...mapGetters([

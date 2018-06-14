@@ -15,7 +15,6 @@ export default {
   props: ['article'],
   computed: {
     ...mapState([
-      'auth',
       'apiUrl',
     ]),
     ...mapGetters([
