@@ -74,7 +74,6 @@ export default {
       'post',
       'board',
       'page',
-      'boardList',
       'apiUrl',
     ]),
     ...mapGetters([
@@ -89,7 +88,6 @@ export default {
       'fetchPost',
       'updateBoard',
       'updatePage',
-      'updateBoardList',
     ]),
     refresh() {
       const condition = this.$route.query;
@@ -138,7 +136,6 @@ export default {
     async updatePageAndFetch(page) {
       this.isLoading = true;
       this.updatePage(page);
-      await this.updateBoardList();
       this.refresh();
     },
   },
@@ -150,7 +147,6 @@ export default {
       this.updateBoard(this.$route.params.board);
       this.updatePage(1);
     }
-    await this.updateBoardList();
     this.refresh();
   },
 };

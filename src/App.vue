@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-if="isLoginView || jwtTokenVerified">
+  <div id="app" v-if="isLoginView || isAppReady">
     <navbar v-if="!isLoginView"/>
     <router-view></router-view>
     <foot v-if="!isLoginView"/>
@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import Vue from 'vue';
 import Navbar from './components/Navbar/Navbar';
 import Foot from './components/Foot/Foot';
@@ -23,10 +23,21 @@ export default {
     };
   },
   computed: {
-    ...mapState(['apiUrl']),
+    ...mapState([
+      'apiUrl',
+      'boardList',
+    ]),
     isLoginView() {
       return this.$route.name === 'Login';
     },
+    isAppReady() {
+      return this.jwtTokenVerified && this.boardList.length > 0;
+    },
+  },
+  methods: {
+    ...mapActions([
+      'updateBoardList',
+    ]),
   },
   mounted() {
     /* If url contains jwt info, save it into localStorage and refresh the page. */
@@ -53,6 +64,12 @@ export default {
       }).catch(() => {
         this.$router.replace('/login');
       });
+    }
+  },
+  async updated() {
+    /* Get board list only once if user is logged in. */
+    if (this.jwtTokenVerified && this.boardList.length === 0) {
+      await this.updateBoardList();
     }
   },
 };

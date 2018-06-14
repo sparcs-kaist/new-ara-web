@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { VueEditor } from 'vue2-editor';
 
 export default {
@@ -75,9 +75,6 @@ export default {
     VueEditor,
   },
   methods: {
-    ...mapActions([
-      'updateBoardList',
-    ]),
     postArticleHandler() {
       if (!this.validateInput()) {
         /* TODO: Modal로 변경 */
@@ -128,7 +125,6 @@ export default {
     },
   },
   mounted() {
-    this.updateBoardList();
     this.board = this.defaultBoard || this.boardNameList[0];
   },
 };

@@ -34,7 +34,6 @@ export default {
     ...mapState([
       'post',
       'board',
-      'boardList',
       'page',
     ]),
   },

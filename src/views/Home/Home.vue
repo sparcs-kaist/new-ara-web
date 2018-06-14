@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import HitArticleList from './HitArticleList';
 import RecentArticle from './RecentArticle';
 
@@ -58,16 +58,10 @@ export default {
       'boardNameList',
     ]),
   },
-  methods: {
-    ...mapActions([
-      'updateBoardList',
-    ]),
-  },
   components: {
     HitArticleList, RecentArticle,
   },
   async mounted() {
-    await this.updateBoardList();
     this.$axios.get(`${this.apiUrl}/api/home`)
       .then((res) => {
         this.bestArticles = {
