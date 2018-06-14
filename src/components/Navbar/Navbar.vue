@@ -64,7 +64,7 @@ export default {
   methods: {
     ...mapActions(['fetchPost']),
     resetPost() {
-      this.fetchPost(undefined);
+      this.fetchPost(null);
     },
     logout() {
       localStorage.setItem('jwtToken', null);

@@ -125,7 +125,7 @@ export default {
       searchTypeElement.selectedIndex = 0;
       searchInputElement.value = '';
 
-      this.fetchPost(undefined);
+      this.fetchPost(null);
       this.updatePage(1);
       this.$router.push({
         name: 'PostList',

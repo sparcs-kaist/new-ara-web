@@ -8,7 +8,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    post: undefined,
+    post: null,
     apiUrl,
     board: '',
     page: 0,
@@ -31,7 +31,7 @@ export default new Vuex.Store({
   actions: {
     fetchPost({ commit }, payload) {
       if (!payload || !payload.postId) {
-        commit('updatePost', undefined);
+        commit('updatePost', null);
         return Promise.resolve();
       }
       const postId = payload.postId;
@@ -58,7 +58,7 @@ export default new Vuex.Store({
           resolve();
           // TODO: update post, page, board
         }).catch((err) => {
-          commit('updatePost', undefined);
+          commit('updatePost', null);
           reject(err);
         });
       });
