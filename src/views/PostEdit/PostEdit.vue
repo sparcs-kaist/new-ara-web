@@ -77,11 +77,9 @@ export default {
           is_content_sexual: false,
           is_content_social: false,
         },
-      }).then((res) => {
+      }).then(() => {
         this.pending = false;
-        console.log(res);
         this.$router.push(`/posts/${this.getBoardNameById(this.boardId)}/${this.postId}`);
-        // console.log(result);
       })
       .catch(() => {
         this.pending = false;

@@ -129,7 +129,6 @@ export default {
     },
     addCommentHandler() {
       this.pending = true;
-      console.log(this.attachment);
       if (this.isArticle) {
         this.$axios({
           url: `${this.apiUrl}/api/comments/`,

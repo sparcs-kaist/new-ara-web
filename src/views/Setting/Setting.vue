@@ -133,11 +133,9 @@ export default {
           'Content-Type': 'multipart/form-data',
         },
         data: formData,
-      }).then((res) => {
+      }).then(() => {
         this.pending = false;
         this.showModal = true;
-        // floating
-        console.log(res);
       })
       .catch(() => {
         this.pending = false;
