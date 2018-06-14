@@ -51,7 +51,7 @@ export default {
       ],
       pending: false,
       postId: 0,
-      board: -1,
+      boardId: -1,
     };
   },
   computed: {
@@ -59,7 +59,7 @@ export default {
       'apiUrl',
     ]),
     ...mapGetters([
-      'boardNameList',
+      'getBoardNameById',
     ]),
   },
   components: {
@@ -80,7 +80,7 @@ export default {
       }).then((res) => {
         this.pending = false;
         console.log(res);
-        this.$router.push(`/posts/${this.board > 0 ? this.boardNameList[this.board - 1] : 'all'}/${this.postId}`);
+        this.$router.push(`/posts/${this.getBoardNameById(this.boardId)}/${this.postId}`);
         // console.log(result);
       })
       .catch(() => {
@@ -114,7 +114,7 @@ export default {
     .then((res) => {
       this.title = res.data.title;
       this.content = res.data.content;
-      this.board = res.data.parent_board.id;
+      this.boardId = res.data.parent_board.id;
     })
     .catch((err) => {
       console.log(err);

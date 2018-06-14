@@ -55,8 +55,7 @@ export default {
   },
   computed: {
     boardOrHeading() {
-      if (this.board === 'all') return '게시판';
-      return '말머리';
+      return this.board.id === 0 ? '게시판' : '말머리';
     },
     pageBase() {
       return (this.page - 1) - ((this.page - 1) % 10);
@@ -77,7 +76,7 @@ export default {
       'apiUrl',
     ]),
     ...mapGetters([
-      'boardNameList',
+      'getBoardIdByName',
     ]),
   },
   methods: {
@@ -97,7 +96,7 @@ export default {
         const key = keys[i];
         url += `${key}=${condition[key]}&`;
       }
-      if (this.board !== 'all') url += `parent_board=${this.boardNameList.indexOf(this.board) + 1}&`;
+      if (this.board.en_name !== 'all') url += `parent_board=${this.board.id}&`;
       url += `page=${this.page}`;
 
       this.$axios.get(`${this.apiUrl}/api/articles/${url}`)
@@ -129,7 +128,7 @@ export default {
       this.updatePage(1);
       this.$router.push({
         name: 'PostList',
-        params: { board: this.board },
+        params: { board: this.board.en_name },
         query,
       });
     },
@@ -143,7 +142,7 @@ export default {
     PostItem,
   },
   async mounted() {
-    if (this.board !== this.$route.params.board) {
+    if (this.board.en_name !== this.$route.params.board) {
       this.updateBoard(this.$route.params.board);
       this.updatePage(1);
     }

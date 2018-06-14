@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link class="router-link" :to="{ name: 'PostDetail', params: { board: boardNameList[article.parent_board.id - 1], post_id: article.id }}">
+    <router-link class="router-link" :to="{ name: 'PostDetail', params: { board: getBoardNameById(article.parent_board.id), post_id: article.id }}">
       <span class="post-title">{{ article.title }}</span>
       <span class="post-no-comments">({{ commentNumber }})</span>
       <span class="post-time">{{ elapsedTime(article.created_at) }}</span>
@@ -18,7 +18,7 @@ export default {
       'apiUrl',
     ]),
     ...mapGetters([
-      'boardNameList',
+      'getBoardNameById',
     ]),
   },
   asyncComputed: {

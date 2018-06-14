@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link class="router-link" :to="{ name: 'PostDetail', params: { board: boardNameList[article.parent_board.id - 1], post_id: article.id }}">
+    <router-link class="router-link" :to="{ name: 'PostDetail', params: { board: getBoardNameById(article.parent_board.id), post_id: article.id }}">
       <span class="post-hit">{{ article.hit_count }}</span>
       <span class="post-title">{{ article.title }}</span>
     </router-link>
@@ -14,7 +14,7 @@
     props: ['article'],
     computed: {
       ...mapGetters([
-        'boardNameList',
+        'getBoardNameById',
       ]),
     },
   };

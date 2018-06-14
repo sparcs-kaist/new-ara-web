@@ -15,8 +15,8 @@
           <div class="column is-6" v-for="board in articles" :key="board.id">
             <hr>
             <h4 class="board-title">
-              <router-link class="board-title-router" :to="{ name: 'PostList', params: { board: boardNameList[board.id - 1] }}">
-                {{ boardNameList[board.id - 1] }}
+              <router-link class="board-title-router" :to="{ name: 'PostList', params: { board: getBoardNameById(board.id) }}">
+                {{ getBoardNameById(board.id) }}
               </router-link>
             </h4>
             <recent-article class="article-item" v-for="article in board.recent_articles" :key="article.id" :article="article"></recent-article>
@@ -55,7 +55,7 @@ export default {
       'apiUrl',
     ]),
     ...mapGetters([
-      'boardNameList',
+      'getBoardNameById',
     ]),
   },
   components: {

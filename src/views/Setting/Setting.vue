@@ -87,7 +87,7 @@
 
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   data() {
@@ -106,9 +106,6 @@ export default {
   computed: {
     ...mapState([
       'apiUrl',
-    ]),
-    ...mapGetters([
-      'boardNameList',
     ]),
   },
   methods: {
