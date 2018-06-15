@@ -57,8 +57,7 @@ export default {
       await this.fetchPost({ postId: this.postId, context: this.$route.query });
       this.isLoading = false;
 
-      if (from.params.post_id !== to.params.post_id
-        || from.params.board !== to.params.board) {
+      if (from.params.post_id !== to.params.post_id || from.params.board !== to.params.board) {
         window.scrollTo(0, 0);
       }
     },
