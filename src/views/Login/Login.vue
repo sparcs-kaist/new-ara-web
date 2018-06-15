@@ -31,7 +31,6 @@ export default {
   computed: {
     ...mapState(['apiUrl']),
     loginUrl() {
-      // return this.$route.fullPath;
       return `${this.apiUrl}/login/?next=${location.protocol}//${location.host}`;
     },
     sessionExpired() {

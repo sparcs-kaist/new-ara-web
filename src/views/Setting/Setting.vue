@@ -126,13 +126,6 @@ export default {
       this.$axios({
         url: `${this.apiUrl}/api/user_profiles/${this.userId}/`,
         method: 'PATCH',
-        // data: {
-        //   picture: this.picture,
-        //   nickname: this.nickname,
-        //   signature: this.signature,
-        //   see_sexual: this.see_sexual,
-        //   see_social: this.see_social,
-        // },
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -147,18 +140,6 @@ export default {
         this.pending = false;
       });
     },
-    // imageUploadHandler(e) {
-    //   const files = e.target.files || e.dataTransfer.files;
-    //   if (!files.length) return;
-    //
-    //   this.newPicture = files[0];
-    //   const reader = new FileReader();
-    //
-    //   reader.onload = function (event) {
-    //     this.picture = event.target.result;
-    //   };
-    //   reader.readAsDataURL(files[0]);
-    // },
     imageUploadHandler(event) {
       const input = event.target;
       if (input.files && input.files[0]) {
