@@ -117,65 +117,37 @@ export default {
         url: `${this.apiUrl}/api/attachments/`,
         method: 'POST',
         data: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-        .then((res) => {
-          this.filename = files[0].name;
-          this.attachment = res.data.id;
-        })
-        .catch(() => {
-        });
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }).then((res) => {
+        this.filename = files[0].name;
+        this.attachment = res.data.id;
+      }).catch(() => {});
     },
     addCommentHandler() {
       this.pending = true;
       console.log(this.attachment);
-      if (this.isArticle) {
-        this.$axios({
-          url: `${this.apiUrl}/api/comments/`,
-          method: 'POST',
-          data: {
-            parent_article: this.context.id,
-            parent_comment: null,
-            content: this.content,
-            isAnonymous: this.is_anonymous,
-            useSignature: this.use_signature,
-            attachment: this.attachment,
-          },
-        })
-          .then(() => {
-            this.pending = false;
-            this.fetchPost({ postId: this.post.id });
-            this.$emit('successAdd');
-            this.resetForm();
-          })
-          .catch(() => {
-            this.pending = false;
-          });
-      } else {
-        this.$axios({
-          url: `${this.apiUrl}/api/comments/`,
-          method: 'POST',
-          data: {
-            parent_article: null,
-            parent_comment: this.context.id,
-            content: this.content,
-            isAnonymous: this.is_anonymous,
-            useSignature: this.use_signature,
-            attachment: this.attachment,
-          },
-        })
-          .then(() => {
-            this.pending = false;
-            this.fetchPost({ postId: this.post.id });
-            this.$emit('successAdd');
-            this.resetForm();
-          })
-          .catch(() => {
-            this.pending = false;
-          });
-      }
+
+      const data = {
+        [this.isArticle ? 'parent_article' : 'parent_comment']: this.context.id,
+        [this.isArticle ? 'parent_comment' : 'parent_article']: null,
+        content: this.content,
+        isAnonymous: this.is_anonymous,
+        useSignature: this.use_signature,
+        attachment: this.attachment,
+      };
+
+      this.$axios({
+        url: `${this.apiUrl}/api/comments/`,
+        method: 'POST',
+        data,
+      }).then(() => {
+        this.pending = false;
+        this.fetchPost({ postId: this.post.id });
+        this.$emit('successAdd');
+        this.resetForm();
+      }).catch(() => {
+        this.pending = false;
+      });
     },
     resetForm() {
       this.content = '';
