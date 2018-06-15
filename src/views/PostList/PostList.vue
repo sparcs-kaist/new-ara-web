@@ -92,17 +92,19 @@ export default {
       'updatePage',
       'updateBoardList',
     ]),
-    refresh() {
-      const condition = this.$route.query;
-      const keys = Object.keys(condition);
-      let url = '?';
-      for (let i = 0; i < keys.length; i += 1) {
-        const key = keys[i];
-        url += `${key}=${condition[key]}&`;
-      }
-      if (this.board !== 'all') url += `parent_board=${this.boardNameList.indexOf(this.board) + 1}&`;
-      url += `page=${this.page}`;
+    fetchPostList() {
+      /* Construct url queries. */
+      const urlQueries = [];
+      /* Add current query to maintain context; e.g. search results. */
+      const currQueries = this.$route.query;
+      Object.keys(currQueries).forEach(currQueryName => urlQueries.push(`${currQueryName}=${currQueries[currQueryName]}`));
+      /* Add board query if current board is not 'all' board. */
+      if (this.board !== 'all') urlQueries.push(`parent_board=${this.boardNameList.indexOf(this.board) + 1}`);
+      /* Add current page. */
+      urlQueries.push(`page=${this.page}`);
+      const url = `?${urlQueries.join('&')}`;
 
+      /* Refresh post list. */
       this.$axios.get(`${this.apiUrl}/api/articles/${url}`)
         .then((res) => {
           this.postItems = res.data.results;
@@ -140,7 +142,7 @@ export default {
       this.isLoading = true;
       this.updatePage(page);
       await this.updateBoardList();
-      this.refresh();
+      this.fetchPostList();
     },
   },
   components: {
@@ -152,7 +154,7 @@ export default {
       this.updatePage(1);
     }
     await this.updateBoardList();
-    this.refresh();
+    this.fetchPostList();
   },
 };
 </script>
