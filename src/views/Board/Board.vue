@@ -23,9 +23,7 @@ export default {
   name: 'Board',
   data() {
     return {
-      num_pages: 0,
-      post_items: [],
-      post_id: 0,
+      postId: 0,
       error: false,
       isLoading: false,
     };
@@ -53,10 +51,10 @@ export default {
     async $route(to, from) {
       this.updateBoard(to.params.board);
       if (to.params.board !== from.params.board) this.updatePage(1);
-      this.post_id = to.params.post_id;
+      this.postId = to.params.post_id;
 
       this.isLoading = true;
-      await this.fetchPost({ postId: this.post_id, context: this.$route.query });
+      await this.fetchPost({ postId: this.postId, context: this.$route.query });
       this.isLoading = false;
 
       if (from.params.post_id !== to.params.post_id
@@ -67,10 +65,10 @@ export default {
   },
   async mounted() {
     this.updateBoard(this.$route.params.board);
-    this.post_id = this.$route.params.post_id;
+    this.postId = this.$route.params.post_id;
 
     this.isLoading = true;
-    await this.fetchPost({ postId: this.post_id, context: this.$route.query });
+    await this.fetchPost({ postId: this.postId, context: this.$route.query });
     this.isLoading = false;
   },
 };

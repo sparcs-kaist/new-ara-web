@@ -22,9 +22,9 @@
           <span v-else>{{ iterPage }}</span>
         </div>
       </span>
-      <a v-if="pageBase + 10 < numPages" @click="updatePageAndFetch(pageBase + 11)">&gt;</a>
+      <a v-if="pageBase + 10 < maxPage" @click="updatePageAndFetch(pageBase + 11)">&gt;</a>
       <span v-else>&gt;</span>
-      <a @click="updatePageAndFetch(numPages)">»</a>
+      <a @click="updatePageAndFetch(maxPage)">»</a>
     </div>
     <div class="centerh">
       <select id="search_type" name="search_type">
@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       postItems: [],
-      numPages: 0,
+      maxPage: 0,
       searchType: 'title',
       searchText: '',
       isLoading: false,
@@ -64,7 +64,7 @@ export default {
     pageList() {
       const base = this.pageBase;
       const pageList = [];
-      const pageListMax = (this.numPages < base + 10 ? this.numPages : base + 10);
+      const pageListMax = (this.maxPage < base + 10 ? this.maxPage : base + 10);
       for (let i = base + 1; i <= pageListMax; i += 1) {
         pageList.push(i);
       }
@@ -108,7 +108,7 @@ export default {
       this.$axios.get(`${this.apiUrl}/api/articles/${url}`)
         .then((res) => {
           this.postItems = res.data.results;
-          this.numPages = res.data.num_pages;
+          this.maxPage = res.data.num_pages;
         })
         .catch(() => {
         })

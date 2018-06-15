@@ -21,7 +21,7 @@
         <!--<div class="field">-->
           <!--<div class="control">-->
             <!--<label class="checkbox">-->
-              <!--<input v-model="is_anonymous" type="checkbox">-->
+              <!--<input v-model="isAnonymous" type="checkbox">-->
             <!--</label>-->
           <!--</div>-->
         <!--</div>-->
@@ -35,7 +35,7 @@
         <!--<div class="field">-->
           <!--<div class="control">-->
             <!--<label class="checkbox">-->
-              <!--<input v-model="use_signature" type="checkbox">-->
+              <!--<input v-model="useSignature" type="checkbox">-->
             <!--</label>-->
           <!--</div>-->
         <!--</div>-->
@@ -85,8 +85,8 @@ export default {
   data() {
     return {
       content: '',
-      is_anonymous: false,
-      use_signature: false,
+      isAnonymous: false,
+      useSignature: false,
       attachment: '',
       filename: '',
       pending: false,
@@ -139,8 +139,8 @@ export default {
             parent_article: this.context.id,
             parent_comment: null,
             content: this.content,
-            is_anonymous: this.is_anonymous,
-            use_signature: this.use_signature,
+            isAnonymous: this.is_anonymous,
+            useSignature: this.use_signature,
             attachment: this.attachment,
           },
         })
@@ -161,8 +161,8 @@ export default {
             parent_article: null,
             parent_comment: this.context.id,
             content: this.content,
-            is_anonymous: this.is_anonymous,
-            use_signature: this.use_signature,
+            isAnonymous: this.is_anonymous,
+            useSignature: this.use_signature,
             attachment: this.attachment,
           },
         })
@@ -179,8 +179,8 @@ export default {
     },
     resetForm() {
       this.content = '';
-      this.is_anonymous = false;
-      this.use_signature = false;
+      this.isAnonymous = false;
+      this.useSignature = false;
       this.attachment = '';
       this.filename = '';
       this.pending = false;

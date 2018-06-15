@@ -93,13 +93,13 @@ export default {
   data() {
     return {
       picture: null,
-      newpictuer: null,
+      newPicture: null,
       nickname: '',
       signature: '',
       see_sexual: '',
       see_social: '',
       pending: false,
-      userid: 0,
+      userId: 0,
       showModal: false,
     };
   },
@@ -116,15 +116,15 @@ export default {
     postProfileHandler() {
       this.pending = true;
       const formData = new FormData();
-      if (this.newpicture) {
-        formData.append('picture', this.newpicture);
+      if (this.newPicture) {
+        formData.append('picture', this.newPicture);
       }
       formData.append('nickname', this.nickname);
       formData.append('signature', this.signature);
       formData.append('see_sexual', this.see_sexual);
       formData.append('see_social', this.see_social);
       this.$axios({
-        url: `${this.apiUrl}/api/user_profiles/${this.userid}/`,
+        url: `${this.apiUrl}/api/user_profiles/${this.userId}/`,
         method: 'PATCH',
         // data: {
         //   picture: this.picture,
@@ -151,7 +151,7 @@ export default {
     //   const files = e.target.files || e.dataTransfer.files;
     //   if (!files.length) return;
     //
-    //   this.newpicture = files[0];
+    //   this.newPicture = files[0];
     //   const reader = new FileReader();
     //
     //   reader.onload = function (event) {
@@ -174,9 +174,9 @@ export default {
     },
   },
   mounted() {
-    this.userid = 11; // TODO: need to fix as real user_id
+    this.userId = 11; // TODO: need to fix as real user_id
     this.$axios({
-      url: `${this.apiUrl}/api/user_profiles/${this.userid}`,
+      url: `${this.apiUrl}/api/user_profiles/${this.userId}`,
       method: 'GET',
     }).then((res) => {
       this.nickname = res.data.nickname;
