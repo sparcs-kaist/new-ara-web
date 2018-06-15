@@ -1,6 +1,6 @@
 <template>
-  <div class = "setting-container">
-    <section class = "section">
+  <div class="setting-container">
+    <section class="section">
       <h1 class="title">설정</h1>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
@@ -73,7 +73,7 @@
         <article class="message is-success">
           <div class="message-header">
             <p>Complete</p>
-            <button class="delete" aria-labe="delete" @click="deleteModalHandler"></button>
+            <button class="delete" aria-label="delete" @click="deleteModalHandler"></button>
           </div>
           <div class="message-body">
             업로드 완료
