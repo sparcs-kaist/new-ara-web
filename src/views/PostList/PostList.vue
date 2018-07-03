@@ -105,7 +105,7 @@ export default {
       const url = `?${urlQueries.join('&')}`;
 
       /* Refresh post list. */
-      this.$axios.get(`${this.apiUrl}/api/articles/${url}`)
+      this.$axios.get(`articles/${url}`)
         .then((res) => {
           this.postItems = res.data.results;
           this.maxPage = res.data.num_pages;

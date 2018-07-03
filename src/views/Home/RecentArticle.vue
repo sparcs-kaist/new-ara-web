@@ -25,7 +25,7 @@ export default {
   asyncComputed: {
     commentNumber() {
       return new Promise((resolve) => {
-        this.$axios.get(`${this.apiUrl}/api/comments/?parent_article=${this.article.id}`)
+        this.$axios.get(`comments/?parent_article=${this.article.id}`)
           .then((res) => {
             resolve(res.data.results.length);
           });

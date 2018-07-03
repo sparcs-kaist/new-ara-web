@@ -64,11 +64,12 @@ export default {
       let updateVoteUrlDetail;
       if (this.context.my_vote === newVoteType) updateVoteUrlDetail = 'vote_cancel/';
       else updateVoteUrlDetail = `${newVoteType ? 'vote_positive' : 'vote_negative'}/`;
-      this.$axios.post(`${this.apiUrl}/api/${contextType}/${this.context.id}/${updateVoteUrlDetail}`)
+      this.$axios.post(`${contextType}/${this.context.id}/${updateVoteUrlDetail}`)
         .then(() => {
           this.fetchPost({ postId: this.post.id, context: this.$route.query });
         })
         .catch(() => {});
+
     },
     openReportModal() {
       if (this.context.my_report) alert(`You've already reported this ${this.isArticle ? 'article' : 'comment'}!`);
@@ -79,14 +80,12 @@ export default {
         content: this.reportContent,
         [this.isArticle ? 'parent_article' : 'parent_comment']: this.context.id,
       };
-      this.$axios({
-        url: `${this.apiUrl}/api/reports/`,
-        method: 'POST',
-        data,
-      }).then((res) => {
-        alert('report accepted!');
-        this.context.my_report = res.data;
-      }).catch(() => {});
+
+      this.$axios.post('reports/', data)
+        .then((res) => {
+          alert('report accepted!');
+          this.context.my_report = res.data;
+        }).catch(() => {});
 
       this.reportContent = '';
       this.reportToggle = false;

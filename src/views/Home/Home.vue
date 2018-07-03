@@ -69,7 +69,7 @@ export default {
   },
   async mounted() {
     await this.updateBoardList();
-    this.$axios.get(`${this.apiUrl}/api/home`)
+    this.$axios.get('home')
       .then((res) => {
         this.bestArticles = {
           daily: res.data.daily_bests,

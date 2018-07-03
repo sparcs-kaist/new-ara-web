@@ -113,12 +113,12 @@ export default {
 
       const formData = new FormData();
       formData.append('file', files[0]);
-      this.$axios({
-        url: `${this.apiUrl}/api/attachments/`,
-        method: 'POST',
-        data: formData,
-        headers: { 'Content-Type': 'multipart/form-data' },
-      }).then((res) => {
+      this.$axios.post('attachments/',
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        },
+      ).then((res) => {
         this.filename = files[0].name;
         this.attachment = res.data.id;
       }).catch(() => {});
@@ -136,11 +136,8 @@ export default {
         attachment: this.attachment,
       };
 
-      this.$axios({
-        url: `${this.apiUrl}/api/comments/`,
-        method: 'POST',
-        data,
-      }).then(() => {
+      this.$axios.post('comments/', data)
+      .then(() => {
         this.pending = false;
         this.fetchPost({ postId: this.post.id });
         this.$emit('successAdd');
