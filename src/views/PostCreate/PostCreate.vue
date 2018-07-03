@@ -11,8 +11,8 @@
                 <label class="label">게시판</label>
                 <div class="control">
                   <div class="select">
-                    <select v-model="board">
-                      <option v-for="boardName in boardNameList" :selected="board === boardName">{{ boardName }}</option>
+                    <select v-model="boardName">
+                      <option v-for="board in boardList" :selected="boardName === board.en_name">{{ board.en_name }}</option>
                     </select>
                   </div>
                 </div>
@@ -39,13 +39,13 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { VueEditor } from 'vue2-editor';
 
 export default {
   data() {
     return {
-      board: '', /* TODO: 현재 게시판 default로 설정 */
+      boardName: '',
       title: '',
       content: ' ',
       customToolbar: [
@@ -63,22 +63,19 @@ export default {
     ...mapState([
       'boardList',
       'apiUrl',
-      'auth',
     ]),
     ...mapState({
       defaultBoard: 'board',
     }),
     ...mapGetters([
-      'boardNameList',
+      'getBoardNameById',
+      'getBoardIdByName',
     ]),
   },
   components: {
     VueEditor,
   },
   methods: {
-    ...mapActions([
-      'updateBoardList',
-    ]),
     postArticleHandler() {
       if (!this.validateInput()) {
         /* TODO: Modal로 변경 */
@@ -93,18 +90,17 @@ export default {
         is_content_sexual: false,
         is_content_social: false,
         use_signature: false,
-        parent_board: this.boardList[this.boardNameList.indexOf(this.board)].id,
+        parent_board: this.getBoardIdByName(this.boardName),
       }).then((res) => {
         this.pending = false;
-        this.$router.push(`/posts/${res.data.parent_board > 0
-          ? this.boardNameList[res.data.parent_board - 1] : 'all'}/${res.data.id}`);
+        this.$router.push(`/posts/${this.getBoardNameById(res.data.parent_board)}/${res.data.id}`);
       })
       .catch(() => {
         this.pending = false;
       });
     },
     validateInput() {
-      return this.board !== '' && this.title !== '' && this.content.trim() !== '';
+      return this.boardName !== '' && this.title !== '' && this.content.trim() !== '';
     },
     imageUploadHandler(file, Editor, cursorLocation) {
       const formData = new FormData();
@@ -125,8 +121,7 @@ export default {
     },
   },
   mounted() {
-    this.updateBoardList();
-    this.board = this.defaultBoard || this.boardNameList[0];
+    this.boardName = this.defaultBoard.en_name || this.boardList[0].en_name;
   },
 };
 </script>

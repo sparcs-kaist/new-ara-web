@@ -55,8 +55,7 @@ export default {
   },
   computed: {
     boardOrHeading() {
-      if (this.board === 'all') return '게시판';
-      return '말머리';
+      return this.board.id === 0 ? '게시판' : '말머리';
     },
     pageBase() {
       return (this.page - 1) - ((this.page - 1) % 10);
@@ -74,12 +73,10 @@ export default {
       'post',
       'board',
       'page',
-      'auth',
-      'boardList',
       'apiUrl',
     ]),
     ...mapGetters([
-      'boardNameList',
+      'getBoardIdByName',
     ]),
   },
   methods: {
@@ -90,19 +87,18 @@ export default {
       'fetchPost',
       'updateBoard',
       'updatePage',
-      'updateBoardList',
     ]),
-    fetchPostList() {
-      /* Construct url queries. */
-      const urlQueries = [];
-      /* Add current query to maintain context; e.g. search results. */
-      const currQueries = this.$route.query;
-      Object.keys(currQueries).forEach(currQueryName => urlQueries.push(`${currQueryName}=${currQueries[currQueryName]}`));
-      /* Add board query if current board is not 'all' board. */
-      if (this.board !== 'all') urlQueries.push(`parent_board=${this.boardNameList.indexOf(this.board) + 1}`);
-      /* Add current page. */
-      urlQueries.push(`page=${this.page}`);
-      const url = `?${urlQueries.join('&')}`;
+
+    refresh() {
+      const condition = this.$route.query;
+      const keys = Object.keys(condition);
+      let url = '?';
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i];
+        url += `${key}=${condition[key]}&`;
+      }
+      if (this.board.en_name !== 'all') url += `parent_board=${this.board.id}&`;
+      url += `page=${this.page}`;
 
       /* Refresh post list. */
       this.$axios.get(`articles/${url}`)
@@ -130,31 +126,29 @@ export default {
       searchTypeElement.selectedIndex = 0;
       searchInputElement.value = '';
 
-      this.fetchPost(undefined);
+      this.fetchPost(null);
       this.updatePage(1);
       this.$router.push({
         name: 'PostList',
-        params: { board: this.board },
+        params: { board: this.board.en_name },
         query,
       });
     },
     async updatePageAndFetch(page) {
       this.isLoading = true;
       this.updatePage(page);
-      await this.updateBoardList();
-      this.fetchPostList();
+      this.refresh();
     },
   },
   components: {
     PostItem,
   },
   async mounted() {
-    if (this.board !== this.$route.params.board) {
+    if (this.board.en_name !== this.$route.params.board) {
       this.updateBoard(this.$route.params.board);
       this.updatePage(1);
     }
-    await this.updateBoardList();
-    this.fetchPostList();
+    this.refresh();
   },
 };
 </script>

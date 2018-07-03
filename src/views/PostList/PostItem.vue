@@ -3,7 +3,7 @@
     <td class="w-35"></td>
     <td class="w-102">{{ heading }}</td>
     <td class="w-313">
-      <router-link v-if="!post || item.id !== post.id" :to="{ name: 'PostDetail', params: { board, post_id: item.id }, query: $route.query }">
+      <router-link v-if="!post || item.id !== post.id" :to="{ name: 'PostDetail', params: { board: board.en_name, post_id: item.id }, query: $route.query }">
         {{ item.title }}
       </router-link>
     </td>

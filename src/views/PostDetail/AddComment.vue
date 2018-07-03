@@ -99,7 +99,6 @@ export default {
   computed: {
     ...mapState([
       'apiUrl',
-      'auth',
       'post',
     ]),
   },
@@ -125,8 +124,6 @@ export default {
     },
     addCommentHandler() {
       this.pending = true;
-      console.log(this.attachment);
-
       const data = {
         [this.isArticle ? 'parent_article' : 'parent_comment']: this.context.id,
         [this.isArticle ? 'parent_comment' : 'parent_article']: null,

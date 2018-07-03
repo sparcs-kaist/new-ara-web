@@ -96,7 +96,7 @@
 
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   data() {
@@ -115,10 +115,6 @@ export default {
   computed: {
     ...mapState([
       'apiUrl',
-      'auth',
-    ]),
-    ...mapGetters([
-      'boardNameList',
     ]),
   },
   methods: {
@@ -141,11 +137,9 @@ export default {
           },
 
         },
-      ).then((res) => {
+      }).then(() => {
         this.pending = false;
         this.showModal = true;
-        // floating
-        console.log(res);
       })
       .catch(() => {
         this.pending = false;
