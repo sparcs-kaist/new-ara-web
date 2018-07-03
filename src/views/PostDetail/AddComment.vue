@@ -113,68 +113,52 @@ export default {
 
       const formData = new FormData();
       formData.append('file', files[0]);
-      this.$axios({
-        url: `${this.apiUrl}/api/attachments/`,
-        method: 'POST',
-        data: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data',
+      this.$axios.post('attachments/',
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
         },
-      })
-        .then((res) => {
-          this.filename = files[0].name;
-          this.attachment = res.data.id;
-        })
-        .catch(() => {
-        });
+      ).then((res) => {
+        this.filename = files[0].name;
+        this.attachment = res.data.id;
+      }).catch(() => {});
     },
     addCommentHandler() {
       this.pending = true;
       console.log(this.attachment);
       if (this.isArticle) {
-        this.$axios({
-          url: `${this.apiUrl}/api/comments/`,
-          method: 'POST',
-          data: {
-            parent_article: this.context.id,
-            parent_comment: null,
-            content: this.content,
-            is_anonymous: this.is_anonymous,
-            use_signature: this.use_signature,
-            attachment: this.attachment,
-          },
-        })
-          .then(() => {
-            this.pending = false;
-            this.fetchPost({ postId: this.post.id });
-            this.$emit('successAdd');
-            this.resetForm();
-          })
-          .catch(() => {
-            this.pending = false;
-          });
+        this.$axios.post('comments/', {
+          parent_article: this.context.id,
+          parent_comment: null,
+          content: this.content,
+          is_anonymous: this.is_anonymous,
+          use_signature: this.use_signature,
+          attachment: this.attachment,
+        }).then(() => {
+          this.pending = false;
+          this.fetchPost({ postId: this.post.id });
+          this.$emit('successAdd');
+          this.resetForm();
+        }).catch(() => {
+          this.pending = false;
+        });
       } else {
-        this.$axios({
-          url: `${this.apiUrl}/api/comments/`,
-          method: 'POST',
-          data: {
-            parent_article: null,
-            parent_comment: this.context.id,
-            content: this.content,
-            is_anonymous: this.is_anonymous,
-            use_signature: this.use_signature,
-            attachment: this.attachment,
-          },
+        this.$axios.post('comments/', {
+          parent_article: null,
+          parent_comment: this.context.id,
+          content: this.content,
+          is_anonymous: this.is_anonymous,
+          use_signature: this.use_signature,
+          attachment: this.attachment,
+        }).then(() => {
+          this.pending = false;
+          this.fetchPost({ postId: this.post.id });
+          this.$emit('successAdd');
+          this.resetForm();
         })
-          .then(() => {
-            this.pending = false;
-            this.fetchPost({ postId: this.post.id });
-            this.$emit('successAdd');
-            this.resetForm();
-          })
-          .catch(() => {
-            this.pending = false;
-          });
+        .catch(() => {
+          this.pending = false;
+        });
       }
     },
     resetForm() {

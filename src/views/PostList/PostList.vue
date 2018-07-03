@@ -103,7 +103,7 @@ export default {
       if (this.board !== 'all') url += `parent_board=${this.boardNameList.indexOf(this.board) + 1}&`;
       url += `page=${this.page}`;
 
-      this.$axios.get(`${this.apiUrl}/api/articles/${url}`)
+      this.$axios.get(`articles/${url}`)
         .then((res) => {
           this.postItems = res.data.results;
           this.numPages = res.data.num_pages;

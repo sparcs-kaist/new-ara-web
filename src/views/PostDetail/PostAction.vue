@@ -71,20 +71,14 @@ export default {
       })();
 
       if (this.context.my_vote === voteTypeBool) {
-        this.$axios({
-          url: `${this.apiUrl}/api/${contextType}/${this.context.id}/vote_cancel/`,
-          method: 'POST',
-        })
+        this.$axios.post(`${contextType}/${this.context.id}/vote_cancel/`)
           .then(() => {
             this.fetchPost({ postId: this.post.id, context: this.$route.query });
           })
           .catch(() => {
           });
       } else {
-        this.$axios({
-          url: `${this.apiUrl}/api/${contextType}/${this.context.id}/${voteTypeStr}/`,
-          method: 'POST',
-        })
+        this.$axios.post(`${contextType}/${this.context.id}/${voteTypeStr}/`)
           .then(() => {
             this.fetchPost({ postId: this.post.id, context: this.$route.query });
           })
@@ -108,11 +102,7 @@ export default {
       } else {
         data.parent_comment = this.context.id;
       }
-      this.$axios({
-        url: `${this.apiUrl}/api/reports/`,
-        method: 'POST',
-        data,
-      })
+      this.$axios.post('reports/', data)
         .then((res) => {
           alert('report accepted!');
           this.context.my_report = res.data;
