@@ -1,13 +1,15 @@
 <template>
-  <div class="container setting-container">
-    <div class="columns">
-      <div class="column is-2"></div>
-      <div class="column is-8">
-        <section class = "section">
-          <h1 class="title">설정</h1>
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label"> 서명 </label>
+  <div class="setting-container">
+    <section class="section">
+      <h1 class="title">설정</h1>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label"> 서명 </label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input v-model="signature" class="input" type="text" placeholder="서명">
             </div>
             <div class="field-body">
               <div class="field">
@@ -80,7 +82,7 @@
         <article class="message is-success">
           <div class="message-header">
             <p>Complete</p>
-            <button class="delete" aria-labe="delete" @click="deleteModalHandler"></button>
+            <button class="delete" aria-label="delete" @click="deleteModalHandler"></button>
           </div>
           <div class="message-body">
             업로드 완료
@@ -94,71 +96,55 @@
 
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   data() {
     return {
       picture: null,
-      newPictureFile: null,
+      newPicture: null,
       nickname: '',
       signature: '',
       see_sexual: '',
       see_social: '',
       pending: false,
-      userid: 0,
+      userId: 0,
       showModal: false,
     };
   },
   computed: {
     ...mapState([
       'apiUrl',
-      'auth',
-    ]),
-    ...mapGetters([
-      'boardNameList',
     ]),
   },
   methods: {
     postProfileHandler() {
       this.pending = true;
       const formData = new FormData();
-      if (this.newPictureFile) {
-        formData.append('picture', this.newPictureFile);
+      if (this.newPicture) {
+        formData.append('picture', this.newPicture);
       }
       formData.append('nickname', this.nickname);
       formData.append('signature', this.signature);
       formData.append('see_sexual', this.see_sexual);
       formData.append('see_social', this.see_social);
+
       this.$axios.patch(`user_profiles/${this.userid}/`,
         formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
+
         },
-      ).then((res) => {
+      }).then(() => {
         this.pending = false;
         this.showModal = true;
-        // floating
-        console.log(res);
       })
       .catch(() => {
         this.pending = false;
       });
     },
-    // imageUploadHandler(e) {
-    //   const files = e.target.files || e.dataTransfer.files;
-    //   if (!files.length) return;
-    //
-    //   this.newpicture = files[0];
-    //   const reader = new FileReader();
-    //
-    //   reader.onload = function (event) {
-    //     this.picture = event.target.result;
-    //   };
-    //   reader.readAsDataURL(files[0]);
-    // },
     imageUploadHandler(event) {
       const input = event.target || event.dataTransfer;
       if (input.files && input.files[0]) {
@@ -176,7 +162,6 @@ export default {
   },
   mounted() {
     this.userid = 11; // TODO: need to fix as real user_id
-    console.log(`user_profiles/${this.userid}`);
     this.$axios.get(`user_profiles/${this.userid}`)
       .then((res) => {
         this.nickname = res.data.nickname;

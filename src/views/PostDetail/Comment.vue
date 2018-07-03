@@ -40,11 +40,8 @@ export default {
   },
   methods: {
     toggleExpand(type) {
-      if (type === 'recomment') {
-        this.isRecommentExpanded = !this.isRecommentExpanded;
-      } else if (type === 'addcomment') {
-        this.isAddCommentExpanded = !this.isAddCommentExpanded;
-      }
+      if (type === 'recomment') this.isRecommentExpanded = !this.isRecommentExpanded;
+      else if (type === 'addcomment') this.isAddCommentExpanded = !this.isAddCommentExpanded;
     },
   },
 };

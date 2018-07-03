@@ -3,7 +3,7 @@
     <template v-if="post">
       <h1 class="title">{{ post.title }}</h1>
       <span>
-        <span class="subtitle-detail">{{ board }}</span>
+        <span class="subtitle-detail">{{ board.en_name }}</span>
         <span class="subtitle-detail">{{ post.created_by }}</span>
         <span class="subtitle-detail">{{ postCreatedAt }}</span>
       </span>

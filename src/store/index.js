@@ -3,12 +3,20 @@ import Vuex from 'vuex';
 import axios from '@/axios';
 import auth from './auth';
 
+
+const ALL_BOARD = {
+  id: 0,
+  ko_name: '모아보기',
+  en_name: 'all',
+};
+
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: { auth },
   state: {
-    post: undefined,
+    post: null,
     board: '',
     page: 0,
     boardList: [],
@@ -30,7 +38,7 @@ export default new Vuex.Store({
   actions: {
     fetchPost({ commit }, payload) {
       if (!payload || !payload.postId) {
-        commit('updatePost', undefined);
+        commit('updatePost', null);
         return Promise.resolve();
       }
       const postId = payload.postId;
@@ -69,7 +77,10 @@ export default new Vuex.Store({
           });
       });
     },
-    updateBoard({ commit }, board) {
+    updateBoard({ state, commit }, boardName) {
+      let board;
+      if (boardName === 'all') board = ALL_BOARD;
+      else board = state.boardList.filter(_board => _board.en_name === boardName)[0];
       commit('updateBoard', board);
     },
     updatePage({ commit }, page) {
@@ -77,12 +88,11 @@ export default new Vuex.Store({
     },
   },
   getters: {
-    boardNameList(state) {
-      const boardNameList = [];
-      state.boardList.forEach((board) => {
-        boardNameList.push(board.en_name);
-      });
-      return boardNameList;
+    getBoardNameById(state) {
+      return boardId => state.boardList.find(board => board.id === boardId).en_name;
+    },
+    getBoardIdByName(state) {
+      return boardName => state.boardList.find(board => board.en_name === boardName).id;
     },
   },
 });

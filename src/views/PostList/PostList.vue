@@ -22,9 +22,9 @@
           <span v-else>{{ iterPage }}</span>
         </div>
       </span>
-      <a v-if="pageBase + 10 < numPages" @click="updatePageAndFetch(pageBase + 11)">&gt;</a>
+      <a v-if="pageBase + 10 < maxPage" @click="updatePageAndFetch(pageBase + 11)">&gt;</a>
       <span v-else>&gt;</span>
-      <a @click="updatePageAndFetch(numPages)">»</a>
+      <a @click="updatePageAndFetch(maxPage)">»</a>
     </div>
     <div class="centerh">
       <select id="search_type" name="search_type">
@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       postItems: [],
-      numPages: 0,
+      maxPage: 0,
       searchType: 'title',
       searchText: '',
       isLoading: false,
@@ -55,8 +55,7 @@ export default {
   },
   computed: {
     boardOrHeading() {
-      if (this.board === 'all') return '게시판';
-      return '말머리';
+      return this.board.id === 0 ? '게시판' : '말머리';
     },
     pageBase() {
       return (this.page - 1) - ((this.page - 1) % 10);
@@ -64,7 +63,7 @@ export default {
     pageList() {
       const base = this.pageBase;
       const pageList = [];
-      const pageListMax = (this.numPages < base + 10 ? this.numPages : base + 10);
+      const pageListMax = (this.maxPage < base + 10 ? this.maxPage : base + 10);
       for (let i = base + 1; i <= pageListMax; i += 1) {
         pageList.push(i);
       }
@@ -74,12 +73,10 @@ export default {
       'post',
       'board',
       'page',
-      'auth',
-      'boardList',
       'apiUrl',
     ]),
     ...mapGetters([
-      'boardNameList',
+      'getBoardIdByName',
     ]),
   },
   methods: {
@@ -90,8 +87,8 @@ export default {
       'fetchPost',
       'updateBoard',
       'updatePage',
-      'updateBoardList',
     ]),
+
     refresh() {
       const condition = this.$route.query;
       const keys = Object.keys(condition);
@@ -100,13 +97,14 @@ export default {
         const key = keys[i];
         url += `${key}=${condition[key]}&`;
       }
-      if (this.board !== 'all') url += `parent_board=${this.boardNameList.indexOf(this.board) + 1}&`;
+      if (this.board.en_name !== 'all') url += `parent_board=${this.board.id}&`;
       url += `page=${this.page}`;
 
+      /* Refresh post list. */
       this.$axios.get(`articles/${url}`)
         .then((res) => {
           this.postItems = res.data.results;
-          this.numPages = res.data.num_pages;
+          this.maxPage = res.data.num_pages;
         })
         .catch(() => {
         })
@@ -128,18 +126,17 @@ export default {
       searchTypeElement.selectedIndex = 0;
       searchInputElement.value = '';
 
-      this.fetchPost(undefined);
+      this.fetchPost(null);
       this.updatePage(1);
       this.$router.push({
         name: 'PostList',
-        params: { board: this.board },
+        params: { board: this.board.en_name },
         query,
       });
     },
     async updatePageAndFetch(page) {
       this.isLoading = true;
       this.updatePage(page);
-      await this.updateBoardList();
       this.refresh();
     },
   },
@@ -147,11 +144,10 @@ export default {
     PostItem,
   },
   async mounted() {
-    if (this.board !== this.$route.params.board) {
+    if (this.board.en_name !== this.$route.params.board) {
       this.updateBoard(this.$route.params.board);
       this.updatePage(1);
     }
-    await this.updateBoardList();
     this.refresh();
   },
 };

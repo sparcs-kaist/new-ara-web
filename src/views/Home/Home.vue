@@ -15,8 +15,8 @@
           <div class="column is-6" v-for="board in articles" :key="board.id">
             <hr>
             <h4 class="board-title">
-              <router-link class="board-title-router" :to="{ name: 'PostList', params: { board: boardNameList[board.id - 1] }}">
-                {{ boardNameList[board.id - 1] }}
+              <router-link class="board-title-router" :to="{ name: 'PostList', params: { board: getBoardNameById(board.id) }}">
+                {{ getBoardNameById(board.id) }}
               </router-link>
             </h4>
             <recent-article class="article-item" v-for="article in board.recent_articles" :key="article.id" :article="article"></recent-article>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import HitArticleList from './HitArticleList';
 import RecentArticle from './RecentArticle';
 
@@ -52,23 +52,16 @@ export default {
   },
   computed: {
     ...mapState([
-      'auth',
       'apiUrl',
     ]),
     ...mapGetters([
-      'boardNameList',
-    ]),
-  },
-  methods: {
-    ...mapActions([
-      'updateBoardList',
+      'getBoardNameById',
     ]),
   },
   components: {
     HitArticleList, RecentArticle,
   },
   async mounted() {
-    await this.updateBoardList();
     this.$axios.get('home')
       .then((res) => {
         this.bestArticles = {
