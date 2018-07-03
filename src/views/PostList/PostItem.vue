@@ -10,7 +10,7 @@
     <td class="w-102">{{ item.created_by }}</td>
     <td class="w-50">{{ item.positive_vote_count }}/{{ item.negative_vote_count }}</td>
     <td class="w-50">{{ item.hit_count }}</td>
-    <td class="w-102">{{ readable_timeago }}</td>
+    <td class="w-102">{{ readableTimeago }}</td>
   </tr>
 </template>
 
@@ -28,7 +28,7 @@ export default {
       if (this.item.parent_topic !== null) return this.item.parent_topic.en_name;
       return '';
     },
-    readable_timeago() {
+    readableTimeago() {
       const timestamp = Date.parse(this.item.created_at);
       return timeago().format(timestamp, 'ko');
     },

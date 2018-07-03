@@ -83,18 +83,14 @@ export default {
         return;
       }
       this.pending = true;
-      this.$axios({
-        url: `${this.apiUrl}/api/articles/`,
-        method: 'POST',
-        data: {
-          title: this.title,
-          content: this.content,
-          is_anonymous: false,
-          is_content_sexual: false,
-          is_content_social: false,
-          use_signature: false,
-          parent_board: this.getBoardIdByName(this.boardName),
-        },
+      this.$axios.post('articles/', {
+        title: this.title,
+        content: this.content,
+        is_anonymous: false,
+        is_content_sexual: false,
+        is_content_social: false,
+        use_signature: false,
+        parent_board: this.getBoardIdByName(this.boardName),
       }).then((res) => {
         this.pending = false;
         this.$router.push(`/posts/${this.getBoardNameById(res.data.parent_board)}/${res.data.id}`);

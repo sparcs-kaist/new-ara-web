@@ -26,7 +26,7 @@
           </div>
         </div>
       </div>
-      <button :class="{'is-loading': pending}" @click="postArticleHandler" id="button-post-create"class="button is-primary is-pulled-right">수정하기</button>
+      <button :class="{'is-loading': pending}" @click="postArticleHandler" id="button-post-create" class="button is-primary is-pulled-right">수정하기</button>
       <div class="is-clearfix"></div>
     </section>
   </div>
@@ -68,16 +68,12 @@ export default {
   methods: {
     postArticleHandler() {
       this.pending = true;
-      this.$axios({
-        url: `${this.apiUrl}/api/articles/${this.postId}/`,
-        method: 'PUT',
-        data: {
-          title: this.title,
-          content: this.content,
-          is_content_sexual: false,
-          is_content_social: false,
-        },
-      }).then(() => {
+      this.$axios.put(`articles/${this.postId}/`, {
+        title: this.title,
+        content: this.content,
+        is_content_sexual: false,
+        is_content_social: false,
+      }).then((res) => {
         this.pending = false;
         this.$router.push(`/posts/${this.getBoardNameById(this.boardId)}/${this.postId}`);
       })
@@ -105,10 +101,7 @@ export default {
   },
   mounted() {
     this.postId = this.$route.params.post_id;
-    this.$axios({
-      url: `${this.apiUrl}/api/articles/${this.postId}`,
-      method: 'GET',
-    })
+    this.$axios.get(`/articles/${this.postId}`)
     .then((res) => {
       this.title = res.data.title;
       this.content = res.data.content;

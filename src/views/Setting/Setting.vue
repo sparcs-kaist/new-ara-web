@@ -1,6 +1,6 @@
 <template>
-  <div class = "setting-container">
-    <section class = "section">
+  <div class="setting-container">
+    <section class="section">
       <h1 class="title">설정</h1>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
@@ -11,69 +11,78 @@
             <div class="control">
               <input v-model="signature" class="input" type="text" placeholder="서명">
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label"> 닉네임 </label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <input v-model="nickname" class="input" type="text" placeholder="닉네임">
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input v-model="signature" class="input" type="text" placeholder="서명">
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label"> 성인/음란성 보기 </label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <input v-model="see_sexual" type="checkbox">
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label"> 닉네임 </label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input v-model="nickname" class="input" type="text" placeholder="닉네임">
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label"> 정치/사회성 보기 </label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <input v-model="see_social" type="checkbox">
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label"> 성인/음란성 보기 </label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input v-model="see_sexual" type="checkbox">
+                </div>
+              </div>
             </div>
           </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label"> 정치/사회성 보기 </label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input v-model="see_social" type="checkbox">
+                </div>
+              </div>
 
-        </div>
-      </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label"> 프로필 </label>
-          <img :src="picture" alt="프로필 사진">
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <input type="file" @change="imageUploadHandler " />
             </div>
           </div>
-        </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label"> 프로필 </label>
+              <img :src="picture" alt="프로필 사진">
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input type="file" @change="imageUploadHandler " />
+                </div>
+              </div>
+            </div>
+          </div>
+          <button :class="{'is-loading': pending}" @click="postProfileHandler" id="button-post-create" class="button is-primary is-pulled-right">수정하기</button>
+          <div class="is-clearfix"></div>
+        </section>
       </div>
-      <button :class="{'is-loading': pending}" @click="postProfileHandler" id="button-post-create" class="button is-primary is-pulled-right">수정하기</button>
-      <div class="is-clearfix"></div>
-    </section>
+      <div class="column is-2"></div>
+    </div>
+    
 
     <div class="modal is-active" v-if="showModal">
       <div class = "modal-content">
         <article class="message is-success">
           <div class="message-header">
             <p>Complete</p>
-            <button class="delete" aria-labe="delete" @click="deleteModalHandler"></button>
+            <button class="delete" aria-label="delete" @click="deleteModalHandler"></button>
           </div>
           <div class="message-body">
             업로드 완료
@@ -93,13 +102,13 @@ export default {
   data() {
     return {
       picture: null,
-      newpictuer: null,
+      newPicture: null,
       nickname: '',
       signature: '',
       see_sexual: '',
       see_social: '',
       pending: false,
-      userid: 0,
+      userId: 0,
       showModal: false,
     };
   },
@@ -112,27 +121,22 @@ export default {
     postProfileHandler() {
       this.pending = true;
       const formData = new FormData();
-      if (this.newpicture) {
-        formData.append('picture', this.newpicture);
+      if (this.newPicture) {
+        formData.append('picture', this.newPicture);
       }
       formData.append('nickname', this.nickname);
       formData.append('signature', this.signature);
       formData.append('see_sexual', this.see_sexual);
       formData.append('see_social', this.see_social);
-      this.$axios({
-        url: `${this.apiUrl}/api/user_profiles/${this.userid}/`,
-        method: 'PATCH',
-        // data: {
-        //   picture: this.picture,
-        //   nickname: this.nickname,
-        //   signature: this.signature,
-        //   see_sexual: this.see_sexual,
-        //   see_social: this.see_social,
-        // },
-        headers: {
-          'Content-Type': 'multipart/form-data',
+
+      this.$axios.patch(`user_profiles/${this.userid}/`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+
         },
-        data: formData,
       }).then(() => {
         this.pending = false;
         this.showModal = true;
@@ -141,21 +145,10 @@ export default {
         this.pending = false;
       });
     },
-    // imageUploadHandler(e) {
-    //   const files = e.target.files || e.dataTransfer.files;
-    //   if (!files.length) return;
-    //
-    //   this.newpicture = files[0];
-    //   const reader = new FileReader();
-    //
-    //   reader.onload = function (event) {
-    //     this.picture = event.target.result;
-    //   };
-    //   reader.readAsDataURL(files[0]);
-    // },
     imageUploadHandler(event) {
-      const input = event.target;
+      const input = event.target || event.dataTransfer;
       if (input.files && input.files[0]) {
+        this.newPictureFile = input.files[0];
         const reader = new FileReader();
         reader.onload = (e) => {
           this.picture = e.target.result;
@@ -169,19 +162,17 @@ export default {
   },
   mounted() {
     this.userid = 11; // TODO: need to fix as real user_id
-    this.$axios({
-      url: `${this.apiUrl}/api/user_profiles/${this.userid}`,
-      method: 'GET',
-    }).then((res) => {
-      this.nickname = res.data.nickname;
-      this.signature = res.data.signature;
-      this.see_sexual = res.data.see_sexual;
-      this.see_social = res.data.see_social;
-      this.picture = res.data.picture;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    this.$axios.get(`user_profiles/${this.userid}`)
+      .then((res) => {
+        this.nickname = res.data.nickname;
+        this.signature = res.data.signature;
+        this.see_sexual = res.data.see_sexual;
+        this.see_social = res.data.see_social;
+        this.picture = res.data.picture;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 </script>

@@ -25,7 +25,7 @@
               <div class="navbar-dropdown is-right" :class="{ 'show': onhoverName }" @mouseover="onhoverName = true" @mouseout="onhoverName = false">
                 <router-link class="navbar-item" to="/setting">설정</router-link>
                 <hr class="navbar-divider">
-                <router-link class="navbar-item" @click.native="logout" to="/login">로그아웃</router-link>
+                <a class="navbar-item" @click="logout">로그아웃</a>
               </div>
             </div>
           </div>
@@ -67,7 +67,8 @@ export default {
       this.fetchPost(null);
     },
     logout() {
-      localStorage.setItem('jwtToken', null);
+      delete localStorage.JWT;
+      this.$router.push('/login');
     },
   },
 };

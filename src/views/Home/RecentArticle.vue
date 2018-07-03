@@ -24,7 +24,7 @@ export default {
   asyncComputed: {
     commentNumber() {
       return new Promise((resolve) => {
-        this.$axios.get(`${this.apiUrl}/api/comments/?parent_article=${this.article.id}`)
+        this.$axios.get(`comments/?parent_article=${this.article.id}`)
           .then((res) => {
             resolve(res.data.results.length);
           });
@@ -35,15 +35,10 @@ export default {
     elapsedTime(createdAt) {
       const created = new Date(createdAt);
       const elapsed = new Date() - created;
-      if (elapsed < 1000 * 60) {
-        return '방금 전';
-      } else if (elapsed < 1000 * 60 * 60) {
-        return `${Math.floor(elapsed / 1000 / 60)}분 전`;
-      } else if (elapsed < 1000 * 60 * 60 * 24) {
-        return `${Math.floor(elapsed / 1000 / 60 / 60)}시간 전`;
-      } else if (elapsed < 1000 * 60 * 60 * 24 * 3) {
-        return `${Math.floor(elapsed / 1000 / 60 / 60 / 24)}일 전`;
-      }
+      if (elapsed < 1000 * 60) return '방금 전';
+      if (elapsed < 1000 * 60 * 60) return `${Math.floor(elapsed / 1000 / 60)}분 전`;
+      if (elapsed < 1000 * 60 * 60 * 24) return `${Math.floor(elapsed / 1000 / 60 / 60)}시간 전`;
+      if (elapsed < 1000 * 60 * 60 * 24 * 3) return `${Math.floor(elapsed / 1000 / 60 / 60 / 24)}일 전`;
       return `${created.getMonth() + 1}월 ${created.getDate()}일`;
     },
   },

@@ -62,7 +62,7 @@ export default {
     HitArticleList, RecentArticle,
   },
   async mounted() {
-    this.$axios.get(`${this.apiUrl}/api/home`)
+    this.$axios.get('home')
       .then((res) => {
         this.bestArticles = {
           daily: res.data.daily_bests,
