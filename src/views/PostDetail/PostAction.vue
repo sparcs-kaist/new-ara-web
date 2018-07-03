@@ -1,10 +1,10 @@
 <template>
   <div>
-    <span class="action-container" @click="action('like')">
+    <span class="action-container" @click="vote(true)">
       <i class="mdi mdi-18px mdi-thumb-up"/>
       <span :class="{ 'voted': context.my_vote === true }">{{ context.positive_vote_count }}</span>
     </span>
-    <span class="action-container" @click="action('dislike')">
+    <span class="action-container" @click="vote(false)">
       <i class="mdi mdi-18px mdi-thumb-down"/>
       <span :class="{ 'voted': context.my_vote === false }">{{ context.negative_vote_count }}</span>
     </span>
@@ -58,57 +58,35 @@ export default {
     ...mapActions([
       'fetchPost',
     ]),
-    action(type) {
-      const contextType = (() => {
-        if (this.isArticle) return 'articles';
-        return 'comments';
-      })();
+    vote(newVoteType) {
+      const contextType = this.isArticle ? 'articles' : 'comments';
 
-      const [voteTypeBool, voteTypeStr] = (() => {
-        if (type === 'like') return [true, 'vote_positive'];
-        else if (type === 'dislike') return [false, 'vote_negative'];
-        return [];
-      })();
+      let updateVoteUrlDetail;
+      if (this.context.my_vote === newVoteType) updateVoteUrlDetail = 'vote_cancel/';
+      else updateVoteUrlDetail = `${newVoteType ? 'vote_positive' : 'vote_negative'}/`;
+      this.$axios.post(`${contextType}/${this.context.id}/${updateVoteUrlDetail}`)
+        .then(() => {
+          this.fetchPost({ postId: this.post.id, context: this.$route.query });
+        })
+        .catch(() => {});
 
-      if (this.context.my_vote === voteTypeBool) {
-        this.$axios.post(`${contextType}/${this.context.id}/vote_cancel/`)
-          .then(() => {
-            this.fetchPost({ postId: this.post.id, context: this.$route.query });
-          })
-          .catch(() => {
-          });
-      } else {
-        this.$axios.post(`${contextType}/${this.context.id}/${voteTypeStr}/`)
-          .then(() => {
-            this.fetchPost({ postId: this.post.id, context: this.$route.query });
-          })
-          .catch(() => {
-          });
-      }
     },
     openReportModal() {
-      if (this.context.my_report) {
-        alert(`You've already reported this ${this.isArticle ? 'article' : 'comment'}!`);
-      } else {
-        this.reportToggle = true;
-      }
+      if (this.context.my_report) alert(`You've already reported this ${this.isArticle ? 'article' : 'comment'}!`);
+      else this.reportToggle = true;
     },
     report() {
       const data = {
         content: this.reportContent,
+        [this.isArticle ? 'parent_article' : 'parent_comment']: this.context.id,
       };
-      if (this.isArticle) {
-        data.parent_article = this.context.id;
-      } else {
-        data.parent_comment = this.context.id;
-      }
+
       this.$axios.post('reports/', data)
         .then((res) => {
           alert('report accepted!');
           this.context.my_report = res.data;
-        })
-        .catch(() => {
-        });
+        }).catch(() => {});
+
       this.reportContent = '';
       this.reportToggle = false;
     },
