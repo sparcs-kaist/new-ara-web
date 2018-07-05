@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 import HitArticleList from './HitArticleList';
 import RecentArticle from './RecentArticle';
 
@@ -51,9 +51,6 @@ export default {
     };
   },
   computed: {
-    ...mapState([
-      'apiUrl',
-    ]),
     ...mapGetters([
       'getBoardNameById',
     ]),

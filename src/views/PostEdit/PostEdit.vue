@@ -73,7 +73,7 @@ export default {
         content: this.content,
         is_content_sexual: false,
         is_content_social: false,
-      }).then((res) => {
+      }).then(() => {
         this.pending = false;
         this.$router.push(`/posts/${this.getBoardNameById(this.boardId)}/${this.postId}`);
       })

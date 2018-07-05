@@ -11,71 +11,62 @@
             <div class="control">
               <input v-model="signature" class="input" type="text" placeholder="서명">
             </div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control">
-                  <input v-model="signature" class="input" type="text" placeholder="서명">
-                </div>
-              </div>
-            </div>
           </div>
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label"> 닉네임 </label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control">
-                  <input v-model="nickname" class="input" type="text" placeholder="닉네임">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label"> 성인/음란성 보기 </label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control">
-                  <input v-model="see_sexual" type="checkbox">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label"> 정치/사회성 보기 </label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control">
-                  <input v-model="see_social" type="checkbox">
-                </div>
-              </div>
-
-            </div>
-          </div>
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label"> 프로필 </label>
-              <img :src="picture" alt="프로필 사진">
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control">
-                  <input type="file" @change="imageUploadHandler " />
-                </div>
-              </div>
-            </div>
-          </div>
-          <button :class="{'is-loading': pending}" @click="postProfileHandler" id="button-post-create" class="button is-primary is-pulled-right">수정하기</button>
-          <div class="is-clearfix"></div>
-        </section>
+        </div>
       </div>
-      <div class="column is-2"></div>
-    </div>
-    
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label"> 닉네임 </label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input v-model="nickname" class="input" type="text" placeholder="닉네임">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label"> 성인/음란성 보기 </label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input v-model="see_sexual" type="checkbox">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label"> 정치/사회성 보기 </label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input v-model="see_social" type="checkbox">
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label"> 프로필 </label>
+          <img :src="picture" alt="프로필 사진">
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="file" @change="imageUploadHandler " />
+            </div>
+          </div>
+        </div>
+      </div>
+      <button :class="{'is-loading': pending}" @click="postProfileHandler" id="button-post-create" class="button is-primary is-pulled-right">수정하기</button>
+      <div class="is-clearfix"></div>
+    </section>
 
     <div class="modal is-active" v-if="showModal">
       <div class = "modal-content">
@@ -113,9 +104,7 @@ export default {
     };
   },
   computed: {
-    ...mapState([
-      'apiUrl',
-    ]),
+    ...mapState(['apiUrl']),
   },
   methods: {
     postProfileHandler() {
@@ -129,21 +118,19 @@ export default {
       formData.append('see_sexual', this.see_sexual);
       formData.append('see_social', this.see_social);
 
-      this.$axios.patch(`user_profiles/${this.userid}/`,
-        formData,
-        {
+      this.$axios
+        .patch(`user_profiles/${this.userid}/`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-
-        },
-      }).then(() => {
-        this.pending = false;
-        this.showModal = true;
-      })
-      .catch(() => {
-        this.pending = false;
-      });
+        })
+        .then(() => {
+          this.pending = false;
+          this.showModal = true;
+        })
+        .catch(() => {
+          this.pending = false;
+        });
     },
     imageUploadHandler(event) {
       const input = event.target || event.dataTransfer;
@@ -162,7 +149,8 @@ export default {
   },
   mounted() {
     this.userid = 11; // TODO: need to fix as real user_id
-    this.$axios.get(`user_profiles/${this.userid}`)
+    this.$axios
+      .get(`user_profiles/${this.userid}`)
       .then((res) => {
         this.nickname = res.data.nickname;
         this.signature = res.data.signature;
@@ -187,5 +175,4 @@ export default {
 #button-post-create {
   margin-top: 1.5em;
 }
-
 </style>

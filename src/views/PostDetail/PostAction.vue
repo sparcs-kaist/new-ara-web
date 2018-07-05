@@ -68,7 +68,6 @@ export default {
           this.fetchPost({ postId: this.post.id, context: this.$route.query });
         })
         .catch(() => {});
-
     },
     openReportModal() {
       if (this.context.my_report) alert(`You've already reported this ${this.isArticle ? 'article' : 'comment'}!`);
