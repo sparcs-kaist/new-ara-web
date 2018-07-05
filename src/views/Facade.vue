@@ -20,15 +20,15 @@
 </template>
 
 <script>
-import { apiUrl } from '@/config';
+import { apiUrl } from '@/http'
 
 export default {
   computed: {
-    loginUrl() {
-      return `${apiUrl}/login/?next=${location.protocol}//${location.host}/login-handler`;
-    },
-  },
-};
+    loginUrl () {
+      return `${apiUrl}/login/?next=${location.protocol}//${location.host}/login-handler`
+    }
+  }
+}
 </script>
 
 <style>

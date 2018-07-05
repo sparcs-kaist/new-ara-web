@@ -1,8 +1,9 @@
-import axios from 'axios';
-import store from './store';
-import { apiUrl } from './config';
+import axios from 'axios'
+import store from './store'
 
-const baseApiAddress = `${apiUrl}/api/`;
+const apiUrl = 'http://13.125.91.142'
+const baseApiAddress = `${apiUrl}/api/`
+
 const instance = axios.create({
   baseURL: baseApiAddress,
   headers: {
@@ -21,26 +22,26 @@ const instance = axios.create({
      * [toString](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/toString)
      */
     Authorization: {
-      toString() {
-        return `JWT ${localStorage.getItem('JWT')}`;
-      },
-    },
-  },
-});
+      toString () {
+        return `JWT ${localStorage.getItem('JWT')}`
+      }
+    }
+  }
+})
 
 instance.interceptors
   .request.use(
     (config) => {
       // 써드파티 서버에 JWT을 보내는건 보안 문제가 될 수 있다.
       if (config.baseURL !== baseApiAddress) {
-        console.info('상대 경로로 뉴아라 Api 서버에 보낼 수 있습니다.');
-        console.warn('뉴아라 Api 서버가 아니므로 헤더에 인증 정보를 포함하지 않습니다.');
-        config.headers.Authorization = '';
+        console.info('상대 경로로 뉴아라 Api 서버에 보낼 수 있습니다.')
+        console.warn('뉴아라 Api 서버가 아니므로 헤더에 인증 정보를 포함하지 않습니다.')
+        config.headers.Authorization = ''
       }
-      return config;
+      return config
     },
-    err => err,
-  );
+    err => err
+  )
 
 /* @TODO
  * JWT이 expire돼서 401이 뜬 경우는 (jwt를 까보면 expire시점을 알 수 있다.) 로그아웃,
@@ -50,9 +51,10 @@ instance.interceptors
   .response.use(
     resp => resp,
     (err) => {
-      store.commit('error');
-      return err;
-    },
-  );
+      store.commit('error')
+      return err
+    }
+  )
 
-export default instance;
+export { apiUrl }
+export default instance

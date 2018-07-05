@@ -5,17 +5,15 @@
 ## Build Setup
 
 ``` bash
-# install dependencies
+# 의존성 설치
 npm install
 
-# serve with hot reload at localhost:8080
-npm run dev
+# localhost:8080 개발 모드로 시작
+npm run serve
 
-# build for production with minification
+# 배포용 빌드
 npm run build
 
-# build for production and view the bundle analyzer report
-npm run build --report
+# Jest로 테스트
+npm run test:unit
 ```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
