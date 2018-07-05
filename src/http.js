@@ -23,7 +23,7 @@ const instance = axios.create({
      */
     Authorization: {
       toString () {
-        return `JWT ${localStorage.getItem('JWT')}`
+        return `JWT ${store.state.auth.jwt}`
       }
     }
   }
@@ -51,7 +51,7 @@ instance.interceptors
   .response.use(
     resp => resp,
     (err) => {
-      store.commit('error')
+      store.dispatch('error')
       return err
     }
   )

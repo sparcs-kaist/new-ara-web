@@ -23,6 +23,7 @@
 import { apiUrl } from '@/http'
 
 export default {
+  name: 'facade',
   computed: {
     loginUrl () {
       return `${apiUrl}/login/?next=${location.protocol}//${location.host}/login-handler`
