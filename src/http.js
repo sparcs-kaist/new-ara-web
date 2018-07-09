@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from './store'
+import router from './router'
 
 const apiUrl = 'http://13.125.91.142'
 const baseApiAddress = `${apiUrl}/api/`
@@ -31,10 +32,10 @@ const instance = axios.create({
 
 instance.interceptors
   .request.use(
-    (config) => {
+    config => {
       // 써드파티 서버에 JWT을 보내는건 보안 문제가 될 수 있다.
       if (config.baseURL !== baseApiAddress) {
-        console.info('상대 경로로 뉴아라 Api 서버에 보낼 수 있습니다.')
+        console.info('뉴아라 Api 서버에 요청을 보내려면 상대 경로를 이용하세요.')
         console.warn('뉴아라 Api 서버가 아니므로 헤더에 인증 정보를 포함하지 않습니다.')
         config.headers.Authorization = ''
       }
@@ -43,15 +44,23 @@ instance.interceptors
     err => err
   )
 
-/* @TODO
- * JWT이 expire돼서 401이 뜬 경우는 (jwt를 까보면 expire시점을 알 수 있다.) 로그아웃,
- * 그냥 권한이 없어서 401이 뜬 경우는 알아서 처리할 수 있게(?)
+/*
+ * JWT이 expire된 경우 로그아웃,
+ * 다른 경우는 알아서 처리할 수 있게
  */
 instance.interceptors
   .response.use(
     resp => resp,
-    (err) => {
-      store.dispatch('error')
+    err => {
+      const { exp } = store.getters.jwtPayload // jwt의 만기 시점 (초 단위)
+      const now = Date.now() / 1000 // 현재 시점 (초 단위)
+
+      if (exp < now) {
+        router.push('/logout')
+      } else {
+        store.dispatch('error')
+      }
+
       return err
     }
   )
