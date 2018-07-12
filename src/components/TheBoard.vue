@@ -6,7 +6,7 @@
     <div v-for="article in board.results"
       :key="article.id">
       <router-link
-        :to="`/post/${article.id}`">
+        :to="{ name: 'post', params: { postId: article.id } }">
         {{ article.title }}
       </router-link>
     </div>

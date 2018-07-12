@@ -1,11 +1,11 @@
 <template>
   <div>
     <router-link
-      v-for="n in pageRange"
-      :key="n"
-      :to="`/board/${boardId}/?page=${n}`"
-      :class="{ 'is-active': n === currentPage }">
-      {{ n }}
+      v-for="page in pageRange"
+      :key="page"
+      :to="{ name: 'board', params: { boardId }, query: { page } }"
+      :class="{ 'is-active': page === currentPage }">
+      {{ page }}
     </router-link>
   </div>
 </template>
