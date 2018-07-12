@@ -58,10 +58,10 @@ instance.interceptors
       if (exp < now) {
         router.push('/logout')
       } else {
-        store.dispatch('error')
+        store.dispatch('fetch/showError', '서버 통신 장애')
       }
 
-      return err
+      return Promise.reject(err)
     }
   )
 

@@ -5,27 +5,37 @@
 </template>
 
 <script>
+import store from '@/store'
+import { progressHandler } from './helper'
 import { fetchArticles } from '@/api'
 import TheBoard from '@/components/TheBoard'
+
+const fetch = ({ params: { boardId }, query }) => {
+  store.commit('fetch/startProgress')
+  return fetchArticles(
+    { ...(boardId ? { parent_board: boardId } : {}), ...query },
+    progressHandler
+  ).then(board => {
+    store.dispatch('fetch/endProgress')
+    return board
+  })
+}
 
 export default {
   name: 'board',
   data () {
-    return {
-      board: {}
-    }
+    return { board: {} }
   },
-  mounted () {
-    const page = this.$route.query.page || 1
-    fetchArticles(page).then(board => {
-      this.board = board
-    })
+  beforeRouteEnter (to, from, next) {
+    fetch(to).then(board => {
+      next(vm => { vm.board = board })
+    }).catch(() => { next(false) })
   },
-  beforeRouteUpdate ({ params: { boardId }, query: { page = 1 } }, from, next) {
-    fetchArticles(boardId, page).then(board => {
+  beforeRouteUpdate (to, from, next) {
+    fetch(to).then(board => {
       this.board = board
-    })
-    next()
+      next()
+    }).catch(() => { next(false) })
   },
   components: { TheBoard }
 }

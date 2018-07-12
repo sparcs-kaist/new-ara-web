@@ -1,36 +1,40 @@
 <template>
   <nav>
-    <router-link to="/">홈</router-link>
+    <TheNavbarFetchProgressBar/>
+    <router-link :to="{ name: 'home' }"> 홈 </router-link>
+    <router-link :to="{ name: 'board'}"> 모아보기 </router-link>
     <router-link
       v-for="board in boardList"
       :key="board.id"
-      :to="`/board/${board.id}`">
+      :to="{ name: 'board', params: { boardId: board.id } }">
       {{ board.ko_name }}
     </router-link>
-    <router-link to="/setting"> {{ jwtPayload.username }}님 </router-link>
-    <a href="/logout"> 로그아웃 </a>
+    <router-link :to="{ name: 'settings' }"> {{ userNickname }}님 </router-link>
+    <router-link :to="{ name: 'logout-handler' }"> 로그아웃 </router-link>
   </nav>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
+import TheNavbarFetchProgressBar from '@/components/TheNavbarFetchProgressBar'
 
 export default {
   name: 'the-navbar',
   computed: {
     ...mapState(['boardList']),
-    ...mapGetters(['jwtPayload'])
+    ...mapGetters(['userNickname'])
   },
   methods: { ...mapActions(['fetchBoardList']) },
   mounted () {
     this.fetchBoardList()
-  }
+  },
+  components: { TheNavbarFetchProgressBar }
 }
 </script>
 
 <style>
 .notification.is-api-error {
-  position: absolute;
+  position: fixed;
   top: 1rem;
   left: 0;
   right: 0;

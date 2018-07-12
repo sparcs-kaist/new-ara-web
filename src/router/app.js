@@ -1,17 +1,17 @@
-import TheLayout from '@/components/TheLayout'
+import Layout from '@/views/Layout'
 import Home from '@/views/Home'
 import Board from '@/views/Board'
 import Post from '@/views/Post'
-import Setting from '@/views/Setting'
+import Settings from '@/views/Settings'
 import { authGuard } from './auth'
 
 export default [
   {
     path: '/:path?',
-    component: TheLayout,
+    component: Layout,
     children: [
       {
-        path: '/board/:boardId',
+        path: '/board/:boardId?',
         name: 'board',
         component: Board,
         props: true
@@ -23,9 +23,9 @@ export default [
         props: true
       },
       {
-        path: '/setting',
-        name: 'setting',
-        component: Setting
+        path: '/settings',
+        name: 'settings',
+        component: Settings
       },
       {
         path: '/',
