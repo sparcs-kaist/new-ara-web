@@ -88,12 +88,10 @@ export default {
     },
     pictureHandler ({ target: { files: [ file ] } }) {
       this.picture = file
-      
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.pictureSrc = e.target.result;
-      };
-      reader.readAsDataURL(file);
+
+      const reader = new FileReader()
+      reader.onload = e => { this.pictureSrc = e.target.result }
+      reader.readAsDataURL(file)
     }
   },
   beforeRouteEnter (to, from, next) {

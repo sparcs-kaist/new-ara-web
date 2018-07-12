@@ -12,13 +12,11 @@ import TheBoard from '@/components/TheBoard'
 
 const fetch = ({ params: { boardId }, query }) => {
   store.commit('fetch/startProgress')
-  return fetchArticles(
-    { ...(boardId ? { parent_board: boardId } : {}), ...query },
-    progressHandler
-  ).then(board => {
-    store.dispatch('fetch/endProgress')
-    return board
-  })
+  return fetchArticles({ boardId, ...query }, progressHandler)
+    .then(board => {
+      store.dispatch('fetch/endProgress')
+      return board
+    })
 }
 
 export default {
