@@ -3,6 +3,8 @@
     <div v-if="currentQuery">
       검색어: {{ currentQuery }}
     </div>
+    <router-link :to="{ name: 'write' }"> 글 작성 </router-link>
+    <!-- query: { boardSlug: '' } -->
     <BoardPaginator
       :numPages="board.num_pages"
       :currentPage="board.current"/>

@@ -13,6 +13,7 @@
     "bulma": "^0.7.1",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
+    "vue2-editor": "^2.5.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

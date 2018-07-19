@@ -1,8 +1,9 @@
 import Layout from '@/views/Layout'
-import Home from '@/views/Home'
 import Board from '@/views/Board'
 import Post from '@/views/Post'
+import Write from '@/views/Write'
 import Settings from '@/views/Settings'
+import Home from '@/views/Home'
 import { authGuard } from './auth'
 
 export default [
@@ -21,6 +22,11 @@ export default [
         name: 'post',
         component: Post,
         props: true
+      },
+      {
+        path: '/write/:postId?',
+        name: 'write',
+        component: Write
       },
       {
         path: '/settings',
