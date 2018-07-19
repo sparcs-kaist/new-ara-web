@@ -18,5 +18,8 @@ module.exports = {
   ],
   testMatch: [
     '<rootDir>/tests/unit/**/*.spec.js'
-  ]
+  ],
+  globals: {
+    localStorage: {}
+  }
 }
