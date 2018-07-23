@@ -1,4 +1,4 @@
-# Url
+# Url 구조
 ## 게시판
 ```
 /board (모아보기)
@@ -6,15 +6,6 @@
 ```
 - [x] 라우팅 구현
 - [ ] boardId 대신 boardName을 사용하도록 업데이트
-
-## 게시물
-```
-/post/:postId (모아보기)
-/post/:postId?board=:boardName (게시판)
-/post/:postId?query=:query (모아보기 검색)
-/post/:postId?board=:boardName&query=:query (게시판 검색)
-```
-- [x] 라우팅 구현
 
 ## 사용자 작성글
 ```
@@ -30,6 +21,15 @@
 /archive (담아두기)
 ```
 - [ ] 라우팅 구현
+
+## 게시물
+```
+/post/:postId (모아보기)
+/post/:postId?board=:boardName (게시판)
+/post/:postId?query=:query (모아보기 검색)
+/post/:postId?board=:boardName&query=:query (게시판 검색)
+```
+- [x] 라우팅 구현
 
 ## 글 작성
 ```

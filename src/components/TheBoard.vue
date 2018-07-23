@@ -31,6 +31,11 @@
         :to="{ name: 'post', params: { postId: article.id } }">
         {{ article.title }}
       </router-link>
+      <span> by </span>
+      <router-link
+        :to="{ name: 'user', params: { username: article.created_by } }">
+        {{ article.created_by }}
+      </router-link>
     </div>
   </div>
 </template>

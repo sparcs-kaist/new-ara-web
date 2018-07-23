@@ -1,5 +1,6 @@
 import Layout from '@/views/Layout'
 import Board from '@/views/Board'
+import User from '@/views/User'
 import Post from '@/views/Post'
 import Write from '@/views/Write'
 import Settings from '@/views/Settings'
@@ -15,6 +16,12 @@ export default [
         path: '/board/:boardId?',
         name: 'board',
         component: Board,
+        props: true
+      },
+      {
+        path: '/user/:username',
+        name: 'user',
+        component: User,
         props: true
       },
       {
