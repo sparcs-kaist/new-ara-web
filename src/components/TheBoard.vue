@@ -5,7 +5,7 @@
     </div>
     <router-link :to="{ name: 'write' }"> 글 작성 </router-link>
     <!-- query: { boardSlug: '' } -->
-    <BoardPaginator
+    <TheBoardPaginator
       :numPages="board.num_pages"
       :currentPage="board.current"/>
     <div class="field has-addons">
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import BoardPaginator from '@/components/BoardPaginator'
+import TheBoardPaginator from '@/components/TheBoardPaginator'
 
 export default {
   name: 'the-board',
@@ -51,12 +51,15 @@ export default {
       return this.$route.query && this.$route.query.query
     }
   },
-  watch: {
-    $route () {
-      this.query = ''
-    }
-  },
-  components: { BoardPaginator }
+  // @TODO: components/ 아래의 컴퍼넌트는 $route에 의존적이지 않아야 한다.
+  // 목표는 검색 이후에 navigation을 하면 검색어가 사라지게 하는 것.
+  // 다른 관점에서 봐서 부모가 현재 검색어를 prop으로 내려주면 해결되는 듯?
+  // watch: {
+  //   $route () {
+  //     this.query = ''
+  //   }
+  // },
+  components: { TheBoardPaginator }
 }
 </script>
 

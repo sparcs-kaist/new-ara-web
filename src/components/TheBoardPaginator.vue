@@ -14,7 +14,7 @@
 import { range } from '@/helper'
 
 export default {
-  name: 'board-paginator',
+  name: 'the-board-paginator',
   props: {
     numPages: Number,
     currentPage: Number
