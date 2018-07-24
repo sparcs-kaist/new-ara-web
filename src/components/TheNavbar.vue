@@ -6,7 +6,12 @@
     <router-link
       v-for="board in boardList"
       :key="board.id"
-      :to="{ name: 'board', params: { boardId: board.id } }">
+      :to="{
+        name: 'board',
+        params: {
+          boardId: board.id
+        }
+      }">
       {{ board.ko_name }}
     </router-link>
     <router-link :to="{ name: 'settings' }"> {{ userNickname }}님 </router-link>

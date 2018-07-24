@@ -3,7 +3,11 @@
     <router-link
       v-for="page in pageRange"
       :key="page"
-      :to="{ name: 'board', params: { boardId }, query: { page } }"
+      :to="{
+        name: 'board',
+        params: { boardId },
+        query: { page }
+      }"
       :class="{ 'is-active': page === currentPage }">
       {{ page }}
     </router-link>

@@ -19,7 +19,11 @@
       </div>
       <div class="control">
         <router-link
-          :to="{ query: { query: this.query } }"
+          :to="{
+            query: {
+              query: this.query
+            }
+          }"
           class="button is-link">
           검색
         </router-link>
@@ -28,12 +32,22 @@
     <div v-for="article in board.results"
       :key="article.id">
       <router-link
-        :to="{ name: 'post', params: { postId: article.id } }">
+        :to="{
+          name: 'post',
+          params: {
+            postId: article.id
+          }
+        }">
         {{ article.title }}
       </router-link>
       <span> by </span>
       <router-link
-        :to="{ name: 'user', params: { username: article.created_by } }">
+        :to="{
+          name: 'user',
+          params: {
+            username: article.created_by
+          }
+        }">
         {{ article.created_by }}
       </router-link>
     </div>

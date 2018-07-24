@@ -1,13 +1,20 @@
 <template>
   <div class="home">
     <div v-for="board in boards" :key="board.id">
-      <router-link :to="{ name: 'board', params: { boardId: board.id } }">
+      <router-link 
+        :to="{
+          name: 'board',
+          params: { boardId: board.id }
+        }">
         <h2> 게시판: {{ board.ko_name }} </h2>
       </router-link>
       <router-link
         v-for="article in board.recent_articles"
         :key="article.id"
-        :to="{ name: 'post', params: { postId: article.id } }">
+        :to="{
+          name: 'post',
+          params: { postId: article.id }
+        }">
         <h3> 제목: {{ article.title }} </h3>
       </router-link>
     </div>
