@@ -4,6 +4,12 @@
     <p>
       글쓴이: {{ post.created_by }}
     </p>
+    <router-link :to="{
+      name: 'write',
+      params: {
+        postId: post.id
+      }
+    }"> 수정하기 </router-link>
     <p
       v-html="post.content"
       class="content"></p>

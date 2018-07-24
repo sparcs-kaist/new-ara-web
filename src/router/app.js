@@ -33,7 +33,8 @@ export default [
       {
         path: '/write/:postId?',
         name: 'write',
-        component: Write
+        component: Write,
+        props: true
       },
       {
         path: '/settings',
