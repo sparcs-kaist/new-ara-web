@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import TheNavbarFetchProgressBar from '@/components/TheNavbarFetchProgressBar.vue'
 
 export default {
@@ -28,10 +28,6 @@ export default {
   computed: {
     ...mapState(['boardList']),
     ...mapGetters(['userNickname'])
-  },
-  methods: { ...mapActions(['fetchBoardList']) },
-  mounted () {
-    this.fetchBoardList()
   },
   components: { TheNavbarFetchProgressBar }
 }

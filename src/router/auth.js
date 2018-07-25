@@ -5,7 +5,10 @@ export const authGuard = async (to, from, next) => {
   if (!store.getters.isLoggedIn) {
     next('/login')
   } else {
-    await store.dispatch('fetchUser')
+    await Promise.all([
+      store.dispatch('fetchUser'),
+      store.dispatch('fetchBoardList')
+    ])
     next()
   }
 }
