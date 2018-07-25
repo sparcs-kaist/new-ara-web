@@ -39,9 +39,9 @@ export default {
     }
   },
   actions: {
-    async fetchUser ({ commit, getters }, progressHandler) {
-      if (!getters.hasFetched) {
-        commit('setUserProfile', await fetchUser(getters.userId, progressHandler))
+    async fetchUser ({ commit, getters: { hasFetched, userId } }, progressHandler) {
+      if (!hasFetched) {
+        commit('setUserProfile', await fetchUser(userId, progressHandler))
       }
     }
   }

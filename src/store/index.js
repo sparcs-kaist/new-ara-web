@@ -11,15 +11,20 @@ export default new Vuex.Store({
   state: {
     boardList: []
   },
+  getters: {
+    hasFetchedBoardList ({ boardList }) { return boardList.length !== 0 }
+  },
   mutations: {
     setBoardList (state, boardList) {
       state.boardList = boardList
     }
   },
   actions: {
-    async fetchBoardList ({ commit }) {
-      const { results } = await fetchBoardList()
-      commit('setBoardList', results)
+    async fetchBoardList ({ commit, getters: { hasFetchedBoardList } }) {
+      if (!hasFetchedBoardList) {
+        const { results } = await fetchBoardList()
+        commit('setBoardList', results)
+      }
     }
   }
 })
