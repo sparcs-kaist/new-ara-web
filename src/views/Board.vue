@@ -11,30 +11,32 @@ import { progressHandler } from './helper.js'
 import TheLayout from '@/components/TheLayout.vue'
 import TheBoard from '@/components/TheBoard.vue'
 
-const fetch = ({ params: { boardId }, query }) => {
-  store.commit('fetch/startProgress')
-  return fetchArticles({ boardId, ...query }, progressHandler)
-    .then(board => {
-      store.dispatch('fetch/endProgress')
-      return board
-    })
-}
-
 export default {
   name: 'board',
   data () {
     return { board: {} }
   },
-  beforeRouteEnter (to, from, next) {
-    fetch(to).then(board => {
+  async beforeRouteEnter ({ params: { boardId }, query }, from, next) {
+    store.commit('fetch/startProgress')
+    try {
+      const board = await fetchArticles({ boardId, ...query }, progressHandler)
       next(vm => { vm.board = board })
-    }).catch(() => { next(false) })
+    } catch (err) {
+      // @TODO: Fetch 실패 안내..?
+      next(false)
+    }
+    store.dispatch('fetch/endProgress')
   },
-  beforeRouteUpdate (to, from, next) {
-    fetch(to).then(board => {
-      this.board = board
+  async beforeRouteUpdate ({ params: { boardId }, query }, from, next) {
+    store.commit('fetch/startProgress')
+    try {
+      this.board = await fetchArticles({ boardId, ...query }, progressHandler)
       next()
-    }).catch(() => { next(false) })
+    } catch (err) {
+      // @TODO: Fetch 실패 안내..?
+      next(false)
+    }
+    store.dispatch('fetch/endProgress')
   },
   components: { TheLayout, TheBoard }
 }

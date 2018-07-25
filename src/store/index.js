@@ -17,10 +17,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    fetchBoardList ({ commit }) {
-      fetchBoardList().then(({ results }) =>
-        commit('setBoardList', results)
-      )
+    async fetchBoardList ({ commit }) {
+      const { results } = await fetchBoardList()
+      commit('setBoardList', results)
     }
   }
 })

@@ -42,6 +42,7 @@ export default {
     }
   },
   actions: {
+    // @TODO: showError가 끝나는 시점이 궁금한 component가 있다면 Promise로 재작성 할 수도?
     showError ({ commit }, message) {
       commit('updateError', message)
       setTimeout(() => { commit('endError') }, 2000)

@@ -25,20 +25,26 @@ export default {
       post: {}
     }
   },
-  beforeRouteEnter ({ params: { postId } }, from, next) {
+  async beforeRouteEnter ({ params: { postId } }, from, next) {
     store.commit('fetch/startProgress')
-    fetchPost({ postId }, progressHandler).then(post => {
-      store.dispatch('fetch/endProgress')
+    try {
+      const post = await fetchPost({ postId }, progressHandler)
       next(vm => { vm.post = post })
-    }).catch(() => { next(false) })
+    } catch (err) {
+      next(false)
+    }
+    store.dispatch('fetch/endProgress')
   },
-  beforeRouteUpdate ({ params: { postId } }, from, next) {
+  async beforeRouteUpdate ({ params: { postId } }, from, next) {
     store.commit('fetch/startProgress')
-    fetchPost({ postId }, progressHandler).then(post => {
-      store.dispatch('fetch/endProgress')
+    try {
+      const post = await fetchPost({ postId }, progressHandler)
       this.post = post
       next()
-    }).catch(() => { next(false) })
+    } catch (err) {
+      next(false)
+    }
+    store.dispatch('fetch/endProgress')
   },
   components: { TheLayout, ThePostDetail, ThePostComments, TheBoard }
 }

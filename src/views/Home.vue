@@ -36,16 +36,20 @@ export default {
       boards: []
     }
   },
-  beforeRouteEnter (to, from, next) {
+  async beforeRouteEnter (to, from, next) {
     store.commit('fetch/startProgress')
-    fetchHome(progressHandler).then(({ dailyBests, weeklyBests, boards }) => {
-      store.dispatch('fetch/endProgress')
+    try {
+      const { dailyBests, weeklyBests, boards } = await fetchHome(progressHandler)
       next(vm => {
         vm.dailyBests = dailyBests
         vm.weeklyBests = weeklyBests
         vm.boards = boards
       })
-    }).catch(() => { next(false) })
+    } catch (err) {
+      // @TODO: Fetch 실패 안내..?
+      next(false)
+    }
+    store.dispatch('fetch/endProgress')
   },
   components: { TheLayout }
 }

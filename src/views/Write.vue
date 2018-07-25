@@ -37,38 +37,36 @@ export default {
     }
   },
   methods: {
-    save (newArticle) {
-      this.saving = true
-      // if (!this.isEditing) {
-      //   // @TODO: boardId 하드코딩이라니........
-      //   createPost({ boardId: 1, newArticle }).catch(e => {
-      //     // @TODO: 에러 핸들링
-      //     console.error(e)
-      //   }).finally(() => {
-      //     this.saving = false
-      //   })
-      // } else {
-      //   updatePost({ postId: this.postId, newArticle }).then(() => {
-      //     this.saving = false
-      //   }).catch(e => {
-      //     // @TODO: 에러 핸들링
-      //     console.error(e)
-      //     this.saving = false
-      //   })
+    async save (newArticle) {
+      // this.saving = true
+      // try {
+      //   if (!this.isEditing) {
+      //     // @TODO: boardId 하드코딩이라니........
+      //     await createPost({ boardId: 1, newArticle })
+      //   } else {
+      //     await updatePost({ postId: this.postId, newArticle })
+      //   }
+      // } catch (err) {
+      //   // @TODO: 에러 핸들링
+      //   console.error(e)
       // }
+      // this.saving = false
     }
   },
-  beforeRouteEnter ({ params: { postId } }, from, next) {
+  async beforeRouteEnter ({ params: { postId } }, from, next) {
     // 새로운 글을 작성하는 경우
     if (!postId) {
       next() // !주의: next는 한번만 호출돼야 함
     // 기존 글을 수정하는 경우
     } else {
       store.commit('fetch/startProgress')
-      fetchPost({ postId }, progressHandler).then(post => {
-        store.dispatch('fetch/endProgress')
+      try {
+        const post = await fetchPost({ postId }, progressHandler)
         next(vm => { vm.post = post })
-      }).catch(() => { next(false) })
+      } catch (err) {
+        next(false)
+      }
+      store.dispatch('fetch/endProgress')
     }
   },
   components: { TheLayout, ThePostWrite }

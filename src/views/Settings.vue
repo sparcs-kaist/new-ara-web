@@ -76,18 +76,20 @@ export default {
     }
   },
   methods: {
-    updateSettings () {
+    // @TODO: setting update를 vuex에도 반영. 그냥 다시 fetch 해도 될지도 (...)
+    async updateSettings () {
       this.updating = true
-      updateUser(store.getters.userId, {
-        nickname: this.nickname,
-        picture: this.picture,
-        sexual: this.sexual,
-        social: this.social
-      }).catch(() => {
+      try {
+        await updateUser(store.getters.userId, {
+          nickname: this.nickname,
+          picture: this.picture,
+          sexual: this.sexual,
+          social: this.social
+        })
+      } catch (err) {
         store.dispatch('error', '설정 변경 중 문제가 발생했습니다.')
-      }).finally(() => {
-        this.updating = false
-      })
+      }
+      this.updating = false
     },
     pictureHandler ({ target: { files: [ file ] } }) {
       this.picture = file
@@ -97,10 +99,10 @@ export default {
       reader.readAsDataURL(file)
     }
   },
-  beforeRouteEnter (to, from, next) {
+  async beforeRouteEnter (to, from, next) {
     store.commit('fetch/startProgress')
-    store.dispatch('fetchUser', progressHandler).then(() => {
-      store.commit('fetch/endProgress')
+    try {
+      await store.dispatch('fetchUser', progressHandler)
       const { userNickname, userPicture, userConfig } = store.getters
       next(vm => {
         vm.nickname = userNickname
@@ -108,7 +110,10 @@ export default {
         vm.sexual = userConfig.sexual
         vm.social = userConfig.social
       })
-    }).catch(() => { next(false) })
+    } catch (err) {
+      next(false)
+    }
+    store.commit('fetch/endProgress')
   },
   components: { TheLayout }
 }
