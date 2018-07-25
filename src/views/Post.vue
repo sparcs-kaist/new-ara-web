@@ -8,12 +8,12 @@
 
 <script>
 import store from '@/store'
-import { progressHandler } from './helper'
 import { fetchPost } from '@/api'
-import TheLayout from '@/components/TheLayout'
-import ThePostDetail from '@/components/ThePostDetail'
-import ThePostComments from '@/components/ThePostComments'
-import TheBoard from '@/components/TheBoard'
+import { progressHandler } from './helper.js'
+import TheLayout from '@/components/TheLayout.vue'
+import ThePostDetail from '@/components/ThePostDetail.vue'
+import ThePostComments from '@/components/ThePostComments.vue'
+import TheBoard from '@/components/TheBoard.vue'
 
 export default {
   name: 'post',

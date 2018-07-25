@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { range } from '@/helper'
+import { range } from '@/helper.js'
 
 export default {
   name: 'the-board-paginator',

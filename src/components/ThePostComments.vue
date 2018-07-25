@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import PostComment from '@/components/PostComment'
+import PostComment from '@/components/PostComment.vue'
 
 export default {
   name: 'the-post-comments',

@@ -23,8 +23,8 @@
 
 <script>
 import store from '@/store'
-import { progressHandler } from './helper'
 import { fetchHome } from '@/api'
+import { progressHandler } from './helper.js'
 import TheLayout from '@/components/TheLayout.vue'
 
 export default {

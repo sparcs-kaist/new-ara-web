@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import TheBoardPaginator from '@/components/TheBoardPaginator'
+import TheBoardPaginator from '@/components/TheBoardPaginator.vue'
 
 export default {
   name: 'the-board',
@@ -67,6 +67,7 @@ export default {
   },
   computed: {
     currentQuery () {
+      // @TODO: 요것도 아래와 같은 의미로 prop으로 받아야될듯..?
       return this.$route.query && this.$route.query.query
     }
   },

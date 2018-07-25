@@ -12,9 +12,9 @@
 
 <script>
 import store from '@/store'
-import { progressHandler } from './helper'
 import { fetchPost } from '@/api'
 // createPost, updatePost
+import { progressHandler } from './helper.js'
 import TheLayout from '@/components/TheLayout.vue'
 import ThePostWrite from '@/components/ThePostWrite.vue'
 

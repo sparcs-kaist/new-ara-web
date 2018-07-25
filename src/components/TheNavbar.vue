@@ -21,7 +21,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
-import TheNavbarFetchProgressBar from '@/components/TheNavbarFetchProgressBar'
+import TheNavbarFetchProgressBar from '@/components/TheNavbarFetchProgressBar.vue'
 
 export default {
   name: 'the-navbar',

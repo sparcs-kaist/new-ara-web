@@ -1,4 +1,4 @@
-import http from '@/http'
+import http from '@/http.js'
 
 export const fetchUser = (userId, onDownloadProgress) =>
   http.get(`user_profiles/${userId}/`, { onDownloadProgress })

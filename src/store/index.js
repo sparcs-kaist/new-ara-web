@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { fetchBoardList } from '@/api'
-import auth from './auth'
-import fetch from './fetch'
+import auth from './auth.js'
+import fetch from './fetch.js'
 
 Vue.use(Vuex)
 

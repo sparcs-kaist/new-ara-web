@@ -12,11 +12,10 @@ export default {
 
 <style lang="scss">
 @import '@/style.scss';
-@import '~bulma/sass/utilities/initial-variables';
-@import '~bulma/sass/utilities/functions';
+@import '~bulma/sass/utilities/initial-variables.sass';
+@import '~bulma/sass/utilities/functions.sass';
 
 $primary: $theme-red;
 
-// Customize here
-@import '~bulma';
+@import '~bulma/bulma.sass';
 </style>

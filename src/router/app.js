@@ -1,10 +1,10 @@
-import Board from '@/views/Board'
-import User from '@/views/User'
-import Post from '@/views/Post'
-import Write from '@/views/Write'
-import Settings from '@/views/Settings'
-import Home from '@/views/Home'
-import { authGuard } from './auth'
+import Board from '@/views/Board.vue'
+import User from '@/views/User.vue'
+import Post from '@/views/Post.vue'
+import Write from '@/views/Write.vue'
+import Settings from '@/views/Settings.vue'
+import Home from '@/views/Home.vue'
+import { authGuard } from './auth.js'
 
 export default [
   {

@@ -1,5 +1,5 @@
 import store from '@/store'
-import Facade from '@/views/Facade'
+import Facade from '@/views/Facade.vue'
 
 export const authGuard = async (to, from, next) => {
   if (!store.getters.isLoggedIn) {

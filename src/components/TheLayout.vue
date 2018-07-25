@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import TheNavbar from '@/components/TheNavbar'
-import TheFooter from '@/components/TheFooter'
-import TheApiErrorNotification from '@/components/TheApiErrorNotification'
+import TheNavbar from '@/components/TheNavbar.vue'
+import TheFooter from '@/components/TheFooter.vue'
+import TheApiErrorNotification from '@/components/TheApiErrorNotification.vue'
 
 export default {
   components: { TheNavbar, TheFooter, TheApiErrorNotification }

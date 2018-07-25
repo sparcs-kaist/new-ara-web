@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import PostRecomment from '@/components/PostRecomment'
+import PostRecomment from '@/components/PostRecomment.vue'
 
 export default {
   name: 'post-comment',

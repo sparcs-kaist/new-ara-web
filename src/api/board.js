@@ -1,5 +1,5 @@
-import http from '@/http'
-import { queryBuilder } from '@/helper'
+import http from '@/http.js'
+import { queryBuilder } from '@/helper.js'
 
 export const fetchBoardList = () =>
   http.get('boards/')

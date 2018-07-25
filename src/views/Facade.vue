@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { apiUrl } from '@/http'
+import { apiUrl } from '@/http.js'
 
 export default {
   name: 'facade',

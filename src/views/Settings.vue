@@ -60,7 +60,7 @@
 <script>
 import store from '@/store'
 import { updateUser } from '@/api'
-import { progressHandler } from './helper'
+import { progressHandler } from './helper.js'
 import TheLayout from '@/components/TheLayout.vue'
 
 export default {

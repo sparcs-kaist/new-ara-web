@@ -6,10 +6,10 @@
 
 <script>
 import store from '@/store'
-import { progressHandler } from './helper'
 import { fetchArticles } from '@/api'
-import TheLayout from '@/components/TheLayout'
-import TheBoard from '@/components/TheBoard'
+import { progressHandler } from './helper.js'
+import TheLayout from '@/components/TheLayout.vue'
+import TheBoard from '@/components/TheBoard.vue'
 
 const fetch = ({ params: { boardId }, query }) => {
   store.commit('fetch/startProgress')

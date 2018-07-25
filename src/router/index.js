@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import auth from './auth'
-import app from './app'
+import auth from './auth.js'
+import app from './app.js'
 
 Vue.use(Router)
 
