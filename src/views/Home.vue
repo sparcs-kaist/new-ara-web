@@ -1,7 +1,7 @@
 <template>
-  <div class="home">
+  <TheLayout class="home">
     <div v-for="board in boards" :key="board.id">
-      <router-link 
+      <router-link
         :to="{
           name: 'board',
           params: { boardId: board.id }
@@ -18,13 +18,14 @@
         <h3> 제목: {{ article.title }} </h3>
       </router-link>
     </div>
-  </div>
+  </TheLayout>
 </template>
 
 <script>
 import store from '@/store'
 import { progressHandler } from './helper'
 import { fetchHome } from '@/api'
+import TheLayout from '@/components/TheLayout.vue'
 
 export default {
   name: 'home',
@@ -45,6 +46,7 @@ export default {
         vm.boards = boards
       })
     }).catch(() => { next(false) })
-  }
+  },
+  components: { TheLayout }
 }
 </script>

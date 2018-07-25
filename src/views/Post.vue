@@ -1,15 +1,16 @@
 <template>
-  <div>
+  <TheLayout>
     <ThePostDetail :post="post"/>
     <ThePostComments :comments="post.comments"/>
     <!-- @TODO: <TheBoard :board="board"/> -->
-  </div>
+  </TheLayout>
 </template>
 
 <script>
 import store from '@/store'
 import { progressHandler } from './helper'
 import { fetchPost } from '@/api'
+import TheLayout from '@/components/TheLayout'
 import ThePostDetail from '@/components/ThePostDetail'
 import ThePostComments from '@/components/ThePostComments'
 import TheBoard from '@/components/TheBoard'
@@ -39,7 +40,7 @@ export default {
       next()
     }).catch(() => { next(false) })
   },
-  components: { ThePostDetail, ThePostComments, TheBoard }
+  components: { TheLayout, ThePostDetail, ThePostComments, TheBoard }
 }
 </script>
 

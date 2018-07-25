@@ -1,13 +1,14 @@
 <template>
-  <div>
+  <TheLayout>
     <TheBoard :board="board"/>
-  </div>
+  </TheLayout>
 </template>
 
 <script>
 import store from '@/store'
 import { progressHandler } from './helper'
 import { fetchArticles } from '@/api'
+import TheLayout from '@/components/TheLayout'
 import TheBoard from '@/components/TheBoard'
 
 const fetch = ({ params: { username }, query }) => {
@@ -35,7 +36,7 @@ export default {
       next()
     }).catch(() => { next(false) })
   },
-  components: { TheBoard }
+  components: { TheLayout, TheBoard }
 }
 </script>
 

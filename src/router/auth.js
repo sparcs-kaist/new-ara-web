@@ -1,10 +1,11 @@
 import store from '@/store'
 import Facade from '@/views/Facade'
 
-export const authGuard = (to, from, next) => {
+export const authGuard = async (to, from, next) => {
   if (!store.getters.isLoggedIn) {
     next('/login')
   } else {
+    await store.dispatch('fetchUser')
     next()
   }
 }

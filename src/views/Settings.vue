@@ -1,64 +1,67 @@
 <template>
-  <div class="container">
-    <div class="field">
-      <label for="nickname" class="label"> 닉네임 </label>
-      <div class="control">
-        <input type="text"
-          id="nickname"
-          class="input"
-          v-model="nickname"
+  <TheLayout>
+    <div class="container">
+      <div class="field">
+        <label for="nickname" class="label"> 닉네임 </label>
+        <div class="control">
+          <input type="text"
+            id="nickname"
+            class="input"
+            v-model="nickname"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label for="sexual" class="checkbox">
+          <input type="checkbox"
+            id="sexual"
+            class="checkbox"
+            v-model="sexual"
+          />
+          성인글 보기
+        </label>
+      </div>
+      <div class="field">
+        <label for="social" class="checkbox">
+          <input type="checkbox"
+            id="social"
+            v-model="social"
+          />
+          정치글 보기
+        </label>
+      </div>
+      <div class="profile-container">
+        프로필
+        <img
+          :src="pictureSrc"
+          alt="프로필 사진"
+          class="image profile"
         />
       </div>
-    </div>
-    <div class="field">
-      <label for="sexual" class="checkbox">
-        <input type="checkbox"
-          id="sexual"
-          class="checkbox"
-          v-model="sexual"
-        />
-        성인글 보기
-      </label>
-    </div>
-    <div class="field">
-      <label for="social" class="checkbox">
-        <input type="checkbox"
-          id="social"
-          v-model="social"
-        />
-        정치글 보기
-      </label>
-    </div>
-    <div class="profile-container">
-      프로필
-      <img
-        :src="pictureSrc"
-        alt="프로필 사진"
-        class="image profile"
-      />
-    </div>
-    <br>
-    <div class="field">
-      <div class="control">
-        <input
-          type="file"
-          @change="pictureHandler "
-        />
+      <br>
+      <div class="field">
+        <div class="control">
+          <input
+            type="file"
+            @change="pictureHandler "
+          />
+        </div>
       </div>
+      <button
+        class="button is-text"
+        :class="{ 'is-loading': updating }"
+        @click="updateSettings">
+        업데이트
+      </button>
     </div>
-    <button
-      class="button is-text"
-      :class="{ 'is-loading': updating }"
-      @click="updateSettings">
-      업데이트
-    </button>
-  </div>
+  </TheLayout>
 </template>
 
 <script>
 import store from '@/store'
 import { updateUser } from '@/api'
 import { progressHandler } from './helper'
+import TheLayout from '@/components/TheLayout.vue'
 
 export default {
   name: 'settings',
@@ -106,7 +109,8 @@ export default {
         vm.social = userConfig.social
       })
     }).catch(() => { next(false) })
-  }
+  },
+  components: { TheLayout }
 }
 </script>
 
