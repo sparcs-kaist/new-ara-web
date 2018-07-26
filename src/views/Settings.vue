@@ -47,6 +47,7 @@
           />
         </div>
       </div>
+      <TheSettingBlocks/>
       <button
         class="button is-text"
         :class="{ 'is-loading': updating }"
@@ -62,6 +63,7 @@ import store from '@/store'
 import { updateUser } from '@/api'
 import { progressHandler } from './helper.js'
 import TheLayout from '@/components/TheLayout.vue'
+import TheSettingBlocks from '@/components/TheSettingBlocks.vue'
 
 export default {
   name: 'settings',
@@ -115,7 +117,7 @@ export default {
     }
     store.commit('fetch/endProgress')
   },
-  components: { TheLayout }
+  components: { TheLayout, TheSettingBlocks }
 }
 </script>
 

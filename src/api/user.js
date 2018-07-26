@@ -21,3 +21,11 @@ export const updateUser = (userId, { nickname, picture, sexual, social }) => {
     { headers: { 'Content-Type': 'multipart/form-data' } }
   )
 }
+
+export const fetchNotifications = () =>
+  http.get('notifications/')
+    .then(({ data }) => data)
+
+export const fetchBlocks = () =>
+  http.get('blocks/')
+    .then(({ data }) => data)
