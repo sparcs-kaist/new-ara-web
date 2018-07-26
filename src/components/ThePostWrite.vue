@@ -5,12 +5,14 @@
     <input
       v-model="title"
       class="input"
-      type="text"/>
+      type="text"
+    />
     내용
     <VueEditor
-      v-model="content"/>
+      v-model="content"
+    />
     <button
-      @click="save"
+      @click="$emit('save-post', { title, content })"
       class="button is-primary"
       :class="{ 'is-loading': saving }"
     > 저장 </button>
@@ -27,12 +29,6 @@ export default {
     return {
       title: '',
       content: ''
-    }
-  },
-  methods: {
-    save () {
-      const { title, content } = this
-      this.$emit('save', { title, content })
     }
   },
   created () {

@@ -1,7 +1,10 @@
 <template>
   <TheLayout>
     <ThePostDetail :post="post"/>
-    <ThePostComments :comments="post.comments"/>
+    <ThePostComments
+      :comments="post.comments"
+      :postId="postId"
+    />
     <!-- @TODO: <TheBoard :board="board"/> -->
   </TheLayout>
 </template>

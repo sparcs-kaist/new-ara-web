@@ -5,7 +5,7 @@
       v-if="postFetched"
       :post="post"
       :saving="saving"
-      @save="save"
+      @save-post="savePost"
     />
   </TheLayout>
 </template>
@@ -37,7 +37,7 @@ export default {
     }
   },
   methods: {
-    async save (newArticle) {
+    async savePost (newArticle) {
       // this.saving = true
       // try {
       //   if (!this.isEditing) {
