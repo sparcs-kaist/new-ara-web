@@ -1,0 +1,47 @@
+<template>
+  <span>
+    알림
+    <NavbarNotificationItem
+      v-for="notification in notifications"
+      :key="notification.id"
+      :notification="notification"
+    />
+  </span>
+</template>
+
+<script>
+import { fetchNotifications } from '@/api'
+import NavbarNotificationItem from '@/components/NavbarNotificationItem.vue'
+
+export default {
+  name: 'the-navbar-notifications',
+  data () {
+    return {
+      isFetching: false,
+      notifications: [],
+      currentPage: 1,
+      noPages: 1,
+      noItems: 0
+    }
+  },
+  async created () {
+    this.isFetching = true
+    const {
+      results: notifications,
+      current: currentPage,
+      num_pages: noPages,
+      num_items: noItems
+    } = await fetchNotifications()
+    this.isFetching = false
+    this.notifications = notifications
+    this.currentPage = currentPage
+    this.noPages = noPages
+    this.noItems = noItems
+  },
+  components: { NavbarNotificationItem }
+}
+</script>
+
+<style>
+
+</style>
