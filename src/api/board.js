@@ -15,3 +15,7 @@ export const fetchArticles = ({ boardId, query, page, username } = {}, onDownloa
   return http.get(`articles/?${queryBuilder(context)}`, { onDownloadProgress })
     .then(({ data }) => data)
 }
+
+export const fetchArchives = (onDownloadProgress) =>
+  http.get('scraps/', { onDownloadProgress })
+    .then(({ data }) => data)

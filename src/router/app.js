@@ -1,5 +1,6 @@
 import Board from '@/views/Board.vue'
 import User from '@/views/User.vue'
+import Archive from '@/views/Archive.vue'
 import Post from '@/views/Post.vue'
 import Write from '@/views/Write.vue'
 import Settings from '@/views/Settings.vue'
@@ -19,6 +20,12 @@ export default [
     name: 'user',
     component: User,
     props: true,
+    beforeEnter: authGuard
+  },
+  {
+    path: '/archive',
+    name: 'archive',
+    component: Archive,
     beforeEnter: authGuard
   },
   {

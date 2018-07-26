@@ -11,7 +11,6 @@ export const createPost = ({ boardId, newArticle }) =>
     is_anonymous: false,
     is_content_sexual: false,
     is_content_social: false,
-    use_signature: false,
     parent_board: boardId
   })
 
@@ -20,4 +19,14 @@ export const updatePost = ({ postId, newArticle }) =>
     ...newArticle,
     is_content_sexual: false,
     is_content_social: false
+  })
+
+export const archivePost = (postId) =>
+  http.post('scraps/', { parent_article: postId })
+
+export const createComment = (newComment) =>
+  http.post('comments/', {
+    ...newComment,
+    is_anonymous: false,
+    attachment: null
   })

@@ -13,14 +13,25 @@
     <p
       v-html="post.content"
       class="content"></p>
+    <button
+      @click="archive">
+      담아두기
+    </button>
   </div>
 </template>
 
 <script>
+import { archivePost } from '@/api'
+
 export default {
   name: 'the-post-detail',
   props: {
     post: { required: true }
+  },
+  methods: {
+    archive () {
+      archivePost(this.post.id)
+    }
   }
 }
 </script>

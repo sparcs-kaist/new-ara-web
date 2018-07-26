@@ -14,6 +14,8 @@
       }">
       {{ board.ko_name }}
     </router-link>
+    <TheNavbarNotifications/>
+    <TheNavbarArchives/>
     <router-link :to="{ name: 'settings' }"> {{ userNickname }}님 </router-link>
     <router-link :to="{ name: 'logout-handler' }"> 로그아웃 </router-link>
   </nav>
@@ -22,6 +24,8 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import TheNavbarFetchProgressBar from '@/components/TheNavbarFetchProgressBar.vue'
+import TheNavbarNotifications from '@/components/TheNavbarNotifications.vue'
+import TheNavbarArchives from '@/components/TheNavbarArchives.vue'
 
 export default {
   name: 'the-navbar',
@@ -29,7 +33,7 @@ export default {
     ...mapState(['boardList']),
     ...mapGetters(['userNickname'])
   },
-  components: { TheNavbarFetchProgressBar }
+  components: { TheNavbarFetchProgressBar, TheNavbarNotifications, TheNavbarArchives }
 }
 </script>
 
