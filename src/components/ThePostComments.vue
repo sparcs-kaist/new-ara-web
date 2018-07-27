@@ -5,6 +5,7 @@
       v-for="comment in comments"
       :key="comment.id"
       :comment="comment"
+      @newRecommentUploaded="passEventToParent($event, 'newRecommentUploaded')"
     />
     <textarea
       v-model="content"
@@ -13,6 +14,9 @@
       rows="3"
     />
     <button
+      class="button"
+      :class="{ 'is-loading': isUploading }"
+      :disabled="isUploading"
       @click="saveComment">
       새 댓글
     </button>
@@ -31,21 +35,33 @@ export default {
   },
   data () {
     return {
-      content: ''
+      content: '',
+      isUploading: false
     }
   },
   methods: {
-    // @TODO:
-    // 1. 업로드하는 중에 disable
-    // 2. 업로드 끝나면 폼 클리어
-    // 3. 업로드 끝나면 fetch article해서 그 간의 댓글 보여주기
-    // 4. 버튼 로딩 상태
-    saveComment () {
-      createComment({
-        parent_article: this.postId,
-        parent_comment: null,
-        content: this.content
-      })
+    async saveComment () {
+      if (this.isUploading) return
+
+      this.isUploading = true
+
+      try {
+        const result = await createComment({
+          parent_article: this.postId,
+          parent_comment: null,
+          content: this.content
+        })
+        this.$emit('newCommentUploaded', result.data)
+        this.content = ''
+      } catch (error) {
+        // @TODO: 채팅 생성에 실패했다고 알려주기
+        alert('Failed to write a comment!');
+      } finally {
+        this.isUploading = false
+      }
+    },
+    passEventToParent(event, eventType) {
+      this.$emit(eventType, event)
     }
   },
   components: { PostComment }
