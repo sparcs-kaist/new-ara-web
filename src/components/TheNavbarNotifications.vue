@@ -24,6 +24,7 @@ export default {
       noItems: 0
     }
   },
+  // navbar notification이 dropdown이 열리면서 mount 됐을 때 fetch
   async created () {
     this.isFetching = true
     const {

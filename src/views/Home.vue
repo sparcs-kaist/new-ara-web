@@ -22,34 +22,25 @@
 </template>
 
 <script>
-import store from '@/store'
 import { fetchHome } from '@/api'
-import { progressHandler } from './helper.js'
+import { fetchWithProgress } from './helper.js'
 import TheLayout from '@/components/TheLayout.vue'
 
 export default {
   name: 'home',
   data () {
     return {
-      dailyBests: [],
-      weeklyBests: [],
-      boards: []
+      home: {}
     }
   },
+  computed: {
+    dailyBests () { return this.home.dailyBests },
+    weeklyBests () { return this.home.weeklyBests },
+    boards () { return this.home.boards }
+  },
   async beforeRouteEnter (to, from, next) {
-    store.commit('fetch/startProgress')
-    try {
-      const { dailyBests, weeklyBests, boards } = await fetchHome(progressHandler)
-      next(vm => {
-        vm.dailyBests = dailyBests
-        vm.weeklyBests = weeklyBests
-        vm.boards = boards
-      })
-    } catch (err) {
-      // @TODO: Fetch 실패 안내..?
-      next(false)
-    }
-    store.dispatch('fetch/endProgress')
+    const [ home ] = await fetchWithProgress([ fetchHome() ])
+    next(vm => { vm.home = home })
   },
   components: { TheLayout }
 }

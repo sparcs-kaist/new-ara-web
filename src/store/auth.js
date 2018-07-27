@@ -1,9 +1,20 @@
 import { fetchUser } from '@/api'
 
+const hydrate = () => {
+  // @TODO: validity check 이거면 충분한가?
+  const JWT_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/
+  if (JWT_REGEX.test(localStorage.jwt)) {
+    return localStorage.jwt
+  } else {
+    delete localStorage.jwt
+    return ''
+  }
+}
+
 export default {
   // @TODO: namespaced: true // maybe...??
   state: {
-    jwt: localStorage.jwt || '',
+    jwt: hydrate(),
     userProfile: {}
   },
   getters: {
@@ -39,9 +50,9 @@ export default {
     }
   },
   actions: {
-    async fetchUser ({ commit, getters: { hasFetched, userId } }, progressHandler) {
+    async fetchUser ({ commit, getters: { hasFetched, userId } }) {
       if (!hasFetched) {
-        commit('setUserProfile', await fetchUser(userId, progressHandler))
+        commit('setUserProfile', await fetchUser(userId))
       }
     }
   }

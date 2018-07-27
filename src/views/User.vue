@@ -5,9 +5,8 @@
 </template>
 
 <script>
-import store from '@/store'
 import { fetchArticles } from '@/api'
-import { progressHandler } from './helper.js'
+import { fetchWithProgress } from './helper.js'
 import TheLayout from '@/components/TheLayout.vue'
 import TheBoard from '@/components/TheBoard.vue'
 
@@ -17,25 +16,13 @@ export default {
     return { board: {} }
   },
   async beforeRouteEnter ({ params: { username }, query }, from, next) {
-    store.commit('fetch/startProgress')
-    try {
-      const board = await fetchArticles({ username, ...query }, progressHandler)
-      next(vm => { vm.board = board })
-    } catch (err) {
-      next(false)
-    }
-    store.dispatch('fetch/endProgress')
+    const [ board ] = await fetchWithProgress([ fetchArticles({ username, ...query }) ])
+    next(vm => { vm.board = board })
   },
   async beforeRouteUpdate ({ params: { username }, query }, from, next) {
-    store.commit('fetch/startProgress')
-    try {
-      const board = await fetchArticles({ username, ...query }, progressHandler)
-      this.board = board
-      next()
-    } catch (err) {
-      next(false)
-    }
-    store.dispatch('fetch/endProgress')
+    const [ board ] = await fetchWithProgress([ fetchArticles({ username, ...query }) ])
+    this.board = board
+    next()
   },
   components: { TheLayout, TheBoard }
 }

@@ -61,7 +61,7 @@
 <script>
 import store from '@/store'
 import { updateUser } from '@/api'
-import { progressHandler } from './helper.js'
+import { fetchWithProgress } from './helper'
 import TheLayout from '@/components/TheLayout.vue'
 import TheSettingBlocks from '@/components/TheSettingBlocks.vue'
 
@@ -102,20 +102,14 @@ export default {
     }
   },
   async beforeRouteEnter (to, from, next) {
-    store.commit('fetch/startProgress')
-    try {
-      await store.dispatch('fetchUser', progressHandler)
-      const { userNickname, userPicture, userConfig } = store.getters
-      next(vm => {
-        vm.nickname = userNickname
-        vm.pictureSrc = userPicture
-        vm.sexual = userConfig.sexual
-        vm.social = userConfig.social
-      })
-    } catch (err) {
-      next(false)
-    }
-    store.commit('fetch/endProgress')
+    await fetchWithProgress([ store.dispatch('fetchUser') ])
+    const { userNickname, userPicture, userConfig } = store.getters
+    next(vm => {
+      vm.nickname = userNickname
+      vm.pictureSrc = userPicture
+      vm.sexual = userConfig.sexual
+      vm.social = userConfig.social
+    })
   },
   components: { TheLayout, TheSettingBlocks }
 }

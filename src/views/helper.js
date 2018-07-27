@@ -1,5 +1,8 @@
 import store from '@/store'
 
-export const progressHandler = ({ loaded, total }) => {
-  store.commit('fetch/updateProgress', loaded / total)
+export const fetchWithProgress = async (targets) => {
+  store.commit('fetch/startProgress')
+  const results = await Promise.all(targets)
+  store.dispatch('fetch/endProgress')
+  return results
 }

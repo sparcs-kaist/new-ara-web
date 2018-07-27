@@ -1,7 +1,7 @@
 import http from '@/http.js'
 
-export const fetchUser = (userId, onDownloadProgress) =>
-  http.get(`user_profiles/${userId}/`, { onDownloadProgress })
+export const fetchUser = (userId) =>
+  http.get(`user_profiles/${userId}/`)
     .then(({ data }) => data)
 
 export const updateUser = (userId, { nickname, picture, sexual, social }) => {

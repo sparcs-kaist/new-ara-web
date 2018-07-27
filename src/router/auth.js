@@ -5,11 +5,15 @@ export const authGuard = async (to, from, next) => {
   if (!store.getters.isLoggedIn) {
     next('/login')
   } else {
-    await Promise.all([
-      store.dispatch('fetchUser'),
-      store.dispatch('fetchBoardList')
-    ])
-    next()
+    try {
+      await Promise.all([
+        store.dispatch('fetchUser'),
+        store.dispatch('fetchBoardList')
+      ])
+      next()
+    } catch (err) {
+      // @TODO: 서버장애 페이지..?
+    }
   }
 }
 

@@ -5,17 +5,17 @@ export const fetchBoardList = () =>
   http.get('boards/')
     .then(({ data }) => data)
 
-export const fetchArticles = ({ boardId, query, page, username } = {}, onDownloadProgress) => {
+export const fetchArticles = ({ boardId, query, page, username } = {}) => {
   const context = {}
   if (boardId) context.parent_board = boardId
   if (query) context.title__contains = query
   if (page) context.page = page
-  if (username) context.created_by__profile__username = username
+  if (username) context.created_by__profile__nickname = username
 
-  return http.get(`articles/?${queryBuilder(context)}`, { onDownloadProgress })
+  return http.get(`articles/?${queryBuilder(context)}`)
     .then(({ data }) => data)
 }
 
-export const fetchArchives = (onDownloadProgress) =>
-  http.get('scraps/', { onDownloadProgress })
+export const fetchArchives = () =>
+  http.get('scraps/')
     .then(({ data }) => data)

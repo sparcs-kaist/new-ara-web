@@ -1,8 +1,8 @@
 import http from '@/http.js'
 import { queryBuilder } from '@/helper.js'
 
-export const fetchPost = ({ postId, context = {} }, onDownloadProgress) =>
-  http.get(`articles/${postId}/?${queryBuilder(context)}`, { onDownloadProgress })
+export const fetchPost = ({ postId, context = {} }) =>
+  http.get(`articles/${postId}/?${queryBuilder(context)}`)
     .then(({ data }) => data)
 
 export const createPost = ({ boardId, newArticle }) =>

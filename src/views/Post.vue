@@ -10,9 +10,8 @@
 </template>
 
 <script>
-import store from '@/store'
 import { fetchPost } from '@/api'
-import { progressHandler } from './helper.js'
+import { fetchWithProgress } from './helper.js'
 import TheLayout from '@/components/TheLayout.vue'
 import ThePostDetail from '@/components/ThePostDetail.vue'
 import ThePostComments from '@/components/ThePostComments.vue'
@@ -29,25 +28,13 @@ export default {
     }
   },
   async beforeRouteEnter ({ params: { postId } }, from, next) {
-    store.commit('fetch/startProgress')
-    try {
-      const post = await fetchPost({ postId }, progressHandler)
-      next(vm => { vm.post = post })
-    } catch (err) {
-      next(false)
-    }
-    store.dispatch('fetch/endProgress')
+    const [ post ] = await fetchWithProgress([ fetchPost({ postId }) ])
+    next(vm => { vm.post = post })
   },
   async beforeRouteUpdate ({ params: { postId } }, from, next) {
-    store.commit('fetch/startProgress')
-    try {
-      const post = await fetchPost({ postId }, progressHandler)
-      this.post = post
-      next()
-    } catch (err) {
-      next(false)
-    }
-    store.dispatch('fetch/endProgress')
+    const [ post ] = await fetchWithProgress([ fetchPost({ postId }) ])
+    this.post = post
+    next()
   },
   components: { TheLayout, ThePostDetail, ThePostComments, TheBoard }
 }
