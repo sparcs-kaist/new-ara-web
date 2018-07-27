@@ -68,7 +68,7 @@ export default {
         this.content = ''
       } catch (err) {
         // @TODO: 채팅 생성에 실패했다고 알려주기
-        alert('Failed to write a recomment!');
+        alert('Failed to write a recomment!')
       } finally {
         this.isUploading = false
       }

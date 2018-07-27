@@ -55,12 +55,12 @@ export default {
         this.content = ''
       } catch (error) {
         // @TODO: 채팅 생성에 실패했다고 알려주기
-        alert('Failed to write a comment!');
+        alert('Failed to write a comment!')
       } finally {
         this.isUploading = false
       }
     },
-    passEventToParent(event, eventType) {
+    passEventToParent (event, eventType) {
       this.$emit(eventType, event)
     }
   },
