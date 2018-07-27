@@ -23,9 +23,10 @@
       rows="3"
     />
     <button
+      @click="saveRecomment"
       class="button"
       :class="{ 'is-loading': isUploading }"
-      @click="saveRecomment">
+      :disabled="isUploading">
       새 대댓글
     </button>
   </div>
@@ -54,17 +55,14 @@ export default {
       console.log('disliked', this.comment.id)
     },
     async saveRecomment () {
-      if (this.isUploading) return
-
       this.isUploading = true
-
       try {
         const result = await createComment({
           parent_article: null,
           parent_comment: this.comment.id,
           content: this.content
         })
-        this.$emit('newRecommentUploaded', result.data)
+        this.$emit('new-recomment-uploaded', result.data)
         this.content = ''
       } catch (err) {
         // @TODO: 채팅 생성에 실패했다고 알려주기

@@ -4,8 +4,8 @@
     <ThePostComments
       :comments="post.comments"
       :postId="postId"
-      @newCommentUploaded="addNewComment"
-      @newRecommentUploaded="addNewRecomment"
+      @new-comment-uploaded="addNewComment"
+      @new-recomment-uploaded="addNewRecomment"
     />
     <!-- @TODO: <TheBoard :board="board"/> -->
   </TheLayout>
