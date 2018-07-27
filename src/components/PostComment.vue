@@ -23,6 +23,8 @@
       rows="3"
     />
     <button
+      class="button"
+      :class="{ 'is-loading': isUploading }"
       @click="saveRecomment">
       새 대댓글
     </button>
@@ -40,7 +42,8 @@ export default {
   },
   data () {
     return {
-      content: ''
+      content: '',
+      isUploading: false
     }
   },
   methods: {
@@ -50,17 +53,25 @@ export default {
     dislikeComment () {
       console.log('disliked', this.comment.id)
     },
-    // @TODO:
-    // 1. 업로드하는 중에 disable
-    // 2. 업로드 끝나면 폼 클리어
-    // 3. 업로드 끝나면 fetch article해서 그 간의 댓글 보여주기
-    // 4. 버튼 로딩 상태
-    saveRecomment () {
-      createComment({
-        parent_article: null,
-        parent_comment: this.comment.id,
-        content: this.content
-      })
+    async saveRecomment () {
+      if (this.isUploading) return
+
+      this.isUploading = true
+
+      try {
+        const result = await createComment({
+          parent_article: null,
+          parent_comment: this.comment.id,
+          content: this.content
+        })
+        this.$emit('newRecommentUploaded', result.data)
+        this.content = ''
+      } catch (err) {
+        // @TODO: 채팅 생성에 실패했다고 알려주기
+        alert('Failed to write a recomment!');
+      } finally {
+        this.isUploading = false
+      }
     }
   },
   components: { PostRecomment }

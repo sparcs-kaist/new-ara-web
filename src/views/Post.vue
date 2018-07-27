@@ -4,6 +4,8 @@
     <ThePostComments
       :comments="post.comments"
       :postId="postId"
+      @newCommentUploaded="addNewComment"
+      @newRecommentUploaded="addNewRecomment"
     />
     <!-- @TODO: <TheBoard :board="board"/> -->
   </TheLayout>
@@ -26,6 +28,27 @@ export default {
   data () {
     return {
       post: {}
+    }
+  },
+  methods: {
+    async addNewComment(comment) {
+      /* Save the new comment in local first. */
+      this.post.comments = [
+        ...this.post.comments,
+        comment
+      ]
+      /* Then fetch data from DB. */
+      this.post = await fetchPost({ postId: this.postId }, progressHandler);
+    },
+    async addNewRecomment(recomment) {
+      /* Save the new recomment in local first. */
+      const rootComment = this.post.comments.find(comment => comment.id === recomment.parent_comment)
+      rootComment.comments = [
+        ...rootComment.comments,
+        recomment
+      ]
+      /* Then fetch data from DB. */
+      this.post = await fetchPost({ postId: this.postId }, progressHandler);
     }
   },
   async beforeRouteEnter ({ params: { postId } }, from, next) {
