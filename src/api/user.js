@@ -29,3 +29,7 @@ export const fetchNotifications = () =>
 export const fetchBlocks = () =>
   http.get('blocks/')
     .then(({ data }) => data)
+
+export const deleteBlock = (blockId) =>
+  http.delete(`blocks/${blockId}`)
+    .then(({ data }) => data)
