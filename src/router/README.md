@@ -5,7 +5,7 @@
 /board/:boardId (개별 게시판)
 ```
 - [x] 라우팅 구현
-- [ ] boardId 대신 boardName을 사용하도록 업데이트
+- [ ] boardId 대신 boardSlug을 사용하도록 업데이트
 
 ## 사용자 작성글
 ```
@@ -63,9 +63,9 @@
 `router-link`를 사용할 때 되도록이면 직접 링크를 피하고, route object를 넘겨주는 방식으로 작업합니다. 이 방식은 차후 url 규칙을 변경할 필요가 생겼을 때 유리합니다.
 
 ```html
-// 👎 WRONG
+// ✗ 피하세요
 <router-link to="/logout">
 
-// 👍 GOOD
+// ✓ 좋아요
 <router-link :to="{ name: 'logout' }">
 ```

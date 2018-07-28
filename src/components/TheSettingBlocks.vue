@@ -3,6 +3,7 @@
     blocks
     <block-detail
       v-for="block in blocks"
+      :key="block.id"
       :block="block"
       @block-deleted="updateBlocks"
     />
@@ -22,7 +23,7 @@ export default {
     }
   },
   methods: {
-    async updateBlocks(deletedBlockId) {
+    async updateBlocks (deletedBlockId) {
       /* Save the new comment in local first. */
       const deletedBlockIndex = this.blocks.findIndex(block => block.id === deletedBlockId)
       this.blocks.splice(deletedBlockIndex, 1) /* .splice() method is watched by proxy, therefore safe. */
@@ -30,7 +31,7 @@ export default {
       /* Then fetch data from DB. */
       await this.fetchAndSaveBlocks()
     },
-    async fetchAndSaveBlocks() {
+    async fetchAndSaveBlocks () {
       const { results: blocks, current } = await fetchBlocks()
       this.blocks = blocks
       this.current = current

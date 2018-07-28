@@ -8,20 +8,20 @@
 </template>
 
 <script>
-import { fetchBlocks, deleteBlock } from '@/api'
+import { deleteBlock } from '@/api'
 
 export default {
   name: 'block-detail',
   props: {
     block: { required: true }
   },
-  data() {
+  data () {
     return {
       isDeleting: false
     }
   },
   methods: {
-    async cancelBlock() {
+    async cancelBlock () {
       this.isDeleting = true
 
       try {
