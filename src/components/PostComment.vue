@@ -2,11 +2,15 @@
   <div class="post-comment">
     댓글by{{ comment.created_by }}: {{ comment.content }}
     <button
-      @click="likeComment">
+      @click="vote(true)"
+      class="button"
+      :class="{ 'is-primary': liked, 'is-loading': isVoting }">
       추천
     </button>
     <button
-      @click="dislikeComment">
+      @click="vote(false)"
+      class="button"
+      :class="{ 'is-primary': disliked, 'is-loading': isVoting }">
       비추천
     </button>
     <div class="post-recomments">
@@ -14,6 +18,7 @@
         v-for="recomment in comment.comments"
         :key="recomment.id"
         :recomment="recomment"
+        @vote="$emit('vote')"
       />
     </div>
     <textarea
@@ -33,7 +38,7 @@
 </template>
 
 <script>
-import { createComment } from '@/api'
+import { createComment, voteComment } from '@/api'
 import PostRecomment from '@/components/PostRecomment.vue'
 
 export default {
@@ -44,15 +49,24 @@ export default {
   data () {
     return {
       content: '',
-      isUploading: false
+      isUploading: false,
+      isVoting: false
     }
   },
+  computed: {
+    liked () { return this.comment.my_vote === true },
+    disliked () { return this.comment.my_vote === false }
+  },
   methods: {
-    likeComment () {
-      console.log('liked', this.comment.id)
-    },
-    dislikeComment () {
-      console.log('disliked', this.comment.id)
+    async vote (ballot) {
+      this.isVoting = true
+      await voteComment(this.comment.id,
+        this.comment.my_vote === ballot
+          ? 'vote_cancel'
+          : ballot ? 'vote_positive' : 'vote_negative'
+      )
+      this.$emit('vote')
+      this.isVoting = false
     },
     async saveRecomment () {
       this.isUploading = true

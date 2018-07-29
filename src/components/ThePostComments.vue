@@ -6,6 +6,7 @@
       :key="comment.id"
       :comment="comment"
       @new-recomment-uploaded="$emit('new-recomment-uploaded', $event)"
+      @vote="$emit('vote')"
     />
     <textarea
       v-model="content"

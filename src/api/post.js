@@ -30,3 +30,9 @@ export const createComment = (newComment) =>
     is_anonymous: false,
     attachment: null
   })
+
+export const votePost = (postId, action) =>
+  http.post(`comments/${postId}/${action}/`)
+
+export const voteComment = (commentId, action) =>
+  http.post(`comments/${commentId}/${action}/`)

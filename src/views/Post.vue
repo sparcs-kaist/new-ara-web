@@ -6,6 +6,7 @@
       :postId="postId"
       @new-comment-uploaded="addNewComment"
       @new-recomment-uploaded="addNewRecomment"
+      @vote="refresh"
     />
     <!-- @TODO: <TheBoard :board="board"/> -->
   </TheLayout>
@@ -37,7 +38,7 @@ export default {
         comment
       ]
       /* Then fetch data from DB. */
-      this.post = await fetchPost({ postId: this.postId })
+      this.refresh()
     },
     async addNewRecomment (recomment) {
       /* Save the new recomment in local first. */
@@ -47,6 +48,9 @@ export default {
         recomment
       ]
       /* Then fetch data from DB. */
+      this.refresh()
+    },
+    async refresh () {
       this.post = await fetchPost({ postId: this.postId })
     }
   },
