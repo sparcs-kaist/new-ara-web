@@ -9,7 +9,7 @@
       :to="{
         name: 'board',
         params: {
-          boardId: board.id
+          boardSlug: board.slug
         }
       }">
       {{ board.ko_name }}

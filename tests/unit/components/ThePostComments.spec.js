@@ -11,7 +11,7 @@ describe('ThePostComments.vue', () => {
     wrapper.find(PostComment).vm.$emit('new-recomment-uploaded')
     expect(wrapper.emitted('new-recomment-uploaded')).toBeTruthy()
   })
-  it('댓글 저장 버튼 클릭 시 new-comment-uploaded 이벤트가 전파됨')
+  // it('댓글 저장 버튼 클릭 시 new-comment-uploaded 이벤트가 전파됨')
   // @TODO: 버튼 클릭 시 new-comment-uploaded 이벤트가 발생함 (인터페이스 정의)
   // @TODO: 빈 댓글 방지 (?)
 })

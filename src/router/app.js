@@ -9,17 +9,15 @@ import { authGuard } from './auth.js'
 
 export default [
   {
-    path: '/board/:boardId?',
+    path: '/board/:boardSlug?',
     name: 'board',
     component: Board,
-    props: true,
     beforeEnter: authGuard
   },
   {
     path: '/user/:username',
     name: 'user',
     component: User,
-    props: true,
     beforeEnter: authGuard
   },
   {

@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import store from '@/store'
 import { fetchArticles } from '@/api'
 import { fetchWithProgress } from './helper.js'
 import TheLayout from '@/components/TheLayout.vue'
@@ -15,11 +16,13 @@ export default {
   data () {
     return { board: {} }
   },
-  async beforeRouteEnter ({ params: { boardId }, query }, from, next) {
+  async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
+    const boardId = boardSlug ? store.getters.getSlugById(boardSlug) : null
     const [ board ] = await fetchWithProgress([ fetchArticles({ boardId, ...query }) ])
     next(vm => { vm.board = board })
   },
-  async beforeRouteUpdate ({ params: { boardId }, query }, from, next) {
+  async beforeRouteUpdate ({ params: { boardSlug }, query }, from, next) {
+    const boardId = boardSlug ? store.getters.getSlugById(boardSlug) : null
     const [ board ] = await fetchWithProgress([ fetchArticles({ boardId, ...query }) ])
     this.board = board
     next()

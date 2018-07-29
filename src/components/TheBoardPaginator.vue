@@ -5,7 +5,7 @@
       :key="page"
       :to="{
         name: 'board',
-        params: { boardId },
+        params: { boardSlug },
         query: { page }
       }"
       :class="{ 'is-active': page === currentPage }">
@@ -27,8 +27,9 @@ export default {
     pageRange () {
       return range(this.numPages)
     },
-    boardId () {
-      return this.$route.params.boardId
+    // @TODO: $route에 대한 의존성 제거
+    boardSlug () {
+      return this.$route.params.boardSlug
     }
   }
 }

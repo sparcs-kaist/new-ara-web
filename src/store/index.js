@@ -12,7 +12,12 @@ export default new Vuex.Store({
     boardList: []
   },
   getters: {
-    hasFetchedBoardList ({ boardList }) { return boardList.length !== 0 }
+    hasFetchedBoardList: ({ boardList }) =>
+      boardList.length !== 0,
+    getSlugById: ({ boardList }) => (slug) =>
+      boardList.find(board => board.slug === slug).id,
+    getIdBySlug: ({ boardList }) => (id) =>
+      boardList.find(board => board.id === id).slug
   },
   mutations: {
     setBoardList (state, boardList) {

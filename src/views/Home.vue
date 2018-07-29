@@ -4,7 +4,7 @@
       <router-link
         :to="{
           name: 'board',
-          params: { boardId: board.id }
+          params: { boardSlug: board.slug }
         }">
         <h2> 게시판: {{ board.ko_name }} </h2>
       </router-link>

@@ -12,7 +12,7 @@ npm run test:unit
 ```
 
 ### 관련 문서
-[url 구조](src/router/README.md)
+[라우팅](src/router/README.md)
 
 ## 배포
 ```bash
