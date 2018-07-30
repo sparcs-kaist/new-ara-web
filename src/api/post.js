@@ -24,6 +24,9 @@ export const updatePost = ({ postId, newArticle }) =>
 export const archivePost = (postId) =>
   http.post('scraps/', { parent_article: postId })
 
+export const reportPost = (postId) =>
+  http.post('reports/', { parent_article: postId, reported_by: 1 })
+
 export const createComment = (newComment) =>
   http.post('comments/', {
     ...newComment,
@@ -36,3 +39,6 @@ export const votePost = (postId, action) =>
 
 export const voteComment = (commentId, action) =>
   http.post(`comments/${commentId}/${action}/`)
+
+export const reportComment = (commentId) =>
+  http.post('reports/', { parent_comment: commentId, reported_by: 1 })

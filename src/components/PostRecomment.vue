@@ -43,7 +43,7 @@ export default {
       )
       this.$emit('vote')
       this.isVoting = false
-    },
+    }
   }
 }
 </script>

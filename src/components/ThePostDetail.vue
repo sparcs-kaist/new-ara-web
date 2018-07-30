@@ -14,23 +14,44 @@
       v-html="post.content"
       class="content"></p>
     <button
-      @click="archive">
+      @click="archive"
+      class="button"
+      :class="{ 'is-loading': isArchiving }">
       담아두기
+    </button>
+    <button
+      @click="report"
+      class="button"
+      :class="{ 'is-loading': isReporting }">
+      신고
     </button>
   </div>
 </template>
 
 <script>
-import { archivePost } from '@/api'
+import { archivePost, reportPost } from '@/api'
 
 export default {
   name: 'the-post-detail',
   props: {
     post: { required: true }
   },
+  data () {
+    return {
+      isArchiving: false,
+      isReporting: false
+    }
+  },
   methods: {
-    archive () {
-      archivePost(this.post.id)
+    async archive () {
+      this.isArchiving = true
+      await archivePost(this.post.id)
+      this.isArchiving = false
+    },
+    async report () {
+      this.isReporting = true
+      await reportPost(this.post.id)
+      this.isReporting = false
     }
   }
 }
