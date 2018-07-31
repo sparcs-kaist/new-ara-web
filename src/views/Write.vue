@@ -11,8 +11,7 @@
 </template>
 
 <script>
-import { fetchPost } from '@/api'
-// createPost, updatePost
+import { fetchPost, createPost, updatePost } from '@/api'
 import { fetchWithProgress } from './helper.js'
 import TheLayout from '@/components/TheLayout.vue'
 import ThePostWrite from '@/components/ThePostWrite.vue'
@@ -37,19 +36,35 @@ export default {
   },
   methods: {
     async savePost (newArticle) {
-      // this.saving = true
-      // try {
-      //   if (!this.isEditing) {
-      //     // @TODO: boardId 하드코딩이라니........
-      //     await createPost({ boardId: 1, newArticle })
-      //   } else {
-      //     await updatePost({ postId: this.postId, newArticle })
-      //   }
-      // } catch (err) {
-      //   // @TODO: 에러 핸들링
-      //   console.error(e)
-      // }
-      // this.saving = false
+      const { title, content, boardId } = newArticle
+      this.saving = true
+      let result
+      try {
+        if (!this.isEditing) {
+          // @TODO: boardId 하드코딩이라니........
+          result = await createPost({
+            boardId,
+            newArticle: {
+              title,
+              content
+            }
+          })
+        } else {
+          result = await updatePost({
+            postId: this.postId,
+            newArticle: {
+              title,
+              content
+            }
+          })
+        }
+      } catch (err) {
+        // @TODO: 에러 핸들링
+        if (!this.isEditing) alert('Failed to create a post!')
+        else alert('Failed to update the post!')
+      }
+      this.saving = false
+      this.$router.push({ name: 'post', params: { postId: result.data.id } })
     }
   },
   async beforeRouteEnter ({ params: { postId } }, from, next) {
