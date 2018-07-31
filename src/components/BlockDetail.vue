@@ -1,7 +1,6 @@
 <template>
   <div>
-    <span class="block-col">{{ block.id }}</span>
-    <span class="block-col">{{ block.user }}</span>
+    <span class="block-col">{{ block.user.profile.nickname }}</span>
     <span class="block-col">{{ block.updated_at || block.created_at }}</span>
     <span class="block-col" @click="cancelBlock">x</span>
   </div>
