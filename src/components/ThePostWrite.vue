@@ -32,25 +32,32 @@
 
 <script>
 import { VueEditor } from 'vue2-editor'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'the-post-write',
   props: [ 'post', 'saving' ],
   data () {
     return {
-      boardId: this.post ? this.post.id : '',
+      boardId: '',
       title: '',
       content: ''
     }
   },
   computed: {
-    ...mapState([ 'boardList' ])
+    ...mapState([ 'boardList' ]),
+    ...mapGetters([ 'getIdBySlug' ])
   },
   created () {
     if (this.post) {
+      this.boardId = this.post.parent_board.id
       this.title = this.post.title
       this.content = this.post.content
+    }
+    const { board_slug: boardSlug } = this.$route.query
+    if (boardSlug) {
+      /* 글 수정인데 글의 parent board와 url query의 board가 다르면 url query의 board를 따른다. */
+      this.boardId = this.getIdBySlug(boardSlug)
     }
   },
   components: { VueEditor }
