@@ -17,12 +17,12 @@ export default {
     return { board: {} }
   },
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
-    const boardId = boardSlug ? store.getters.getSlugById(boardSlug) : null
+    const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
     const [ board ] = await fetchWithProgress([ fetchArticles({ boardId, ...query }) ])
     next(vm => { vm.board = board })
   },
   async beforeRouteUpdate ({ params: { boardSlug }, query }, from, next) {
-    const boardId = boardSlug ? store.getters.getSlugById(boardSlug) : null
+    const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
     const [ board ] = await fetchWithProgress([ fetchArticles({ boardId, ...query }) ])
     this.board = board
     next()

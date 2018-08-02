@@ -14,9 +14,9 @@ export default new Vuex.Store({
   getters: {
     hasFetchedBoardList: ({ boardList }) =>
       boardList.length !== 0,
-    getSlugById: ({ boardList }) => (slug) =>
+    getIdBySlug: ({ boardList }) => (slug) =>
       boardList.find(board => board.slug === slug).id,
-    getIdBySlug: ({ boardList }) => (id) =>
+    getSlugById: ({ boardList }) => (id) =>
       boardList.find(board => board.id === id).slug
   },
   mutations: {
