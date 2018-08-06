@@ -1,6 +1,7 @@
 const fetchStatus = {
   IDLE: 'idle',
   FETCHING: 'fetching',
+  ENDING: 'ending',
   ERROR: 'error'
 }
 
@@ -17,6 +18,7 @@ export default {
     },
     isFetching ({ status }) {
       return status === fetchStatus.FETCHING
+        || status === fetchStatus.ENDING
     }
   },
   mutations: {
@@ -30,11 +32,16 @@ export default {
     },
     startProgress (state) {
       state.status = fetchStatus.FETCHING
-      state.progress = 0.01
+      state.progress = 0.05
     },
     updateProgress (state, progress) {
-      state.status = fetchStatus.FETCHING
-      state.progress = progress
+      if (state.status === fetchStatus.FETCHING) {
+        state.progress = progress
+      }
+    },
+    preEndProgress (state) {
+      state.status = fetchStatus.ENDING
+      state.progress = 1
     },
     endProgress (state) {
       state.status = fetchStatus.IDLE
@@ -42,13 +49,18 @@ export default {
     }
   },
   actions: {
-    // @TODO: showError가 끝나는 시점이 궁금한 component가 있다면 Promise로 재작성 할 수도?
     showError ({ commit }, message) {
       commit('updateError', message)
       setTimeout(() => { commit('endError') }, 2000)
     },
+    startProgress ({ commit }) {
+      commit('startProgress')
+      setTimeout(() => { commit('updateProgress', 0.1) }, 100)
+      setTimeout(() => { commit('updateProgress', 0.25) }, 200)
+      setTimeout(() => { commit('updateProgress', 0.55) }, 300)
+    },
     endProgress ({ commit }) {
-      commit('updateProgress', 1)
+      commit('preEndProgress')
       setTimeout(() => { commit('endProgress') }, 300)
     }
   }
