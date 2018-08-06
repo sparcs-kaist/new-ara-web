@@ -3,7 +3,15 @@
     <TheNavbar/>
     <TheApiErrorNotification/>
     <div class="container">
-      <slot/>
+      <div class="columns">
+        <div class="column">
+          <slot/>
+        </div>
+        <aside
+          class="column is-narrow">
+          <TheAd/>
+        </aside>
+      </div>
     </div>
     <TheFooter/>
   </div>
@@ -11,14 +19,15 @@
 
 <script>
 import TheNavbar from '@/components/TheNavbar.vue'
+import TheAd from '@/components/TheAd.vue'
 import TheFooter from '@/components/TheFooter.vue'
 import TheApiErrorNotification from '@/components/TheApiErrorNotification.vue'
 
 export default {
-  components: { TheNavbar, TheFooter, TheApiErrorNotification }
+  components: { TheNavbar, TheAd, TheFooter, TheApiErrorNotification }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 
 </style>
