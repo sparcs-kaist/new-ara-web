@@ -1,6 +1,8 @@
 <template>
   <TheLayout>
-    <TheBoard :board="board"/>
+    <TheBoard :board="board">
+      <h1 slot="title"> {{ boardName }} </h1>
+    </TheBoard>
   </TheLayout>
 </template>
 
@@ -14,17 +16,24 @@ import TheBoard from '@/components/TheBoard.vue'
 export default {
   name: 'board',
   data () {
-    return { board: {} }
+    return {
+      board: {},
+      boardName: ''
+    }
   },
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
     const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
     const [ board ] = await fetchWithProgress([ fetchArticles({ boardId, ...query }) ])
-    next(vm => { vm.board = board })
+    next(vm => {
+      vm.board = board
+      vm.boardName = boardId ? store.getters.getNameById(boardId) : '모아보기'
+    })
   },
   async beforeRouteUpdate ({ params: { boardSlug }, query }, from, next) {
     const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
     const [ board ] = await fetchWithProgress([ fetchArticles({ boardId, ...query }) ])
     this.board = board
+    this.boardName = boardId ? store.getters.getNameById(boardId) : '모아보기'
     next()
   },
   components: { TheLayout, TheBoard }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pages">
     <router-link
       v-for="page in pageRange"
       :key="page"
@@ -8,6 +8,7 @@
         params: { boardSlug },
         query: { page }
       }"
+      class="page"
       :class="{ 'is-active': page === currentPage }">
       {{ page }}
     </router-link>
@@ -35,9 +36,15 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .is-active {
   color: black;
   text-decoration: underline;
+}
+.pages {
+  margin: 0 -0.25rem;
+  .page {
+    margin: 0 0.25rem;
+  }
 }
 </style>

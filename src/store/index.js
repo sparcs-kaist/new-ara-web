@@ -17,7 +17,10 @@ export default new Vuex.Store({
     getIdBySlug: ({ boardList }) => (slug) =>
       boardList.find(board => board.slug === slug).id,
     getSlugById: ({ boardList }) => (id) =>
-      boardList.find(board => board.id === id).slug
+      boardList.find(board => board.id === id).slug,
+    // @TODO: i18n..
+    getNameById: ({ boardList }) => (id) =>
+      boardList.find(board => board.id === id).ko_name
   },
   mutations: {
     setBoardList (state, boardList) {

@@ -1,61 +1,104 @@
 <template>
   <div class="board">
-    <div v-if="currentQuery">
+    <!-- <div v-if="currentQuery">
       검색어: {{ currentQuery }}
-    </div>
-    <router-link :to="{ name: 'write', query: { board_slug: $route.params.boardSlug } }"> 글 작성 </router-link>
+    </div> -->
     <!-- query: { boardSlug: '' } -->
-    <TheBoardPaginator
-      :numPages="board.num_pages"
-      :currentPage="board.current"/>
-    <div class="field has-addons">
-      <div class="control">
-        <input
-          v-model="query"
-          class="input"
-          type="text"
-          placeholder="글 검색"
-        />
-      </div>
-      <div class="control">
+    <div class="board-title">
+      <slot name="title"/>
+    </div>
+
+    <table class="table post-table">
+      <thead>
+        <tr>
+          <th class="post-table-title">게시판</th>
+          <th>제목</th>
+          <th class="post-table-author has-text-right">작성자</th>
+          <th class="post-table-vote has-text-right">반응</th>
+          <th class="post-table-hit has-text-right">조회수</th>
+          <th class="post-table-time has-text-right">작성시간</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="article in board.results"
+          :key="article.id">
+          <td> {{ article.parent_board.ko_name }} </td>
+          <td>
+            <router-link
+              :to="{
+                name: 'post',
+                params: {
+                  postId: article.id
+                }
+              }">
+              {{ article.title }}
+            </router-link>
+          </td>
+          <td class="has-text-right">
+            <router-link
+              :to="{
+                name: 'user',
+                params: {
+                  username: article.created_by
+                }
+              }">
+              {{ article.created_by }}
+            </router-link>
+          </td>
+          <td class="has-text-right">{{ article.positive_vote_count }}</td>
+          <td class="has-text-right">{{ article.hit_count }}</td>
+          <td class="has-text-right">
+            <Timeago :time="article.created_at"/>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="post-tools">
+      <TheBoardPaginator
+        :numPages="board.num_pages"
+        :currentPage="board.current"/>
+
+      <div>
+        <div class="post-search">
+          <div class="field has-addons">
+            <div class="control">
+              <input
+                v-model="query"
+                class="input"
+                type="text"
+                placeholder="글 검색"
+              />
+            </div>
+            <div class="control">
+              <router-link
+                :to="{
+                  query: {
+                    query: this.query
+                  }
+                }"
+                class="button is-text">
+                검색
+              </router-link>
+            </div>
+          </div>
+        </div>
         <router-link
           :to="{
-            query: {
-              query: this.query
-            }
+            name: 'write',
+            query: { board_slug: $route.params.boardSlug }
           }"
-          class="button is-link">
-          검색
+          class="button is-text">
+          글 작성
         </router-link>
       </div>
-    </div>
-    <div v-for="article in board.results"
-      :key="article.id">
-      <router-link
-        :to="{
-          name: 'post',
-          params: {
-            postId: article.id
-          }
-        }">
-        {{ article.title }}
-      </router-link>
-      <span> by </span>
-      <router-link
-        :to="{
-          name: 'user',
-          params: {
-            username: article.created_by
-          }
-        }">
-        {{ article.created_by }}
-      </router-link>
     </div>
   </div>
 </template>
 
 <script>
 import TheBoardPaginator from '@/components/TheBoardPaginator.vue'
+import Timeago from '@/components/Timeago.vue'
 
 export default {
   name: 'the-board',
@@ -79,10 +122,50 @@ export default {
   //     this.query = ''
   //   }
   // },
-  components: { TheBoardPaginator }
+  components: { TheBoardPaginator, Timeago }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.board {
+  padding-right: 5rem;
 
+  .board-title > h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .post-table {
+    width: 100%;
+    margin: 0 0 0.75rem -0.75rem;
+
+    thead th {
+      padding-bottom: 1em;
+    }
+
+    .post-table-title {
+      width: 5rem;
+    }
+    .post-table-author {
+      width: 7rem;
+    }
+    .post-table-vote {
+      width: 4rem;
+    }
+    .post-table-hit {
+      width: 5rem;
+    }
+    .post-table-time {
+      width: 6rem;
+    }
+  }
+  .post-tools {
+    display: flex;
+    justify-content: space-between;
+    .post-search {
+      display: inline-block;
+    }
+  }
+}
 </style>
