@@ -9,19 +9,19 @@
       <ul class="footer-menu">
         <li class="footer-item">
           <!-- @TODO: footer에서 가는 페이지들 만들기 -->
-          <router-link :to="{ name: 'not-found' }">
+          <a href="https://sparcs.org">
             Credit
-          </router-link>
+          </a>
         </li>
         <li class="footer-item">
-          <router-link :to="{ name: 'not-found' }">
+          <a href="https://sparcs.org">
             License
-          </router-link>
+          </a>
         </li>
         <li class="footer-item">
-          <router-link :to="{ name: 'not-found' }">
+          <a href="https://sparcs.org">
             Rules
-          </router-link>
+          </a>
         </li>
       </ul>
     </div>

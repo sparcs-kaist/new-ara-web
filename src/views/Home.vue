@@ -1,7 +1,7 @@
 <template>
   <TheLayout class="home">
     <div class="columns is-multiline">
-      <div class="today-best column is-6">
+      <div class="board today-best column is-6">
         <h2 class="board-name"> 투데이 베스트 </h2>
         <div
           v-for="article in dailyBests"
@@ -20,7 +20,7 @@
           </div>
         </div>
       </div>
-      <div class="weekly-best column is-6">
+      <div class="board weekly-best column is-6">
         <h2 class="board-name"> 위클리 베스트 </h2>
         <div
           v-for="article in weeklyBests"
@@ -42,7 +42,7 @@
       <div
         v-for="board in boards"
         :key="board.id"
-        class="column is-6">
+        class="board column is-6">
         <router-link
           :to="{
             name: 'board',
@@ -99,16 +99,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.board {
+  margin-bottom: 2rem;
+  padding-right: 5rem;
+}
 .board-name {
   font-size: 1.5rem;
   font-weight: 700;
+  margin-bottom: 0.5em;
 }
 .post {
   display: flex;
   justify-content: space-between;
-  // .post-title {
-  // }
-  // .post-time {
-  // }
+  margin: 0.5rem 0;
 }
 </style>
