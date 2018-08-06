@@ -17,8 +17,8 @@ export default {
       return status === fetchStatus.ERROR
     },
     isFetching ({ status }) {
-      return status === fetchStatus.FETCHING
-        || status === fetchStatus.ENDING
+      return status === fetchStatus.FETCHING ||
+        status === fetchStatus.ENDING
     }
   },
   mutations: {

@@ -11,11 +11,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@/style.scss';
-@import '~bulma/sass/utilities/initial-variables.sass';
-@import '~bulma/sass/utilities/functions.sass';
-
-$primary: $theme-red;
-
-@import '~bulma/bulma.sass';
+@import '@/bulma/index.scss';
 </style>

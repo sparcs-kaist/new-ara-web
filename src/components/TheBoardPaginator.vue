@@ -38,6 +38,5 @@ export default {
 <style scoped>
 .is-active {
   color: black;
-  text-decoration: underline;
 }
 </style>

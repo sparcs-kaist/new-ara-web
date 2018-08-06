@@ -2,7 +2,9 @@
   <div class="layout">
     <TheNavbar/>
     <TheApiErrorNotification/>
-    <slot/>
+    <div class="container">
+      <slot/>
+    </div>
     <TheFooter/>
   </div>
 </template>
