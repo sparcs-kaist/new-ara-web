@@ -101,7 +101,15 @@ export default {
 
 // @TODO: Is ther a better way of achieving this..?
 .navbar-brand {
-  width: calc(calc(100% - 1344px) / 2);
+  @media (min-width: 1088px) {
+    width: calc(calc(100% - 960px) / 2);
+  }
+  @media (min-width: 1280px) {
+    width: calc(calc(100% - 1152px) / 2);
+  }
+  @media (min-width: 1472px) {
+    width: calc(calc(100% - 1344px) / 2);
+  }
   a:hover {
     text-decoration: none;
   }
