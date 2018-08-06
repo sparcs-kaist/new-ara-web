@@ -19,3 +19,7 @@ export const fetchArticles = ({ boardId, query, page, username } = {}) => {
 export const fetchArchives = () =>
   http.get('scraps/')
     .then(({ data }) => data)
+
+export const fetchReports = () =>
+  http.get('reports/')
+    .then(({ data }) => data)

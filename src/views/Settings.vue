@@ -48,6 +48,7 @@
         </div>
       </div>
       <TheSettingBlocks/>
+      <TheSettingReports/>
       <button
         class="button is-text"
         :class="{ 'is-loading': updating }"
@@ -64,6 +65,7 @@ import { updateUser } from '@/api'
 import { fetchWithProgress } from './helper'
 import TheLayout from '@/components/TheLayout.vue'
 import TheSettingBlocks from '@/components/TheSettingBlocks.vue'
+import TheSettingReports from '@/components/TheSettingReports.vue'
 
 export default {
   name: 'settings',
@@ -111,7 +113,7 @@ export default {
       vm.social = userConfig.social
     })
   },
-  components: { TheLayout, TheSettingBlocks }
+  components: { TheLayout, TheSettingBlocks, TheSettingReports }
 }
 </script>
 
