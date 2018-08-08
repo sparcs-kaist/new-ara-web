@@ -1,6 +1,12 @@
 <template>
   <TheLayout>
-    <TheBoard :board="archive"/>
+    <TheBoard :board="adaptedArchive">
+      <h1
+        slot="title"
+        class="title">
+        담아두기
+      </h1>
+    </TheBoard>
   </TheLayout>
 </template>
 
@@ -14,6 +20,15 @@ export default {
   name: 'archive',
   data () {
     return { archive: {} }
+  },
+  computed: {
+    adaptedArchive () {
+      const { archive } = this
+      return {
+        ...archive,
+        results: archive.results && archive.results.map(({ parent_article }) => parent_article)
+      }
+    }
   },
   async beforeRouteEnter (to, from, next) {
     const [ archive ] = await fetchWithProgress([fetchArchives()])
