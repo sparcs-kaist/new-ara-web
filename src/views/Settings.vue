@@ -55,6 +55,10 @@
         @click="updateSettings">
         업데이트
       </button>
+      <router-link
+        :to="{ name: 'logout-handler' }">
+        로그아웃
+      </router-link>
     </div>
   </TheLayout>
 </template>

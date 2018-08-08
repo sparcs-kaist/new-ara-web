@@ -51,11 +51,6 @@
           class="navbar-item">
           {{ userNickname }}님
         </router-link>
-        <router-link
-          :to="{ name: 'logout-handler' }"
-          class="navbar-item">
-          로그아웃
-        </router-link>
       </div>
     </div>
   </nav>
