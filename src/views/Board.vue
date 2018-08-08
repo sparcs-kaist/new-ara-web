@@ -1,7 +1,11 @@
 <template>
   <TheLayout>
     <TheBoard :board="board">
-      <h1 slot="title"> {{ boardName }} </h1>
+      <h1
+        slot="title"
+        class="title">
+        {{ boardName }}
+      </h1>
     </TheBoard>
   </TheLayout>
 </template>

@@ -19,7 +19,12 @@ Timeago.register('ko_KR', (number, index) => [
 
 export const timeago = Timeago(null, 'ko_KR')
 
-export const range = (n) => [...Array(n).keys()].map(i => i + 1)
+export const date = timeString => {
+  const time = new Date(timeString)
+  return `${time.getMonth()}월 ${time.getDate()}일`
+}
+
+export const range = n => [...Array(n).keys()].map(i => i + 1)
 
 export const queryBuilder = context =>
   Object.keys(context)

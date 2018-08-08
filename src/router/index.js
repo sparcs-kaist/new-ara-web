@@ -18,7 +18,13 @@ export default new Router({
     }
   ],
   scrollBehavior (to, from, savedPosition) {
-    if (savedPosition) return savedPosition
-    return { x: 0, y: 0 }
+    // @TODO: 페이지 로드시 #id-hash 까지 스크롤 돼 있게..?
+    if (to.hash) {
+      return { selector: to.hash }
+    } else if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
   }
 })

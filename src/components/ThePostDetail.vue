@@ -1,15 +1,15 @@
 <template>
   <div class="post">
-    <h1 class="title">{{ post.title }}</h1>
-    <p>
-      글쓴이: {{ post.created_by }}
+    <h1 class="title" id="title">{{ post.title }}</h1>
+    <p id="metadata">
+      {{ boardName }} {{ postAuthor }} {{ postCreatedAt }}
     </p>
-    <router-link :to="{
+    <!-- <router-link :to="{
       name: 'write',
       params: {
         postId: post.id
       }
-    }"> 수정하기 </router-link>
+    }"> 수정하기 </router-link> -->
     <p
       v-html="post.content"
       class="content"></p>
@@ -30,6 +30,7 @@
 
 <script>
 import { archivePost, reportPost } from '@/api'
+import { date } from '@/helper.js'
 
 export default {
   name: 'the-post-detail',
@@ -40,6 +41,17 @@ export default {
     return {
       isArchiving: false,
       isReporting: false
+    }
+  },
+  computed: {
+    boardName () {
+      return this.post.parent_board && this.post.parent_board.ko_name
+    },
+    postAuthor () {
+      return this.post.created_by
+    },
+    postCreatedAt () {
+      return date(this.post.created_at)
     }
   },
   methods: {
@@ -57,6 +69,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+#title {
+  margin-bottom: 0.25rem;
+}
 
+#metadata {
+  color: #888;
+  margin-bottom: 1rem;
+}
 </style>

@@ -1,6 +1,10 @@
 <template>
   <div class="post-recomment">
-    대댓글by{{ recomment.created_by }}: {{ recomment.content }}
+    <div class="recomment-metadata">
+      <div class="recomment-author"> {{ author }} </div>
+      <div class="recomment-time"> {{ date }} </div>
+    </div>
+    <div class="recomment-content"> {{ recomment.content }} </div>
     <button
       @click="vote(true)"
       class="button"
@@ -18,6 +22,7 @@
 
 <script>
 import { voteComment } from '@/api'
+import { date } from '@/helper.js'
 
 export default {
   name: 'post-recomment',
@@ -31,7 +36,9 @@ export default {
   },
   computed: {
     liked () { return this.recomment.my_vote === true },
-    disliked () { return this.recomment.my_vote === false }
+    disliked () { return this.recomment.my_vote === false },
+    author () { return this.recomment.created_by },
+    date () { return date(this.recomment.created_at) }
   },
   methods: {
     async vote (ballot) {
@@ -48,6 +55,24 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.post-recomment {
+  margin: 1rem 0;
+}
 
+.recomment-metadata {
+  .recomment-author {
+    display: inline-block;
+    font-weight: 700;
+    padding-right: 0.75rem;
+  }
+  .recomment-time {
+    display: inline-block;
+    color: #888;
+  }
+}
+
+.recomment-content {
+  margin: 0.75rem 0;
+}
 </style>

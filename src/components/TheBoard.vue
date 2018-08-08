@@ -4,9 +4,7 @@
       검색어: {{ currentQuery }}
     </div> -->
     <!-- query: { boardSlug: '' } -->
-    <div class="board-title">
-      <slot name="title"/>
-    </div>
+    <slot name="title"/>
 
     <table class="table post-table">
       <thead>
@@ -130,9 +128,7 @@ export default {
 .board {
   padding-right: 5rem;
 
-  .board-title > h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
+  h1 {
     margin-bottom: 1rem;
   }
 
