@@ -1,65 +1,63 @@
 <template>
   <TheLayout>
-    <div class="container">
-      <div class="field">
-        <label for="nickname" class="label"> 닉네임 </label>
-        <div class="control">
-          <input type="text"
-            id="nickname"
-            class="input"
-            v-model="nickname"
-          />
-        </div>
-      </div>
-      <div class="field">
-        <label for="sexual" class="checkbox">
-          <input type="checkbox"
-            id="sexual"
-            class="checkbox"
-            v-model="sexual"
-          />
-          성인글 보기
-        </label>
-      </div>
-      <div class="field">
-        <label for="social" class="checkbox">
-          <input type="checkbox"
-            id="social"
-            v-model="social"
-          />
-          정치글 보기
-        </label>
-      </div>
-      <div class="profile-container">
-        프로필
-        <img
-          :src="pictureSrc"
-          alt="프로필 사진"
-          class="image profile"
+    <div class="field">
+      <label for="nickname" class="label"> 닉네임 </label>
+      <div class="control">
+        <input type="text"
+          id="nickname"
+          class="input"
+          v-model="nickname"
         />
       </div>
-      <br>
-      <div class="field">
-        <div class="control">
-          <input
-            type="file"
-            @change="pictureHandler "
-          />
-        </div>
-      </div>
-      <TheSettingBlocks/>
-      <TheSettingReports/>
-      <button
-        class="button is-text"
-        :class="{ 'is-loading': updating }"
-        @click="updateSettings">
-        업데이트
-      </button>
-      <router-link
-        :to="{ name: 'logout-handler' }">
-        로그아웃
-      </router-link>
     </div>
+    <div class="field">
+      <label for="sexual" class="checkbox">
+        <input type="checkbox"
+          id="sexual"
+          class="checkbox"
+          v-model="sexual"
+        />
+        성인글 보기
+      </label>
+    </div>
+    <div class="field">
+      <label for="social" class="checkbox">
+        <input type="checkbox"
+          id="social"
+          v-model="social"
+        />
+        정치글 보기
+      </label>
+    </div>
+    <div class="profile-container">
+      프로필
+      <img
+        :src="pictureSrc"
+        alt="프로필 사진"
+        class="image profile"
+      />
+    </div>
+    <br>
+    <div class="field">
+      <div class="control">
+        <input
+          type="file"
+          @change="pictureHandler "
+        />
+      </div>
+    </div>
+    <TheSettingBlocks/>
+    <TheSettingReports/>
+    <button
+      class="button is-text"
+      :class="{ 'is-loading': updating }"
+      @click="updateSettings">
+      업데이트
+    </button>
+    <router-link
+      :to="{ name: 'logout-handler' }">
+      로그아웃
+    </router-link>
   </TheLayout>
 </template>
 
