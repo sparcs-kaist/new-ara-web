@@ -22,7 +22,7 @@
       class="button">
       {{
         showRecommentInput
-        ? '답글 접기' 
+        ? '답글 접기'
         : '답글 달기'
       }}
     </button>

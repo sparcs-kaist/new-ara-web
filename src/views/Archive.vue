@@ -26,7 +26,8 @@ export default {
       const { archive } = this
       return {
         ...archive,
-        results: archive.results && archive.results.map(({ parent_article }) => parent_article)
+        results: archive.results &&
+          archive.results.map(({ parent_article: article }) => article)
       }
     }
   },
