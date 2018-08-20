@@ -1,9 +1,5 @@
 <template>
   <div class="board">
-    <!-- <div v-if="currentQuery">
-      검색어: {{ currentQuery }}
-    </div> -->
-    <!-- query: { boardSlug: '' } -->
     <slot name="title"/>
     <TheBoardTable
       :articles="board.results"/>
@@ -11,7 +7,6 @@
       <TheBoardPaginator
         :numPages="board.num_pages"
         :currentPage="board.current"/>
-
       <div>
         <div class="post-search">
           <div class="field has-addons">
