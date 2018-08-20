@@ -2,17 +2,23 @@
   <div class="post">
     <h1 class="title" id="title">{{ post.title }}</h1>
     <p id="metadata">
-      {{ boardName }} {{ postAuthor }} {{ postCreatedAt }}
+      <span style="color:#4a4a4a;font-weight:bold"> {{ postAuthor }} </span>
+      {{ postCreatedAt }}
+      {{ boardName }}
     </p>
-    <!-- <router-link :to="{
-      name: 'write',
-      params: {
-        postId: post.id
-      }
-    }"> 수정하기 </router-link> -->
-    <p
-      v-html="post.content"
-      class="content"></p>
+    <div class="ql-container ql-snow">
+      <div v-html="post.content" class="ql-editor"></div>
+    </div>
+    <router-link
+      :to="{
+        name: 'write',
+        params: {
+          postId: post.id
+        }
+      }"
+      class="button">
+      수정하기
+    </router-link>
     <button
       @click="archive"
       class="button"
@@ -48,7 +54,7 @@ export default {
       return this.post.parent_board && this.post.parent_board.ko_name
     },
     postAuthor () {
-      return this.post.created_by
+      return this.post.created_by.profile.nickname
     },
     postCreatedAt () {
       return date(this.post.created_at)

@@ -86,31 +86,6 @@ export default {
   h1 {
     margin-bottom: 1rem;
   }
-
-  .post-table {
-    width: 100%;
-    margin: 0 0 0.75rem -0.75rem;
-
-    thead th {
-      padding-bottom: 1em;
-    }
-
-    .post-table-title {
-      width: 5rem;
-    }
-    .post-table-author {
-      width: 7rem;
-    }
-    .post-table-vote {
-      width: 4rem;
-    }
-    .post-table-hit {
-      width: 5rem;
-    }
-    .post-table-time {
-      width: 6rem;
-    }
-  }
   .post-tools {
     display: flex;
     justify-content: space-between;

@@ -23,6 +23,9 @@
               }
             }">
             {{ article.title }}
+            <span class="comment-count">
+              ({{ article.comments_count }})
+            </span>
           </router-link>
         </td>
         <td class="has-text-right">
@@ -33,7 +36,7 @@
                 username: article.created_by
               }
             }">
-            {{ article.created_by }}
+            {{ article.created_by.profile.nickname }}
           </router-link>
         </td>
         <td class="has-text-right">{{ article.positive_vote_count }}</td>
@@ -56,6 +59,34 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import '@/theme.scss';
 
+.post-table {
+  width: 100%;
+  margin: 0 0 0.75rem -0.75rem;
+
+  thead th {
+    padding-bottom: 1em;
+  }
+
+  .post-table-title {
+    width: 5rem;
+  }
+  .post-table-author {
+    width: 7rem;
+  }
+  .post-table-vote {
+    width: 4rem;
+  }
+  .post-table-hit {
+    width: 5rem;
+  }
+  .post-table-time {
+    width: 6rem;
+  }
+}
+.comment-count {
+  color: $theme-red;
+}
 </style>

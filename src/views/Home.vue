@@ -61,6 +61,9 @@
                 params: { postId: article.id }
               }">
               {{ article.title }}
+              <span class="comment-count">
+                ({{ article.comments_count }})
+              </span>
             </router-link>
           </h3>
           <div class="post-time">
@@ -99,6 +102,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/theme.scss';
 .board {
   margin-bottom: 2rem;
   padding-right: 5rem;
@@ -112,5 +116,8 @@ export default {
   display: flex;
   justify-content: space-between;
   margin: 0.5rem 0;
+}
+.comment-count {
+  color: $theme-red;
 }
 </style>
