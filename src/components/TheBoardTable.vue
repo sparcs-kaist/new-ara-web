@@ -36,7 +36,7 @@
                 username: article.created_by
               }
             }">
-            {{ article.created_by.profile.nickname }}
+            {{ article.created_by.profile && article.created_by.profile.nickname }}
           </router-link>
         </td>
         <td class="has-text-right">{{ article.positive_vote_count }}</td>
@@ -50,11 +50,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Timeago from '@/components/Timeago.vue'
 
 export default {
   name: 'the-board-table',
   props: [ 'articles' ],
+  computed: {
+    ...mapGetters([ 'getNameById' ])
+  },
   components: { Timeago }
 }
 </script>
