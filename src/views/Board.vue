@@ -1,11 +1,51 @@
 <template>
   <TheLayout>
     <TheBoard :board="board">
-      <h1
-        slot="title"
-        class="title">
-        {{ boardName }}
-      </h1>
+
+      <div slot="title">
+        <h1 class="board-name">
+          {{ boardName }}
+        </h1>
+      </div>
+
+      <div slot="tools">
+        <div class="search">
+          <div class="field has-addons">
+            <div class="control">
+              <input
+                v-model="keywordToSearch"
+                class="input"
+                type="text"
+                placeholder="글 검색"
+              />
+            </div>
+            <div class="control">
+              <router-link
+                :to="{
+                  query: {
+                    keyword: this.keywordToSearch
+                  }
+                }"
+                class="button is-text">
+                검색
+              </router-link>
+            </div>
+          </div>
+        </div>
+        <div class="write">
+          <router-link
+            :to="{
+              name: 'write',
+              query: {
+                board: $route.params.boardSlug
+              }
+            }"
+            class="button is-text">
+            글 작성
+          </router-link>
+        </div>
+      </div>
+
     </TheBoard>
   </TheLayout>
 </template>
@@ -22,7 +62,8 @@ export default {
   data () {
     return {
       board: {},
-      boardName: ''
+      boardName: '',
+      keywordToSearch: ''
     }
   },
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
@@ -44,6 +85,18 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.board-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
 
+.search {
+  display: inline-block;
+}
+
+.write {
+  display: inline-block;
+}
 </style>

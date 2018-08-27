@@ -1,11 +1,12 @@
 <template>
-  <TheLayout class="home">
-    <div class="columns is-multiline">
+  <TheLayout>
+    <div class="columns is-multiline home">
       <div class="board today-best column is-6">
         <h2 class="board-name"> 투데이 베스트 </h2>
         <div
           v-for="article in dailyBests"
-          :key="article.id">
+          :key="article.id"
+          class="post">
           <h3 class="post-title">
             <router-link
               :to="{
@@ -24,7 +25,8 @@
         <h2 class="board-name"> 위클리 베스트 </h2>
         <div
           v-for="article in weeklyBests"
-          :key="article.id">
+          :key="article.id"
+          class="post">
           <h3 class="post-title">
             <router-link
               :to="{
@@ -106,18 +108,18 @@ export default {
 .board {
   margin-bottom: 2rem;
   padding-right: 5rem;
-}
-.board-name {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5em;
-}
-.post {
-  display: flex;
-  justify-content: space-between;
-  margin: 0.5rem 0;
-}
-.comment-count {
-  color: $theme-red;
+  .board-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5em;
+  }
+  .post {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+    .comment-count {
+      color: $theme-red;
+    }
+  }
 }
 </style>

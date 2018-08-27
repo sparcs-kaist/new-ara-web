@@ -1,11 +1,11 @@
 <template>
   <TheLayout>
     <TheBoard :board="adaptedArchive">
-      <h1
-        slot="title"
-        class="title">
-        담아두기
-      </h1>
+      <div slot="title">
+        <h1 id="title">
+          담아두기
+        </h1>
+      </div>
     </TheBoard>
   </TheLayout>
 </template>
@@ -30,9 +30,12 @@ export default {
         results: archive.results &&
           archive.results
             .map(({ parent_article: article }) => article)
-            .map(article => ({ ...article, parent_board: {
-              ko_name: this.getNameById(article.parent_board)
-            }}))
+            .map(article => ({
+              ...article,
+              parent_board: {
+                ko_name: this.getNameById(article.parent_board)
+              }
+            }))
       }
     },
     ...mapGetters([ 'getNameById' ])
@@ -51,5 +54,9 @@ export default {
 </script>
 
 <style>
-
+#title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
 </style>

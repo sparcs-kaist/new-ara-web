@@ -92,7 +92,7 @@ export default {
 @import '@/theme.scss';
 .navbar {
   border-top: 5px solid $theme-red;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
 }
 
 // @TODO: Is ther a better way of achieving this..?
