@@ -1,11 +1,17 @@
 <template>
   <div class="post">
     <h1 class="title" id="title">{{ post.title }}</h1>
-    <p id="metadata">
-      <span style="color:#4a4a4a;font-weight:bold"> {{ postAuthor }} </span>
-      {{ postCreatedAt }}
-      {{ boardName }}
-    </p>
+    <div id="metadata">
+      <div class="post-author">
+        {{ postAuthor }}
+      </div>
+      <div class="post-time">
+        {{ postCreatedAt }}
+      </div>
+      <div class="post-board-name">
+        {{ boardName }}
+      </div>
+    </div>
     <div class="ql-container ql-snow">
       <div v-html="post.content" class="ql-editor"></div>
     </div>
@@ -83,5 +89,13 @@ export default {
 #metadata {
   color: #888;
   margin-bottom: 1rem;
+  .post-author {
+    color:#4a4a4a;
+    font-weight:bold
+  }
+  .post-author, .post-time, .post-board-name {
+    display: inline-block;
+    margin-right: 0.75rem;
+  }
 }
 </style>

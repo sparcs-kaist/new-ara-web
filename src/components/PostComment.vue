@@ -82,7 +82,7 @@ export default {
   computed: {
     liked () { return this.comment.my_vote === true },
     disliked () { return this.comment.my_vote === false },
-    author () { return this.comment.created_by },
+    author () { return this.comment.created_by.profile.nickname },
     date () { return date(this.comment.created_at) },
     now () { return date(new Date()) },
     ...mapGetters([ 'userNickname' ])

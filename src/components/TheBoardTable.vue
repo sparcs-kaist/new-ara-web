@@ -33,10 +33,10 @@
             :to="{
               name: 'user',
               params: {
-                username: article.created_by
+                username: article.created_by.profile.nickname
               }
             }">
-            {{ article.created_by.profile && article.created_by.profile.nickname }}
+            {{ article.created_by.profile.nickname }}
           </router-link>
         </td>
         <td class="has-text-right">{{ article.positive_vote_count }}</td>

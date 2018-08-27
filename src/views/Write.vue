@@ -41,7 +41,6 @@ export default {
       let result
       try {
         if (!this.isEditing) {
-          // @TODO: boardId 하드코딩이라니........
           result = await createPost({
             boardId,
             newArticle: {

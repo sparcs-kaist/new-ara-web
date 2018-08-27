@@ -37,7 +37,7 @@ export default {
   computed: {
     liked () { return this.recomment.my_vote === true },
     disliked () { return this.recomment.my_vote === false },
-    author () { return this.recomment.created_by },
+    author () { return this.recomment.created_by.profile.nickname },
     date () { return date(this.recomment.created_at) }
   },
   methods: {
