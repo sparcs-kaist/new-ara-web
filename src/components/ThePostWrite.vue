@@ -22,8 +22,13 @@
     <VueEditor
       v-model="content"
     />
+    <input
+      type="file"
+      multiple
+      @change="attachFiles"
+    />
     <button
-      @click="$emit('save-post', { title, content, boardId })"
+      @click="$emit('save-post', { title, content, boardId, attachments })"
       class="button is-primary"
       :class="{ 'is-loading': saving }"
     > 저장 </button>
@@ -41,7 +46,8 @@ export default {
     return {
       boardId: '',
       title: '',
-      content: ''
+      content: '',
+      attachments: []
     }
   },
   computed: {
@@ -58,6 +64,12 @@ export default {
     if (boardSlug) {
       /* 글 수정인데 글의 parent board와 url query의 board가 다르면 url query의 board를 따른다. */
       this.boardId = this.getIdBySlug(boardSlug)
+    }
+  },
+  methods: {
+    attachFiles (e) {
+      this.attachments = [...e.target.files]
+      e.target.value = null /* 같은 파일을 연속으로 첨부하려면 필요한 코드 */
     }
   },
   components: { VueEditor }

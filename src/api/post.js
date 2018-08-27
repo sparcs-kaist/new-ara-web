@@ -42,3 +42,28 @@ export const voteComment = (commentId, action) =>
 
 export const reportComment = (commentId) =>
   http.post('reports/', { parent_comment: commentId, reported_by: 1 })
+
+export const uploadAttachments = (attachments) => {
+  const generateFormData = (file) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    return formData
+  }
+
+  const httpOptions = {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }
+
+  /* @TODO: File type인지 체크하기 */
+  if (Array.isArray(attachments)) {
+    return Promise.all(
+      attachments.map(attachment =>
+        http.post('attachments/', generateFormData(attachment), httpOptions)
+      )
+    )
+  }
+
+  return http.post('attachments/', generateFormData(attachments), httpOptions)
+}

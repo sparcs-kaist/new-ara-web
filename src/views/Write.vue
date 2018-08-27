@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { fetchPost, createPost, updatePost } from '@/api'
+import { fetchPost, createPost, updatePost, uploadAttachments } from '@/api'
 import { fetchWithProgress } from './helper.js'
 import TheLayout from '@/components/TheLayout.vue'
 import ThePostWrite from '@/components/ThePostWrite.vue'
@@ -36,31 +36,50 @@ export default {
   },
   methods: {
     async savePost (newArticle) {
-      const { title, content, boardId } = newArticle
+      const { title, content, boardId, attachments } = newArticle
       this.saving = true
+
+      let attachmentIds
+      try {
+        attachmentIds = (await uploadAttachments(attachments))
+          .map(result => result.data.id)
+      } catch (err) {
+        /* @TODO: 에러 핸들링 */
+        alert('Failed to upload attachments!')
+        this.saving = false
+        return
+      }
+
+      const basePostDetail = {
+        title,
+        content,
+        attachments: attachmentIds
+      }
       let result
       try {
         if (!this.isEditing) {
           result = await createPost({
-            boardId,
-            newArticle: {
-              title,
-              content
-            }
+            ...basePostDetail,
+            boardId
           })
         } else {
           result = await updatePost({
-            postId: this.postId,
-            newArticle: {
-              title,
-              content
-            }
+            ...basePostDetail,
+            postId: this.postId
           })
         }
       } catch (err) {
         // @TODO: 에러 핸들링
+        /*
+         * @TODO: 아마 attachment 삭제...?
+         * 근데 그 때 강인이형 말로는 S3 가격 얼마 안 비싸서
+         * 별로 상관 없다고 했던 것 같아용
+         * - swan
+         */
         if (!this.isEditing) alert('Failed to create a post!')
         else alert('Failed to update the post!')
+        this.saving = false
+        return
       }
       this.saving = false
       this.$router.push({ name: 'post', params: { postId: result.data.id } })
