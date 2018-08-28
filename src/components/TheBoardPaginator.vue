@@ -6,7 +6,7 @@
       :to="{
         name: 'board',
         params: { boardSlug },
-        query: { page }
+        query: paginatedQuery(page)
       }"
       class="page"
       :class="{ 'is-active': page === currentPage }">
@@ -31,6 +31,14 @@ export default {
     // @TODO: $route에 대한 의존성 제거
     boardSlug () {
       return this.$route.params.boardSlug
+    }
+  },
+  methods: {
+    paginatedQuery (page) {
+      return {
+        ...this.$route.query,
+        page
+      }
     }
   }
 }
