@@ -4,6 +4,7 @@ import Archive from '@/views/Archive.vue'
 import Post from '@/views/Post.vue'
 import Write from '@/views/Write.vue'
 import Settings from '@/views/Settings.vue'
+import Notifications from '@/views/Notifications.vue'
 import Home from '@/views/Home.vue'
 import { authGuard } from './auth.js'
 
@@ -44,6 +45,12 @@ export default [
     path: '/settings',
     name: 'settings',
     component: Settings,
+    beforeEnter: authGuard
+  },
+  {
+    path: '/notifications',
+    name: 'notifications',
+    component: Notifications,
     beforeEnter: authGuard
   },
   {

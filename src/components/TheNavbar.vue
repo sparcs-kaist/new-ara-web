@@ -47,6 +47,11 @@
       <div class="navbar-end">
         <!-- <TheNavbarNotifications/> -->
         <router-link
+          :to="{ name: 'notifications' }"
+          class="navbar-item">
+          알림
+        </router-link>
+        <router-link
           :to="{ name: 'settings' }"
           class="navbar-item">
           {{ userNickname }}님

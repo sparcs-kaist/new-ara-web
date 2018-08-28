@@ -1,4 +1,5 @@
 import http from '@/http.js'
+import { queryBuilder } from '@/helper.js'
 
 export const fetchUser = (userId) =>
   http.get(`user_profiles/${userId}/`)
@@ -22,9 +23,12 @@ export const updateUser = (userId, { nickname, picture, sexual, social }) => {
   )
 }
 
-export const fetchNotifications = () =>
-  http.get('notifications/')
+export const fetchNotifications = ({ query: { page } }) => {
+  const context = {}
+  if (page) context.page = page
+  return http.get(`notifications/?${queryBuilder(context)}`)
     .then(({ data }) => data)
+}
 
 export const fetchBlocks = () =>
   http.get('blocks/')
