@@ -1,10 +1,12 @@
 <template>
   <div class="the-notifications">
-    <h1 id="title">알람</h1>
-    <Notification
-      v-for="notification in notifications.results"
-      :notification="notification">
-    </Notification>
+    <h1 id="title">알림</h1>
+    <DailyNotifications
+      v-for="dayPassed in Object.keys(dailyNotifications)"
+      :dayPassed="dayPassed"
+      :notifications="dailyNotifications[dayPassed]"
+      :key="dayPassed">
+    </DailyNotifications>
     <TheNotificationPaginator
       :numPages="notifications.num_pages"
       :currentPage="notifications.current">
@@ -13,7 +15,7 @@
 </template>
 
 <script>
-import Notification from '@/components/Notification'
+import DailyNotifications from '@/components/DailyNotifications'
 import TheNotificationPaginator from '@/components/TheNotificationPaginator'
 
 export default {
@@ -21,7 +23,32 @@ export default {
   props: {
     notifications: { required: true }
   },
-  components: { Notification, TheNotificationPaginator }
+  computed: {
+    dailyNotifications () {
+      const dayInMillisec = 24 * 60 * 60 * 1000
+      const now = Date.now()
+      if (!this.notifications.results) return []
+      return this.notifications.results
+        .reduce((acc, notification) => {
+          const { created_at: createdAt } = notification
+          const dayPassed = String(Math.floor((now - createdAt) / dayInMillisec))
+          if (Object.keys(acc).includes(dayPassed)) {
+            return {
+              ...acc,
+              [dayPassed]: [
+                ...acc[dayPassed],
+                notification
+              ]
+            }
+          }
+          return {
+            ...acc,
+            [dayPassed]: [notification]
+          }
+        }, {})
+    }
+  },
+  components: { DailyNotifications, TheNotificationPaginator }
 }
 </script>
 
