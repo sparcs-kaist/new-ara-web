@@ -24,7 +24,12 @@ export const date = timeString => {
   return `${time.getMonth()}월 ${time.getDate()}일`
 }
 
-export const range = n => [...Array(n).keys()].map(i => i + 1)
+export const range = (m, n = null) => {
+  if (n === null) return [...Array(m).keys()].map(i => i + 1)
+  if (m < n) return [...Array(n - m + 1).keys()].map(i => i + m)
+  if (m > n) return [...Array(m - n + 1).keys()].reverse().map(i => i + n)
+  return [m]
+}
 
 export const queryBuilder = context =>
   Object.keys(context)

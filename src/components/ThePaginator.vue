@@ -1,12 +1,22 @@
 <template>
   <div class="pages">
     <router-link
+      v-if="pageRangeMin !== 1"
+      :to="routeTo(pageRangeMin - 1)">
+      &lt;
+    </router-link>
+    <router-link
       v-for="page in pageRange"
       :key="page"
       :to="routeTo(page)"
       class="page"
       :class="{ 'is-active': page === currentPage }">
       {{ page }}
+    </router-link>
+    <router-link
+      v-if="pageRangeMax > pageRangeMin + 9"
+      :to="routeTo(pageRangeMin + 10)">
+      &gt;
     </router-link>
   </div>
 </template>
@@ -22,8 +32,14 @@ export default {
     baseRouteTo: { required: true }
   },
   computed: {
+    pageRangeMin () {
+      return Math.floor((this.currentPage - 1) / 10) * 10 + 1
+    },
+    pageRangeMax () {
+      return Math.min(this.pageRangeMin + 9, this.numPages)
+    },
     pageRange () {
-      return range(this.numPages)
+      return range(this.pageRangeMin, this.pageRangeMax)
     }
   },
   methods: {
