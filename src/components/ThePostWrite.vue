@@ -1,8 +1,17 @@
 <template>
   <div>
-    <h1> 포스트 작성 </h1>
-    <div class="select">
+    <h1 id="title"> 글쓰기 </h1>
+
+    <input
+      v-model="title"
+      class="input title-input"
+      type="text"
+      placeholder="제목"
+    />
+
+    <div class="select board-input" :class="{ 'is-placeholder': !boardId }">
       <select v-model="boardId">
+        <option value="" disabled selected> 게시판 </option>
         <option
           v-for="board in boardList"
           :key="board.id"
@@ -12,26 +21,26 @@
         </option>
       </select>
     </div>
-    제목
-    <input
-      v-model="title"
-      class="input"
-      type="text"
-    />
-    내용
+
     <VueEditor
       v-model="content"
+      :editorOptions="{ theme: 'bubble' }"
+      class="content-input"
+      placeholder="내용"
     />
-    <input
-      type="file"
-      multiple
-      @change="attachFiles"
-    />
+
+    <div class="attachment-input">
+      <input
+        type="file"
+        multiple
+        @change="attachFiles"
+      />
+    </div>
     <button
       @click="$emit('save-post', { title, content, boardId, attachments })"
-      class="button is-primary"
+      class="button post-publish-button"
       :class="{ 'is-loading': saving }"
-    > 저장 </button>
+    > 게시 </button>
   </div>
 </template>
 
@@ -76,6 +85,68 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+@import '@/theme.scss';
+#title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
 
+.title-input {
+  padding-left: 0;
+  padding-bottom: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  &::placeholder {
+    color: #888;
+  }
+}
+
+.board-input {
+  margin-top: -5px;
+  margin-bottom: 1.5rem;
+  &.is-placeholder {
+    select {
+      color: #888;
+    }
+    &::after {
+      border-color: #888;
+    }
+    &:hover::after {
+      border-color: #888;
+    }
+  }
+  select {
+    padding-left: 0;
+  }
+}
+
+.attachment-input {
+  margin-bottom: 1.5rem;
+}
+
+.post-publish-button {
+  border: 0;
+  padding: 0;
+  color: $theme-red;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+</style>
+
+<style lang="scss">
+@import url('https://cdn.quilljs.com/1.3.6/quill.bubble.css');
+
+#quill-container {
+  .ql-editor {
+    padding: 0;
+    &::before {
+      left: 0;
+      font-style: normal;
+      color: #888;
+    }
+  }
+}
 </style>

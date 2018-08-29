@@ -1,6 +1,5 @@
 <template>
   <TheLayout>
-    작성/수정
     <ThePostWrite
       v-if="postFetched"
       :post="post"
