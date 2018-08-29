@@ -7,16 +7,17 @@
       :notifications="dailyNotifications[dayPassed]"
       :key="dayPassed">
     </DailyNotifications>
-    <TheNotificationPaginator
+    <ThePaginator
       :numPages="notifications.num_pages"
-      :currentPage="notifications.current">
-    </TheNotificationPaginator>
+      :currentPage="notifications.current"
+      :baseRouteTo="{ name: 'notifications' }">
+    </ThePaginator>
   </div>
 </template>
 
 <script>
 import DailyNotifications from '@/components/DailyNotifications'
-import TheNotificationPaginator from '@/components/TheNotificationPaginator'
+import ThePaginator from '@/components/ThePaginator'
 
 export default {
   name: 'the-notifications',
@@ -48,7 +49,7 @@ export default {
         }, {})
     }
   },
-  components: { DailyNotifications, TheNotificationPaginator }
+  components: { DailyNotifications, ThePaginator }
 }
 </script>
 

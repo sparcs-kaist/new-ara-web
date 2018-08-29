@@ -5,9 +5,14 @@
       :articles="board.results"/>
     <div class="board-navbar">
       <div class="board-navbar-start">
-        <TheBoardPaginator
+        <ThePaginator
           :numPages="board.num_pages"
-          :currentPage="board.current"/>
+          :currentPage="board.current"
+          :baseRouteTo="{
+            name: 'board',
+            params: { boardSlug}
+          }">
+        </ThePaginator>
       </div>
       <div class="board-navbar-end">
         <slot name="tools"/>
@@ -17,7 +22,7 @@
 </template>
 
 <script>
-import TheBoardPaginator from '@/components/TheBoardPaginator.vue'
+import ThePaginator from '@/components/ThePaginator.vue'
 import TheBoardTable from '@/components/TheBoardTable.vue'
 
 export default {
@@ -25,7 +30,13 @@ export default {
   props: {
     board: { required: true }
   },
-  components: { TheBoardPaginator, TheBoardTable }
+  computed: {
+    // @TODO: $route에 대한 의존성 제거
+    boardSlug () {
+      return this.$route.params.boardSlug
+    }
+  },
+  components: { ThePaginator, TheBoardTable }
 }
 </script>
 

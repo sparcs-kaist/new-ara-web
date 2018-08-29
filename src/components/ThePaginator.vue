@@ -3,10 +3,7 @@
     <router-link
       v-for="page in pageRange"
       :key="page"
-      :to="{
-        name: 'notifications',
-        query: { page }
-      }"
+      :to="routeTo(page)"
       class="page"
       :class="{ 'is-active': page === currentPage }">
       {{ page }}
@@ -18,15 +15,30 @@
 import { range } from '@/helper.js'
 
 export default {
-  name: 'the-notification-paginator',
+  name: 'the-paginator',
   props: {
     numPages: Number,
-    currentPage: Number
+    currentPage: Number,
+    baseRouteTo: { required: true }
   },
   computed: {
     pageRange () {
       return range(this.numPages)
+    }
+  },
+  methods: {
+    paginatedQuery (page) {
+      return {
+        ...this.$route.query,
+        page
+      }
     },
+    routeTo (page) {
+      return {
+        ...this.baseRouteTo,
+        query: this.paginatedQuery(page)
+      }
+    }
   }
 }
 </script>
