@@ -19,8 +19,8 @@
 ```
 /post/:postId (모아보기)
 /post/:postId?board=:boardSlug (게시판)
-/post/:postId?keyword=:keyword (모아보기 검색)
-/post/:postId?board=:boardSlug&keyword=:keyword (게시판 검색)
+/post/:postId?query=:query (모아보기 검색)
+/post/:postId?board=:boardSlug&query=:query (게시판 검색)
 ```
 
 ## 글 작성

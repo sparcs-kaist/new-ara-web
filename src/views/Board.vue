@@ -23,7 +23,7 @@
               <router-link
                 :to="{
                   query: {
-                    keyword: this.keywordToSearch
+                    query: this.keywordToSearch
                   }
                 }"
                 class="button is-text">
