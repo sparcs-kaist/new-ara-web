@@ -2,10 +2,10 @@
   <div class="the-notifications">
     <h1 id="title">알림</h1>
     <DailyNotifications
-      v-for="dayPassed in Object.keys(dailyNotifications)"
-      :dayPassed="dayPassed"
-      :notifications="dailyNotifications[dayPassed]"
-      :key="dayPassed">
+      v-for="timePassed in Object.keys(dailyNotifications)"
+      :timePassed="timePassed"
+      :notifications="dailyNotifications[timePassed]"
+      :key="timePassed">
     </DailyNotifications>
     <ThePaginator
       :numPages="notifications.num_pages"
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { timeago } from '@/helper.js'
 import DailyNotifications from '@/components/DailyNotifications'
 import ThePaginator from '@/components/ThePaginator'
 
@@ -26,25 +27,22 @@ export default {
   },
   computed: {
     dailyNotifications () {
-      const dayInMillisec = 24 * 60 * 60 * 1000
-      const now = Date.now()
-      if (!this.notifications.results) return []
+      if (!this.notifications.results) return {}
       return this.notifications.results
         .reduce((acc, notification) => {
-          const { created_at: createdAt } = notification
-          const dayPassed = String(Math.floor((now - new Date(createdAt)) / dayInMillisec))
-          if (Object.keys(acc).includes(dayPassed)) {
+          const timePassed = timeago.format(notification.created_at)
+          if (Object.keys(acc).includes(timePassed)) {
             return {
               ...acc,
-              [dayPassed]: [
-                ...acc[dayPassed],
+              [timePassed]: [
+                ...acc[timePassed],
                 notification
               ]
             }
           }
           return {
             ...acc,
-            [dayPassed]: [notification]
+            [timePassed]: [notification]
           }
         }, {})
     }
