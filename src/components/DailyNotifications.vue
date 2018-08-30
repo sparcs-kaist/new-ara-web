@@ -19,9 +19,9 @@ export default {
     notifications: { required: true }
   },
   computed: {
-    formattedDayPassed() {
+    formattedDayPassed () {
       const dayInMillisec = 24 * 60 * 60 * 1000
-      if (this.dayPassed) return '오늘' /* @TODO: I18n */
+      if (!this.dayPassed) return '오늘' /* @TODO: I18n */
       return timeago.format(Date.now() - dayInMillisec * this.dayPassed)
     }
   },

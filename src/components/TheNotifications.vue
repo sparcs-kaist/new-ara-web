@@ -32,7 +32,7 @@ export default {
       return this.notifications.results
         .reduce((acc, notification) => {
           const { created_at: createdAt } = notification
-          const dayPassed = String(Math.floor((now - createdAt) / dayInMillisec))
+          const dayPassed = String(Math.floor((now - new Date(createdAt)) / dayInMillisec))
           if (Object.keys(acc).includes(dayPassed)) {
             return {
               ...acc,
