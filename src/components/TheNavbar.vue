@@ -45,12 +45,16 @@
         </router-link>
       </div>
       <div class="navbar-end">
-        <!-- <TheNavbarNotifications/> -->
         <router-link
           :to="{ name: 'notifications' }"
           class="navbar-item">
-          알림
+          {{ $t('notification') }}
         </router-link>
+        <a
+          class="navbar-item"
+          @click="$i18n.locale = $i18n.locale === 'en' ? 'ko' : 'en'">
+          언어 변경
+        </a>
         <router-link
           :to="{ name: 'settings' }"
           class="navbar-item">
