@@ -26,7 +26,7 @@
         <router-link
           :to="{ name: 'board'}"
           class="navbar-item">
-          모아보기
+          {{ $t('all') }}
         </router-link>
         <TheNavbarArchives
           class="navbar-item"
@@ -41,7 +41,7 @@
             }
           }"
           class="navbar-item">
-          {{ board.ko_name }}
+          {{ board[`${$i18n.locale}_name`] }}
         </router-link>
       </div>
       <div class="navbar-end">

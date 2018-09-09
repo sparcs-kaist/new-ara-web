@@ -1,6 +1,6 @@
 <template>
   <router-link :to="{ name: 'archive' }">
-    담아두기
+    {{ $t('archive') }}
   </router-link>
 </template>
 

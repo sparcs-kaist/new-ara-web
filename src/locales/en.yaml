@@ -1,1 +1,3 @@
-notification: "notification"
+all: 'All'
+archive: 'Archive'
+notification: 'Notifications'

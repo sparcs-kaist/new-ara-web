@@ -13,7 +13,7 @@ npm run test:unit
 
 ### 컨벤션
 #### 컴퍼넌트 분류
-`vue-router`에 등록된 컴퍼넌트, 즉 url을 가지는 컴퍼넌트는 `/views`아래에 있습니다. 그 외의 url을 가지지 않는 컴퍼넌트는 `/components` 아래에 있습니다.
+`vue-router`에 등록된 컴퍼넌트, 즉 url을 가지는 컴퍼넌트는 `/views` 아래에 있습니다. 그 외의 url을 가지지 않는 컴퍼넌트는 `/components` 아래에 있습니다.
 ```
 views/
 |- Archive.vue
@@ -36,7 +36,7 @@ components/
 |- TheFooter
 |- TheLayout
 ```
-특정 부모 컴퍼넌트와 강하게 연관이 있는 자식 컴퍼넌트의 이름은 부모 컴퍼넌트의 이름으로 시작합니다. 이 결과 컴퍼넌트 이름을 사전순으로 정렬하면 가까운 곳에 위치합니다.
+특정 부모 컴퍼넌트와 강하게 연관이 있는 자식 컴퍼넌트의 이름은 부모 컴퍼넌트의 이름으로 시작합니다. 따라서 컴퍼넌트를 사전순으로 정렬하면 보기 좋습니다.
 ```
 components/
 |- TheNavbar.vue
@@ -106,6 +106,22 @@ Sfc에서 최상위 엘리먼트의 순서는 항상 `template`, `script`, `i18n
 <child
     @save-post="savePost"
 >
+```
+
+#### i18n 키 이름
+번역어의 키 이름은 **kebab-case**입니다.
+```vue
+<template>
+    <div>
+        {{ $t('want-pulbitmaru') }}
+    </div>
+</template>
+<i18n>
+ko:
+    want-pulbitmaru: '풀빛마루 덮밥이 먹고싶다'
+en:
+    want-pulbitmaru: 'I want some pulbitmaru'
+</i18n>
 ```
 
 ### 관련 문서

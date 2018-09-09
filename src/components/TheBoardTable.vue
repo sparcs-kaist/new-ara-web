@@ -13,7 +13,7 @@
     <tbody>
       <tr v-for="article in articles"
         :key="article.id">
-        <td> {{ article.parent_board.ko_name }} </td>
+        <td> {{ getNameById(article.parent_board.id, $i18n.locale) }} </td>
         <td>
           <router-link
             :to="{
