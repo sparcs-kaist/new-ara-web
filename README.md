@@ -12,7 +12,48 @@ npm run test:unit
 ```
 
 ### 컨벤션
-#### 컴퍼넌트
+#### 컴퍼넌트 분류
+`vue-router`에 등록된 컴퍼넌트, 즉 url을 가지는 컴퍼넌트는 `/views`아래에 있습니다. 그 외의 url을 가지지 않는 컴퍼넌트는 `/components` 아래에 있습니다.
+```
+views/
+|- Archive.vue
+|- Board.vue
+components/
+|- TheAd.vue
+|- TheApiErrorNotification.vue
+```
+
+#### 컴퍼넌트 이름
+컴퍼넌트 이름은 **CamelCase**입니다.
+```
+components/
+|- NavbarNotificationItem.vue
+```
+한 페이지에 오직 하나의 인스턴스만 존재할 수 있는 컴퍼넌트의 이름은 **The**로 시작합니다.
+```
+components/
+|- TheNavbar
+|- TheFooter
+|- TheLayout
+```
+특정 부모 컴퍼넌트와 강하게 연관이 있는 자식 컴퍼넌트의 이름은 부모 컴퍼넌트의 이름으로 시작합니다. 이 결과 컴퍼넌트 이름을 사전순으로 정렬하면 가까운 곳에 위치합니다.
+```
+components/
+|- TheNavbar.vue
+|- TheNavbarAraLogo.vue
+|- TheNavbarArchives.vue
+|- TheNavbarNotifications.vue
+```
+템플릿에서 컴퍼넌트의 이름은 **CamelCase**입니다.
+```vue
+<template>
+    <div>
+        <ThePostDetail/>
+    </div>
+</template>
+```
+
+#### 컴퍼넌트 최상위 엘리먼트 순서
 ```vue
 <template>
     <div>
@@ -39,6 +80,32 @@ en:
     /* Some property */
 }
 </style>
+```
+Sfc에서 최상위 엘리먼트의 순서는 항상 `template`, `script`, `i18n`, `style`입니다.
+
+#### 어트리뷰트
+`v-bind:`와 `v-on:`은 언제나 축약형인 `:`, `@`를 씁니다.
+```vue
+<div
+    :foo="bar"
+    @baz="qux"
+>
+```
+
+#### 이벤트 이름
+이벤트 이름은 **kebab-case**입니다. [참고](https://vuejs.org/v2/guide/components-custom-events.html#Event-Names)
+```vue
+<!-- child.vue -->
+<div
+    @click="$emit('save-post')"
+>
+```
+
+```vue
+<!-- parent -->
+<child
+    @save-post="savePost"
+>
 ```
 
 ### 관련 문서
