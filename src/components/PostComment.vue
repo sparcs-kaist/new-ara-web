@@ -3,23 +3,51 @@
     <div class="comment-metadata">
       <div class="comment-author"> {{ author }} </div>
       <div class="comment-time"> {{ date }} </div>
+      <div class="dropdown is-right is-hoverable alignright">
+        <div class="dropdown-trigger">
+          <button class="button no-border" aria-haspopup="true" aria-controls="dropdownMenu">
+            <span class="icon">
+              <i class="fas fa-ellipsis-h"></i>
+            </span>
+          </button>
+        </div>
+        <div class="dropdown-menu no-border" id="dropdownMenu" role="menu">
+          <div class="dropdown-content">
+            <div class="dropdown-item">
+              <a v-if="userNickname === author" href="#" class="dropdown-item">
+                수정
+              </a>
+              <a v-if="userNickname === author" href="#" class="dropdown-item">
+                삭제
+              </a>
+              <a v-else href="#" class="dropdown-item">
+                신고
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="comment-content"> {{ comment.content }} </div>
     <button
       @click="vote(true)"
       class="button"
       :class="{ 'is-primary': liked, 'is-loading': isVoting }">
-      추천
+      <span class="icon">
+        <i class="fas fa-thumbs-up"></i>
+      </span>
     </button>
     <button
       @click="vote(false)"
       class="button"
       :class="{ 'is-primary': disliked, 'is-loading': isVoting }">
-      비추천
+      <span class="icon">
+        <i class="fas fa-thumbs-down"></i>
+      </span>
     </button>
     <button
       @click="toggleRecommentInput"
-      class="button">
+      class="button no-border">
       {{
         showRecommentInput
         ? '답글 접기'
@@ -146,5 +174,21 @@ export default {
 
 .post-recomments {
   margin-left: 2.5rem;
+}
+
+.alignright {
+  float: right;
+}
+.no-border {
+  border: none;
+}
+.dropdown-content {
+  min-width: 30%;
+  max-width: 50%;
+  float: right;
+  text-align: right;
+}
+.dropdown-item {
+  padding: 0.375rem 0.4rem
 }
 </style>
