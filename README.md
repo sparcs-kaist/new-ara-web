@@ -22,3 +22,33 @@ npm install
 # 배포용 빌드
 npm run build
 ```
+
+## 컨벤션
+### 컴퍼넌트
+```html
+<template>
+    <div>
+    </div>
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<!-- Use yaml to translate -->
+<i18n>
+ko:
+    message: '안녕 세상!'
+en:
+    message: 'Hello, world!'
+</i18n>
+
+<!-- scoped scss style is preferred -->
+<style lang="scss" scoped>
+.component.has-property {
+    /* Some property */
+}
+</style>
+```
