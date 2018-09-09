@@ -11,20 +11,8 @@ npm run serve
 npm run test:unit
 ```
 
-### 관련 문서
-[라우팅](src/router/README.md)
-
-## 배포
-```bash
-# 의존성 설치
-npm install
-
-# 배포용 빌드
-npm run build
-```
-
-## 컨벤션
-### 컴퍼넌트
+### 컨벤션
+#### 컴퍼넌트
 ```vue
 <template>
     <div>
@@ -51,4 +39,16 @@ en:
     /* Some property */
 }
 </style>
+```
+
+### 관련 문서
+[라우팅](src/router/README.md)
+
+## 배포
+```bash
+# 의존성 설치
+npm install
+
+# 배포용 빌드
+npm run build
 ```
