@@ -25,7 +25,7 @@ npm run build
 
 ## 컨벤션
 ### 컴퍼넌트
-```html
+```vue
 <template>
     <div>
     </div>
