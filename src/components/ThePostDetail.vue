@@ -4,12 +4,10 @@
     <div class="dropdown is-right is-hoverable alignright">
       <div class="dropdown-trigger">
         <button class="button no-border" aria-haspopup="true" aria-controls="dropdownMenu">
-          <span class="icon">
-            <i class="fas fa-ellipsis-h"></i>
-          </span>
+          <img src="../assets/more.svg" alt="more">
         </button>
       </div>
-      <div class="dropdown-menu no-border" id="dropdownMenu" role="menu">
+      <div class="dropdown-menu" id="dropdownMenu" role="menu">
         <div class="dropdown-content">
           <div class="dropdown-item">
             <a class="dropdown-item" @click="archive"

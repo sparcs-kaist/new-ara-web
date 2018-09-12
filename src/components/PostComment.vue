@@ -33,17 +33,13 @@
       @click="vote(true)"
       class="button"
       :class="{ 'is-primary': liked, 'is-loading': isVoting }">
-      <span class="icon">
-        <i class="fas fa-thumbs-up"></i>
-      </span>
+      <img src="../assets/thumb-up.svg" alt="thumb up">
     </button>
     <button
       @click="vote(false)"
       class="button"
       :class="{ 'is-primary': disliked, 'is-loading': isVoting }">
-      <span class="icon">
-        <i class="fas fa-thumbs-down"></i>
-      </span>
+      <img src="../assets/thumb-down.svg" alt="thumb down">
     </button>
     <button
       @click="toggleRecommentInput"
