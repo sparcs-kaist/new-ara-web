@@ -10,7 +10,7 @@
           :currentPage="board.current"
           :baseRouteTo="{
             name: 'board',
-            params: { boardSlug}
+            params: { boardSlug }
           }">
         </ThePaginator>
       </div>
