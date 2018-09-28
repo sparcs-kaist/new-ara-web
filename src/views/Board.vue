@@ -62,8 +62,13 @@ export default {
   data () {
     return {
       board: {},
-      boardName: '',
+      boardId: null,
       keywordToSearch: ''
+    }
+  },
+  computed: {
+    boardName () {
+      return store.getters.getNameById(this.boardId, this.$i18n.locale)
     }
   },
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
@@ -71,14 +76,14 @@ export default {
     const [ board ] = await fetchWithProgress([ fetchArticles({ boardId, ...query }) ])
     next(vm => {
       vm.board = board
-      vm.boardName = boardId ? store.getters.getNameById(boardId) : '모아보기'
+      vm.boardId = boardId
     })
   },
   async beforeRouteUpdate ({ params: { boardSlug }, query }, from, next) {
     const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
     const [ board ] = await fetchWithProgress([ fetchArticles({ boardId, ...query }) ])
     this.board = board
-    this.boardName = boardId ? store.getters.getNameById(boardId) : '모아보기'
+    this.boardId = boardId
     next()
   },
   components: { TheLayout, TheBoard }

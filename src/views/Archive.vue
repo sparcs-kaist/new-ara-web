@@ -3,7 +3,7 @@
     <TheBoard :board="adaptedArchive">
       <div slot="title">
         <h1 id="title">
-          담아두기
+          {{ $t('archive') }}
         </h1>
       </div>
     </TheBoard>
@@ -15,7 +15,6 @@ import { fetchArchives } from '@/api'
 import { fetchWithProgress } from './helper.js'
 import TheLayout from '@/components/TheLayout.vue'
 import TheBoard from '@/components/TheBoard.vue'
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'archive',
@@ -30,15 +29,8 @@ export default {
         results: archive.results &&
           archive.results
             .map(({ parent_article: article }) => article)
-            .map(article => ({
-              ...article,
-              parent_board: {
-                ko_name: this.getNameById(article.parent_board)
-              }
-            }))
       }
-    },
-    ...mapGetters([ 'getNameById' ])
+    }
   },
   async beforeRouteEnter (to, from, next) {
     const [ archive ] = await fetchWithProgress([fetchArchives()])

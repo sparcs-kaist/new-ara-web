@@ -10,23 +10,23 @@
         <li class="footer-item">
           <!-- @TODO: footer에서 가는 페이지들 만들기 -->
           <a href="https://sparcs.org">
-            Credit
+            {{ $t('credit') }}
           </a>
         </li>
         <li class="footer-item">
           <a href="https://sparcs.org">
-            License
+            {{ $t('license') }}
           </a>
         </li>
         <li class="footer-item">
           <a href="https://sparcs.org">
-            Rules
+            {{ $t('rules') }}
           </a>
         </li>
       </ul>
     </div>
     <div class="footer-contact">
-      Contact:
+      {{ $t('contact') }}:
       <a href="mailto:ara@sparcs.kaist.ac.kr">
         ara@sparcs.kaist.ac.kr
       </a>
@@ -39,6 +39,19 @@ export default {
 
 }
 </script>
+
+<i18n>
+ko:
+  credit: '만든 사람들'
+  license: '라이센스'
+  rules: '규칙'
+  contact: '문의'
+en:
+  credit: 'Credit'
+  license: 'License'
+  rules: 'Rules'
+  contact: 'Contact'
+</i18n>
 
 <style lang="scss" scoped>
 .the-footer {

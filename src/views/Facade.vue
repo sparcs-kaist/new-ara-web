@@ -24,7 +24,7 @@ export default {
   name: 'facade',
   computed: {
     loginUrl () {
-      return `${apiUrl}/login/?next=${location.protocol}//${location.host}/login-handler`
+      return `${apiUrl}/api/users/sso_login/?next=${location.protocol}//${location.host}/login-handler`
     }
   }
 }
