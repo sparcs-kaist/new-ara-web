@@ -49,6 +49,10 @@
     <div class="ql-container ql-snow">
       <div v-html="post.content" class="ql-editor"></div>
     </div>
+    <div>
+      Like: {{ postLikedCount }}
+      Dislike: {{ postDislikedCount }}
+    </div>
   </div>
 </template>
 
@@ -80,6 +84,12 @@ export default {
     },
     postUserId() {
       return this.post.created_by.profile.id
+    },
+    postLikedCount() {
+      return this.post.positive_vote_count
+    },
+    postDislikedCount() {
+      return this.post.negative_vote_count
     },
     ...mapGetters([ 'userId' ])
   },
