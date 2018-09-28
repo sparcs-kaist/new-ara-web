@@ -1,4 +1,4 @@
-import { fetchUser } from '@/api'
+import { fetchUser, updateDarkMode } from '@/api'
 
 const hydrate = () => {
   // @TODO: validity check 이거면 충분한가?
@@ -34,6 +34,15 @@ export default {
     userPicture ({ userProfile: { picture } }) { return picture },
     userConfig ({ userProfile: { see_sexual: sexual, see_social: social } }) {
       return { sexual, social }
+    },
+    isDarkModeEnabled ({ userProfile }) {
+      const darkMode = userProfile.extra_preferences && userProfile.extra_preferences.darkMode
+      const rootClassList = document.documentElement.classList
+
+      if (darkMode) rootClassList.add('dark')
+      else rootClassList.remove('dark')
+
+      return darkMode
     }
   },
   mutations: {
@@ -54,6 +63,9 @@ export default {
       if (!hasFetched) {
         commit('setUserProfile', await fetchUser(userId))
       }
+    },
+    async toggleDarkMode ({ commit, getters: { isDarkModeEnabled, userId } }) {
+      commit('setUserProfile', await updateDarkMode(userId, !isDarkModeEnabled))
     }
   }
 }

@@ -56,11 +56,12 @@ export default {
     }
   },
   computed: {
+    // @TODO: I18n
     boardName () {
       return this.post.parent_board && this.post.parent_board.ko_name
     },
     postAuthor () {
-      return this.post.created_by.profile.nickname
+      return this.post.created_by && this.post.created_by.profile.nickname
     },
     postCreatedAt () {
       return date(this.post.created_at)

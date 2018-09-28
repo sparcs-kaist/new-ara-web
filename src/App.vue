@@ -12,4 +12,7 @@ export default {
 
 <style lang="scss">
 @import '@/bulma/index.scss';
+body {
+  background-color: var(--background);
+}
 </style>

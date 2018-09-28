@@ -1,5 +1,14 @@
 // 아라 테마색
 $theme-red: #ED3A3A;
 
+:root {
+  --theme-red: #ED3A3A;
+  --background: white;
+}
+
+.dark:root {
+  --background: black;  
+}
+
 // 로고에 사용되는 Raleway EB 폰트
 @import url('https://fonts.googleapis.com/css?family=Raleway:800');

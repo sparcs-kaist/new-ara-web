@@ -50,10 +50,19 @@
           class="navbar-item">
           {{ $t('notification') }}
         </router-link>
+        <div
+          @click="toggleDarkMode"
+          id="toggle-dark-mode"
+          class="navbar-item">
+          <img
+            :src="require('@/assets/colors.svg')"
+            alt="다크 모드"
+          >
+        </div>
         <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link is-arrowless">
+          <div class="navbar-link is-arrowless">
             <img :src="require('@/assets/language.svg')"/>
-          </a>
+          </div>
           <div class="navbar-dropdown is-boxed is-right">
             <a class="navbar-item"
               @click="$i18n.locale = $i18n.locale === 'en' ? 'ko' : 'en'">
@@ -75,7 +84,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import TheNavbarFetchProgressBar from '@/components/TheNavbarFetchProgressBar.vue'
 import TheNavbarAraLogo from '@/components/TheNavbarAraLogo.vue'
 import TheNavbarNotifications from '@/components/TheNavbarNotifications.vue'
@@ -95,7 +104,8 @@ export default {
   methods: {
     toggleMobileMenu () {
       this.isMobileMenuActive = !this.isMobileMenuActive
-    }
+    },
+    ...mapActions(['toggleDarkMode'])
   },
   components: {
     TheNavbarFetchProgressBar,
@@ -109,7 +119,8 @@ export default {
 <style lang="scss" scoped>
 @import '@/theme.scss';
 .navbar {
-  border-top: 5px solid $theme-red;
+  // border-top: 5px solid $theme-red;
+  border-top: 5px solid var(--theme-red);
   margin-bottom: 1.5rem;
 
   // @TODO: Is ther a better way of achieving this..?
@@ -138,6 +149,10 @@ export default {
     &::after {
       content: none;
     }
+  }
+
+  #toggle-dark-mode {
+    cursor: pointer;
   }
 }
 
