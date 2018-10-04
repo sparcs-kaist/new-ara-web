@@ -106,13 +106,13 @@ export default {
     }
   },
   computed: {
-    liked() { return this.comment.my_vote === true },
-    disliked() { return this.comment.my_vote === false },
-    likedCount() { return this.comment.positive_vote_count },
-    dislikedCount() { return this.comment.negative_vote_count },
-    author() { return this.comment.created_by.profile.nickname },
-    date() { return date(this.comment.created_at) },
-    now() { return date(new Date()) },
+    liked () { return this.comment.my_vote === true },
+    disliked () { return this.comment.my_vote === false },
+    likedCount () { return this.comment.positive_vote_count },
+    dislikedCount () { return this.comment.negative_vote_count },
+    author () { return this.comment.created_by.profile.nickname },
+    date () { return date(this.comment.created_at) },
+    now () { return date(new Date()) },
     ...mapGetters([ 'userNickname' ])
   },
   methods: {
