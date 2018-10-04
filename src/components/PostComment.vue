@@ -59,7 +59,7 @@
       </a>
     </div>
 
-    <div class="post-recomments">
+    <div>
       <PostRecomment
         v-for="recomment in comment.comments"
         :key="recomment.id"
