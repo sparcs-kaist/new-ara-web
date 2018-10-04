@@ -5,8 +5,7 @@
       <div class="recomment-time"> {{ date }} </div>
     </div>
     <div class="recomment-content"> {{ recomment.content }} </div>
-    
-    <a class="button button-default" @click="vote(true)"
+    <button class="button button-default" @click="vote(true)"
       :class="{ 'button-selected': liked, 'is-loading': isVoting }">
       <span class="icon">
         <i class="fas fa-thumbs-up"></i>
@@ -14,9 +13,8 @@
       <span>
         {{ likedCount }}
       </span>
-    </a>
-    
-    <a class="button button-default" @click="vote(false)"
+    </button>
+    <button class="button button-default" @click="vote(false)"
       :class="{ 'button-selected': disliked, 'is-loading': isVoting }">
       <span class="icon">
         <i class="fas fa-thumbs-down"></i>
@@ -24,7 +22,7 @@
       <span>
         {{ dislikedCount }}
       </span>
-    </a>
+    </button>
   </div>
 </template>
 
