@@ -50,8 +50,24 @@
       <div v-html="post.content" class="ql-editor"></div>
     </div>
     <div>
-      Like: {{ postLikedCount }}
-      Dislike: {{ postDislikedCount }}
+      <a class="button button-default"
+      :class="{ 'button-selected': liked }">
+        <span class="icon">
+          <i class="fas fa-thumbs-up"></i>
+        </span>
+        <span>
+          {{ postLikedCount }}
+        </span>
+      </a>
+      <a class="button button-default"
+        :class="{ 'button-selected': disliked }">
+        <span class="icon">
+          <i class="fas fa-thumbs-down"></i>
+        </span>
+        <span>
+          {{ postDislikedCount }}
+        </span>
+      </a>
     </div>
   </div>
 </template>
@@ -82,13 +98,13 @@ export default {
     postCreatedAt () {
       return date(this.post.created_at)
     },
-    postUserId() {
+    postUserId () {
       return this.post.created_by.profile.id
     },
-    postLikedCount() {
+    postLikedCount () {
       return this.post.positive_vote_count
     },
-    postDislikedCount() {
+    postDislikedCount () {
       return this.post.negative_vote_count
     },
     ...mapGetters([ 'userId' ])
@@ -140,5 +156,18 @@ export default {
 }
 .dropdown-item {
   padding: 0.375rem 0.4rem
+}
+.button-default {
+  color: #888888;
+  // border: none;
+  font-size: 14px;
+  margin-right: 5px;
+  text-decoration: none;
+}
+.button-default:focus {
+  outline:0;
+}
+.button-selected {
+  color: #ED3A3A;
 }
 </style>
