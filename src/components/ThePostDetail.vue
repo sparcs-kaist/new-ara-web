@@ -4,7 +4,7 @@
     <div class="dropdown is-right is-hoverable alignright">
       <div class="dropdown-trigger">
         <button class="button no-border" aria-haspopup="true" aria-controls="dropdownMenu">
-          <img src="../assets/more.svg" alt="more">
+          <i class="fas fa-ellipsis-h"></i>
         </button>
       </div>
       <div class="dropdown-menu" id="dropdownMenu" role="menu">
