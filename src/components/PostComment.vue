@@ -29,29 +29,36 @@
       </div>
     </div>
     <div class="comment-content"> {{ comment.content }} </div>
-    <button
-      @click="vote(true)"
-      class="button"
-      :class="{ 'is-primary': liked, 'is-loading': isVoting }">
-      <img src="../assets/thumb-up.svg" alt="thumb up">
-      {{ likedCount }}
-    </button>
-    <button
-      @click="vote(false)"
-      class="button"
-      :class="{ 'is-primary': disliked, 'is-loading': isVoting }">
-      <img src="../assets/thumb-down.svg" alt="thumb down">
-      {{ dislikedCount }}
-    </button>
-    <button
-      @click="toggleRecommentInput"
-      class="button no-border">
-      {{
-        showRecommentInput
-        ? '댓글 접기'
-        : '댓글 달기'
-      }}
-    </button>
+    <div class="comment-reaction">
+      <a class="button button-default" @click="vote(true)"
+        :class="{ 'button-selected': liked, 'is-loading': isVoting }">
+        <span class="icon">
+          <i class="fas fa-thumbs-up"></i>
+        </span>
+        <span>
+          {{ likedCount }}
+        </span>
+      </a>
+
+      <a class="button button-default" @click="vote(false)"
+        :class="{ 'button-selected': disliked, 'is-loading': isVoting }">
+        <span class="icon">
+          <i class="fas fa-thumbs-down"></i>
+        </span>
+        <span>
+          {{ dislikedCount }}
+        </span>
+      </a>
+
+      <a class="button button-default"
+        @click="toggleRecommentInput">
+        {{ showRecommentInput
+          ? '댓글 접기'
+          : '댓글 달기'
+        }}
+      </a>
+    </div>
+
     <div class="post-recomments">
       <PostRecomment
         v-for="recomment in comment.comments"
@@ -190,5 +197,19 @@ export default {
 }
 .dropdown-item {
   padding: 0.375rem 0.4rem
+}
+
+.button-default {
+  color: #888888;
+  // border: none;
+  font-size: 14px;
+  margin-right: 5px;
+  text-decoration: none;
+}
+.button-default:focus {
+  outline:0;
+}
+.button-selected {
+  color: #ED3A3A;
 }
 </style>
