@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import i18n from '@/i18n.js'
 import { fetchBoardList } from '@/api'
 import auth from './auth.js'
 import fetch from './fetch.js'
@@ -19,8 +20,10 @@ export default new Vuex.Store({
     getSlugById: ({ boardList }) => (id) =>
       boardList.find(board => board.id === id).slug,
     // @TODO: i18n..
-    getNameById: ({ boardList }) => (id) =>
-      boardList.find(board => board.id === id).ko_name
+    getNameById: ({ boardList }) => (id, locale) => {
+      const board = boardList.find(board => board.id === id)
+      return board ? board[`${locale}_name`] : i18n.t('all', locale)
+    }
   },
   mutations: {
     setBoardList (state, boardList) {

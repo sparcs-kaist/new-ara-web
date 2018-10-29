@@ -5,18 +5,24 @@
       <div class="recomment-time"> {{ date }} </div>
     </div>
     <div class="recomment-content"> {{ recomment.content }} </div>
-    <button
-      @click="vote(true)"
-      class="button"
-      :class="{ 'is-primary': liked, 'is-loading': isVoting }">
-      추천
-    </button>
-    <button
-      @click="vote(false)"
-      class="button"
-      :class="{ 'is-primary': disliked, 'is-loading': isVoting }">
-      비추천
-    </button>
+    <a class="button button-default" @click="vote(true)"
+      :class="{ 'button-selected': liked, 'is-loading': isVoting }">
+      <span class="icon">
+        <i class="fas fa-thumbs-up"></i>
+      </span>
+      <span>
+        {{ likedCount }}
+      </span>
+    </a>
+    <a class="button button-default" @click="vote(false)"
+      :class="{ 'button-selected': disliked, 'is-loading': isVoting }">
+      <span class="icon">
+        <i class="fas fa-thumbs-down"></i>
+      </span>
+      <span>
+        {{ dislikedCount }}
+      </span>
+    </a>
   </div>
 </template>
 
@@ -37,6 +43,8 @@ export default {
   computed: {
     liked () { return this.recomment.my_vote === true },
     disliked () { return this.recomment.my_vote === false },
+    likedCount () { return this.recomment.positive_vote_count },
+    dislikedCount () { return this.recomment.negative_vote_count },
     author () { return this.recomment.created_by.profile.nickname },
     date () { return date(this.recomment.created_at) }
   },
@@ -74,5 +82,16 @@ export default {
 
 .recomment-content {
   margin: 0.75rem 0;
+}
+
+.button-default {
+  color: #888888;
+  // border: none;
+  font-size: 14px;
+  margin-right: 5px;
+  text-decoration: none;
+}
+.button-selected {
+  color: #ED3A3A;
 }
 </style>

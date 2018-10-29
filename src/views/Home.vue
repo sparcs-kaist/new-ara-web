@@ -2,7 +2,7 @@
   <TheLayout>
     <div class="columns is-multiline home">
       <div class="board today-best column is-6">
-        <h2 class="board-name"> 투데이 베스트 </h2>
+        <h2 class="board-name"> {{ $t('today-best') }} </h2>
         <div
           v-for="article in dailyBests"
           :key="article.id"
@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="board weekly-best column is-6">
-        <h2 class="board-name"> 위클리 베스트 </h2>
+        <h2 class="board-name"> {{ $t('weekly-best') }} </h2>
         <div
           v-for="article in weeklyBests"
           :key="article.id"
@@ -50,7 +50,7 @@
             name: 'board',
             params: { boardSlug: board.slug }
           }">
-          <h2 class="board-name"> {{ board.ko_name }} </h2>
+          <h2 class="board-name"> {{ board[`${$i18n.locale}_name`] }} </h2>
         </router-link>
         <div
           v-for="article in board.recent_articles"
@@ -102,6 +102,15 @@ export default {
   components: { TheLayout, Timeago }
 }
 </script>
+
+<i18n>
+ko:
+  today-best: '투데이 베스트'
+  weekly-best: '위클리 베스트'
+en:
+  today-best: 'Today Best'
+  weekly-best: 'Weekly Best'
+</i18n>
 
 <style lang="scss" scoped>
 @import '@/theme.scss';

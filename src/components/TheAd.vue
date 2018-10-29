@@ -1,10 +1,10 @@
 <template>
   <div class="ad-container">
     <div id="side-ad">
-      광고
+      {{ $t('ad') }}
     </div>
     <div class="about-ad">
-      아라에 광고를 달고 싶다면 관리자에게 문의해주세요.
+      {{ $t('contact-admin') }}
     </div>
   </div>
 </template>
@@ -14,6 +14,15 @@ export default {
   name: 'the-ad'
 }
 </script>
+
+<i18n>
+ko:
+  ad: '광고'
+  contact-admin: '아라에 광고를 달고 싶다면 관리자에게 문의해주세요.'
+en:
+  ad: 'Ad'
+  contact-admin: 'Contact administrator to post advertisement'
+</i18n>
 
 <style lang="scss" scoped>
 .ad-container {

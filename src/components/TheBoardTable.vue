@@ -2,18 +2,18 @@
   <table class="table post-table">
     <thead>
       <tr>
-        <th class="post-table-title">게시판</th>
-        <th>제목</th>
-        <th class="post-table-author has-text-right">작성자</th>
-        <th class="post-table-vote has-text-right">반응</th>
-        <th class="post-table-hit has-text-right">조회수</th>
-        <th class="post-table-time has-text-right">작성시간</th>
+        <th class="post-table-title"> {{ $t('board') }} </th>
+        <th> {{ $t('title') }} </th>
+        <th class="post-table-author has-text-right"> {{ $t('author') }} </th>
+        <th class="post-table-vote has-text-right"> {{ $t('reaction') }} </th>
+        <th class="post-table-hit has-text-right"> {{ $t('views') }} </th>
+        <th class="post-table-time has-text-right"> {{ $t('time') }} </th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="article in articles"
         :key="article.id">
-        <td> {{ article.parent_board.ko_name }} </td>
+        <td> {{ getNameById(article.parent_board.id, $i18n.locale) }} </td>
         <td>
           <router-link
             :to="{
@@ -62,6 +62,23 @@ export default {
   components: { Timeago }
 }
 </script>
+
+<i18n>
+ko:
+  board: '게시판'
+  title: '제목'
+  author: '작성자'
+  reaction: '반응'
+  views: '조회수'
+  time: '작성 시간'
+en:
+  board: 'Board'
+  title: 'Title'
+  author: 'Author'
+  reaction: 'Reaction'
+  views: 'Views'
+  time: 'Time'
+</i18n>
 
 <style lang="scss">
 @import '@/theme.scss';
