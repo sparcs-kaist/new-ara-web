@@ -10,9 +10,7 @@
       :key="page"
       :to="routeTo(page)"
       class="page"
-      :class="{ 'is-active': page === currentPage }">
-      {{ page }}
-    </router-link>
+      :class="{ 'is-active': page === currentPage }">{{ page }}</router-link>
     <router-link
       v-if="pageRangeMax > pageRangeMin + 9"
       :to="routeTo(pageRangeMin + 10)">
@@ -60,10 +58,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.is-active {
-  color: black;
-  text-decoration: underline;
+@import '@/theme.scss';
+a.is-active {
+  color: $theme-red;
 }
+
 .pages {
   margin: 0 -0.25rem;
   .page {

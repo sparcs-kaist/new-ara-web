@@ -50,33 +50,30 @@
           class="navbar-item">
           {{ $t('notification') }}
         </router-link>
-        <div
+        <a
           @click="toggleDarkMode"
           id="toggle-dark-mode"
           class="navbar-item">
-          <img
-            :src="require('@/assets/colors.svg')"
-            alt="다크 모드"
-          >
-        </div>
-        <div class="navbar-item has-dropdown is-hoverable">
-          <div class="navbar-link is-arrowless">
-            <img :src="require('@/assets/language.svg')"/>
-          </div>
-          <div class="navbar-dropdown is-boxed is-right">
-            <a class="navbar-item"
-              @click="$i18n.locale = $i18n.locale === 'en' ? 'ko' : 'en'">
-              {{ $i18n.locale === 'en' ? '한국어' : 'English' }}
-            </a>
-          </div>
-        </div>
+          <span class="icon">
+            <i class="fas fa-palette"></i>
+          </span>
+        </a>
+        <a class="navbar-item"
+          @click="$i18n.locale = $i18n.locale === 'en' ? 'ko' : 'en'"
+          id="toggle-language">
+          <span class="icon">
+            <i class="fas fa-globe-asia"></i>
+          </span>
+        </a>
         <router-link
           :to="{ name: 'settings' }"
-          class="navbar-item">
-          <img
-            :src="require('@/assets/user.svg')"
-            class="user-svg"/>
-          {{ userNickname }}
+          class="navbar-item user">
+          <span class="icon">
+            <i class="fas fa-user"></i>
+          </span>
+          <span class="username">
+            {{ userNickname }}
+          </span>
         </router-link>
       </div>
     </div>
@@ -139,20 +136,22 @@ export default {
     }
   }
 
+  #toggle-dark-mode, #toggle-language, .user {
+    text-decoration: none;
+  }
+
   // 왼쪽 음수 여백으로 줄맞춤
   .navbar-menu {
     margin: 0 0.75rem 0 -0.75rem;
   }
 
-  .navbar-link.is-arrowless {
-    padding-right: 0.75rem;
-    &::after {
-      content: none;
+  .user {
+    .icon {
+      padding-right: 0.5rem;
     }
-  }
-
-  #toggle-dark-mode {
-    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
