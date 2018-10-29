@@ -3,29 +3,58 @@
     <div class="comment-metadata">
       <div class="comment-author"> {{ author }} </div>
       <div class="comment-time"> {{ date }} </div>
+      <div class="dropdown is-right is-hoverable alignright">
+        <div class="dropdown-trigger">
+          <button class="button no-border" aria-haspopup="true" aria-controls="dropdownMenu">
+            <span class="icon">
+              <i class="fas fa-ellipsis-h"></i>
+            </span>
+          </button>
+        </div>
+        <div class="dropdown-menu no-border" id="dropdownMenu" role="menu">
+          <div class="dropdown-content">
+            <div class="dropdown-item">
+              <a v-if="userNickname === author" href="#" class="dropdown-item">
+                수정
+              </a>
+              <a v-if="userNickname === author" href="#" class="dropdown-item">
+                삭제
+              </a>
+              <a v-else href="#" class="dropdown-item">
+                신고
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="comment-content"> {{ comment.content }} </div>
-    <button
-      @click="vote(true)"
-      class="button"
-      :class="{ 'is-primary': liked, 'is-loading': isVoting }">
-      추천
-    </button>
-    <button
-      @click="vote(false)"
-      class="button"
-      :class="{ 'is-primary': disliked, 'is-loading': isVoting }">
-      비추천
-    </button>
-    <button
-      @click="toggleRecommentInput"
-      class="button">
+    <a class="button button-default" @click="vote(true)"
+      :class="{ 'button-selected': liked, 'is-loading': isVoting }">
+      <span class="icon">
+        <i class="fas fa-thumbs-up"></i>
+      </span>
+      <span>
+        {{ likedCount }}
+      </span>
+    </a>
+    <a class="button button-default" @click="vote(false)"
+      :class="{ 'button-selected': disliked, 'is-loading': isVoting }">
+      <span class="icon">
+        <i class="fas fa-thumbs-down"></i>
+      </span>
+      <span>
+        {{ dislikedCount }}
+      </span>
+    </a>
+    <a class="button button-default"
+      @click="toggleRecommentInput">
       {{
         showRecommentInput
-        ? '답글 접기'
-        : '답글 달기'
+        ? '댓글 접기'
+        : '댓글 달기'
       }}
-    </button>
+    </a>
     <div class="post-recomments">
       <PostRecomment
         v-for="recomment in comment.comments"
@@ -82,6 +111,8 @@ export default {
   computed: {
     liked () { return this.comment.my_vote === true },
     disliked () { return this.comment.my_vote === false },
+    likedCount () { return this.comment.positive_vote_count },
+    dislikedCount () { return this.comment.negative_vote_count },
     author () { return this.comment.created_by.profile.nickname },
     date () { return date(this.comment.created_at) },
     now () { return date(new Date()) },
@@ -146,5 +177,32 @@ export default {
 
 .post-recomments {
   margin-left: 2.5rem;
+}
+
+.alignright {
+  float: right;
+}
+.no-border {
+  border: none;
+}
+.dropdown-content {
+  min-width: 30%;
+  max-width: 50%;
+  float: right;
+  text-align: right;
+}
+.dropdown-item {
+  padding: 0.375rem 0.4rem
+}
+
+.button-default {
+  color: #888888;
+  // border: none;
+  font-size: 14px;
+  margin-right: 5px;
+  text-decoration: none;
+}
+.button-selected {
+  color: #ED3A3A;
 }
 </style>
