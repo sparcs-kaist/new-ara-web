@@ -22,10 +22,10 @@
                 postId: article.id
               }
             }">
-            {{ article.title }}
+            <span class="article-title"> {{ article.title }}
             <span class="comment-count">
               ({{ article.comments_count }})
-            </span>
+            </span> </span>
           </router-link>
         </td>
         <td class="has-text-right">
@@ -73,7 +73,6 @@ export default {
   thead th {
     padding-bottom: 1em;
   }
-
   .post-table-title {
     width: 5rem;
   }
@@ -92,5 +91,14 @@ export default {
 }
 .comment-count {
   color: $theme-red;
+}
+.article-title {
+  width:400px;
+  text-overflow:ellipsis;
+  -o-text-overflow:ellipsis;
+  overflow:hidden;
+  white-space:nowrap;
+  word-wrap:break-word !important;
+  display: block;
 }
 </style>
