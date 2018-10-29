@@ -55,21 +55,21 @@
           id="toggle-dark-mode"
           class="navbar-item">
           <span class="icon">
-            <i class="fas fa-palette"></i>
+            <i class="material-icons">invert_colors</i>
           </span>
         </a>
         <a class="navbar-item"
           @click="$i18n.locale = $i18n.locale === 'en' ? 'ko' : 'en'"
           id="toggle-language">
           <span class="icon">
-            <i class="fas fa-globe-asia"></i>
+            <i class="material-icons">language</i>
           </span>
         </a>
         <router-link
           :to="{ name: 'settings' }"
           class="navbar-item user">
           <span class="icon">
-            <i class="fas fa-user"></i>
+            <i class="material-icons">person</i>
           </span>
           <span class="username">
             {{ userNickname }}
@@ -145,13 +145,8 @@ export default {
     margin: 0 0.75rem 0 -0.75rem;
   }
 
-  .user {
-    .icon {
-      padding-right: 0.5rem;
-    }
-    &:hover {
-      text-decoration: underline;
-    }
+  .user .icon {
+    padding-right: 0.5rem;
   }
 }
 
