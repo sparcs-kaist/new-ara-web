@@ -42,5 +42,29 @@ $theme-red: #ED3A3A;
   --text: #d0d0d0;
 }
 
+$min-desktop-width: 1088px;
+$mid-desktop-width: 1280px;
+$max-desktop-width: 1472px;
+
+@mixin breakPoint($breakpoint) {
+  @if $breakpoint == "min" {
+    @media (max-width: #{$min-desktop-width}) {
+      @content;
+    }
+  } @else if $breakpoint == "min-mid" {
+    @media (min-width: #{$min-desktop-width}) and (max-width: #{$mid-desktop-width}) {
+      @content;
+    }
+  } @else if $breakpoint == "mid-max" {
+    @media (min-width: #{$mid-desktop-width}) and (max-width: #{$max-desktop-width}) {
+      @content;
+    }
+  } @else if $breakpoint == "max" {
+    @media (min-width: #{$max-desktop-width}) {
+    @content;
+    }
+  }
+}
+
 // 로고에 사용되는 Raleway EB 폰트
 @import url('https://fonts.googleapis.com/css?family=Raleway:800');

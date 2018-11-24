@@ -56,16 +56,19 @@
           v-for="article in board.recent_articles"
           :key="article.id"
           class="post">
-          <h3 class="post-title">
+          <h3 class="article-wrapper-big">
             <router-link
               :to="{
                 name: 'post',
                 params: { postId: article.id }
               }">
-              {{ article.title }}
-              <span class="comment-count">
-                ({{ article.comments_count }})
-              </span>
+              <div class="article-wrapper">
+                <span class="article-title"> {{ article.title }}
+                </span> &nbsp
+                <span class="comment-count">
+                  ({{ article.comments_count }})
+                </span>
+              </div>
             </router-link>
           </h3>
           <div class="post-time">
@@ -130,5 +133,36 @@ en:
       color: $theme-red;
     }
   }
+  .article-wrapper-big {
+    width: 300px;
+    @include breakPoint('min') {
+      max-width: 170px;
+    }
+    @include breakPoint('min-mid') {
+      max-width: 220px;
+    }
+    @include breakPoint('mid-max') {
+      max-width: 250px;
+    }
+    @include breakPoint('max') {
+      max-width: 400px;
+    }
+
+    .article-title {
+      // width:100%;
+      text-overflow:ellipsis;
+      -o-text-overflow:ellipsis;
+      overflow:hidden;
+      white-space:nowrap;
+      word-wrap:break-word !important;
+      display: block;
+      // added for multiline
+    }
+    .article-wrapper {
+      display: flex;
+    }
+  }
 }
+
+
 </style>
