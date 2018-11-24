@@ -13,7 +13,7 @@ $theme-red: #ED3A3A;
   --text: #222222;
 
 
-  &, body, h1, h2, h3, h4, h5, h6, a, input, .navbar, .navbar-item {
+  &, body, h1, h2, h3, h4, h5, h6, a, input, textarea, button, .navbar, .navbar-item {
     color: var(--text);
     background-color: var(--background);
 
@@ -27,11 +27,13 @@ $theme-red: #ED3A3A;
   }
 
   button:hover {
+    color: var(--text);
     background-color: unset;
   }
 }
 
 :root.dark {
+  // @TODO #222 is better than complete black;
   --background: black;
   --text: #d0d0d0;
 }
