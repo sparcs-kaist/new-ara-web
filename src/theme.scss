@@ -31,7 +31,7 @@ $theme-red: #ED3A3A;
   }
 }
 
-.dark:root {
+:root.dark {
   --background: black;
   --text: #d0d0d0;
 }

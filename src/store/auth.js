@@ -1,6 +1,19 @@
 import { fetchUser, updateDarkMode } from '@/api'
 
+const setDarkMode = (darkMode) => {
+  localStorage.darkMode = darkMode
+  
+  const rootClassList = document.documentElement.classList
+
+  if (darkMode) {
+    rootClassList.add('dark')
+  } else {
+    rootClassList.remove('dark')
+  }
+}
+
 const hydrate = () => {
+  setDarkMode(localStorage.darkMode === 'true')
   // @TODO: validity check 이거면 충분한가?
   const JWT_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/
   if (JWT_REGEX.test(localStorage.jwt)) {
@@ -36,13 +49,7 @@ export default {
       return { sexual, social }
     },
     isDarkModeEnabled ({ userProfile }) {
-      const darkMode = userProfile.extra_preferences && userProfile.extra_preferences.darkMode
-      const rootClassList = document.documentElement.classList
-
-      if (darkMode) rootClassList.add('dark')
-      else rootClassList.remove('dark')
-
-      return darkMode
+      return userProfile.extra_preferences && userProfile.extra_preferences.darkMode
     }
   },
   mutations: {
@@ -55,6 +62,9 @@ export default {
       delete localStorage.jwt
     },
     setUserProfile (state, userProfile) {
+      const darkMode = userProfile.extra_preferences && userProfile.extra_preferences.darkMode
+      setDarkMode(darkMode)
+
       state.userProfile = userProfile
     }
   },
