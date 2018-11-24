@@ -50,24 +50,31 @@
           class="navbar-item">
           {{ $t('notification') }}
         </router-link>
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link is-arrowless">
-            <img :src="require('@/assets/language.svg')"/>
-          </a>
-          <div class="navbar-dropdown is-boxed is-right">
-            <a class="navbar-item"
-              @click="$i18n.locale = $i18n.locale === 'en' ? 'ko' : 'en'">
-              {{ $i18n.locale === 'en' ? '한국어' : 'English' }}
-            </a>
-          </div>
-        </div>
+        <a
+          v-if="!isIE"
+          @click="toggleDarkMode"
+          id="toggle-dark-mode"
+          class="navbar-item">
+          <span class="icon">
+            <i class="material-icons">invert_colors</i>
+          </span>
+        </a>
+        <a class="navbar-item"
+          @click="$i18n.locale = $i18n.locale === 'en' ? 'ko' : 'en'"
+          id="toggle-language">
+          <span class="icon">
+            <i class="material-icons">language</i>
+          </span>
+        </a>
         <router-link
           :to="{ name: 'settings' }"
-          class="navbar-item">
-          <img
-            :src="require('@/assets/user.svg')"
-            class="user-svg"/>
-          {{ userNickname }}
+          class="navbar-item user">
+          <span class="icon">
+            <i class="material-icons">person</i>
+          </span>
+          <span class="username">
+            {{ userNickname }}
+          </span>
         </router-link>
       </div>
     </div>
@@ -75,11 +82,12 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import TheNavbarFetchProgressBar from '@/components/TheNavbarFetchProgressBar.vue'
 import TheNavbarAraLogo from '@/components/TheNavbarAraLogo.vue'
 import TheNavbarNotifications from '@/components/TheNavbarNotifications.vue'
 import TheNavbarArchives from '@/components/TheNavbarArchives.vue'
+import isIE from '@/utils/isIE.js'
 
 export default {
   name: 'the-navbar',
@@ -90,12 +98,16 @@ export default {
   },
   computed: {
     ...mapState(['boardList']),
-    ...mapGetters(['userNickname'])
+    ...mapGetters(['userNickname']),
+    isIE () {
+      return isIE()
+    }
   },
   methods: {
     toggleMobileMenu () {
       this.isMobileMenuActive = !this.isMobileMenuActive
-    }
+    },
+    ...mapActions(['toggleDarkMode'])
   },
   components: {
     TheNavbarFetchProgressBar,
@@ -109,7 +121,8 @@ export default {
 <style lang="scss" scoped>
 @import '@/theme.scss';
 .navbar {
-  border-top: 5px solid $theme-red;
+  // border-top: 5px solid $theme-red;
+  border-top: 5px solid var(--theme-red);
   margin-bottom: 1.5rem;
 
   // @TODO: Is ther a better way of achieving this..?
@@ -128,16 +141,17 @@ export default {
     }
   }
 
+  #toggle-dark-mode, #toggle-language, .user {
+    text-decoration: none;
+  }
+
   // 왼쪽 음수 여백으로 줄맞춤
   .navbar-menu {
     margin: 0 0.75rem 0 -0.75rem;
   }
 
-  .navbar-link.is-arrowless {
-    padding-right: 0.75rem;
-    &::after {
-      content: none;
-    }
+  .user .icon {
+    padding-right: 0.5rem;
   }
 }
 

@@ -7,7 +7,7 @@
         <div class="dropdown-trigger">
           <button class="button no-border" aria-haspopup="true" aria-controls="dropdownMenu">
             <span class="icon">
-              <i class="fas fa-ellipsis-h"></i>
+              <i class="material-icons">more_vert</i>
             </span>
           </button>
         </div>
@@ -32,7 +32,7 @@
     <a class="button button-default" @click="vote(true)"
       :class="{ 'button-selected': liked, 'is-loading': isVoting }">
       <span class="icon">
-        <i class="fas fa-thumbs-up"></i>
+        <i class="material-icons">thumb_up</i>
       </span>
       <span>
         {{ likedCount }}
@@ -41,7 +41,7 @@
     <a class="button button-default" @click="vote(false)"
       :class="{ 'button-selected': disliked, 'is-loading': isVoting }">
       <span class="icon">
-        <i class="fas fa-thumbs-down"></i>
+        <i class="material-icons">thumb_down</i>
       </span>
       <span>
         {{ dislikedCount }}

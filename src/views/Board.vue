@@ -90,7 +90,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/theme.scss';
+
 .board-name {
   font-size: 1.5rem;
   font-weight: 700;
@@ -99,6 +101,14 @@ export default {
 
 .search {
   display: inline-block;
+  margin-right: 0.5rem;
+}
+
+.button.is-text {
+  color: $theme-red;
+  &:hover {
+    background-color: inherit;
+  }
 }
 
 .write {

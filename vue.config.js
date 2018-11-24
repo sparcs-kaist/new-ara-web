@@ -25,5 +25,13 @@ module.exports = {
             .end()
           .use("yaml-loader")
             .loader("yaml-loader")
+    // For Safari hot reloading fix 😥
+    // See https://github.com/vuejs/vue-cli/issues/1132 for detail
+    if (process.env.NODE_ENV === 'development') {
+      config
+        .output
+        .filename('[name].[hash].js') 
+        .end() 
+    }
   }
 }
