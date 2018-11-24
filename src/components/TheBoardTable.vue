@@ -14,7 +14,7 @@
       <tr v-for="article in articles"
         :key="article.id">
         <td> {{ getNameById(article.parent_board.id, $i18n.locale) }} </td>
-        <td>
+        <td class="article-wrapper-big">
           <router-link
             :to="{
               name: 'post',
@@ -22,10 +22,13 @@
                 postId: article.id
               }
             }">
-            <span class="article-title"> {{ article.title }}
-            <span class="comment-count">
-              ({{ article.comments_count }})
-            </span> </span>
+            <div class="article-wrapper">
+              <span class="article-title"> {{ article.title }}
+              </span> &nbsp&nbsp
+              <span class="comment-count">
+                ({{ article.comments_count }})
+              </span>
+            </div>
           </router-link>
         </td>
         <td class="has-text-right">
@@ -91,31 +94,50 @@ en:
     padding-bottom: 1em;
   }
   .post-table-title {
-    width: 5rem;
+    min-width: 5rem;
   }
   .post-table-author {
-    width: 7rem;
+    min-width: 7rem;
   }
   .post-table-vote {
-    width: 4rem;
+    min-width: 4rem;
   }
   .post-table-hit {
-    width: 5rem;
+    min-width: 5rem;
   }
   .post-table-time {
-    width: 6rem;
+    min-width: 6rem;
   }
 }
 .comment-count {
   color: $theme-red;
 }
 .article-title {
-  width:400px;
+  // width:100%;
   text-overflow:ellipsis;
   -o-text-overflow:ellipsis;
   overflow:hidden;
   white-space:nowrap;
   word-wrap:break-word !important;
   display: block;
+  // added for multiline
+}
+.article-wrapper-big {
+  width: 100%;
+  @include breakPoint('min') {
+    max-width: 600px;
+  }
+  @include breakPoint('min-mid') {
+    max-width: 600px;
+  }
+  @include breakPoint('mid-max') {
+    max-width: 600px;
+  }
+  @include breakPoint('max') {
+    max-width: 600px;
+  }
+}
+.article-wrapper {
+  display: flex;
 }
 </style>

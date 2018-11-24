@@ -42,6 +42,7 @@ export default {
 
 <style lang="scss" scoped>
 .board {
+  min-width: 100%;
   padding-right: 5rem;
   .board-navbar {
     display: flex;

@@ -29,5 +29,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.layout {
+  min-width: 100%;
+}
 </style>
