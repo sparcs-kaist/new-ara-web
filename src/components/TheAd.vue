@@ -27,6 +27,9 @@ en:
 <style lang="scss" scoped>
 .ad-container {
   width: 160px;
+  @media screen and (max-width: 1087px) {
+    display: none;
+  }
 
   #side-ad {
     // 사이즈는 Google AdSense를 참고함

@@ -1,52 +1,54 @@
 <template>
-  <table class="table post-table">
-    <thead>
-      <tr>
-        <th class="post-table-title"> {{ $t('board') }} </th>
-        <th> {{ $t('title') }} </th>
-        <th class="post-table-author has-text-right"> {{ $t('author') }} </th>
-        <th class="post-table-vote has-text-right"> {{ $t('reaction') }} </th>
-        <th class="post-table-hit has-text-right"> {{ $t('views') }} </th>
-        <th class="post-table-time has-text-right"> {{ $t('time') }} </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="article in articles"
-        :key="article.id">
-        <td> {{ getNameById(article.parent_board.id, $i18n.locale) }} </td>
-        <td>
-          <router-link
-            :to="{
-              name: 'post',
-              params: {
-                postId: article.id
-              }
-            }">
-            {{ article.title }}
-            <span class="comment-count">
-              ({{ article.comments_count }})
-            </span>
-          </router-link>
-        </td>
-        <td class="has-text-right">
-          <router-link
-            :to="{
-              name: 'user',
-              params: {
-                username: article.created_by.profile.nickname
-              }
-            }">
-            {{ article.created_by.profile.nickname }}
-          </router-link>
-        </td>
-        <td class="has-text-right">{{ article.positive_vote_count }}</td>
-        <td class="has-text-right">{{ article.hit_count }}</td>
-        <td class="has-text-right">
-          <Timeago :time="article.created_at"/>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="post-table">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="post-table-title is-hidden-touch"> {{ $t('board') }} </th>
+          <th> {{ $t('title') }} </th>
+          <th class="post-table-author has-text-right"> {{ $t('author') }} </th>
+          <th class="post-table-vote is-hidden-touch has-text-right"> {{ $t('reaction') }} </th>
+          <th class="post-table-hit is-hidden-touch has-text-right"> {{ $t('views') }} </th>
+          <th class="post-table-time is-hidden-touch has-text-right"> {{ $t('time') }} </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="article in articles"
+          :key="article.id">
+          <td class="is-hidden-touch"> {{ getNameById(article.parent_board.id, $i18n.locale) }} </td>
+          <td>
+            <router-link
+              :to="{
+                name: 'post',
+                params: {
+                  postId: article.id
+                }
+              }">
+              {{ article.title }}
+              <span class="comment-count">
+                ({{ article.comments_count }})
+              </span>
+            </router-link>
+          </td>
+          <td class="has-text-right">
+            <router-link
+              :to="{
+                name: 'user',
+                params: {
+                  username: article.created_by.profile.nickname
+                }
+              }">
+              {{ article.created_by.profile.nickname }}
+            </router-link>
+          </td>
+          <td class="is-hidden-touch has-text-right">{{ article.positive_vote_count }}</td>
+          <td class="is-hidden-touch has-text-right">{{ article.hit_count }}</td>
+          <td class="is-hidden-touch has-text-right">
+            <Timeago :time="article.created_at"/>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script>
@@ -84,11 +86,12 @@ en:
 @import '@/theme.scss';
 
 .post-table {
-  width: 100%;
-  margin: 0 0 0.75rem -0.75rem;
+  margin: 0 -0.75rem 0.75rem -0.75rem;
 
-  thead th {
-    padding-bottom: 1em;
+  thead {
+    th {
+      padding-bottom: 1em;
+    }
   }
 
   .post-table-title {
@@ -106,8 +109,8 @@ en:
   .post-table-time {
     width: 6rem;
   }
-}
-.comment-count {
-  color: $theme-red;
+  .comment-count {
+    color: $theme-red;
+  }
 }
 </style>

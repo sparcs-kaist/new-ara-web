@@ -116,7 +116,11 @@ en:
 @import '@/theme.scss';
 .board {
   margin-bottom: 2rem;
-  padding-right: 5rem;
+
+  @media screen and (min-width: 1088px) {
+    padding-right: 5rem;
+  }
+
   .board-name {
     font-size: 1.5rem;
     font-weight: 700;

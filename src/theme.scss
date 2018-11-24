@@ -10,15 +10,17 @@ $theme-red: #ED3A3A;
 
   // light mode variables
   --background: white;
+  --background-shadow: rgba(10, 10, 10, 0.1);
   --text: #222222;
 
 
-  &, body, h1, h2, h3, h4, h5, h6, a, input, textarea, button {
+  &, div, body, h1, h2, h3, h4, h5, h6, a, input, textarea, button {
     color: var(--text);
     background-color: var(--background);
 
     transition: color var(--duration) var(--text-timing),
-                background-color var(--duration) var(--background-timing);
+                background-color var(--duration) var(--background-timing),
+                box-shadow var(--duration) var(--background-timing);
   }
 
   .navbar, .navbar-item {
@@ -38,7 +40,9 @@ $theme-red: #ED3A3A;
 
 :root.dark {
   // @TODO #222 is better than complete black;
-  --background: black;
+  // because of the shadow effects
+  --background: #222;
+  --background-shadow: rgba(0, 0, 0, 0.1);
   --text: #d0d0d0;
 }
 

@@ -145,9 +145,16 @@ export default {
     text-decoration: none;
   }
 
-  // 왼쪽 음수 여백으로 줄맞춤
   .navbar-menu {
-    margin: 0 0.75rem 0 -0.75rem;
+    background-color: transparent;
+    @media screen and (max-width: 1087px) {
+      box-shadow: 0 8px 16px var(--background-shadow);
+      padding-left: 0.25rem;
+    }
+    // 왼쪽 음수 여백으로 줄맞춤
+    @media screen and (min-width: 1088px) {
+      margin: 0 0.75rem 0 -0.75rem;
+    }
   }
 
   .user .icon {

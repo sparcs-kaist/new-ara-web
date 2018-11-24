@@ -42,7 +42,9 @@ export default {
 
 <style lang="scss" scoped>
 .board {
-  padding-right: 5rem;
+  @media screen and (min-width: 1088px) {
+    padding-right: 5rem;
+  }
   .board-navbar {
     display: flex;
     justify-content: space-between;
