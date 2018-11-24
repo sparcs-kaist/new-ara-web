@@ -3,6 +3,7 @@
     <h1 id="title">{{ timePassed }}</h1>
     <Notification
       v-for="notification in notifications"
+      :key="notification.id"
       :notification="notification">
     </Notification>
   </div>
