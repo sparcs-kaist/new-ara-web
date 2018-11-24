@@ -51,6 +51,7 @@
           {{ $t('notification') }}
         </router-link>
         <a
+          v-if="!isIE"
           @click="toggleDarkMode"
           id="toggle-dark-mode"
           class="navbar-item">
@@ -86,6 +87,7 @@ import TheNavbarFetchProgressBar from '@/components/TheNavbarFetchProgressBar.vu
 import TheNavbarAraLogo from '@/components/TheNavbarAraLogo.vue'
 import TheNavbarNotifications from '@/components/TheNavbarNotifications.vue'
 import TheNavbarArchives from '@/components/TheNavbarArchives.vue'
+import isIE from '@/utils/isIE.js'
 
 export default {
   name: 'the-navbar',
@@ -96,7 +98,10 @@ export default {
   },
   computed: {
     ...mapState(['boardList']),
-    ...mapGetters(['userNickname'])
+    ...mapGetters(['userNickname']),
+    isIE () {
+      return isIE()
+    }
   },
   methods: {
     toggleMobileMenu () {

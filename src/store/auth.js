@@ -2,7 +2,7 @@ import { fetchUser, updateDarkMode } from '@/api'
 
 const setDarkMode = (darkMode) => {
   localStorage.darkMode = darkMode
-  
+
   const rootClassList = document.documentElement.classList
 
   if (darkMode) {
@@ -25,7 +25,6 @@ const hydrate = () => {
 }
 
 export default {
-  // @TODO: namespaced: true // maybe...??
   state: {
     jwt: hydrate(),
     userProfile: {}
