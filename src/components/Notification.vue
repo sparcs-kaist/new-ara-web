@@ -7,12 +7,12 @@
 </template>
 
 <script>
-  export default {
-    name: 'notification',
-    props: {
-      notification: { required: true }
-    }
+export default {
+  name: 'notification',
+  props: {
+    notification: { required: true }
   }
+}
 </script>
 
 <style lang="scss" scoped>
