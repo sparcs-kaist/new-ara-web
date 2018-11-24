@@ -13,12 +13,16 @@ $theme-red: #ED3A3A;
   --text: #222222;
 
 
-  &, body, h1, h2, h3, h4, h5, h6, a, input, textarea, button, .navbar, .navbar-item {
+  &, body, h1, h2, h3, h4, h5, h6, a, input, textarea, button {
     color: var(--text);
     background-color: var(--background);
 
     transition: color var(--duration) var(--text-timing),
                 background-color var(--duration) var(--background-timing);
+  }
+
+  .navbar, .navbar-item {
+    background-color: transparent;
   }
 
   input::placeholder {
