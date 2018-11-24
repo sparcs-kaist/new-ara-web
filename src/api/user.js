@@ -37,3 +37,7 @@ export const fetchBlocks = () =>
 export const deleteBlock = (blockId) =>
   http.delete(`blocks/${blockId}`)
     .then(({ data }) => data)
+
+export const updateDarkMode = (userId, darkMode) =>
+  http.patch(`user_profiles/${userId}/`, { extra_preferences: { darkMode } })
+    .then(({ data }) => data)

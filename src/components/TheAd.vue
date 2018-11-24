@@ -37,6 +37,7 @@ en:
 
     // for demonstration only
     background-color: whitesmoke;
+    transition: background-color var(--duration) var(--background-timing);
     text-align: center;
     line-height: 600px;
     color: silver;
@@ -47,5 +48,9 @@ en:
     font-size: 0.75rem;
     padding: 0.5rem 0;
   }
+}
+
+:root.dark .ad-container #side-ad {
+  background-color: #333333;
 }
 </style>
