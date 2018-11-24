@@ -2,14 +2,30 @@
   <div>
     <h1 id="title"> 글쓰기 </h1>
 
-    <input
-      v-model="title"
-      class="input title-input"
-      type="text"
-      placeholder="제목"
-    />
+    <div class="title-wrapper">
+      <i 
+        class="material-icons title-warning"
+        v-if="isTitleEmpty && !title">
+        warning
+      </i>
+      <input
+        v-model="title"
+        class="input title-input"
+        :class="{ 'is-empty': isTitleEmpty }"
+        type="text"
+        :placeholder="titlePlaceholder"
+      />
+    </div>
 
-    <div class="select board-input" :class="{ 'is-placeholder': !boardId }">
+    <div class="select board-input"
+      :class="{
+        'is-placeholder': !boardId,
+      }" >
+      <i 
+        class="material-icons board-warning"
+        v-if="isBoardEmpty && !boardId">
+        warning
+      </i>
       <select v-model="boardId">
         <option value="" disabled selected> 게시판 </option>
         <option
@@ -21,13 +37,22 @@
         </option>
       </select>
     </div>
+    <p class="help is-danger" v-if="isBoardEmpty && !boardId">게시판을 선택해주세요</p>
 
-    <VueEditor
-      v-model="content"
-      :editorOptions="{ theme: 'bubble' }"
-      class="content-input"
-      placeholder="내용"
-    />
+    <div class="content-wrapper">
+      <i 
+        class="material-icons content-warning"
+        v-if="isContentEmpty && !content">
+        warning
+      </i>
+      <VueEditor
+        v-model="content"
+        :editorOptions="{ }"
+        class="content-input"
+        :class="{ 'is-empty': isContentEmpty}"
+        placeholder="내용을 입력하세요"
+      />
+    </div>
 
     <div class="attachment-input">
       <input
@@ -50,18 +75,25 @@ import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'the-post-write',
-  props: [ 'post', 'saving' ],
+  props: [ 'post', 'saving', 'isTitleEmpty', 'isContentEmpty', 'isBoardEmpty' ],
   data () {
     return {
       boardId: '',
       title: '',
       content: '',
-      attachments: []
+      attachments: [],
     }
   },
   computed: {
     ...mapState([ 'boardList' ]),
-    ...mapGetters([ 'getIdBySlug' ])
+    ...mapGetters([ 'getIdBySlug' ]),
+    titlePlaceholder: function() {
+      if (this.isTitleEmpty) {
+        return '제목을 입력하세요'
+      } else {
+        return '제목'
+      }
+    },
   },
   created () {
     if (this.post) {
@@ -93,19 +125,35 @@ export default {
   margin-bottom: 1rem;
 }
 
+.title-wrapper {
+  position: relative;
+}
+
+.title-wrapper .material-icons.title-warning {
+  position: absolute;
+  left: -32px;
+  top: 20.8px;
+  font-size: 20px;
+  color: red;
+}
+
 .title-input {
   padding-left: 0;
   padding-bottom: 0;
   font-size: 1.5rem;
   font-weight: 700;
-  &::placeholder {
-    color: #888;
+  &.input::placeholder {
+    color: #ccc;
+  }
+  &.is-empty::placeholder {
+    color: $theme-red;
   }
 }
 
 .board-input {
   margin-top: -5px;
   margin-bottom: 1.5rem;
+  position: relative;
   &.is-placeholder {
     select {
       color: #888;
@@ -120,6 +168,28 @@ export default {
   select {
     padding-left: 0;
   }
+  .material-icons.board-warning {
+    position: absolute;
+    left: -32px;
+    top: 8px;
+    font-size: 20px;
+    color: red;
+  }
+}
+
+.content-wrapper {
+  position: relative;
+  .material-icons.content-warning {
+    position: absolute;
+    left: -32px;
+    top: 47px;
+    font-size: 20px;
+    color: red;
+  }
+}
+
+p.help.is-danger {
+  display: inline-block;
 }
 
 .attachment-input {
@@ -138,7 +208,7 @@ export default {
 
 <style lang="scss">
 @import url('https://cdn.quilljs.com/1.3.6/quill.bubble.css');
-
+@import '@/theme.scss';
 #quill-container {
   .ql-editor {
     padding: 0;
@@ -148,5 +218,18 @@ export default {
       color: #888;
     }
   }
+}
+
+.quillWrapper.is-empty #quill-container .ql-editor::before {
+  color: $theme-red;
+}
+
+.quillWrapper .ql-snow.ql-toolbar {
+  border: none;
+  margin-left: -13pt;
+}
+
+.quillWrapper #quill-container.ql-container {
+  border: none;
 }
 </style>

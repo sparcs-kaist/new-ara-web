@@ -4,6 +4,9 @@
       v-if="postFetched"
       :post="post"
       :saving="saving"
+      :isTitleEmpty="isTitleEmpty"
+      :isContentEmpty="isContentEmpty"
+      :isBoardEmpty="isBoardEmpty"
       @save-post="savePost"
     />
   </TheLayout>
@@ -21,7 +24,10 @@ export default {
   data () {
     return {
       post: null,
-      saving: false
+      saving: false,
+      isTitleEmpty: false,
+      isContentEmpty: false,
+      isBoardEmpty: false
     }
   },
   computed: {
@@ -36,6 +42,20 @@ export default {
   methods: {
     async savePost (newArticle) {
       const { title, content, boardId, attachments } = newArticle
+      console.log(content)
+      if (title === '') {
+        this.isTitleEmpty = true
+      }
+      if (content === '') {
+        this.isContentEmpty = true
+      }
+      if (boardId === '') {
+        this.isBoardEmpty = true
+      }
+      if (title === '' || content === '' || boardId === '') {
+        return
+      }
+
       this.saving = true
 
       let attachmentIds
@@ -49,7 +69,7 @@ export default {
         return
       }
 
-      const basePostDetail = {
+      newArticle = {
         title,
         content,
         attachments: attachmentIds
@@ -58,12 +78,12 @@ export default {
       try {
         if (!this.isEditing) {
           result = await createPost({
-            ...basePostDetail,
+            newArticle,
             boardId
           })
         } else {
           result = await updatePost({
-            ...basePostDetail,
+            newArticle,
             postId: this.postId
           })
         }
