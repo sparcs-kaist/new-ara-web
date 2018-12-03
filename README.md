@@ -113,14 +113,14 @@ Sfc에서 최상위 엘리먼트의 순서는 항상 `template`, `script`, `i18n
 ```vue
 <template>
     <div>
-        {{ $t('want-pulbitmaru') }}
+        {{ $t('want-ice-cream') }}
     </div>
 </template>
 <i18n>
 ko:
-    want-pulbitmaru: '풀빛마루 덮밥이 먹고싶다'
+    want-ice-cream: '아이스크림 먹어두대요?'
 en:
-    want-pulbitmaru: 'I want some pulbitmaru'
+    want-ice-cream: 'Can I get some ICE CREAM?'
 </i18n>
 ```
 
