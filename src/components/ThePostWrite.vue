@@ -21,7 +21,7 @@
         </option>
       </select>
     </div>
-
+    <!-- @TODO toolbar option!! -->
     <VueEditor
       v-model="content"
       :editorOptions="{ theme: 'bubble' }"
