@@ -66,6 +66,8 @@ export default {
 <style lang="scss" scoped>
 .post-recomment {
   margin: 1rem 0;
+  padding-left: 15px;
+  border-left: 2px solid black;
 }
 
 .recomment-metadata {

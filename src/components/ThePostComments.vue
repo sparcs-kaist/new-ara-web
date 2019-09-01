@@ -15,6 +15,7 @@
       </div>
       <div class="comment-content">
         <textarea
+          placeholder="입력..."
           v-model="content"
           class="textarea new-comment"
           cols="10"
@@ -80,6 +81,14 @@ export default {
 <style lang="scss" scoped>
 #comments {
   margin-top: 4rem;
+}
+
+.textarea {
+  border: 1px solid rgba(0,0,0,0.3);
+
+  &:hover {
+    border: 1px solid rgba(0,0,0,0.7);
+  }
 }
 
 .comment-metadata {

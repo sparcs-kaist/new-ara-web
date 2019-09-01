@@ -71,6 +71,7 @@
         </div>
         <div class="comment-content">
           <textarea
+            placeholder="입력..."
             v-model="content"
             class="textarea new-recomment"
             cols="10"
@@ -168,6 +169,14 @@ export default {
   .comment-time {
     display: inline-block;
     color: #888;
+  }
+}
+
+.textarea {
+  border: 1px solid rgba(0,0,0,0.3);
+
+  &:hover {
+    border: 1px solid rgba(0,0,0,0.7);
   }
 }
 
