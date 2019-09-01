@@ -64,19 +64,22 @@
       />
       <div
         v-show="showRecommentInput"
-        class="recomment-input">
-        <div class="comment-metadata">
-          <div class="comment-author"> {{ userNickname }} </div>
-          <div class="comment-time"> {{ now }} </div>
-        </div>
-        <div class="comment-content">
-          <textarea
-            placeholder="입력..."
-            v-model="content"
-            class="textarea new-recomment"
-            cols="10"
-            rows="3"
-          />
+      >
+        <div
+          class="recomment-input">
+          <div class="comment-metadata">
+            <div class="comment-author"> {{ userNickname }} </div>
+            <div class="comment-time"> {{ now }} </div>
+          </div>
+          <div class="comment-content">
+            <textarea
+              placeholder="입력..."
+              v-model="content"
+              class="textarea new-recomment"
+              cols="10"
+              rows="3"
+            />
+          </div>
         </div>
         <button
           @click="saveRecomment"
@@ -156,8 +159,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.material-icons {
+  font-size: 15px;
+}
+
 .post-comment {
   margin: 1rem 0;
+}
+
+.textarea {
+  padding: 0px;
+}
+
+.recomment-input {
+  margin-top: 15px;
+  border: 1px solid rgba(0,0,0,0.3);
+  border-radius: 10px;
+  padding: 10px 15px 10px 15px;
+
+  &:hover {
+    border: 1px solid rgba(0,0,0,0.8);
+  }
+
+  .comment-content {
+    margin: 0px;
+  }
 }
 
 .comment-metadata {
@@ -169,14 +195,6 @@ export default {
   .comment-time {
     display: inline-block;
     color: #888;
-  }
-}
-
-.textarea {
-  border: 1px solid rgba(0,0,0,0.3);
-
-  &:hover {
-    border: 1px solid rgba(0,0,0,0.7);
   }
 }
 
@@ -206,7 +224,7 @@ export default {
 
 .button-default {
   color: #888888;
-  // border: none;
+  border: none;
   font-size: 14px;
   margin-right: 5px;
   text-decoration: none;
