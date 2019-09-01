@@ -20,7 +20,7 @@
         <div class="control">
           <input
             type="file"
-            @change="pictureHandler "
+            @change="pictureHandler"
           />
         </div>
       </div>
@@ -29,7 +29,7 @@
         <div class="control">
           <input type="text"
             id="nickname"
-            class="input"
+            class="input input-nickname"
             v-model="nickname"
           />
         </div>
@@ -134,6 +134,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.input-nickname {
+  border: 1px solid rgba(0,0,0,0.3);
+  font-size: 20px;
+
+  &:hover {
+    border: 1px solid rgba(0,0,0,0.8);
+  }
+}
+
 .profile-container {
   height: 5em;
   width: 5em;
