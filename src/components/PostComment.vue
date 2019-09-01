@@ -193,6 +193,7 @@ export default {
     padding-right: 0.75rem;
   }
   .comment-time {
+    font-size: 12px;
     display: inline-block;
     color: #888;
   }
