@@ -83,7 +83,7 @@
         </div>
         <button
           @click="saveRecomment"
-          class="button"
+          class="button button-submit"
           :class="{ 'is-loading': isUploading }"
           :disabled="isUploading">
           새 대댓글
@@ -174,7 +174,7 @@ export default {
 .recomment-input {
   margin-top: 15px;
   border: 1px solid rgba(0,0,0,0.3);
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 10px 15px 10px 15px;
 
   &:hover {
@@ -220,6 +220,18 @@ export default {
 }
 .dropdown-item {
   padding: 0.375rem 0.4rem
+}
+
+.button-submit {
+  margin-top: 10px;
+  border: none;
+  background-color: #ED3A3A;
+  color: white;
+
+  &:hover {
+    color: white;
+    background-color: rgb(199, 45, 45);
+  }
 }
 
 .button-default {

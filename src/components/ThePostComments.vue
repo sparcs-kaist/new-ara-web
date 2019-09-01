@@ -28,7 +28,7 @@
     </div>
     <button
       @click="saveComment"
-      class="button"
+      class="button button-submit"
       :class="{ 'is-loading': isUploading }"
       :disabled="isUploading">
       새 댓글
@@ -92,7 +92,7 @@ export default {
 
 .comment-input {
   border: 1px solid rgba(0,0,0,0.3);
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 10px 15px 10px 15px;
 
   &:hover {
@@ -109,6 +109,18 @@ export default {
       display: inline-block;
       color: #888;
     }
+  }
+}
+
+.button-submit {
+  margin-top: 10px;
+  border: none;
+  background-color: #ED3A3A;
+  color: white;
+
+  &:hover {
+    background-color: rgb(199, 45, 45);
+    color: white;
   }
 }
 </style>

@@ -71,7 +71,7 @@ export default {
 .post-recomment {
   margin: 1rem 0;
   padding-left: 15px;
-  border-left: 2px solid black;
+  border-left: 2px solid rgba(0,0,0,0.1);
 }
 
 .recomment-metadata {
