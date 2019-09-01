@@ -8,6 +8,9 @@
       @new-recomment-uploaded="$emit('new-recomment-uploaded', $event)"
       @vote="$emit('vote')"
     />
+    <div class="title">
+      새 댓글 작성
+    </div>
     <div class="comment-input">
       <div class="comment-metadata">
         <div class="comment-author"> {{ userNickname }} </div>
@@ -15,20 +18,21 @@
       </div>
       <div class="comment-content">
         <textarea
+          placeholder="입력..."
           v-model="content"
           class="textarea new-comment"
           cols="10"
           rows="3"
         />
       </div>
-      <button
-        @click="saveComment"
-        class="button"
-        :class="{ 'is-loading': isUploading }"
-        :disabled="isUploading">
-        새 댓글
-      </button>
     </div>
+    <button
+      @click="saveComment"
+      class="button button-submit"
+      :class="{ 'is-loading': isUploading }"
+      :disabled="isUploading">
+      새 댓글
+    </button>
   </div>
 </template>
 
@@ -82,19 +86,41 @@ export default {
   margin-top: 4rem;
 }
 
-.comment-metadata {
-  .comment-author {
-    display: inline-block;
-    font-weight: 700;
-    padding-right: 0.75rem;
+.textarea {
+  padding: 0px;
+}
+
+.comment-input {
+  border: 1px solid rgba(0,0,0,0.3);
+  border-radius: 5px;
+  padding: 10px 15px 10px 15px;
+
+  &:hover {
+    border: 1px solid rgba(0,0,0,0.8);
   }
-  .comment-time {
-    display: inline-block;
-    color: #888;
+
+  .comment-metadata {
+    .comment-author {
+      display: inline-block;
+      font-weight: 700;
+      padding-right: 0.75rem;
+    }
+    .comment-time {
+      display: inline-block;
+      color: #888;
+    }
   }
 }
 
-.comment-content {
-  margin: 0.75rem 0;
+.button-submit {
+  margin-top: 10px;
+  border: none;
+  background-color: #ED3A3A;
+  color: white;
+
+  &:hover {
+    background-color: rgb(199, 45, 45);
+    color: white;
+  }
 }
 </style>

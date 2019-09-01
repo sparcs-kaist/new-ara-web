@@ -8,7 +8,7 @@
     <a class="button button-default" @click="vote(true)"
       :class="{ 'button-selected': liked, 'is-loading': isVoting }">
       <span class="icon">
-        <i class="fas fa-thumbs-up"></i>
+        <i class="material-icons">thumb_up</i>
       </span>
       <span>
         {{ likedCount }}
@@ -17,7 +17,7 @@
     <a class="button button-default" @click="vote(false)"
       :class="{ 'button-selected': disliked, 'is-loading': isVoting }">
       <span class="icon">
-        <i class="fas fa-thumbs-down"></i>
+        <i class="material-icons">thumb_down</i>
       </span>
       <span>
         {{ dislikedCount }}
@@ -64,8 +64,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.material-icons {
+  font-size: 15px;
+}
+
 .post-recomment {
   margin: 1rem 0;
+  padding-left: 15px;
+  border-left: 2px solid rgba(0,0,0,0.1);
 }
 
 .recomment-metadata {
@@ -86,7 +92,7 @@ export default {
 
 .button-default {
   color: #888888;
-  // border: none;
+  border: none;
   font-size: 14px;
   margin-right: 5px;
   text-decoration: none;
