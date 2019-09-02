@@ -75,6 +75,7 @@
             <textarea
               placeholder="입력..."
               v-model="content"
+              ref="recommentTextarea"
               class="textarea new-recomment"
               cols="10"
               rows="3"
@@ -135,6 +136,9 @@ export default {
     },
     toggleRecommentInput () {
       this.showRecommentInput = !this.showRecommentInput
+      this.$nextTick(() => {
+        this.$refs.recommentTextarea.focus()
+      })
     },
     async saveRecomment () {
       this.isUploading = true
