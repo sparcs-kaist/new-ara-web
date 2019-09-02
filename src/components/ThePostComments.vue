@@ -1,13 +1,20 @@
 <template>
   <div id="comments" class="post-comments">
     <div class="title">댓글</div>
-    <PostComment
-      v-for="comment in comments"
-      :key="comment.id"
-      :comment="comment"
-      @new-recomment-uploaded="$emit('new-recomment-uploaded', $event)"
-      @vote="$emit('vote')"
-    />
+      <div
+        v-show="Object.keys(comments).length == 0"
+        class="no-comment-info"
+      >
+        댓글이 없습니다.
+      </div>
+      <PostComment
+        v-show="Object.keys(comments).length != 0"
+        v-for="comment in comments"
+        :key="comment.id"
+        :comment="comment"
+        @new-recomment-uploaded="$emit('new-recomment-uploaded', $event)"
+        @vote="$emit('vote')"
+      />
     <div class="title">
       새 댓글 작성
     </div>
@@ -71,7 +78,7 @@ export default {
         this.content = ''
       } catch (error) {
         // @TODO: 채팅 생성에 실패했다고 알려주기
-        alert('Failed to write a comment!')
+        alert(error)
       } finally {
         this.isUploading = false
       }
@@ -83,7 +90,12 @@ export default {
 
 <style lang="scss" scoped>
 #comments {
-  margin-top: 4rem;
+  margin-top: 2rem;
+}
+
+.no-comment-info {
+  margin-bottom: 1rem;
+  color: rgba(0,0,0,0.3);
 }
 
 .textarea {
