@@ -1,13 +1,23 @@
 <template>
   <div id="comments" class="post-comments">
     <div class="title">댓글</div>
-    <PostComment
-      v-for="comment in comments"
-      :key="comment.id"
-      :comment="comment"
-      @new-recomment-uploaded="$emit('new-recomment-uploaded', $event)"
-      @vote="$emit('vote')"
-    />
+      <div
+        v-show="Object.keys(comments).length == 0"
+        class="no-comment-info"
+      >
+        댓글이 없습니다.
+      </div>
+      <PostComment
+        v-show="Object.keys(comments).length != 0"
+        v-for="comment in comments"
+        :key="comment.id"
+        :comment="comment"
+        @new-recomment-uploaded="$emit('new-recomment-uploaded', $event)"
+        @vote="$emit('vote')"
+      />
+    <div class="title">
+      새 댓글 작성
+    </div>
     <div class="comment-input">
       <div class="comment-metadata">
         <div class="comment-author"> {{ userNickname }} </div>
@@ -15,20 +25,21 @@
       </div>
       <div class="comment-content">
         <textarea
+          placeholder="입력..."
           v-model="content"
           class="textarea new-comment"
           cols="10"
           rows="3"
         />
       </div>
-      <button
-        @click="saveComment"
-        class="button"
-        :class="{ 'is-loading': isUploading }"
-        :disabled="isUploading">
-        새 댓글
-      </button>
     </div>
+    <button
+      @click="saveComment"
+      class="button button-submit"
+      :class="{ 'is-loading': isUploading }"
+      :disabled="isUploading">
+      새 댓글
+    </button>
   </div>
 </template>
 
@@ -67,7 +78,7 @@ export default {
         this.content = ''
       } catch (error) {
         // @TODO: 채팅 생성에 실패했다고 알려주기
-        alert('Failed to write a comment!')
+        alert(error)
       } finally {
         this.isUploading = false
       }
@@ -79,22 +90,50 @@ export default {
 
 <style lang="scss" scoped>
 #comments {
-  margin-top: 4rem;
+  margin-top: 2rem;
 }
 
-.comment-metadata {
-  .comment-author {
-    display: inline-block;
-    font-weight: 700;
-    padding-right: 0.75rem;
+.no-comment-info {
+  margin-bottom: 1rem;
+  color: rgba(0,0,0,0.3);
+}
+
+.textarea {
+  padding: 0px;
+}
+
+.comment-input {
+  border: 1px solid rgba(0,0,0,0.3);
+  border-radius: 5px;
+  padding: 10px 15px 10px 15px;
+
+  &:hover {
+    border: 1px solid rgba(0,0,0,0.8);
   }
-  .comment-time {
-    display: inline-block;
-    color: #888;
+
+  .comment-metadata {
+    .comment-author {
+      display: inline-block;
+      font-weight: 700;
+      padding-right: 0.75rem;
+    }
+    .comment-time {
+      font-size: 12px;
+      display: inline-block;
+      color: #888;
+    }
   }
 }
 
-.comment-content {
-  margin: 0.75rem 0;
+.button-submit {
+  margin-top: 10px;
+  border: none;
+  background-color: #ED3A3A;
+  color: white;
+
+  &:hover {
+    background-color: rgb(199, 45, 45);
+    color: white;
+  }
 }
 </style>

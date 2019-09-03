@@ -2,7 +2,7 @@ import axios from 'axios'
 import store from './store'
 import router from './router'
 
-const apiUrl = 'http://ssal.sparcs.org:32816'
+const apiUrl = 'https://beta.ara-api.sparcs.org'
 const baseApiAddress = `${apiUrl}/api/`
 
 const instance = axios.create({

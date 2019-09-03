@@ -1,6 +1,6 @@
 <template>
   <div class="post">
-    <h1 class="title" id="title">{{ post.title }}</h1>
+    <div class="title" id="title">{{ post.title }}</div>
     <div class="dropdown is-right is-hoverable alignright">
       <div class="dropdown-trigger">
         <button class="button no-border" aria-haspopup="true" aria-controls="dropdownMenu">
@@ -46,9 +46,7 @@
         {{ boardName }}
       </div>
     </div>
-    <div class="ql-container ql-snow">
-      <div v-html="post.content" class="ql-editor"></div>
-    </div>
+    <div v-html="post.content" class="text-contents-view"></div>
     <div>
       <a class="button button-default"
       :class="{ 'button-selected': liked }">
@@ -132,7 +130,7 @@ export default {
 
 #metadata {
   color: #888;
-  margin-bottom: 1rem;
+  margin: 1rem 0px 0.5rem 0px;
   .post-author {
     color:#4a4a4a;
     font-weight:bold
@@ -141,6 +139,15 @@ export default {
     display: inline-block;
     margin-right: 0.75rem;
   }
+}
+
+.text-contents-view {
+  font-size: 1rem;
+  margin: 10px 0px 10px 0px;
+}
+
+.material-icons {
+  font-size: 16px;
 }
 
 .alignright {

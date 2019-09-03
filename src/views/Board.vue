@@ -14,9 +14,9 @@
             <div class="control">
               <input
                 v-model="keywordToSearch"
-                class="input"
+                class="input input-search"
                 type="text"
-                placeholder="글 검색"
+                placeholder="입력..."
               />
             </div>
             <div class="control">
@@ -32,7 +32,7 @@
             </div>
           </div>
         </div>
-        <div class="write">
+        <div class="write ">
           <router-link
             :to="{
               name: 'write',
@@ -40,8 +40,8 @@
                 board: $route.params.boardSlug
               }
             }"
-            class="button is-text">
-            글 작성
+            class="button button-write">
+            새글 쓰기
           </router-link>
         </div>
       </div>
@@ -90,8 +90,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '@/theme.scss';
+<style scoped>
+/* @import '@/theme.scss'; */
+
+.has-addons {
+  border: 1px solid rgba(0,0,0,0.5);
+  border-radius: 5px;
+}
 
 .board-name {
   font-size: 1.5rem;
@@ -104,11 +109,10 @@ export default {
   margin-right: 0.5rem;
 }
 
-.button.is-text {
-  color: $theme-red;
-  &:hover {
-    background-color: inherit;
-  }
+.button-write {
+  border: none;
+  color: white;
+  background-color: #ED3A3A;
 }
 
 .write {

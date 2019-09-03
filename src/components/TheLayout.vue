@@ -9,7 +9,7 @@
         </div>
         <aside
           class="column is-narrow">
-          <TheAd/>
+          <!-- <TheAd/> -->
         </aside>
       </div>
     </div>

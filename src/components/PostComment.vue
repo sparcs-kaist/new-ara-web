@@ -64,22 +64,27 @@
       />
       <div
         v-show="showRecommentInput"
-        class="recomment-input">
-        <div class="comment-metadata">
-          <div class="comment-author"> {{ userNickname }} </div>
-          <div class="comment-time"> {{ now }} </div>
-        </div>
-        <div class="comment-content">
-          <textarea
-            v-model="content"
-            class="textarea new-recomment"
-            cols="10"
-            rows="3"
-          />
+      >
+        <div
+          class="recomment-input">
+          <div class="comment-metadata">
+            <div class="comment-author"> {{ userNickname }} </div>
+            <div class="comment-time"> {{ now }} </div>
+          </div>
+          <div class="comment-content">
+            <textarea
+              placeholder="입력..."
+              v-model="content"
+              ref="recommentTextarea"
+              class="textarea new-recomment"
+              cols="10"
+              rows="3"
+            />
+          </div>
         </div>
         <button
           @click="saveRecomment"
-          class="button"
+          class="button button-submit"
           :class="{ 'is-loading': isUploading }"
           :disabled="isUploading">
           새 대댓글
@@ -131,6 +136,9 @@ export default {
     },
     toggleRecommentInput () {
       this.showRecommentInput = !this.showRecommentInput
+      this.$nextTick(() => {
+        this.$refs.recommentTextarea.focus()
+      })
     },
     async saveRecomment () {
       this.isUploading = true
@@ -155,8 +163,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.material-icons {
+  font-size: 15px;
+}
+
 .post-comment {
   margin: 1rem 0;
+}
+
+.textarea {
+  padding: 0px;
+}
+
+.recomment-input {
+  margin-top: 15px;
+  border: 1px solid rgba(0,0,0,0.3);
+  border-radius: 5px;
+  padding: 10px 15px 10px 15px;
+
+  &:hover {
+    border: 1px solid rgba(0,0,0,0.8);
+  }
+
+  .comment-content {
+    margin: 0px;
+  }
 }
 
 .comment-metadata {
@@ -166,6 +197,7 @@ export default {
     padding-right: 0.75rem;
   }
   .comment-time {
+    font-size: 12px;
     display: inline-block;
     color: #888;
   }
@@ -195,9 +227,21 @@ export default {
   padding: 0.375rem 0.4rem
 }
 
+.button-submit {
+  margin-top: 10px;
+  border: none;
+  background-color: #ED3A3A;
+  color: white;
+
+  &:hover {
+    color: white;
+    background-color: rgb(199, 45, 45);
+  }
+}
+
 .button-default {
   color: #888888;
-  // border: none;
+  border: none;
   font-size: 14px;
   margin-right: 5px;
   text-decoration: none;
