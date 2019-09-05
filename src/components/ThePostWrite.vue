@@ -52,7 +52,7 @@
         :class="{ 'is-empty': isContentEmpty}"
         placeholder="내용을 입력하세요"
       /> -->
-      <editor-content :editor="editor" />
+      <!-- <editor-content :editor="editor" /> -->
     </div>
 
     <div class="attachment-input">
@@ -75,7 +75,7 @@ import { VueEditor } from 'vue2-editor'
 import { mapState, mapGetters } from 'vuex'
 
 // tiptap editor for Vue.js
-import { Editor,  EditorContent } from 'tiptap'
+// import { Editor,  EditorContent } from 'tiptap'
 
 export default {
   name: 'the-post-write',
@@ -86,13 +86,7 @@ export default {
       title: '',
       content: '',
       attachments: [],
-      editor: null,
     }
-  },
-  mounted() {
-    this.editor = new Editor({
-      content: '<p>Hello, world!</p>'
-    })
   },
   computed: {
     ...mapState([ 'boardList' ]),
@@ -123,7 +117,7 @@ export default {
       e.target.value = null /* 같은 파일을 연속으로 첨부하려면 필요한 코드 */
     }
   },
-  components: { EditorContent }
+  components: {}
 }
 </script>
 
