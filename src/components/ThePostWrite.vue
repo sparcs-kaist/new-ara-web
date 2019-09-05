@@ -40,18 +40,19 @@
     <p class="help is-danger" v-if="isBoardEmpty && !boardId">게시판을 선택해주세요</p>
 
     <div class="content-wrapper">
-      <i 
+      <!-- <i 
         class="material-icons content-warning"
         v-if="isContentEmpty && !content">
         warning
-      </i>
-      <VueEditor
+      </i> -->
+      <!-- <VueEditor
         v-model="content"
         :editorOptions="{ }"
         class="content-input"
         :class="{ 'is-empty': isContentEmpty}"
         placeholder="내용을 입력하세요"
-      />
+      /> -->
+      <editor-content :editor="editor" />
     </div>
 
     <div class="attachment-input">
@@ -73,6 +74,9 @@
 import { VueEditor } from 'vue2-editor'
 import { mapState, mapGetters } from 'vuex'
 
+// tiptap editor for Vue.js
+import { Editor,  EditorContent } from 'tiptap'
+
 export default {
   name: 'the-post-write',
   props: [ 'post', 'saving', 'isTitleEmpty', 'isContentEmpty', 'isBoardEmpty' ],
@@ -82,7 +86,13 @@ export default {
       title: '',
       content: '',
       attachments: [],
+      editor: null,
     }
+  },
+  mounted() {
+    this.editor = new Editor({
+      content: '<p>Hello, world!</p>'
+    })
   },
   computed: {
     ...mapState([ 'boardList' ]),
@@ -113,7 +123,7 @@ export default {
       e.target.value = null /* 같은 파일을 연속으로 첨부하려면 필요한 코드 */
     }
   },
-  components: { VueEditor }
+  components: { EditorContent }
 }
 </script>
 
