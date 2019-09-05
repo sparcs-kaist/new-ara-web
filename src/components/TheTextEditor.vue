@@ -36,7 +36,7 @@
         </button>
       </div>
     </editor-menu-bar>
-    <editor-content :editor="editor" class="editor-content"/>
+    <editor-content :editor="editor" class="editor-content" />
   </div>
 </template>
 
@@ -54,24 +54,20 @@ export default {
   props: ['showOnly'],
   data() {
     return {
-      editor: null,
+      editor: new Editor({
+        extensions: [
+          new Bold(),
+          new Code(),
+          new Heading({ levels: [1] }),
+          new Placeholder({
+            emptyNodeClass: 'is-empty',
+            emptyNodeText: 'Write something …',
+            showOnlyWhenEditable: true,
+          }),
+        ],
+        content: ''
+      }),
     }
-  },
-  mounted() {
-    this.editor = new Editor({
-      extensions: [
-        new Bold(),
-        new Code(),
-        new Heading({ levels: [1] }),
-        new Placeholder({
-          emptyNodeClass: 'is-empty',
-          emptyNodeText: 'Write something …',
-          showOnlyWhenEditable: true,
-        }),
-      ],
-      content: ''
-      // editable: this.props.showOnly,
-    })
   },
   methods: {
     showContent() {
@@ -89,15 +85,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .editor {
+  margin-bottom: 30px;
 
   .editor-menu-bar {
-  
+    margin-bottom: 10px;
+
     .menubar__button {
       background-color: transparent;
       cursor: pointer;
       border: none;
-  
+
+      margin: -5px;
+
       .material-icons {
         font-size: 18px ;
       }
@@ -106,6 +107,29 @@ export default {
 
   .editor-content {
     margin-left: 5px;
+
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+
+    p {
+      display: inline-block;
+
+      code {
+        display: block;
+      }
+    }
+  }
+
+
+  p::before {
+    content: attr(data-empty-text);
+    float: left;
+    color: #aaa;
+    pointer-events: none;
+    height: 0;
+    font-style: italic;
   }
 }
+
 </style>

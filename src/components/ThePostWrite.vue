@@ -53,6 +53,7 @@
         placeholder="내용을 입력하세요"
       /> -->
       <!-- <editor-content :editor="editor" /> -->
+      <TextEditor />
     </div>
 
     <div class="attachment-input">
@@ -74,7 +75,9 @@
 import { VueEditor } from 'vue2-editor'
 import { mapState, mapGetters } from 'vuex'
 
-// tiptap editor for Vue.js
+
+
+import TextEditor from '../components/TheTextEditor'
 // import { Editor,  EditorContent } from 'tiptap'
 
 export default {
@@ -117,7 +120,7 @@ export default {
       e.target.value = null /* 같은 파일을 연속으로 첨부하려면 필요한 코드 */
     }
   },
-  components: {}
+  components: { TextEditor }
 }
 </script>
 
@@ -211,29 +214,5 @@ p.help.is-danger {
 </style>
 
 <style lang="scss">
-@import url('https://cdn.quilljs.com/1.3.6/quill.bubble.css');
 @import '@/theme.scss';
-#quill-container {
-  .ql-editor {
-    padding: 0;
-    &::before {
-      left: 0;
-      font-style: normal;
-      color: #888;
-    }
-  }
-}
-
-.quillWrapper.is-empty #quill-container .ql-editor::before {
-  color: $theme-red;
-}
-
-.quillWrapper .ql-snow.ql-toolbar {
-  border: none;
-  margin-left: -13pt;
-}
-
-.quillWrapper #quill-container.ql-container {
-  border: none;
-}
 </style>
