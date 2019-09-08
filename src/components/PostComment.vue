@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div class="comment-content"> {{ comment.content }} </div>
+    <div class="comment-content" v-html="comment.content"></div>
     <a class="button button-default" @click="vote(true)"
       :class="{ 'button-selected': liked, 'is-loading': isVoting }">
       <span class="icon">
@@ -113,6 +113,9 @@ export default {
       isVoting: false,
       showRecommentInput: false
     }
+  },
+  mounted() {
+    this.comment.content = this.comment.content.split('\n').join('<br />');
   },
   computed: {
     liked () { return this.comment.my_vote === true },
