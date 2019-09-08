@@ -18,12 +18,13 @@ storiesOf('TextEditor', module)
               }]
             }
           ]
-        }
+        },
+        editable: true,
       }
     },
     template: `
       <div>
-        <TextEditor :content="dataContent"/>
+        <TextEditor :content="dataContent" :editable="editable"/>
       </div>
     `
   }))
