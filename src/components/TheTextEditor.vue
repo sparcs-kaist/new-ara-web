@@ -1,6 +1,6 @@
 <template>
   <div class="editor">
-    <editor-menu-bar :editor="editor">
+    <editor-menu-bar :editor="editor" v-show="this.editable">
       <div
         class="editor-menu-bar"
         slot-scope="{ commands, isActive }"
@@ -36,7 +36,9 @@
         </button>
       </div>
     </editor-menu-bar>
-    <editor-content :editor="editor" class="editor-content" />
+    <div class="content">
+      <editor-content :editor="editor" class="editor-content" />
+    </div>
   </div>
 </template>
 
