@@ -69,9 +69,10 @@
         <router-link
           :to="{ name: 'settings' }"
           class="navbar-item user">
-          <span class="icon">
+          <!-- <span class="icon">
             <i class="material-icons">person</i>
-          </span>
+          </span> -->
+          <img :src="userPicture" class="picture-url"/>
           <span class="username">
             {{ userNickname }}
           </span>
@@ -98,7 +99,7 @@ export default {
   },
   computed: {
     ...mapState(['boardList']),
-    ...mapGetters(['userNickname']),
+    ...mapGetters(['userNickname', 'userPicture']),
     isIE () {
       return isIE()
     }
@@ -153,6 +154,15 @@ export default {
   .user .icon {
     padding-right: 0.5rem;
   }
+}
+
+.picture-url {
+  width: 23px;
+  height: 23px;
+  object-fit: cover;
+  
+  border-radius: 100%;
+  margin-right: 10px;
 }
 
 .notification.is-api-error {

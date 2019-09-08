@@ -36,6 +36,7 @@
       </div>
     </div>
     <div id="metadata">
+      <img :src="userPictureUrl" class="post-author-profile-picture"/>
       <div class="post-author">
         {{ postAuthor }}
       </div>
@@ -74,6 +75,7 @@
 import { mapGetters } from 'vuex'
 import { archivePost, reportPost } from '@/api'
 import { date } from '@/helper.js'
+import { fetchUser } from '@/api'
 
 export default {
   name: 'the-post-detail',
@@ -83,10 +85,14 @@ export default {
   data () {
     return {
       isArchiving: false,
-      isReporting: false
+      isReporting: false,
+      // pictureUrl: null,
     }
   },
   computed: {
+    userPictureUrl () {
+      return this.post.created_by.profile.picture
+    },
     // @TODO: I18n
     boardName () {
       return this.post.parent_board && this.post.parent_board.ko_name
@@ -131,12 +137,25 @@ export default {
 #metadata {
   color: #888;
   margin: 1rem 0px 0.5rem 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  
+  .post-author-profile-picture {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    border-radius: 100%;
+
+  }
+
   .post-author {
     color:#4a4a4a;
-    font-weight:bold
+    font-weight:bold;
+
   }
-  .post-author, .post-time, .post-board-name {
-    display: inline-block;
+  .post-author-profile-picture, .post-author, .post-time, .post-board-name {
     margin-right: 0.75rem;
   }
 }
