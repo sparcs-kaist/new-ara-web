@@ -171,7 +171,7 @@ export default {
 }
 
 .content {
-  margin: 30px 0px 20px -10px;
+  margin: 30px 0px 20px -7px;
 }
 
 .text-contents-view {
