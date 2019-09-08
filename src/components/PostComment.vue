@@ -1,6 +1,7 @@
 <template>
   <div class="post-comment">
     <div class="comment-metadata">
+      <img :src="authorProfilePictureUrl" class="comment-author-profile-picture"/>
       <div class="comment-author"> {{ author }} </div>
       <div class="comment-time"> {{ date }} </div>
       <div class="dropdown is-right is-hoverable alignright">
@@ -119,6 +120,7 @@ export default {
     likedCount () { return this.comment.positive_vote_count },
     dislikedCount () { return this.comment.negative_vote_count },
     author () { return this.comment.created_by.profile.nickname },
+    authorProfilePictureUrl() { return this.comment.created_by.profile.picture },
     date () { return date(this.comment.created_at) },
     now () { return date(new Date()) },
     ...mapGetters([ 'userNickname' ])
@@ -191,6 +193,19 @@ export default {
 }
 
 .comment-metadata {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  .comment-author-profile-picture {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+    border-radius: 100%;
+    margin-right: 10px;
+  }
+
   .comment-author {
     display: inline-block;
     font-weight: 700;

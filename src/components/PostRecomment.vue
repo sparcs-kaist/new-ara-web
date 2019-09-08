@@ -1,6 +1,7 @@
 <template>
   <div class="post-recomment">
     <div class="recomment-metadata">
+      <img :src="authorProfilePictureUrl" class="recomment-author-profile-picture"/>
       <div class="recomment-author"> {{ author }} </div>
       <div class="recomment-time"> {{ date }} </div>
     </div>
@@ -46,6 +47,7 @@ export default {
     likedCount () { return this.recomment.positive_vote_count },
     dislikedCount () { return this.recomment.negative_vote_count },
     author () { return this.recomment.created_by.profile.nickname },
+    authorProfilePictureUrl() { return this.recomment.created_by.profile.picture },
     date () { return date(this.recomment.created_at) }
   },
   methods: {
@@ -75,6 +77,20 @@ export default {
 }
 
 .recomment-metadata {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  
+  .recomment-author-profile-picture {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+    border-radius: 100%;
+    margin-right: 10px;
+  }
+
+
   .recomment-author {
     display: inline-block;
     font-weight: 700;
