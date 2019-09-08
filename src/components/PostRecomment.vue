@@ -5,7 +5,7 @@
       <div class="recomment-author"> {{ author }} </div>
       <div class="recomment-time"> {{ date }} </div>
     </div>
-    <div class="recomment-content" v-html="recomment.content"></div>
+    <div class="recomment-content">{{ recomment.content }}</div>
     <a class="button button-default" @click="vote(true)"
       :class="{ 'button-selected': liked, 'is-loading': isVoting }">
       <span class="icon">
@@ -40,9 +40,6 @@ export default {
     return {
       isVoting: false
     }
-  },
-  mounted() {
-    this.recomment.content = this.recomment.content.split('\n').join('<br />');
   },
   computed: {
     liked () { return this.recomment.my_vote === true },
@@ -108,6 +105,8 @@ export default {
 
 .recomment-content {
   margin: 0.75rem 0;
+  white-space: pre-line;
+  word-break: break-all;
 }
 
 .button-default {
