@@ -47,7 +47,12 @@
         {{ boardName }}
       </div>
     </div>
-    <div v-html="post.content" class="text-contents-view"></div>
+    <div class="content">
+      <TextEditor :editable="editable" :content="JSON.parse(post.content)"/>
+      <!-- <div>
+        {{post.content}}
+      </div> -->
+    </div>
     <div>
       <a class="button button-default"
       :class="{ 'button-selected': liked }">
@@ -76,6 +81,7 @@ import { mapGetters } from 'vuex'
 import { archivePost, reportPost } from '@/api'
 import { date } from '@/helper.js'
 import { fetchUser } from '@/api'
+import TextEditor from '../components/TheTextEditor'
 
 export default {
   name: 'the-post-detail',
@@ -86,6 +92,7 @@ export default {
     return {
       isArchiving: false,
       isReporting: false,
+      editable: false,
       // pictureUrl: null,
     }
   },
@@ -125,6 +132,9 @@ export default {
       await reportPost(this.post.id)
       this.isReporting = false
     }
+  },
+  components: {
+    TextEditor,
   }
 }
 </script>
@@ -158,6 +168,10 @@ export default {
   .post-author-profile-picture, .post-author, .post-time, .post-board-name {
     margin-right: 0.75rem;
   }
+}
+
+.content {
+  margin: 30px 0px 20px -10px;
 }
 
 .text-contents-view {
