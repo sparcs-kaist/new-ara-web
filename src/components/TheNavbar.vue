@@ -50,7 +50,7 @@
           class="navbar-item">
           {{ $t('notification') }}
         </router-link>
-        <a
+        <!-- <a
           v-if="!isIE"
           @click="toggleDarkMode"
           id="toggle-dark-mode"
@@ -58,7 +58,7 @@
           <span class="icon">
             <i class="material-icons">invert_colors</i>
           </span>
-        </a>
+        </a> -->
         <a class="navbar-item"
           @click="$i18n.locale = $i18n.locale === 'en' ? 'ko' : 'en'"
           id="toggle-language">
