@@ -5,9 +5,50 @@ import TextEditor from '../src/components/TheTextEditor.vue'
 storiesOf('TextEditor', module)
   .add('default', () => ({
     components: { TextEditor },
+    data() {
+      return {
+        dataContent: {
+          type: "doc",
+          content: [
+            {
+              type: "paragraph",
+              content: [{
+                type: "text",
+                text: ""
+              }]
+            }
+          ]
+        }
+      }
+    },
     template: `
       <div>
-        <TextEditor />
+        <TextEditor :content="dataContent"/>
+      </div>
+    `
+  }))
+  .add('show data', () => ({
+    components: { TextEditor },
+    data() {
+      return {
+        dataContent: {
+          type: "doc",
+          content: [
+            {
+              type: "paragraph",
+              content: [{
+                type: "text",
+                text: "hello, world"
+              }]
+            }
+          ]
+        },
+        editable: false,
+      }
+    },
+    template: `
+      <div>
+        <TextEditor :content="dataContent" :editable="editable"/>
       </div>
     `
   }))

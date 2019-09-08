@@ -40,20 +40,7 @@
     <p class="help is-danger" v-if="isBoardEmpty && !boardId">게시판을 선택해주세요</p>
 
     <div class="content-wrapper">
-      <!-- <i 
-        class="material-icons content-warning"
-        v-if="isContentEmpty && !content">
-        warning
-      </i> -->
-      <!-- <VueEditor
-        v-model="content"
-        :editorOptions="{ }"
-        class="content-input"
-        :class="{ 'is-empty': isContentEmpty}"
-        placeholder="내용을 입력하세요"
-      /> -->
-      <!-- <editor-content :editor="editor" /> -->
-      <TextEditor />
+      <TextEditor ref="textEditor" editable="true"/>
     </div>
 
     <div class="attachment-input">
@@ -64,7 +51,7 @@
       />
     </div>
     <button
-      @click="$emit('save-post', { title, content, boardId, attachments })"
+      @click="savePostByThePostWrite"
       class="button post-publish-button"
       :class="{ 'is-loading': saving }"
     > 게시 </button>
@@ -118,6 +105,18 @@ export default {
     attachFiles (e) {
       this.attachments = [...e.target.files]
       e.target.value = null /* 같은 파일을 연속으로 첨부하려면 필요한 코드 */
+    },
+    savePostByThePostWrite() {
+      const { title, boradId, attachments } = this;
+      const postContent = JSON.stringify(this.$refs.textEditor.getContent())
+      this.$emit('save-post', 
+        {
+          title: this.title, 
+          content: postContent,
+          boardId: this.boardId,
+          attachments: this.attachments,
+        }
+      )
     }
   },
   components: { TextEditor }

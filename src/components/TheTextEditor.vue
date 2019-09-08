@@ -51,7 +51,7 @@ import {
 
 export default {
   name: 'the-text-editor',
-  props: ['showOnly'],
+  props: ['showOnly', 'content', 'editable'],
   data() {
     return {
       editor: new Editor({
@@ -65,13 +65,14 @@ export default {
             showOnlyWhenEditable: true,
           }),
         ],
-        content: ''
+        content: this.content,
+        editable: this.editable,
       }),
     }
   },
   methods: {
-    showContent() {
-      console.log(this.editor.getHTML())
+    getContent() {
+      return this.editor.getJSON()
     },
   },
   beforeDestroy() {
