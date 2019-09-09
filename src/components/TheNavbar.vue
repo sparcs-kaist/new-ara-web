@@ -146,7 +146,11 @@ export default {
 
   // 왼쪽 음수 여백으로 줄맞춤
   .navbar-menu {
-    margin: 0 0.75rem 0 -0.75rem;
+
+    &.is-active {
+      box-shadow: 0px 3px 5px rgba(0,0,0,0.05);
+    }
+      
   }
 
   .user .icon {
