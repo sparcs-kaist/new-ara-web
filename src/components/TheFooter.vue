@@ -99,12 +99,9 @@ en:
   }
 
   .footer-contact {
-    // position: absolute;
-
     @media screen and (max-width: 700px) {
       margin-top: 2rem;
     }
-    // right: 1.5rem;
   }
 }
 </style>

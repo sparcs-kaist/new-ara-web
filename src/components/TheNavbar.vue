@@ -2,7 +2,7 @@
   <!-- @TODO: Accessability
     aria-label="main navigation"
     role="navigation" -->
-  <nav class="navbar is-transparent">
+  <div class="navbar is-transparent">
     <!-- <TheNavbarFetchProgressBar/> -->
     <div class="navbar-brand">
       <TheNavbarAraLogo/>
@@ -79,7 +79,7 @@
         </router-link>
       </div>
     </div>
-  </nav>
+  </div>
 </template>
 
 <script>
@@ -122,9 +122,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/theme.scss';
 .navbar {
-  // border-top: 5px solid $theme-red;
   border-top: 5px solid var(--theme-red);
-  margin-bottom: 1.5rem;
 
   // @TODO: Is ther a better way of achieving this..?
   .navbar-brand {
