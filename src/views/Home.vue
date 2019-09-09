@@ -117,49 +117,58 @@ en:
 
 <style lang="scss" scoped>
 @import '@/theme.scss';
-.board {
-  margin-bottom: 2rem;
-  padding-right: 5rem;
-  .board-name {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 0.5em;
-  }
-  .post {
-    display: flex;
-    justify-content: space-between;
-    margin: 0.5rem 0;
-    .comment-count {
-      color: $theme-red;
-    }
-  }
-  .article-wrapper-big {
-    width: 300px;
-    @include breakPoint('min') {
-      max-width: 170px;
-    }
-    @include breakPoint('min-mid') {
-      max-width: 220px;
-    }
-    @include breakPoint('mid-max') {
-      max-width: 250px;
-    }
-    @include breakPoint('max') {
-      max-width: 400px;
-    }
+.columns {
+  
+  .column {
+    
+    .home {
+  
+      .board {
+        margin-bottom: 2rem;
 
-    .article-title {
-      // width:100%;
-      text-overflow:ellipsis;
-      -o-text-overflow:ellipsis;
-      overflow:hidden;
-      white-space:nowrap;
-      word-wrap:break-word !important;
-      display: block;
-      // added for multiline
-    }
-    .article-wrapper {
-      display: flex;
+        .board-name {
+          font-size: 1.5rem;
+          font-weight: 700;
+          margin-bottom: 0.5em;
+        }
+        .post {
+          display: flex;
+          justify-content: space-between;
+          margin: 0.5rem 0;
+          .comment-count {
+            color: $theme-red;
+          }
+        }
+        .article-wrapper-big {
+          width: 300px;
+          @include breakPoint('min') {
+            max-width: 170px;
+          }
+          @include breakPoint('min-mid') {
+            max-width: 220px;
+          }
+          @include breakPoint('mid-max') {
+            max-width: 250px;
+          }
+          @include breakPoint('max') {
+            max-width: 400px;
+          }
+      
+          .article-title {
+            // width:100%;
+            text-overflow:ellipsis;
+            -o-text-overflow:ellipsis;
+            overflow:hidden;
+            white-space:nowrap;
+            word-wrap:break-word !important;
+            display: block;
+            // added for multiline
+          }
+          .article-wrapper {
+            display: flex;
+          }
+        }
+      }
     }
   }
 }

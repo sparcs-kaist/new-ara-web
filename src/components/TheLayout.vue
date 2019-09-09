@@ -32,4 +32,9 @@ export default {
 .layout {
   min-width: 100%;
 }
+
+.columns {
+  width: 100%;
+  margin: 0px;
+}
 </style>
