@@ -7,10 +7,10 @@
         <div class="column">
           <slot/>
         </div>
-        <aside
+        <!-- <aside
           class="column is-narrow">
-          <!-- <TheAd/> -->
-        </aside>
+          <TheAd/>
+        </aside> -->
       </div>
     </div>
     <TheFooter/>
@@ -31,5 +31,10 @@ export default {
 <style lang="scss" scoped>
 .layout {
   min-width: 100%;
+}
+
+.columns {
+  width: 100%;
+  margin: 0px;
 }
 </style>

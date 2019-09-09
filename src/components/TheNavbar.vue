@@ -2,7 +2,7 @@
   <!-- @TODO: Accessability
     aria-label="main navigation"
     role="navigation" -->
-  <nav class="navbar is-transparent">
+  <div class="navbar is-transparent">
     <!-- <TheNavbarFetchProgressBar/> -->
     <div class="navbar-brand">
       <TheNavbarAraLogo/>
@@ -79,7 +79,7 @@
         </router-link>
       </div>
     </div>
-  </nav>
+  </div>
 </template>
 
 <script>
@@ -122,9 +122,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/theme.scss';
 .navbar {
-  // border-top: 5px solid $theme-red;
   border-top: 5px solid var(--theme-red);
-  margin-bottom: 1.5rem;
 
   // @TODO: Is ther a better way of achieving this..?
   .navbar-brand {
@@ -148,7 +146,11 @@ export default {
 
   // 왼쪽 음수 여백으로 줄맞춤
   .navbar-menu {
-    margin: 0 0.75rem 0 -0.75rem;
+
+    &.is-active {
+      box-shadow: 0px 3px 5px rgba(0,0,0,0.05);
+    }
+      
   }
 
   .user .icon {
