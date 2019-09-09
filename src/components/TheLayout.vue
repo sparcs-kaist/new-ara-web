@@ -7,10 +7,10 @@
         <div class="column">
           <slot/>
         </div>
-        <aside
+        <!-- <aside
           class="column is-narrow">
-          <!-- <TheAd/> -->
-        </aside>
+          <TheAd/>
+        </aside> -->
       </div>
     </div>
     <TheFooter/>
