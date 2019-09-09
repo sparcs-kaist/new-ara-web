@@ -43,12 +43,28 @@ export default {
 <style lang="scss" scoped>
 .board {
   min-width: 100%;
-  padding-right: 5rem;
+
   .board-navbar {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+
+    @media screen and (max-width: 700px) {
+      flex-direction: column;
+    }
+
     .board-navbar-start {
-      display: inline-block;
+
+      @media screen and (max-width: 700px) {
+        margin-bottom: 1rem;
+      }
+    }
+
+    .board-navbar-end {
+      @media screen and (max-width: 700px) {
+        width: 100%;
+      }
     }
   }
 }

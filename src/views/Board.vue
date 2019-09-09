@@ -8,10 +8,10 @@
         </h1>
       </div>
 
-      <div slot="tools">
+      <div slot="tools" class="tools">
         <div class="search">
           <div class="field has-addons">
-            <div class="control">
+            <div class="control-input">
               <input
                 v-model="keywordToSearch"
                 class="input input-search"
@@ -90,32 +90,55 @@ export default {
 }
 </script>
 
-<style scoped>
-/* @import '@/theme.scss'; */
-
-.has-addons {
-  border: 1px solid rgba(0,0,0,0.5);
-  border-radius: 5px;
-}
+<style lang="scss" scoped>
+// @import '@/theme.scss';
 
 .board-name {
   font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin: 0 0 1rem 10px;
 }
 
-.search {
-  display: inline-block;
-  margin-right: 0.5rem;
-}
+.tools {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 
-.button-write {
-  border: none;
-  color: white;
-  background-color: #ED3A3A;
-}
+  @media screen and (max-width: 700px) {
+    flex-direction: column;
+  }
 
-.write {
-  display: inline-block;
+  .has-addons {
+    border: 1px solid rgba(0,0,0,0.5);
+    border-radius: 5px;
+  }
+  
+  
+  .search {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-right: 0.5rem;
+
+    @media screen and (max-width: 700px) {
+      margin-bottom: 0.5rem;
+    }
+
+    .field {
+      width: 100%;
+      
+      .control-input {
+        width: 100%;
+      }
+    }
+  }
+  
+  .button-write {
+    border: none;
+    color: white;
+    background-color: #ED3A3A;
+    width: 100%;
+  }
 }
 </style>
