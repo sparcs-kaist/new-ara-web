@@ -16,9 +16,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/theme.scss';
 #ara-logo {
-  height: 25px;
-  // font-family: 'Raleway', sans-serif;
-  // color: $theme-red;
-  margin-left: 10px;
+  height: 25px;;
 }
 </style>

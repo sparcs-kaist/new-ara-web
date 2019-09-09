@@ -96,7 +96,7 @@ export default {
 .board-name {
   font-size: 1.5rem;
   font-weight: 700;
-  margin: 0 0 1rem 10px;
+  margin: 0 0 1rem 0;
 }
 
 .tools {

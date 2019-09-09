@@ -84,7 +84,7 @@ en:
 <style lang="scss">
 @import '@/theme.scss';
 
-.post-table {
+.table.post-table {
   width: 100%;
 
   .reaction, .views, .time {
@@ -94,8 +94,13 @@ en:
   }
 
   thead th {
-    padding-bottom: 1em;
+    padding: 0 0 1rem 0;
   }
+
+  tbody td {
+    padding: 0 0 0.5rem 0;
+  }
+
   .post-table-title {
     min-width: 5rem;
   }

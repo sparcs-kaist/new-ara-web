@@ -118,9 +118,10 @@ en:
 <style lang="scss" scoped>
 @import '@/theme.scss';
 .columns {
-  
+
   .column {
-    
+    padding: 0px;
+
     .home {
   
       .board {

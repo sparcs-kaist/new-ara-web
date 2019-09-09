@@ -60,7 +60,7 @@ en:
   justify-content: space-between;
 
   position: relative;
-  padding: 1.5rem;
+  padding: 15px;
 
   @media screen and (max-width: 700px) {
     flex-direction: column;
@@ -101,6 +101,7 @@ en:
   .footer-contact {
     @media screen and (max-width: 700px) {
       margin-top: 2rem;
+      margin-bottom: 2rem;
     }
   }
 }
