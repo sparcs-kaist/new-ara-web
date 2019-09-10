@@ -146,9 +146,58 @@ export default {
 
   // 왼쪽 음수 여백으로 줄맞춤
   .navbar-menu {
+    padding: 0;
+
+    .navbar-start, .navbar-end {
+      .navbar-item {
+        padding: 10px 0px 5px 15px;
+        
+        @media screen and (max-width: 1087px){
+          padding: 5px 0px 10px 15px;
+        }
+      }
+
+      .user {
+        margin: 0 15px;
+        font-weight: 700;
+      }
+    }
 
     &.is-active {
       box-shadow: 0px 3px 5px rgba(0,0,0,0.05);
+      padding-bottom: 15px;
+
+      @media screen and (min-width: 1088px)   {
+        box-shadow: none;
+        padding: 0;
+      }
+
+      .navbar-end {
+        .navbar-item.user {
+          font-weight: 700;
+
+          @media screen and (max-width: 1088px) {
+            width: 95%;
+            height: 90%;
+            margin: 0 auto;
+            padding: 10px 0;
+            background-color: rgba(0,0,0,0.65);
+  
+            border-radius: 5px;
+  
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+  
+            color: white;
+
+            &:hover {
+              background-color: rgba(0,0,0,0.75);
+            }
+          }
+        }
+      }
     }
       
   }
