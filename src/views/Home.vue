@@ -120,7 +120,11 @@ en:
 .columns {
 
   .column {
-    padding: 0px;
+    padding: 0 20px 0 0;
+
+    @media screen and (max-width: 768px){
+      padding: 0;
+    }
 
     .home {
   
