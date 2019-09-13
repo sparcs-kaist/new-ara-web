@@ -2,12 +2,14 @@
   <div id="comments" class="post-comments">
     <div class="title">댓글</div>
       <div
+        v-if="comments"
         v-show="Object.keys(comments).length == 0"
         class="no-comment-info"
       >
         댓글이 없습니다.
       </div>
       <PostComment
+        v-if="comments"
         v-show="Object.keys(comments).length != 0"
         v-for="comment in comments"
         :key="comment.id"
