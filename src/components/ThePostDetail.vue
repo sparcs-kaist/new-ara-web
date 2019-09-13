@@ -1,6 +1,6 @@
 <template>
   <div class="post">
-    <h1 class="title" id="title">{{ post.title }}</h1>
+    <div class="title" id="title">{{ post.title }}</div>
     <div class="dropdown is-right is-hoverable alignright">
       <div class="dropdown-trigger">
         <button class="button no-border" aria-haspopup="true" aria-controls="dropdownMenu">
@@ -36,6 +36,7 @@
       </div>
     </div>
     <div id="metadata">
+      <img :src="userPictureUrl" class="post-author-profile-picture"/>
       <div class="post-author">
         {{ postAuthor }}
       </div>
@@ -46,8 +47,11 @@
         {{ boardName }}
       </div>
     </div>
-    <div class="ql-container ql-snow">
-      <div v-html="post.content" class="ql-editor"></div>
+    <div class="content">
+      <TextEditor :editable="editable" :content="JSON.parse(post.content)"/>
+      <!-- <div>
+        {{post.content}}
+      </div> -->
     </div>
     <div>
       <a class="button button-default"
@@ -76,6 +80,8 @@
 import { mapGetters } from 'vuex'
 import { archivePost, reportPost } from '@/api'
 import { date } from '@/helper.js'
+import { fetchUser } from '@/api'
+import TextEditor from '../components/TheTextEditor'
 
 export default {
   name: 'the-post-detail',
@@ -85,10 +91,15 @@ export default {
   data () {
     return {
       isArchiving: false,
-      isReporting: false
+      isReporting: false,
+      editable: false,
+      // pictureUrl: null,
     }
   },
   computed: {
+    userPictureUrl () {
+      return this.post.created_by.profile.picture
+    },
     // @TODO: I18n
     boardName () {
       return this.post.parent_board && this.post.parent_board.ko_name
@@ -121,6 +132,9 @@ export default {
       await reportPost(this.post.id)
       this.isReporting = false
     }
+  },
+  components: {
+    TextEditor,
   }
 }
 </script>
@@ -132,15 +146,41 @@ export default {
 
 #metadata {
   color: #888;
-  margin-bottom: 1rem;
+  margin: 1rem 0px 0.5rem 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  
+  .post-author-profile-picture {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    border-radius: 100%;
+
+  }
+
   .post-author {
     color:#4a4a4a;
-    font-weight:bold
+    font-weight:bold;
+
   }
-  .post-author, .post-time, .post-board-name {
-    display: inline-block;
+  .post-author-profile-picture, .post-author, .post-time, .post-board-name {
     margin-right: 0.75rem;
   }
+}
+
+.content {
+  margin: 30px 0px 20px -7px;
+}
+
+.text-contents-view {
+  font-size: 1rem;
+  margin: 10px 0px 10px 0px;
+}
+
+.material-icons {
+  font-size: 16px;
 }
 
 .alignright {

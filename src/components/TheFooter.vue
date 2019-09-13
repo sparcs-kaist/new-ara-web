@@ -1,29 +1,29 @@
 <template>
   <footer class="the-footer">
-    <a
-      id="sparcs-logo"
-      href="https://sparcs.org">
-      SPARCS
-    </a>
-    <div class="container">
-      <ul class="footer-menu">
-        <li class="footer-item">
-          <!-- @TODO: footer에서 가는 페이지들 만들기 -->
-          <a href="https://sparcs.org">
-            {{ $t('credit') }}
-          </a>
-        </li>
-        <li class="footer-item">
-          <a href="https://sparcs.org">
-            {{ $t('license') }}
-          </a>
-        </li>
-        <li class="footer-item">
-          <a href="https://sparcs.org">
-            {{ $t('rules') }}
-          </a>
-        </li>
-      </ul>
+    <div class="footer-menu">
+      <div class="footer-item logo-item">
+        <a
+          id="sparcs-logo"
+          href="https://sparcs.org">
+          SPARCS
+        </a>
+      </div>
+      <div class="footer-item">
+        <!-- @TODO: footer에서 가는 페이지들 만들기 -->
+        <a href="https://sparcs.org">
+          {{ $t('credit') }}
+        </a>
+      </div>
+      <div class="footer-item">
+        <a href="https://sparcs.org">
+          {{ $t('license') }}
+        </a>
+      </div>
+      <div class="footer-item">
+        <a href="https://sparcs.org">
+          {{ $t('rules') }}
+        </a>
+      </div>
     </div>
     <div class="footer-contact">
       {{ $t('contact') }}:
@@ -55,8 +55,16 @@ en:
 
 <style lang="scss" scoped>
 .the-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
   position: relative;
-  padding: 1.5rem;
+  padding: 15px;
+
+  @media screen and (max-width: 700px) {
+    flex-direction: column;
+  }
 
   #sparcs-logo {
     font-family: 'Raleway', sans-serif;
@@ -64,17 +72,37 @@ en:
   }
 
   .footer-menu {
-    margin-left: -1rem;
+    display: flex;
+    flex-direction: row;
+
+    @media screen and (max-width: 700px) {
+      flex-direction: column-reverse;
+    }
+
+
     .footer-item {
-      display: inline-block;
-      margin: 0 1rem;
+      margin: 0 1rem 0 0;
+
+      @media screen and (max-width: 700px) {
+        margin: 1rem 0 0 0;
+      }
+
+      &.logo-item {
+        margin: 0 3rem 0 0;
+
+        @media screen and (max-width: 700px) {
+          margin: 1rem 0 0 0;
+          font-size: 1.3rem;
+        }
+      }
     }
   }
 
   .footer-contact {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
+    @media screen and (max-width: 700px) {
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+    }
   }
 }
 </style>

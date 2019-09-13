@@ -42,7 +42,6 @@ export default {
   methods: {
     async savePost (newArticle) {
       const { title, content, boardId, attachments } = newArticle
-      console.log(content)
       if (title === '') {
         this.isTitleEmpty = true
       }

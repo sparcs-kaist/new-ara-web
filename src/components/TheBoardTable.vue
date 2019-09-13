@@ -2,18 +2,16 @@
   <table class="table post-table">
     <thead>
       <tr>
-        <th class="post-table-title"> {{ $t('board') }} </th>
-        <th> {{ $t('title') }} </th>
+        <th>{{ $t('title') }}</th>
         <th class="post-table-author has-text-right"> {{ $t('author') }} </th>
-        <th class="post-table-vote has-text-right"> {{ $t('reaction') }} </th>
-        <th class="post-table-hit has-text-right"> {{ $t('views') }} </th>
-        <th class="post-table-time has-text-right"> {{ $t('time') }} </th>
+        <th class="post-table-vote has-text-right reaction"> {{ $t('reaction') }} </th>
+        <th class="post-table-hit has-text-right views"> {{ $t('views') }} </th>
+        <th class="post-table-time has-text-right time"> {{ $t('time') }} </th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="article in articles"
         :key="article.id">
-        <td> {{ getNameById(article.parent_board.id, $i18n.locale) }} </td>
         <td class="article-wrapper-big">
           <router-link
             :to="{
@@ -42,9 +40,9 @@
             {{ article.created_by.profile.nickname }}
           </router-link>
         </td>
-        <td class="has-text-right">{{ article.positive_vote_count }}</td>
-        <td class="has-text-right">{{ article.hit_count }}</td>
-        <td class="has-text-right">
+        <td class="has-text-right reaction">{{ article.positive_vote_count }}</td>
+        <td class="has-text-right views">{{ article.hit_count }}</td>
+        <td class="has-text-right time">
           <Timeago :time="article.created_at"/>
         </td>
       </tr>
@@ -86,13 +84,23 @@ en:
 <style lang="scss">
 @import '@/theme.scss';
 
-.post-table {
+.table.post-table {
   width: 100%;
-  margin: 0 0 0.75rem -0.75rem;
+
+  .reaction, .views, .time {
+    @media screen and (max-width: 700px){
+      display: none;
+    }
+  }
 
   thead th {
-    padding-bottom: 1em;
+    padding: 0 0 1rem 0;
   }
+
+  tbody td {
+    padding: 0 0 0.5rem 0;
+  }
+
   .post-table-title {
     min-width: 5rem;
   }

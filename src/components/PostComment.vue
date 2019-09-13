@@ -1,6 +1,7 @@
 <template>
   <div class="post-comment">
     <div class="comment-metadata">
+      <img :src="authorProfilePictureUrl" class="comment-author-profile-picture"/>
       <div class="comment-author"> {{ author }} </div>
       <div class="comment-time"> {{ date }} </div>
       <div class="dropdown is-right is-hoverable alignright">
@@ -28,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div class="comment-content"> {{ comment.content }} </div>
+    <div class="comment-content">{{comment.content}}</div>
     <a class="button button-default" @click="vote(true)"
       :class="{ 'button-selected': liked, 'is-loading': isVoting }">
       <span class="icon">
@@ -64,22 +65,27 @@
       />
       <div
         v-show="showRecommentInput"
-        class="recomment-input">
-        <div class="comment-metadata">
-          <div class="comment-author"> {{ userNickname }} </div>
-          <div class="comment-time"> {{ now }} </div>
-        </div>
-        <div class="comment-content">
-          <textarea
-            v-model="content"
-            class="textarea new-recomment"
-            cols="10"
-            rows="3"
-          />
+      >
+        <div
+          class="recomment-input">
+          <div class="comment-metadata">
+            <div class="comment-author"> {{ userNickname }} </div>
+            <div class="comment-time"> {{ now }} </div>
+          </div>
+          <div class="comment-content">
+            <textarea
+              placeholder="입력..."
+              v-model="content"
+              ref="recommentTextarea"
+              class="textarea new-recomment"
+              cols="10"
+              rows="3"
+            />
+          </div>
         </div>
         <button
           @click="saveRecomment"
-          class="button"
+          class="button button-submit"
           :class="{ 'is-loading': isUploading }"
           :disabled="isUploading">
           새 대댓글
@@ -114,6 +120,7 @@ export default {
     likedCount () { return this.comment.positive_vote_count },
     dislikedCount () { return this.comment.negative_vote_count },
     author () { return this.comment.created_by.profile.nickname },
+    authorProfilePictureUrl() { return this.comment.created_by.profile.picture },
     date () { return date(this.comment.created_at) },
     now () { return date(new Date()) },
     ...mapGetters([ 'userNickname' ])
@@ -131,6 +138,9 @@ export default {
     },
     toggleRecommentInput () {
       this.showRecommentInput = !this.showRecommentInput
+      this.$nextTick(() => {
+        this.$refs.recommentTextarea.focus()
+      })
     },
     async saveRecomment () {
       this.isUploading = true
@@ -155,17 +165,54 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.material-icons {
+  font-size: 15px;
+}
+
 .post-comment {
   margin: 1rem 0;
 }
 
+.textarea {
+  padding: 0px;
+}
+
+.recomment-input {
+  margin-top: 15px;
+  border: 1px solid rgba(0,0,0,0.3);
+  border-radius: 5px;
+  padding: 10px 15px 10px 15px;
+
+  &:hover {
+    border: 1px solid rgba(0,0,0,0.8);
+  }
+
+  .comment-content {
+    margin: 0px;
+  }
+}
+
 .comment-metadata {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  .comment-author-profile-picture {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+    border-radius: 100%;
+    margin-right: 10px;
+  }
+
   .comment-author {
     display: inline-block;
     font-weight: 700;
     padding-right: 0.75rem;
   }
   .comment-time {
+    font-size: 12px;
     display: inline-block;
     color: #888;
   }
@@ -173,6 +220,8 @@ export default {
 
 .comment-content {
   margin: 0.75rem 0;
+  white-space: pre-line;
+  word-break: break-all;
 }
 
 .post-recomments {
@@ -195,9 +244,21 @@ export default {
   padding: 0.375rem 0.4rem
 }
 
+.button-submit {
+  margin-top: 10px;
+  border: none;
+  background-color: #ED3A3A;
+  color: white;
+
+  &:hover {
+    color: white;
+    background-color: rgb(199, 45, 45);
+  }
+}
+
 .button-default {
   color: #888888;
-  // border: none;
+  border: none;
   font-size: 14px;
   margin-right: 5px;
   text-decoration: none;

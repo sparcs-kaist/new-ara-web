@@ -8,15 +8,15 @@
         </h1>
       </div>
 
-      <div slot="tools">
+      <div slot="tools" class="tools">
         <div class="search">
           <div class="field has-addons">
-            <div class="control">
+            <div class="control-input">
               <input
                 v-model="keywordToSearch"
-                class="input"
+                class="input input-search"
                 type="text"
-                placeholder="글 검색"
+                placeholder="입력..."
               />
             </div>
             <div class="control">
@@ -32,7 +32,7 @@
             </div>
           </div>
         </div>
-        <div class="write">
+        <div class="write ">
           <router-link
             :to="{
               name: 'write',
@@ -40,8 +40,8 @@
                 board: $route.params.boardSlug
               }
             }"
-            class="button is-text">
-            글 작성
+            class="button button-write">
+            새글 쓰기
           </router-link>
         </div>
       </div>
@@ -91,27 +91,54 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/theme.scss';
+// @import '@/theme.scss';
 
 .board-name {
   font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin: 0 0 1rem 0;
 }
 
-.search {
-  display: inline-block;
-  margin-right: 0.5rem;
-}
+.tools {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 
-.button.is-text {
-  color: $theme-red;
-  &:hover {
-    background-color: inherit;
+  @media screen and (max-width: 700px) {
+    flex-direction: column;
   }
-}
 
-.write {
-  display: inline-block;
+  .has-addons {
+    border: 1px solid rgba(0,0,0,0.5);
+    border-radius: 5px;
+  }
+  
+  
+  .search {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-right: 0.5rem;
+
+    @media screen and (max-width: 700px) {
+      margin-bottom: 0.5rem;
+    }
+
+    .field {
+      width: 100%;
+      
+      .control-input {
+        width: 100%;
+      }
+    }
+  }
+  
+  .button-write {
+    border: none;
+    color: white;
+    background-color: #ED3A3A;
+    width: 100%;
+  }
 }
 </style>

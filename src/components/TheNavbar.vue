@@ -2,7 +2,7 @@
   <!-- @TODO: Accessability
     aria-label="main navigation"
     role="navigation" -->
-  <nav class="navbar is-transparent">
+  <div class="navbar is-transparent">
     <!-- <TheNavbarFetchProgressBar/> -->
     <div class="navbar-brand">
       <TheNavbarAraLogo/>
@@ -50,7 +50,7 @@
           class="navbar-item">
           {{ $t('notification') }}
         </router-link>
-        <a
+        <!-- <a
           v-if="!isIE"
           @click="toggleDarkMode"
           id="toggle-dark-mode"
@@ -58,7 +58,7 @@
           <span class="icon">
             <i class="material-icons">invert_colors</i>
           </span>
-        </a>
+        </a> -->
         <a class="navbar-item"
           @click="$i18n.locale = $i18n.locale === 'en' ? 'ko' : 'en'"
           id="toggle-language">
@@ -69,16 +69,17 @@
         <router-link
           :to="{ name: 'settings' }"
           class="navbar-item user">
-          <span class="icon">
+          <!-- <span class="icon">
             <i class="material-icons">person</i>
-          </span>
+          </span> -->
+          <img :src="userPicture" class="picture-url"/>
           <span class="username">
             {{ userNickname }}
           </span>
         </router-link>
       </div>
     </div>
-  </nav>
+  </div>
 </template>
 
 <script>
@@ -98,7 +99,7 @@ export default {
   },
   computed: {
     ...mapState(['boardList']),
-    ...mapGetters(['userNickname']),
+    ...mapGetters(['userNickname', 'userPicture']),
     isIE () {
       return isIE()
     }
@@ -121,9 +122,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/theme.scss';
 .navbar {
-  // border-top: 5px solid $theme-red;
   border-top: 5px solid var(--theme-red);
-  margin-bottom: 1.5rem;
 
   // @TODO: Is ther a better way of achieving this..?
   .navbar-brand {
@@ -147,12 +146,74 @@ export default {
 
   // 왼쪽 음수 여백으로 줄맞춤
   .navbar-menu {
-    margin: 0 0.75rem 0 -0.75rem;
+    padding: 0;
+
+    .navbar-start, .navbar-end {
+      .navbar-item {
+        padding: 10px 0px 5px 15px;
+        
+        @media screen and (max-width: 1087px){
+          padding: 5px 0px 10px 15px;
+        }
+      }
+
+      .user {
+        margin: 0 15px;
+        font-weight: 700;
+      }
+    }
+
+    &.is-active {
+      box-shadow: 0px 3px 5px rgba(0,0,0,0.05);
+      padding-bottom: 15px;
+
+      @media screen and (min-width: 1088px)   {
+        box-shadow: none;
+        padding: 0;
+      }
+
+      .navbar-end {
+        .navbar-item.user {
+          font-weight: 700;
+
+          @media screen and (max-width: 1088px) {
+            width: 95%;
+            height: 90%;
+            margin: 0 auto;
+            padding: 10px 0;
+            background-color: rgba(0,0,0,0.65);
+  
+            border-radius: 5px;
+  
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+  
+            color: white;
+
+            &:hover {
+              background-color: rgba(0,0,0,0.75);
+            }
+          }
+        }
+      }
+    }
+      
   }
 
   .user .icon {
     padding-right: 0.5rem;
   }
+}
+
+.picture-url {
+  width: 23px;
+  height: 23px;
+  object-fit: cover;
+  
+  border-radius: 100%;
+  margin-right: 10px;
 }
 
 .notification.is-api-error {

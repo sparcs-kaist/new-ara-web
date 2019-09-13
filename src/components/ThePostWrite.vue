@@ -40,18 +40,7 @@
     <p class="help is-danger" v-if="isBoardEmpty && !boardId">게시판을 선택해주세요</p>
 
     <div class="content-wrapper">
-      <i 
-        class="material-icons content-warning"
-        v-if="isContentEmpty && !content">
-        warning
-      </i>
-      <VueEditor
-        v-model="content"
-        :editorOptions="{ }"
-        class="content-input"
-        :class="{ 'is-empty': isContentEmpty}"
-        placeholder="내용을 입력하세요"
-      />
+      <TextEditor ref="textEditor" editable="true"/>
     </div>
 
     <div class="attachment-input">
@@ -62,7 +51,7 @@
       />
     </div>
     <button
-      @click="$emit('save-post', { title, content, boardId, attachments })"
+      @click="savePostByThePostWrite"
       class="button post-publish-button"
       :class="{ 'is-loading': saving }"
     > 게시 </button>
@@ -72,6 +61,11 @@
 <script>
 import { VueEditor } from 'vue2-editor'
 import { mapState, mapGetters } from 'vuex'
+
+
+
+import TextEditor from '../components/TheTextEditor'
+// import { Editor,  EditorContent } from 'tiptap'
 
 export default {
   name: 'the-post-write',
@@ -111,9 +105,21 @@ export default {
     attachFiles (e) {
       this.attachments = [...e.target.files]
       e.target.value = null /* 같은 파일을 연속으로 첨부하려면 필요한 코드 */
+    },
+    savePostByThePostWrite() {
+      const { title, boradId, attachments } = this;
+      const postContent = JSON.stringify(this.$refs.textEditor.getContent())
+      this.$emit('save-post', 
+        {
+          title: this.title, 
+          content: postContent,
+          boardId: this.boardId,
+          attachments: this.attachments,
+        }
+      )
     }
   },
-  components: { VueEditor }
+  components: { TextEditor }
 }
 </script>
 
@@ -207,29 +213,5 @@ p.help.is-danger {
 </style>
 
 <style lang="scss">
-@import url('https://cdn.quilljs.com/1.3.6/quill.bubble.css');
 @import '@/theme.scss';
-#quill-container {
-  .ql-editor {
-    padding: 0;
-    &::before {
-      left: 0;
-      font-style: normal;
-      color: #888;
-    }
-  }
-}
-
-.quillWrapper.is-empty #quill-container .ql-editor::before {
-  color: $theme-red;
-}
-
-.quillWrapper .ql-snow.ql-toolbar {
-  border: none;
-  margin-left: -13pt;
-}
-
-.quillWrapper #quill-container.ql-container {
-  border: none;
-}
 </style>

@@ -1,62 +1,76 @@
 <template>
   <TheLayout>
-    <div class="field">
-      <label for="nickname" class="label"> 닉네임 </label>
-      <div class="control">
-        <input type="text"
-          id="nickname"
-          class="input"
-          v-model="nickname"
+    <div>
+
+      <div class="title">
+        내 프로필
+      </div>
+      <div class="profile-container">
+        <label class="label">
+          프로필
+        </label>
+        <img
+          :src="pictureSrc"
+          alt="프로필 사진"
+          class="image profile"
         />
       </div>
-    </div>
-    <div class="field">
-      <label for="sexual" class="checkbox">
-        <input type="checkbox"
-          id="sexual"
-          class="checkbox"
-          v-model="sexual"
-        />
-        성인글 보기
-      </label>
-    </div>
-    <div class="field">
-      <label for="social" class="checkbox">
-        <input type="checkbox"
-          id="social"
-          v-model="social"
-        />
-        정치글 보기
-      </label>
-    </div>
-    <div class="profile-container">
-      프로필
-      <img
-        :src="pictureSrc"
-        alt="프로필 사진"
-        class="image profile"
-      />
-    </div>
-    <br>
-    <div class="field">
-      <div class="control">
-        <input
-          type="file"
-          @change="pictureHandler "
-        />
+      <br>
+      <div class="field">
+        <div class="control">
+          <input
+            type="file"
+            @change="pictureHandler"
+          />
+        </div>
       </div>
+      <div class="field">
+        <label for="nickname" class="label"> 닉네임 </label>
+        <div class="control">
+          <input type="text"
+            id="nickname"
+            class="input input-nickname"
+            v-model="nickname"
+          />
+        </div>
+      </div>
+      <div class="fields-container">
+        <label class="label">추가 설정</label>
+        <div class="field">
+          <label for="sexual" class="checkbox">
+            <input type="checkbox"
+              id="sexual"
+              class="checkbox"
+              v-model="sexual"
+            />
+            성인글 보기
+          </label>
+        </div>
+        <div class="field">
+          <label for="social" class="checkbox">
+            <input type="checkbox"
+              id="social"
+              v-model="social"
+            />
+            정치글 보기
+          </label>
+        </div>
+      </div>
+      <button
+        class="button button-update"
+        :class="{ 'is-loading': updating }"
+        @click="updateSettings">
+        업데이트
+      </button>
     </div>
-    <TheSettingBlocks/>
-    <TheSettingReports/>
-    <button
-      class="button is-text"
-      :class="{ 'is-loading': updating }"
-      @click="updateSettings">
-      업데이트
-    </button>
+    <div class="title title-danger-zone">
+      Danger Zone
+    </div>
     <router-link
       :to="{ name: 'logout-handler' }">
-      로그아웃
+      <div class="button button-logout">
+        로그아웃
+      </div>
     </router-link>
   </TheLayout>
 </template>
@@ -119,7 +133,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.input-nickname {
+  border: 1px solid rgba(0,0,0,0.3);
+  font-size: 20px;
+
+  &:hover {
+    border: 1px solid rgba(0,0,0,0.8);
+  }
+}
+
 .profile-container {
   height: 5em;
   width: 5em;
@@ -130,5 +153,39 @@ export default {
   object-fit: cover;
   border-radius: 2.5em;
   border: 1px solid black;
+}
+
+.fields-container {
+  border-radius: 5px;
+  background-color: rgba(0,0,0,0.05);
+  padding: 15px;
+}
+
+.button-update {
+  margin-top: 10px;
+  transition: 150ms all ease-out;
+
+  &:hover {
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.1);
+    transition: 150ms all ease-in;
+  }
+}
+
+.title-danger-zone {
+  margin-top: 50px;
+  color: #ED3A3A;
+}
+
+.button-logout {
+  color: white;
+  border: none;
+  background-color: #ED3A3A;
+  font-weight: 700;
+  width: 100%;
+  height: 40px;
+
+  &:hover {
+    background-color: rgb(199, 45, 45);
+  }
 }
 </style>
