@@ -54,8 +54,14 @@
       </div> -->
     </div>
     <div>
-      <a class="button button-default"
-      :class="{ 'button-selected': liked }">
+      <!-- <a
+        class="button button-default"
+        :class="{ 'button-selected': liked }"
+      > -->
+      <!-- Todo: add like logic -->
+      <a
+        class="button button-default"
+      >
         <span class="icon">
           <i class="material-icons">thumb_up</i>
         </span>
@@ -63,8 +69,14 @@
           {{ postLikedCount }}
         </span>
       </a>
-      <a class="button button-default"
-        :class="{ 'button-selected': disliked }">
+      <!-- <a
+        class="button button-default"
+        :class="{ 'button-selected': disliked }"
+      > -->
+      <!-- Todo: add dislike logic -->
+      <a
+        class="button button-default"
+      >
         <span class="icon">
           <i class="material-icons">thumb_down</i>
         </span>
@@ -98,7 +110,7 @@ export default {
   },
   computed: {
     userPictureUrl () {
-      return this.post.created_by.profile.picture
+      return this.post.created_by && this.post.created_by.profile.picture
     },
     // @TODO: I18n
     boardName () {
@@ -112,6 +124,7 @@ export default {
     },
     postUserId () {
       return this.post.created_by.profile.id
+      // return null
     },
     postLikedCount () {
       return this.post.positive_vote_count
