@@ -35,7 +35,7 @@ export const createComment = (newComment) =>
   })
 
 export const votePost = (postId, action) =>
-  http.post(`comments/${postId}/${action}/`)
+  http.post(`articles/${postId}/${action}/`)
 
 export const voteComment = (commentId, action) =>
   http.post(`comments/${commentId}/${action}/`)

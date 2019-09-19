@@ -54,7 +54,7 @@
       </div> -->
     </div>
     <div>
-      <a class="button button-default"
+      <a class="button button-default" @click="vote(true)"
       :class="{ 'button-selected': liked }">
         <span class="icon">
           <i class="material-icons">thumb_up</i>
@@ -63,7 +63,7 @@
           {{ postLikedCount }}
         </span>
       </a>
-      <a class="button button-default"
+      <a class="button button-default" @click="vote(false)"
         :class="{ 'button-selected': disliked }">
         <span class="icon">
           <i class="material-icons">thumb_down</i>
@@ -78,7 +78,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { archivePost, reportPost } from '@/api'
+import { archivePost, reportPost, votePost } from '@/api'
 import { date } from '@/helper.js'
 import { fetchUser } from '@/api'
 import TextEditor from '../components/TheTextEditor'
@@ -93,10 +93,15 @@ export default {
       isArchiving: false,
       isReporting: false,
       editable: false,
+      isVoting: false,
       // pictureUrl: null,
     }
   },
   computed: {
+    liked() { return this.post.my_vote === true },
+    disliked() { return this.post.my_vote === false },
+    likedCount () { return this.post.positive_vote_count },
+    dislikedCount () { return this.post.negative_vote_count },
     userPictureUrl () {
       return this.post.created_by.profile.picture
     },
@@ -122,6 +127,13 @@ export default {
     ...mapGetters([ 'userId' ])
   },
   methods: {
+    async vote(ballot) {
+      this.isVoting = true
+      await votePost(this.post.id,
+      this.post.my_vote == ballot ? 'vote_cancel' : ballot ? 'vote_positive' : 'vote_negative')
+      this.$emit('vote')
+      this.isVoting = false
+    },
     async archive () {
       this.isArchiving = true
       await archivePost(this.post.id)
