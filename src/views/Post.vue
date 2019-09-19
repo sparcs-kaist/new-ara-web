@@ -1,6 +1,6 @@
 <template>
   <TheLayout>
-    <ThePostDetail :post="post"/>
+    <ThePostDetail :post="post" @vote="refresh"/>
     <ThePostComments
       :comments="post.comments"
       :postId="postId"
