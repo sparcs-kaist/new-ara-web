@@ -75,7 +75,7 @@ export default {
       boardId: '',
       title: '',
       content: '',
-      attachments: [],
+      attachment: null,
     }
   },
   computed: {
@@ -104,7 +104,11 @@ export default {
   methods: {
     attachFiles (e) {
       this.attachments = [...e.target.files]
-      e.target.value = null /* 같은 파일을 연속으로 첨부하려면 필요한 코드 */
+
+      // const reader = new FileReader()
+      // reader.onload = e => { this.}
+      // 같은 파일을 연속으로 첨부하려면 필요한 코드
+      // e.target.value = null 
     },
     savePostByThePostWrite() {
       const { title, boradId, attachments } = this;
