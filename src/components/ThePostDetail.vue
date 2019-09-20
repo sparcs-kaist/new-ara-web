@@ -49,9 +49,13 @@
     </div>
     <div class="content">
       <TextEditor :editable="editable" :content="JSON.parse(post.content)"/>
-      <!-- <div>
-        {{post.content}}
-      </div> -->
+    </div>
+    <div>
+      <img
+        v-for="url in pictureUrls"
+        :src="url"
+        :key="url"
+      />
     </div>
     <div>
       <a class="button button-default" @click="vote(true)"
@@ -78,7 +82,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { archivePost, reportPost, votePost } from '@/api'
+import { archivePost, reportPost, votePost, getAttachmentUrls } from '@/api'
 import { date } from '@/helper.js'
 import { fetchUser } from '@/api'
 import TextEditor from '../components/TheTextEditor'
@@ -94,7 +98,7 @@ export default {
       isReporting: false,
       editable: false,
       isVoting: false,
-      // pictureUrl: null,
+      pictureUrls: null,
     }
   },
   computed: {
@@ -126,6 +130,14 @@ export default {
     },
     ...mapGetters([ 'userId' ])
   },
+  updated() {
+    getAttachmentUrls(this.post.attachments)
+      .then(results => {
+        this.pictureUrls = results.map(( result ) => {
+          return result.data.file
+        })
+      })
+  },
   methods: {
     async vote(ballot) {
       this.isVoting = true
@@ -143,7 +155,7 @@ export default {
       this.isReporting = true
       await reportPost(this.post.id)
       this.isReporting = false
-    }
+    },
   },
   components: {
     TextEditor,
