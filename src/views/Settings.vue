@@ -120,7 +120,7 @@ export default {
     }
   },
   async beforeRouteEnter (to, from, next) {
-    await fetchWithProgress([ store.dispatch('fetchUser') ])
+    await fetchWithProgress([ store.dispatch('fetchMe') ])
     const { userNickname, userPicture, userConfig } = store.getters
     next(vm => {
       vm.nickname = userNickname

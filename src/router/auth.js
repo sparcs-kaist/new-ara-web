@@ -7,7 +7,7 @@ export const authGuard = async (to, from, next) => {
   } else {
     try {
       await Promise.all([
-        store.dispatch('fetchUser'),
+        store.dispatch('fetchMe'),
         store.dispatch('fetchBoardList')
       ])
       next()
@@ -33,8 +33,8 @@ export default [
   {
     path: '/login-handler',
     name: 'login-handler',
-    beforeEnter: ({ query: { jwt } }, from, next) => {
-      store.commit('updateJwt', jwt)
+    beforeEnter: ({ query: { token, user_id } }, from, next) => {
+      store.commit('updateToken', [ token, user_id ])
       next('/')
     }
   },
@@ -42,7 +42,7 @@ export default [
     path: '/logout',
     name: 'logout-handler',
     beforeEnter: (to, from, next) => {
-      store.commit('deleteJwt')
+      store.commit('deleteToken')
       next('/login')
     }
   }

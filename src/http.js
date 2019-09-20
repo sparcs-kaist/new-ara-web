@@ -24,7 +24,7 @@ const instance = axios.create({
      */
     Authorization: {
       toString () {
-        return `JWT ${store.state.auth.jwt}`
+        return `Token ${store.state.auth.token}`
       }
     }
   }
@@ -52,15 +52,8 @@ instance.interceptors
   .response.use(
     resp => resp,
     err => {
-      const { exp } = store.getters.jwtPayload // jwt의 만기 시점 (초 단위)
-      const now = Date.now() / 1000 // 현재 시점 (초 단위)
-
-      if (exp < now) {
-        // @TODO: 세션 만료였다는 메시지가 필요하려나? 백엔드 설정 변경을 확인하자.
-        // 세션 만료가 없어지면 굳이 이 부분이 필요 없을테니.
+      if (err.response.status === 401) {
         router.push('/logout')
-      } else {
-        store.dispatch('fetch/showError', '서버 통신 장애')
       }
 
       return Promise.reject(err)

@@ -1,4 +1,4 @@
-import { fetchUser, updateDarkMode } from '@/api'
+import { fetchMe, fetchUser, updateDarkMode } from '@/api'
 
 const setDarkMode = (darkMode) => {
   localStorage.darkMode = darkMode
@@ -12,38 +12,33 @@ const setDarkMode = (darkMode) => {
   }
 }
 
-const hydrate = () => {
-  setDarkMode(localStorage.darkMode === 'true')
-  // @TODO: validity check 이거면 충분한가?
-  const JWT_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/
-  if (JWT_REGEX.test(localStorage.jwt)) {
-    return localStorage.jwt
-  } else {
-    delete localStorage.jwt
-    return ''
-  }
-}
+// const hydrate = () => {
+//   setDarkMode(localStorage.darkMode === 'true')
+//   return localStorage.token
+// }
 
 export default {
   state: {
-    jwt: hydrate(),
-    userProfile: {}
+    token: localStorage.token,
+    userProfile: {},
+    userId: localStorage.userId
   },
   getters: {
-    isLoggedIn ({ jwt }) {
-      return !!jwt
+    isLoggedIn ({ token }) {
+      return !!token
     },
-    jwtPayload ({ jwt }) {
-      if (jwt) {
-        return JSON.parse(atob(jwt.split('.')[1]))
-      } else {
-        return {}
-      }
+    userId ({ userId }) {
+      return userId
     },
-    userId ({ jwt }) { return JSON.parse(atob(jwt.split('.')[1])).user_id },
-    hasFetched ({ userProfile }) { return Object.keys(userProfile).length !== 0 },
-    userNickname ({ userProfile: { nickname } }) { return nickname },
-    userPicture ({ userProfile: { picture } }) { return picture },
+    hasFetched ({ userProfile }) {
+      return Object.keys(userProfile).length !== 0
+    },
+    userNickname ({ userProfile: { nickname } }) {
+      return nickname
+    },
+    userPicture ({ userProfile: { picture } }) {
+      return picture
+    },
     userConfig ({ userProfile: { see_sexual: sexual, see_social: social } }) {
       return { sexual, social }
     },
@@ -52,13 +47,17 @@ export default {
     }
   },
   mutations: {
-    updateJwt (state, newJwt) {
-      state.jwt = newJwt
-      localStorage.jwt = newJwt
+    updateToken (state, [ newToken, newUserId ]) {
+      state.token = newToken
+      state.userId = newUserId
+      localStorage.token = newToken
+      localStorage.userId = newUserId
     },
-    deleteJwt (state) {
-      state.jwt = ''
-      delete localStorage.jwt
+    deleteToken (state) {
+      state.token = ''
+      state.userId = 0
+      delete localStorage.token
+      delete localStorage.userId
     },
     setUserProfile (state, userProfile) {
       const darkMode = userProfile.extra_preferences && userProfile.extra_preferences.darkMode
@@ -68,13 +67,13 @@ export default {
     }
   },
   actions: {
-    async fetchUser ({ commit, getters: { hasFetched, userId } }) {
+    async fetchMe ({ commit, getters: { userId, hasFetched } }) {
       if (!hasFetched) {
         commit('setUserProfile', await fetchUser(userId))
       }
     },
-    async toggleDarkMode ({ commit, getters: { isDarkModeEnabled, userId } }) {
-      commit('setUserProfile', await updateDarkMode(userId, !isDarkModeEnabled))
+    async toggleDarkMode ({ commit, getters: { isDarkModeEnabled } }) {
+      commit('setUserProfile', await updateDarkMode(!isDarkModeEnabled))
     }
   }
 }

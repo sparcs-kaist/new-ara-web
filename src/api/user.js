@@ -1,6 +1,11 @@
 import http from '@/http.js'
 import { queryBuilder } from '@/helper.js'
 
+export const fetchMe = () => {
+  http.get('me')
+    .then(({ data }) => data)
+}
+
 export const fetchUser = (userId) =>
   http.get(`user_profiles/${userId}/`)
     .then(({ data }) => data)
