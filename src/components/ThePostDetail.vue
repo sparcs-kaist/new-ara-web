@@ -50,7 +50,7 @@
     <div class="content">
       <TextEditor :editable="editable" :content="JSON.parse(post.content)"/>
     </div>
-    <div>
+    <div v-if="pictureUrls && pictureUrls.length !== 0">
       <img
         v-for="url in pictureUrls"
         :src="url"
@@ -131,12 +131,14 @@ export default {
     ...mapGetters([ 'userId' ])
   },
   updated() {
-    getAttachmentUrls(this.post.attachments)
-      .then(results => {
-        this.pictureUrls = results.map(( result ) => {
-          return result.data.file
+    if (this.post.attachments && this.post.attachments.length !== 0) {
+      getAttachmentUrls(this.post.attachments)
+        .then(results => {
+          this.pictureUrls = results.map(( result ) => {
+            return result.data.file
+          })
         })
-      })
+    }
   },
   methods: {
     async vote(ballot) {
