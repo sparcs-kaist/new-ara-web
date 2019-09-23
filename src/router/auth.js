@@ -33,8 +33,8 @@ export default [
   {
     path: '/login-handler',
     name: 'login-handler',
-    beforeEnter: ({ query: { token, user_id } }, from, next) => {
-      store.commit('updateToken', [ token, user_id ])
+    beforeEnter: ({ query: { token } }, from, next) => {
+      store.commit('updateToken', token)
       next('/')
     }
   },

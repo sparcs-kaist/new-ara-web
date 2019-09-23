@@ -54,6 +54,9 @@ instance.interceptors
     err => {
       if (err.response.status === 401) {
         router.push('/logout')
+      } else if (err.response.status === 404) {
+        alert("Login failed")
+        router.push('/logout')
       }
 
       return Promise.reject(err)
