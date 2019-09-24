@@ -23,7 +23,10 @@
               }">
               수정
             </router-link>
-            <a v-if="postUserId === userId" href="#" class="dropdown-item">
+            <a v-if="postUserId === userId"
+              @click="deletePost"
+              href="#"
+              class="dropdown-item">
               삭제
             </a>
             <a v-else class="dropdown-item"
@@ -82,7 +85,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { archivePost, reportPost, votePost, getAttachmentUrls } from '@/api'
+import { archivePost, reportPost, votePost, deletePost, getAttachmentUrls } from '@/api'
 import { date } from '@/helper.js'
 import { fetchUser } from '@/api'
 import TextEditor from '../components/TheTextEditor'
@@ -120,7 +123,7 @@ export default {
       return date(this.post.created_at)
     },
     postUserId () {
-      return this.post.created_by.profile.id
+      return this.post.created_by.profile.user_id
     },
     postLikedCount () {
       return this.post.positive_vote_count
@@ -158,6 +161,10 @@ export default {
       await reportPost(this.post.id)
       this.isReporting = false
     },
+    async deletePost() {
+      await deletePost(this.post.id)
+      this.$router.push('/')
+    }
   },
   components: {
     TextEditor,

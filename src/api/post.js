@@ -27,6 +27,9 @@ export const archivePost = (postId) =>
 export const reportPost = (postId) =>
   http.post('reports/', { parent_article: postId, reported_by: 1 })
 
+export const deletePost = (postId) =>
+  http.delete(`articles/${postId}`)
+
 export const createComment = (newComment) =>
   http.post('comments/', {
     ...newComment,
