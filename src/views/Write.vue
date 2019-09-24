@@ -57,15 +57,17 @@ export default {
 
       this.saving = true
 
-      let attachmentIds
-      try {
-        attachmentIds = (await uploadAttachments(attachments))
-          .map(result => result.data.id)
-      } catch (err) {
-        /* @TODO: 에러 핸들링 */
-        alert('Failed to upload attachments!')
-        this.saving = false
-        return
+      let attachmentIds = []
+      if (attachments) {
+        try {
+          attachmentIds = (await uploadAttachments(attachments))
+            .map(result => result.data.id)
+        } catch (err) {
+          /* @TODO: 에러 핸들링 */
+          alert('Failed to upload attachments!')
+          this.saving = false
+          return
+        }
       }
 
       newArticle = {
