@@ -131,7 +131,7 @@ export default {
     ...mapGetters([ 'userId' ])
   },
   updated() {
-    if (this.post.attachments && this.post.attachments.length !== 0) {
+    if (this.post.attachments && this.post.attachments.length !== 0 && this.pictureUrls === null) {
       getAttachmentUrls(this.post.attachments)
         .then(results => {
           this.pictureUrls = results.map(( result ) => {
