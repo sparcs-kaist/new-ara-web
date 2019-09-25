@@ -25,12 +25,12 @@
         </a>
       </div>
     </div>
-    <div class="footer-contact">
+    <!-- <div class="footer-contact">
       {{ $t('contact') }}:
       <a href="mailto:ara@sparcs.kaist.ac.kr">
         ara@sparcs.kaist.ac.kr
       </a>
-    </div>
+    </div> -->
   </footer>
 </template>
 
