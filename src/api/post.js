@@ -30,6 +30,9 @@ export const reportPost = (postId) =>
 export const deletePost = (postId) =>
   http.delete(`articles/${postId}`)
 
+export const votePost = (postId, action) =>
+  http.post(`articles/${postId}/${action}/`)
+
 export const createComment = (newComment) =>
   http.post('comments/', {
     ...newComment,
@@ -37,14 +40,14 @@ export const createComment = (newComment) =>
     attachment: null
   })
 
-export const votePost = (postId, action) =>
-  http.post(`articles/${postId}/${action}/`)
-
 export const voteComment = (commentId, action) =>
   http.post(`comments/${commentId}/${action}/`)
 
 export const reportComment = (commentId) =>
   http.post('reports/', { parent_comment: commentId, reported_by: 1 })
+
+export const deleteComment = (commentId) =>
+  http.delete(`comments/${commentId}`)
 
 export const uploadAttachments = (attachments) => {
   const generateFormData = (file) => {

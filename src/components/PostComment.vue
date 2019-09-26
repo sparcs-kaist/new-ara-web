@@ -18,7 +18,11 @@
               <a v-if="userNickname === author" href="#" class="dropdown-item">
                 수정
               </a>
-              <a v-if="userNickname === author" href="#" class="dropdown-item">
+              <a
+                v-if="userNickname === author"
+                @click="deleteComment"
+                class="dropdown-item"
+              >
                 삭제
               </a>
               <a v-else href="#" class="dropdown-item">
@@ -97,7 +101,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { createComment, voteComment } from '@/api'
+import { createComment, voteComment, deleteComment } from '@/api'
 import { date } from '@/helper.js'
 import PostRecomment from '@/components/PostRecomment.vue'
 
@@ -158,6 +162,10 @@ export default {
       } finally {
         this.isUploading = false
       }
+    },
+    async deleteComment () {
+      await deleteComment(this.comment.id)
+      this.$emit('delete')
     }
   },
   components: { PostRecomment }

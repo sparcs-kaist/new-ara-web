@@ -13,7 +13,8 @@
         :key="comment.id"
         :comment="comment"
         @new-recomment-uploaded="$emit('new-recomment-uploaded', $event)"
-        @vote="$emit('vote')"
+        @vote="$emit('refresh')"
+        @delete="$emit('refresh')"
       />
     <div class="title">
       새 댓글 작성
