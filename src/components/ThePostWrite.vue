@@ -54,7 +54,9 @@
       @click="savePostByThePostWrite"
       class="button post-publish-button"
       :class="{ 'is-loading': saving }"
-    > 게시 </button>
+    >
+      게시
+    </button>
   </div>
 </template>
 
@@ -200,17 +202,4 @@ p.help.is-danger {
 .attachment-input {
   margin-bottom: 1.5rem;
 }
-
-.post-publish-button {
-  border: 0;
-  padding: 0;
-  color: $theme-red;
-  &:hover {
-    text-decoration: underline;
-  }
-}
-</style>
-
-<style lang="scss">
-@import '@/theme.scss';
 </style>
