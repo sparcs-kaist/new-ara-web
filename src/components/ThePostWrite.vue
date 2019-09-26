@@ -59,13 +59,8 @@
 </template>
 
 <script>
-import { VueEditor } from 'vue2-editor'
 import { mapState, mapGetters } from 'vuex'
-
-
-
 import TextEditor from '../components/TheTextEditor'
-// import { Editor,  EditorContent } from 'tiptap'
 
 export default {
   name: 'the-post-write',
