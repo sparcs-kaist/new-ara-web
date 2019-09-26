@@ -4,9 +4,9 @@ import router from './router'
 
 const apiUrl = (function() {
   if (process.env.NODE_ENV === "production") {
-    return 'https://naver.com'
-  } else if (process.env.NODE_ENV === "development") {
     return 'https://beta.ara-api.sparcs.org'
+  } else if (process.env.NODE_ENV === "development") {
+    return 'https://dev.ara-api.sparcs.org'
   } else {
     throw Error
   }
