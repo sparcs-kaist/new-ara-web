@@ -21,7 +21,7 @@ export const timeago = Timeago(null, 'ko_KR')
 
 export const date = timeString => {
   const time = new Date(timeString)
-  return `${time.getMonth()}월 ${time.getDate()}일`
+  return `${time.getMonth() + 1}월 ${time.getDate()}일`
 }
 
 export const range = (m, n = null) => {
