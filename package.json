@@ -6,13 +6,14 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit",
+    "build-storybook": "build-storybook",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
     "axios": "^0.18.1",
     "bulma": "^0.7.1",
+    "register-service-worker": "^1.6.2",
     "timeago.js": "^3.0.2",
     "tiptap": "^1.25.0",
     "tiptap-extensions": "^1.27.0",
@@ -30,6 +31,7 @@
     "@storybook/vue": "^5.1.11",
     "@vue/cli-plugin-babel": "^3.11.0",
     "@vue/cli-plugin-eslint": "^3.0.0-beta.15",
+    "@vue/cli-plugin-pwa": "^3.11.0",
     "@vue/cli-plugin-unit-jest": "^3.0.0-beta.15",
     "@vue/cli-service": "^3.11.0",
     "@vue/eslint-config-standard": "^3.0.0-rc.3",
