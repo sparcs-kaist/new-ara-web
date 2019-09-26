@@ -2,7 +2,15 @@ import axios from 'axios'
 import store from './store'
 import router from './router'
 
-const apiUrl = 'https://beta.ara-api.sparcs.org'
+const apiUrl = (function() {
+  if (process.env.NODE_ENV === "production") {
+    return 'https://naver.com'
+  } else if (process.env.NODE_ENV === "development") {
+    return 'https://beta.ara-api.sparcs.org'
+  } else {
+    throw Error
+  }
+}())
 const baseApiAddress = `${apiUrl}/api/`
 
 const instance = axios.create({
