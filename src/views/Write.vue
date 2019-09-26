@@ -45,13 +45,14 @@ export default {
       if (title === '') {
         this.isTitleEmpty = true
       }
-      if (content === '') {
+      if (content === '{"type":"doc","content":[{"type":"paragraph"}]}') {
         this.isContentEmpty = true
+        alert('Cannot post empty article')
       }
       if (boardId === '') {
         this.isBoardEmpty = true
       }
-      if (title === '' || content === '' || boardId === '') {
+      if (this.isTitleEmpty || this.isContentEmpty || this.isBoardEmpty) {
         return
       }
 
