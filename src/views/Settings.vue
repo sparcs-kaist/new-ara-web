@@ -105,6 +105,8 @@ export default {
           picture: this.picture,
           sexual: this.sexual,
           social: this.social
+        }).then(res => {
+          store.commit('setUserProfile', res.data)
         })
       } catch (err) {
         store.dispatch('error', '설정 변경 중 문제가 발생했습니다.')
