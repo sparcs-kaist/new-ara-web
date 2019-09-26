@@ -6,7 +6,7 @@
       :postId="postId"
       @new-comment-uploaded="addNewComment"
       @new-recomment-uploaded="addNewRecomment"
-      @vote="refresh"
+      @refresh="refresh"
     />
     <!-- @TODO: <TheBoard :board="board"/> -->
   </TheLayout>
