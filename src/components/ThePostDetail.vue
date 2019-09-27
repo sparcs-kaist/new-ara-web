@@ -51,7 +51,7 @@
       </div>
     </div>
     <div class="content">
-      <TextEditor :editable="editable" :content="JSON.parse(post.content)"/>
+      <TextEditor :editable="editable" :content="post.content"/>
     </div>
     <div v-if="pictureUrls && pictureUrls.length !== 0">
       <img

@@ -67,7 +67,7 @@ export default {
             showOnlyWhenEditable: true,
           }),
         ],
-        content: this.content,
+        content: JSON.parse(this.content),
         editable: this.editable,
       }),
     }

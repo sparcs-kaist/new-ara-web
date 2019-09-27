@@ -40,7 +40,11 @@
     <p class="help is-danger" v-if="isBoardEmpty && !boardId">게시판을 선택해주세요</p>
 
     <div class="content-wrapper">
-      <TextEditor ref="textEditor" editable="true"/>
+      <TextEditor
+        ref="textEditor"
+        editable="true"
+        :content="initialPostContent"
+      />
     </div>
 
     <div class="attachment-input">
@@ -54,7 +58,9 @@
       @click="savePostByThePostWrite"
       class="button post-publish-button"
       :class="{ 'is-loading': saving }"
-    > 게시 </button>
+    >
+      게시
+    </button>
   </div>
 </template>
 
@@ -83,6 +89,9 @@ export default {
         return '제목'
       }
     },
+    initialPostContent() {
+      return this.post ? this.post.content : null
+    }
   },
   created () {
     if (this.post) {
@@ -99,11 +108,6 @@ export default {
   methods: {
     attachFiles (e) {
       this.attachments = [...e.target.files]
-
-      // const reader = new FileReader()
-      // reader.onload = e => { this.}
-      // 같은 파일을 연속으로 첨부하려면 필요한 코드
-      // e.target.value = null 
     },
     savePostByThePostWrite() {
       const { title, boradId, attachments } = this;
@@ -200,17 +204,4 @@ p.help.is-danger {
 .attachment-input {
   margin-bottom: 1.5rem;
 }
-
-.post-publish-button {
-  border: 0;
-  padding: 0;
-  color: $theme-red;
-  &:hover {
-    text-decoration: underline;
-  }
-}
-</style>
-
-<style lang="scss">
-@import '@/theme.scss';
 </style>

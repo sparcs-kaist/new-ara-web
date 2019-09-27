@@ -15,9 +15,9 @@
         <div class="dropdown-menu no-border" id="dropdownMenu" role="menu">
           <div class="dropdown-content">
             <div class="dropdown-item">
-              <a v-if="userNickname === author" href="#" class="dropdown-item">
+              <!-- <a v-if="userNickname === author" href="#" class="dropdown-item">
                 수정
-              </a>
+              </a> -->
               <a
                 v-if="userNickname === author"
                 @click="deleteComment"
