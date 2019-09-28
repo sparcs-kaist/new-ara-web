@@ -10,8 +10,6 @@
     <img src="https://api.netlify.com/api/v1/badges/3a7e4374-00d4-4773-b170-95fc638526e6/deploy-status"/>
     <img src="https://img.shields.io/badge/version-1.0-informational.svg" />
     <img src="https://img.shields.io/badge/stage-OBT-critical.svg" />
-  </p>
-  <p align="center">
     <img src="https://img.shields.io/badge/license-MIT-black.svg" />
     <img src="https://img.shields.io/badge/vue-2.x-41b883.svg" />
   </p>
