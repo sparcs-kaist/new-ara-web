@@ -1,7 +1,28 @@
-# 뉴아라
-카이스트 교내 커뮤니티 ARA 의 리뉴얼 프로젝트입니다.
+<br />
+<br />
+<br />
+<p align="center">
+  <a href="https://github.com/github_username/repo">
+    <img src="src/assets/Services-Ara.png" alt="Logo" height="150">
+  </a>
+  
+  <p align="center">
+    <img src="https://api.netlify.com/api/v1/badges/3a7e4374-00d4-4773-b170-95fc638526e6/deploy-status"/>
+    <img src="https://img.shields.io/badge/version-1.0-informational.svg" />
+    <img src="https://img.shields.io/badge/stage-OBT-critical.svg" />
+  </p>
+  
+  <p align="center">
+    All-new ara with modern JS, designed and developed by SPARCS
+    <br />
+    <a href="https://ara-beta.sparcs.org">Go to Ara</a>
+  </p>
+</p>
 
-Dev STATUS: [![Netlify Status](https://api.netlify.com/api/v1/badges/a1e1b687-1eae-4516-bd8e-507ebcb912c3/deploy-status)](https://app.netlify.com/sites/peaceful-kilby-e7455d/deploys)
+# About
+new-ara 는 카이스트 교내 커뮤니티인 ARA 의 리뉴얼 프로젝트입니다. KAIST 오픈소스 동아리 SPARCS 에서 개발하고 있습니다.
+
+
 ## 개발
 ```bash
 # 의존성 설치
