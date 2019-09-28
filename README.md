@@ -12,8 +12,8 @@
     <img src="https://img.shields.io/badge/stage-OBT-critical.svg" />
   </p>
   <p align="center">
-    <img src="https://img.shields.io/badge/vue-2.x-41b883.svg" />
     <img src="https://img.shields.io/badge/license-MIT-black.svg" />
+    <img src="https://img.shields.io/badge/vue-2.x-41b883.svg" />
   </p>
   
   <p align="center">
