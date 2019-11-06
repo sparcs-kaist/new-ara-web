@@ -48,13 +48,13 @@ import {
   Bold,
   Code,
   Heading,
-  Placeholder,
+  Placeholder
 } from 'tiptap-extensions'
 
 export default {
   name: 'the-text-editor',
   props: ['showOnly', 'content', 'editable'],
-  data() {
+  data () {
     return {
       editor: new Editor({
         extensions: [
@@ -64,25 +64,25 @@ export default {
           new Placeholder({
             emptyNodeClass: 'is-empty',
             emptyNodeText: 'Write something …',
-            showOnlyWhenEditable: true,
-          }),
+            showOnlyWhenEditable: true
+          })
         ],
-        content: JSON.parse(this.content),
-        editable: this.editable,
-      }),
+        content: this.content,
+        editable: this.editable
+      })
     }
   },
   methods: {
-    getContent() {
-      return this.editor.getJSON()
-    },
+    getContent () {
+      return this.editor.getHTML()
+    }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     this.editor.destroy()
   },
   components: {
     EditorContent,
-    EditorMenuBar,
+    EditorMenuBar
   }
 }
 </script>
@@ -123,7 +123,6 @@ export default {
       }
     }
   }
-
 
   p::before {
     content: attr(data-empty-text);
