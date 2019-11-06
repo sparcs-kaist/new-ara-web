@@ -71,7 +71,7 @@ import store from '@/store'
 
 export default {
   name: 'the-post-write',
-  props: [ 'post', 'saving', 'isTitleEmpty', 'isContentEmpty', 'isBoardEmpty', 'preselectedBoard' ],
+  props: [ 'post', 'saving', 'isTitleEmpty', 'isContentEmpty', 'isBoardEmpty' ],
   data () {
     return {
       boardId: '',
