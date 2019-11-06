@@ -67,10 +67,11 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import TextEditor from '../components/TheTextEditor'
+import store from '@/store'
 
 export default {
   name: 'the-post-write',
-  props: [ 'post', 'saving', 'isTitleEmpty', 'isContentEmpty', 'isBoardEmpty' ],
+  props: [ 'post', 'saving', 'isTitleEmpty', 'isContentEmpty', 'isBoardEmpty', 'preselectedBoard' ],
   data () {
     return {
       boardId: '',
@@ -99,10 +100,10 @@ export default {
       this.title = this.post.title
       this.content = this.post.content
     }
-    const { board_slug: boardSlug } = this.$route.query
-    if (boardSlug) {
+    const { board } = this.$route.query
+    if (board) {
       /* 글 수정인데 글의 parent board와 url query의 board가 다르면 url query의 board를 따른다. */
-      this.boardId = this.getIdBySlug(boardSlug)
+      this.boardId = store.getters.getIdBySlug(board)
     }
   },
   methods: {
