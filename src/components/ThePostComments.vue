@@ -31,6 +31,8 @@
           class="textarea new-comment"
           cols="10"
           rows="3"
+          @keydown.meta.enter="saveComment"
+          @keydown.ctrl.enter="saveComment"
         />
       </div>
     </div>
