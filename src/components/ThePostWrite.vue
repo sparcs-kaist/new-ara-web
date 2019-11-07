@@ -1,9 +1,8 @@
 <template>
   <div>
     <h1 id="title"> 글쓰기 </h1>
-
     <div class="title-wrapper">
-      <i 
+      <i
         class="material-icons title-warning"
         v-if="isTitleEmpty && !title">
         warning
@@ -21,7 +20,7 @@
       :class="{
         'is-placeholder': !boardId,
       }" >
-      <i 
+      <i
         class="material-icons board-warning"
         v-if="isBoardEmpty && !boardId">
         warning
@@ -77,20 +76,20 @@ export default {
       boardId: '',
       title: '',
       content: '',
-      attachment: null,
+      attachment: null
     }
   },
   computed: {
     ...mapState([ 'boardList' ]),
     ...mapGetters([ 'getIdBySlug' ]),
-    titlePlaceholder: function() {
+    titlePlaceholder: function () {
       if (this.isTitleEmpty) {
         return '제목을 입력하세요'
       } else {
         return '제목'
       }
     },
-    initialPostContent() {
+    initialPostContent () {
       return this.post ? this.post.content : null
     }
   },
@@ -110,15 +109,15 @@ export default {
     attachFiles (e) {
       this.attachments = [...e.target.files]
     },
-    savePostByThePostWrite() {
-      const { title, boradId, attachments } = this;
-      const postContent = JSON.stringify(this.$refs.textEditor.getContent())
-      this.$emit('save-post', 
+    savePostByThePostWrite () {
+      const { title, boardId, attachments } = this
+      const content = this.$refs.textEditor.getContent()
+      this.$emit('save-post',
         {
-          title: this.title, 
-          content: postContent,
-          boardId: this.boardId,
-          attachments: this.attachments,
+          title,
+          content,
+          boardId,
+          attachments
         }
       )
     }
