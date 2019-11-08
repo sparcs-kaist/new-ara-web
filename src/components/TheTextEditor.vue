@@ -49,7 +49,7 @@
       <EditorContent :editor="editor" class="editor-content" />
     </div>
 
-    <div class="dialogs">
+    <div class="dialogs" v-if="!showOnly">
       <TheTextEditorImageDialog ref="imageDialog" @attach-files="attachFiles" />
     </div>
   </div>
@@ -62,9 +62,9 @@ import {
   Code,
   Heading,
   History,
-  Image,
   Placeholder
 } from 'tiptap-extensions'
+import AttachmentImage from '@/editor/AttachmentImage'
 import TheTextEditorImageDialog from '@/components/TheTextEditorImageDialog'
 
 export default {
@@ -74,11 +74,11 @@ export default {
     return {
       editor: new Editor({
         extensions: [
+          new AttachmentImage(),
           new Bold(),
           new Code(),
           new Heading({ levels: [1] }),
           new History(),
-          new Image(),
           new Placeholder({
             emptyNodeClass: 'is-empty',
             emptyNodeText: 'Write something …',
@@ -99,14 +99,53 @@ export default {
     showImageDialog (callback) {
       this.$refs.imageDialog.showDialog(imageUrl => {
         if (imageUrl) {
-          const result = callback({ src: imageUrl })
-          console.log(result)
+          callback({ src: imageUrl })
         }
       })
     },
 
     attachFiles (files) {
       this.$emit('attach-files', files)
+    },
+
+    addImageByFile (file) {
+      if (file.blobUrl) {
+        this.editor.commands.attachmentImage({
+          src: file.blobUrl,
+          'data-attachment': file.key
+        })
+      }
+    },
+
+    removeImageByFile (file) {
+      let imagePosition = null;
+
+      this.editor.state.doc.descendants((node, pos) => {
+        if (imagePosition !== null) return false
+
+        if (node.type.name !== 'attachmentImage') return true
+        if (node.attrs['data-attachment'] === file.key) {
+          imagePosition = pos
+          return false
+        }
+      })
+
+      const transaction = this.editor.state.tr.delete(imagePosition, imagePosition + 1)
+      this.editor.view.dispatch(transaction)
+    },
+
+    applyImageUpload (attachmentUpdate) {
+      this.editor.state.doc.descendants(node => {
+        if (node.type.name !== 'attachmentImage') return true
+
+        const fileKey = node.attrs['data-attachment']
+        const newItem = attachmentUpdate[fileKey]
+
+        if (newItem) {
+          node.attrs['data-attachment'] = newItem.id
+          node.attrs['src'] = newItem.file // TODO is it correct?
+        }
+      })
     }
   },
 

@@ -63,6 +63,9 @@ export default {
       const dataTransfer = event.clipboardData || window.clipboardData
       if (!dataTransfer) return
 
+      event.preventDefault()
+      event.stopPropagation()
+
       const items = [...dataTransfer.items]
       const files = items
         .filter(item => item.type.split('/')[0] === 'image')

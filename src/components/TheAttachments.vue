@@ -34,6 +34,18 @@ const ALLOWED_EXTENSIONS = [
   'png', 'jpg'
 ]
 
+/*
+* UploadObject {
+*   key: String, Random string if it is local, S3 id if is remote
+*   name: String, file name
+*   type: String, mime type before the slash
+*   uploaded: Boolean, true if it is remote, false if it is local
+*   file?: File, exists only if it is local
+*   url?: String, url of file if it is remote
+*   blobUrl?: String, url of thumbnail if it is image file
+* }
+*/
+
 export default {
   data () {
     return {
@@ -58,6 +70,12 @@ export default {
   },
 
   methods: {
+    init (attachmentIds) {
+      attachmentIds.forEach(id => {
+        // TODO
+      })
+    },
+
     handleUpload (fileList) {
       const files = [...fileList]
       const [success, error] = files.reduce(([success, error], file) => {
@@ -66,7 +84,8 @@ export default {
           key: Math.random().toString(36).slice(2),
           type: file.type.split('/')[0],
           name: file.name,
-          file
+          file,
+          uploaded: false
         }
 
         if (!ALLOWED_EXTENSIONS.includes(extension)) {
@@ -88,7 +107,7 @@ export default {
       }
 
       this.files.push(...success)
-      this.$emit('change', this.files)
+      this.$emit('add', success)
     },
 
     handleDropUpload (event) {

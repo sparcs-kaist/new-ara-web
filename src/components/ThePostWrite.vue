@@ -51,8 +51,8 @@
       <Attachments
         ref="attachments"
         multiple
-        @change="setAttachments"
-        @delete="checkIsImageAndDelete">
+        @add="addAttachments"
+        @delete="deleteAttachment">
       </Attachments>
     </div>
     <button
@@ -78,7 +78,7 @@ export default {
       boardId: '',
       title: '',
       content: '',
-      attachment: null
+      attachments: []
     }
   },
   computed: {
@@ -100,6 +100,9 @@ export default {
       this.boardId = this.post.parent_board.id
       this.title = this.post.title
       this.content = this.post.content
+      this.attachments = this.post.attachments
+
+      this.$refs.attachments.init(this.attachments)
     }
     const { board_slug: boardSlug } = this.$route.query
     if (boardSlug) {
@@ -112,26 +115,43 @@ export default {
       this.$refs.attachments.handleUpload(files)
     },
 
-    setAttachments (e) {
-      const attachments = e
-      this.attachments = attachments.map(v => v.files)
+    addAttachments (attachments) {
+      this.attachments = this.attachments.concat(attachments)
+
+      attachments.forEach(file => {
+        if (file.type === 'image') {
+          this.$refs.textEditor.addImageByFile(file)
+        }
+      })
     },
 
-    checkIsImageAndDelete (file) {
-      
+    deleteAttachment (file) {
+      if (file.uploaded) {
+        // TODO delete file from server
+      }
+
+      if (file.type === 'image') {
+        this.$refs.textEditor.removeImageByFile(file)
+      }
     },
 
     savePostByThePostWrite () {
       const { title, boardId, attachments } = this
-      const content = this.$refs.textEditor.getContent()
       this.$emit('save-post',
         {
           title,
-          content,
           boardId,
           attachments
         }
       )
+    },
+
+    updateAttachments (attachmentUpdate) {
+      this.$refs.textEditor.applyImageUpload(attachmentUpdate)
+    },
+
+    getContent () {
+      return this.$refs.textEditor.getContent()
     }
   },
   components: { Attachments, TextEditor }

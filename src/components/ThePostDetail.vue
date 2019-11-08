@@ -53,6 +53,7 @@
     <div class="content">
       <TextEditor :editable="editable" :content="post.content"/>
     </div>
+
     <div v-if="pictureUrls && pictureUrls.length !== 0">
       <img
         v-for="url in pictureUrls"
@@ -184,7 +185,7 @@ export default {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  
+
   .post-author-profile-picture {
     width: 25px;
     height: 25px;
