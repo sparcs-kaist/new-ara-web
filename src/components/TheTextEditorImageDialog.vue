@@ -71,7 +71,7 @@ export default {
         .filter(item => item.type.split('/')[0] === 'image')
         .map(item => item.getAsFile())
 
-      if(files.length === 0) return
+      if (files.length === 0) return
 
       this.$emit('attach-files', files)
       this.hideDialog()

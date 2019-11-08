@@ -96,10 +96,10 @@ export default {
       return this.editor.getHTML()
     },
 
-    showImageDialog (callback) {
+    showImageDialog (command) {
       this.$refs.imageDialog.showDialog(imageUrl => {
         if (imageUrl) {
-          callback({ src: imageUrl })
+          command({ src: imageUrl })
         }
       })
     },
@@ -118,7 +118,7 @@ export default {
     },
 
     removeImageByFile (file) {
-      let imagePosition = null;
+      let imagePosition = null
 
       this.editor.state.doc.descendants((node, pos) => {
         if (imagePosition !== null) return false

@@ -78,7 +78,8 @@ export default {
       boardId: '',
       title: '',
       content: '',
-      attachments: []
+      attachments: [],
+      loaded: true
     }
   },
   computed: {
@@ -100,9 +101,7 @@ export default {
       this.boardId = this.post.parent_board.id
       this.title = this.post.title
       this.content = this.post.content
-      this.attachments = this.post.attachments
-
-      this.$refs.attachments.init(this.attachments)
+      this.loaded = false
     }
     const { board_slug: boardSlug } = this.$route.query
     if (boardSlug) {
@@ -110,6 +109,16 @@ export default {
       this.boardId = this.getIdBySlug(boardSlug)
     }
   },
+
+  async mounted () {
+    if (this.post) {
+      await this.$refs.attachments.init(this.post.attachments)
+      this.attachments = this.$refs.attachments.files
+    }
+
+    this.loaded = true
+  },
+
   methods: {
     attachFiles (files) {
       this.$refs.attachments.handleUpload(files)
@@ -128,6 +137,7 @@ export default {
     deleteAttachment (file) {
       if (file.uploaded) {
         // TODO delete file from server
+        this.attachments = this.attachments.filter(v => v.key !== file.key)
       }
 
       if (file.type === 'image') {
@@ -136,6 +146,12 @@ export default {
     },
 
     savePostByThePostWrite () {
+      if (!this.loaded) {
+        // TODO add error support
+        alert("Please wait for a sec!")
+        return
+      }
+
       const { title, boardId, attachments } = this
       this.$emit('save-post',
         {
