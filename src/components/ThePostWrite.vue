@@ -47,11 +47,11 @@
     </div>
 
     <div class="attachment-input">
-      <input
-        type="file"
+      <Attachments
+        ref="attachments"
         multiple
-        @change="attachFiles"
-      />
+        @change="attachFiles">
+      </Attachments>
     </div>
     <button
       @click="savePostByThePostWrite"
@@ -65,6 +65,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import Attachments from '../components/TheAttachments'
 import TextEditor from '../components/TheTextEditor'
 
 export default {
@@ -106,7 +107,8 @@ export default {
   },
   methods: {
     attachFiles (e) {
-      this.attachments = [...e.target.files]
+      const attachments = e
+      this.attachments = attachments.map(v => v.files)
     },
     savePostByThePostWrite () {
       const { title, boardId, attachments } = this
@@ -121,7 +123,7 @@ export default {
       )
     }
   },
-  components: { TextEditor }
+  components: { Attachments, TextEditor }
 }
 </script>
 
