@@ -43,6 +43,7 @@
         ref="textEditor"
         editable="true"
         :content="initialPostContent"
+        @attach-files="attachFiles"
       />
     </div>
 
@@ -50,7 +51,8 @@
       <Attachments
         ref="attachments"
         multiple
-        @change="attachFiles">
+        @change="setAttachments"
+        @delete="checkIsImageAndDelete">
       </Attachments>
     </div>
     <button
@@ -65,8 +67,8 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import Attachments from '../components/TheAttachments'
-import TextEditor from '../components/TheTextEditor'
+import Attachments from '@/components/TheAttachments'
+import TextEditor from '@/components/TheTextEditor'
 
 export default {
   name: 'the-post-write',
@@ -106,10 +108,19 @@ export default {
     }
   },
   methods: {
-    attachFiles (e) {
+    attachFiles (files) {
+      this.$refs.attachments.handleUpload(files)
+    },
+
+    setAttachments (e) {
       const attachments = e
       this.attachments = attachments.map(v => v.files)
     },
+
+    checkIsImageAndDelete (file) {
+      
+    },
+
     savePostByThePostWrite () {
       const { title, boardId, attachments } = this
       const content = this.$refs.textEditor.getContent()

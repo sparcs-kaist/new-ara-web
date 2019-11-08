@@ -1,6 +1,6 @@
 <template>
   <div class="editor">
-    <editor-menu-bar :editor="editor" v-show="this.editable">
+    <EditorMenuBar :editor="editor" v-show="this.editable">
       <div
         class="editor-menu-bar"
         slot-scope="{ commands, isActive }"
@@ -27,6 +27,15 @@
 
         <button
           class="menubar__button"
+          @click="showImageDialog(commands.image)"
+        >
+          <span class="icon">
+            <i class="material-icons">image</i>
+          </span>
+        </button>
+
+        <button
+          class="menubar__button"
           :class="{ 'is-active': isActive.code() }"
           @click="commands.code"
         >
@@ -35,9 +44,13 @@
           </span>
         </button>
       </div>
-    </editor-menu-bar>
+    </EditorMenuBar>
     <div class="content">
-      <editor-content :editor="editor" class="editor-content" />
+      <EditorContent :editor="editor" class="editor-content" />
+    </div>
+
+    <div class="dialogs">
+      <TheTextEditorImageDialog ref="imageDialog" @attach-files="attachFiles" />
     </div>
   </div>
 </template>
@@ -48,8 +61,11 @@ import {
   Bold,
   Code,
   Heading,
+  History,
+  Image,
   Placeholder
 } from 'tiptap-extensions'
+import TheTextEditorImageDialog from '@/components/TheTextEditorImageDialog'
 
 export default {
   name: 'the-text-editor',
@@ -61,6 +77,8 @@ export default {
           new Bold(),
           new Code(),
           new Heading({ levels: [1] }),
+          new History(),
+          new Image(),
           new Placeholder({
             emptyNodeClass: 'is-empty',
             emptyNodeText: 'Write something …',
@@ -72,17 +90,34 @@ export default {
       })
     }
   },
+
   methods: {
     getContent () {
       return this.editor.getHTML()
+    },
+
+    showImageDialog (callback) {
+      this.$refs.imageDialog.showDialog(imageUrl => {
+        if (imageUrl) {
+          const result = callback({ src: imageUrl })
+          console.log(result)
+        }
+      })
+    },
+
+    attachFiles (files) {
+      this.$emit('attach-files', files)
     }
   },
+
   beforeDestroy () {
     this.editor.destroy()
   },
+
   components: {
     EditorContent,
-    EditorMenuBar
+    EditorMenuBar,
+    TheTextEditorImageDialog
   }
 }
 </script>
@@ -134,4 +169,14 @@ export default {
   }
 }
 
+</style>
+
+<style lang="scss">
+.editor-content {
+  img {
+    &.ProseMirror-selectednode {
+      filter: brightness(.5);
+    }
+  }
+}
 </style>
