@@ -98,10 +98,10 @@ export default {
       this.title = this.post.title
       this.content = this.post.content
     }
-    const { board_slug: boardSlug } = this.$route.query
-    if (boardSlug) {
+    const { board } = this.$route.query
+    if (board) {
       /* 글 수정인데 글의 parent board와 url query의 board가 다르면 url query의 board를 따른다. */
-      this.boardId = this.getIdBySlug(boardSlug)
+      this.boardId = this.getIdBySlug(board)
     }
   },
   methods: {
