@@ -1,4 +1,4 @@
-import { fetchMe, fetchUser, updateDarkMode } from '@/api'
+import { fetchMe, updateDarkMode } from '@/api'
 
 const setDarkMode = (darkMode) => {
   localStorage.darkMode = darkMode

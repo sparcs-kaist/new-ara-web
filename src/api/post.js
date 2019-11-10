@@ -77,7 +77,7 @@ export const uploadAttachments = (attachments) => {
 export const getAttachmentUrls = ( attachmentIds ) => {
   const promises = []
   attachmentIds.forEach((id) => {
-    promises.push(http.get(`attachments/${id}`))
+    promises.push(http.get(`attachments/${id}/`))
   })
   return Promise.all(promises)
 }
