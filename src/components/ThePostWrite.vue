@@ -67,7 +67,6 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import TextEditor from '../components/TheTextEditor'
-import store from '@/store'
 
 export default {
   name: 'the-post-write',
@@ -103,7 +102,7 @@ export default {
     const { board } = this.$route.query
     if (board) {
       /* 글 수정인데 글의 parent board와 url query의 board가 다르면 url query의 board를 따른다. */
-      this.boardId = store.getters.getIdBySlug(board)
+      this.boardId = this.getIdBySlug(board)
     }
   },
   methods: {
