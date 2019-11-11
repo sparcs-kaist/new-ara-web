@@ -46,7 +46,7 @@ export default {
       if (title === '') {
         this.isTitleEmpty = true
       }
-      if (this.$refs.write.getContent() === '{"type":"doc","content":[{"type":"paragraph"}]}') {
+      if (this.$refs.write.getContent() === '<p></p>') {
         this.isContentEmpty = true
         alert('Cannot post empty article')
       }
