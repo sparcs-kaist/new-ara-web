@@ -2,10 +2,10 @@ import axios from 'axios'
 import store from './store'
 import router from './router'
 
-const apiUrl = (function() {
-  if (process.env.NODE_ENV === "production") {
+const apiUrl = (function () {
+  if (process.env.NODE_ENV === 'production') {
     return 'https://beta.ara-api.sparcs.org'
-  } else if (process.env.NODE_ENV === "development") {
+  } else if (process.env.NODE_ENV === 'development') {
     return 'https://dev.ara-api.sparcs.org'
   } else {
     throw Error
@@ -63,8 +63,7 @@ instance.interceptors
       if (err.response.status === 401) {
         router.push('/logout')
       } else if (err.response.status === 404) {
-        alert("Login failed")
-        router.push('/logout')
+        router.push('/404')
       }
 
       return Promise.reject(err)

@@ -6,6 +6,7 @@ import Write from '@/views/Write.vue'
 import Settings from '@/views/Settings.vue'
 import Notifications from '@/views/Notifications.vue'
 import Home from '@/views/Home.vue'
+import NotFound from '@/views/NotFound.vue'
 import { authGuard } from './auth.js'
 
 export default [
@@ -52,6 +53,11 @@ export default [
     name: 'notifications',
     component: Notifications,
     beforeEnter: authGuard
+  },
+  {
+    path: '/404',
+    name: 'not-found',
+    component: NotFound
   },
   {
     path: '/',
