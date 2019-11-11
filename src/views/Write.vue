@@ -73,7 +73,6 @@ export default {
           })
         } catch (err) {
           /* @TODO: 에러 핸들링 */
-          console.error(err)
           alert('Failed to upload attachments!')
           this.saving = false
           return

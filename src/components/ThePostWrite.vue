@@ -78,7 +78,6 @@ export default {
       boardId: '',
       title: '',
       content: '',
-      attachments: [],
       loaded: true
     }
   },
@@ -113,7 +112,6 @@ export default {
   async mounted () {
     if (this.post) {
       await this.$refs.attachments.init(this.post.attachments)
-      this.attachments = this.$refs.attachments.files
     }
 
     this.loaded = true
@@ -125,8 +123,6 @@ export default {
     },
 
     addAttachments (attachments) {
-      this.attachments = this.attachments.concat(attachments)
-
       attachments.forEach(file => {
         if (file.type === 'image') {
           this.$refs.textEditor.addImageByFile(file)
@@ -137,7 +133,6 @@ export default {
     deleteAttachment (file) {
       if (file.uploaded) {
         // TODO delete file from server
-        this.attachments = this.attachments.filter(v => v.key !== file.key)
       }
 
       if (file.type === 'image') {
@@ -152,12 +147,12 @@ export default {
         return
       }
 
-      const { title, boardId, attachments } = this
+      const { title, boardId } = this
       this.$emit('save-post',
         {
           title,
           boardId,
-          attachments
+          attachments: this.$refs.attachments.files
         }
       )
     },
