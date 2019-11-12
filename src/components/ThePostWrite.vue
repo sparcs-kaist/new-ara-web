@@ -43,15 +43,17 @@
         ref="textEditor"
         editable="true"
         :content="initialPostContent"
+        @attach-files="attachFiles"
       />
     </div>
 
     <div class="attachment-input">
-      <input
-        type="file"
+      <Attachments
+        ref="attachments"
         multiple
-        @change="attachFiles"
-      />
+        @add="addAttachments"
+        @delete="deleteAttachment">
+      </Attachments>
     </div>
     <button
       @click="savePostByThePostWrite"
@@ -65,7 +67,8 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import TextEditor from '../components/TheTextEditor'
+import Attachments from '@/components/TheAttachments'
+import TextEditor from '@/components/TheTextEditor'
 
 export default {
   name: 'the-post-write',
@@ -75,7 +78,7 @@ export default {
       boardId: '',
       title: '',
       content: '',
-      attachment: null
+      loaded: true
     }
   },
   computed: {
@@ -97,6 +100,7 @@ export default {
       this.boardId = this.post.parent_board.id
       this.title = this.post.title
       this.content = this.post.content
+      this.loaded = false
     }
     const { board } = this.$route.query
     if (board) {
@@ -104,24 +108,64 @@ export default {
       this.boardId = this.getIdBySlug(board)
     }
   },
+
+  async mounted () {
+    if (this.post) {
+      await this.$refs.attachments.init(this.post.attachments)
+    }
+
+    this.loaded = true
+  },
+
   methods: {
-    attachFiles (e) {
-      this.attachments = [...e.target.files]
+    attachFiles (files) {
+      this.$refs.attachments.handleUpload(files)
     },
+
+    addAttachments (attachments) {
+      attachments.forEach(file => {
+        if (file.type === 'image') {
+          this.$refs.textEditor.addImageByFile(file)
+        }
+      })
+    },
+
+    deleteAttachment (file) {
+      if (file.uploaded) {
+        // TODO delete file from server
+      }
+
+      if (file.type === 'image') {
+        this.$refs.textEditor.removeImageByFile(file)
+      }
+    },
+
     savePostByThePostWrite () {
-      const { title, boardId, attachments } = this
-      const content = this.$refs.textEditor.getContent()
+      if (!this.loaded) {
+        // TODO add error support
+        alert("Please wait for a sec!")
+        return
+      }
+
+      const { title, boardId } = this
       this.$emit('save-post',
         {
           title,
-          content,
           boardId,
-          attachments
+          attachments: this.$refs.attachments.files
         }
       )
+    },
+
+    updateAttachments (attachmentUpdate) {
+      this.$refs.textEditor.applyImageUpload(attachmentUpdate)
+    },
+
+    getContent () {
+      return this.$refs.textEditor.getContent()
     }
   },
-  components: { TextEditor }
+  components: { Attachments, TextEditor }
 }
 </script>
 

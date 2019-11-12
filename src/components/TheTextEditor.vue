@@ -1,6 +1,6 @@
 <template>
-  <div class="editor">
-    <editor-menu-bar :editor="editor" v-show="this.editable">
+  <div class="editor" :class="{'editor--editable': this.editable}">
+    <EditorMenuBar :editor="editor" v-show="this.editable">
       <div
         class="editor-menu-bar"
         slot-scope="{ commands, isActive }"
@@ -27,6 +27,15 @@
 
         <button
           class="menubar__button"
+          @click="showImageDialog(commands.image)"
+        >
+          <span class="icon">
+            <i class="material-icons">image</i>
+          </span>
+        </button>
+
+        <button
+          class="menubar__button"
           :class="{ 'is-active': isActive.code() }"
           @click="commands.code"
         >
@@ -35,9 +44,13 @@
           </span>
         </button>
       </div>
-    </editor-menu-bar>
+    </EditorMenuBar>
     <div class="content">
-      <editor-content :editor="editor" class="editor-content" />
+      <EditorContent :editor="editor" class="editor-content" />
+    </div>
+
+    <div class="dialogs" v-if="!showOnly">
+      <TheTextEditorImageDialog ref="imageDialog" @attach-files="attachFiles" />
     </div>
   </div>
 </template>
@@ -48,8 +61,11 @@ import {
   Bold,
   Code,
   Heading,
+  History,
   Placeholder
 } from 'tiptap-extensions'
+import AttachmentImage from '@/editor/AttachmentImage'
+import TheTextEditorImageDialog from '@/components/TheTextEditorImageDialog'
 
 export default {
   name: 'the-text-editor',
@@ -58,9 +74,11 @@ export default {
     return {
       editor: new Editor({
         extensions: [
+          new AttachmentImage(),
           new Bold(),
           new Code(),
           new Heading({ levels: [1] }),
+          new History(),
           new Placeholder({
             emptyNodeClass: 'is-empty',
             emptyNodeText: 'Write something …',
@@ -72,17 +90,73 @@ export default {
       })
     }
   },
+
   methods: {
     getContent () {
       return this.editor.getHTML()
+    },
+
+    showImageDialog (command) {
+      this.$refs.imageDialog.showDialog(imageUrl => {
+        if (imageUrl) {
+          command({ src: imageUrl })
+        }
+      })
+    },
+
+    attachFiles (files) {
+      this.$emit('attach-files', files)
+    },
+
+    addImageByFile (file) {
+      if (file.blobUrl) {
+        this.editor.commands.attachmentImage({
+          src: file.blobUrl,
+          'data-attachment': file.key
+        })
+      }
+    },
+
+    removeImageByFile (file) {
+      let imagePosition = null
+
+      this.editor.state.doc.descendants((node, pos) => {
+        if (imagePosition !== null) return false
+
+        if (node.type.name !== 'attachmentImage') return true
+        if (node.attrs['data-attachment'] === file.key) {
+          imagePosition = pos
+          return false
+        }
+      })
+
+      const transaction = this.editor.state.tr.delete(imagePosition, imagePosition + 1)
+      this.editor.view.dispatch(transaction)
+    },
+
+    applyImageUpload (attachmentUpdate) {
+      this.editor.state.doc.descendants(node => {
+        if (node.type.name !== 'attachmentImage') return true
+
+        const fileKey = node.attrs['data-attachment']
+        const newItem = attachmentUpdate[fileKey]
+
+        if (newItem) {
+          node.attrs['data-attachment'] = newItem.id
+          node.attrs['src'] = newItem.file // TODO is it correct?
+        }
+      })
     }
   },
+
   beforeDestroy () {
     this.editor.destroy()
   },
+
   components: {
     EditorContent,
-    EditorMenuBar
+    EditorMenuBar,
+    TheTextEditorImageDialog
   }
 }
 </script>
@@ -134,4 +208,10 @@ export default {
   }
 }
 
+</style>
+
+<style lang="scss">
+.editor--editable .editor-content img.ProseMirror-selectednode {
+  filter: brightness(.5);
+}
 </style>

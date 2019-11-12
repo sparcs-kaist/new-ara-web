@@ -1,6 +1,7 @@
 <template>
   <TheLayout>
     <ThePostWrite
+      ref="write"
       v-if="postFetched"
       :post="post"
       :saving="saving"
@@ -41,11 +42,11 @@ export default {
   },
   methods: {
     async savePost (newArticle) {
-      const { title, content, boardId, attachments } = newArticle
+      const { title, boardId, attachments } = newArticle
       if (title === '') {
         this.isTitleEmpty = true
       }
-      if (content === '{"type":"doc","content":[{"type":"paragraph"}]}') {
+      if (this.$refs.write.getContent() === '<p></p>') {
         this.isContentEmpty = true
         alert('Cannot post empty article')
       }
@@ -58,11 +59,18 @@ export default {
 
       this.saving = true
 
-      let attachmentIds = []
+      const uploadNeededFiles = attachments.filter(item => !item.uploaded)
+      const attachmentUpdate = {}
       if (attachments) {
         try {
-          attachmentIds = (await uploadAttachments(attachments))
-            .map(result => result.data.id)
+          const results = await uploadAttachments(uploadNeededFiles.map(v => v.file))
+
+          uploadNeededFiles.forEach((item, index) => {
+            attachmentUpdate[item.key] = results[index].data
+
+            item.uploaded = true
+            item.key = results[index].data.id
+          })
         } catch (err) {
           /* @TODO: 에러 핸들링 */
           alert('Failed to upload attachments!')
@@ -70,6 +78,11 @@ export default {
           return
         }
       }
+
+      const attachmentIds = attachments.map(item => item.key)
+      this.$refs.write.updateAttachments(attachmentUpdate)
+
+      const content = this.$refs.write.getContent()
 
       newArticle = {
         title,
