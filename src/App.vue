@@ -25,7 +25,6 @@ export default {
       padding-bottom: 54px;
       margin-bottom: -54px;
     }
-    // background-color: gray;
   }
 }
 </style>
