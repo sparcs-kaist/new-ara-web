@@ -33,7 +33,7 @@ import { getAttachmentUrls } from '@/api'
 
 const ALLOWED_EXTENSIONS = [
   'txt', 'docx', 'doc', 'pptx', 'ppt', 'pdf', 'hwp', 'zip', '7z',
-  'png', 'jpg'
+  'png', 'jpg', 'jpeg', 'gif'
 ]
 
 /*
@@ -75,7 +75,7 @@ export default {
     async init (attachmentIds) {
       const attachmentInfo = await getAttachmentUrls(attachmentIds)
       attachmentInfo.forEach(({ data: info }) => {
-        const name = new URL(info.file).pathname.split('/').pop()
+        const name = decodeURIComponent(new URL(info.file).pathname.split('/').pop())
         const type = info.mimetype.split('/')[0]
 
         this.files.push({

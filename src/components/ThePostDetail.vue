@@ -54,12 +54,14 @@
       <TextEditor :editable="editable" :content="post.content"/>
     </div>
 
-    <div v-if="pictureUrls && pictureUrls.length !== 0">
-      <img
-        v-for="url in pictureUrls"
-        :src="url"
-        :key="url"
-      />
+    <div class="attachments" v-if="attachments && attachments.length !== 0">
+      <div class="attachments__title">첨부파일</div>
+      <a class="attachment"
+        v-for="{id, file, url} in attachments"
+        :href="url"
+        :key="id">
+          {{file}}
+      </a>
     </div>
     <div>
       <a class="button button-default" @click="vote(true)"
@@ -88,7 +90,6 @@
 import { mapGetters } from 'vuex'
 import { archivePost, reportPost, votePost, deletePost, getAttachmentUrls } from '@/api'
 import { date } from '@/helper.js'
-import { fetchUser } from '@/api'
 import TextEditor from '../components/TheTextEditor'
 
 export default {
@@ -102,12 +103,12 @@ export default {
       isReporting: false,
       editable: false,
       isVoting: false,
-      pictureUrls: null,
+      attachments: null
     }
   },
   computed: {
-    liked() { return this.post.my_vote === true },
-    disliked() { return this.post.my_vote === false },
+    liked () { return this.post.my_vote === true },
+    disliked () { return this.post.my_vote === false },
     likedCount () { return this.post.positive_vote_count },
     dislikedCount () { return this.post.negative_vote_count },
     userPictureUrl () {
@@ -134,21 +135,24 @@ export default {
     },
     ...mapGetters([ 'userId' ])
   },
-  updated() {
-    if (this.post.attachments && this.post.attachments.length !== 0 && this.pictureUrls === null) {
-      getAttachmentUrls(this.post.attachments)
-        .then(results => {
-          this.pictureUrls = results.map(( result ) => {
-            return result.data.file
-          })
-        })
+  watch: {
+    'post.attachments': {
+      async handler (attachments) {
+        const results = await getAttachmentUrls(attachments)
+        this.attachments = results.map(({ data }) => ({
+          url: data.file,
+          file: decodeURIComponent(new URL(data.file).pathname.split('/').pop()),
+          id: data.id
+        }))
+      },
+      immediate: true
     }
   },
   methods: {
-    async vote(ballot) {
+    async vote (ballot) {
       this.isVoting = true
       await votePost(this.post.id,
-      this.post.my_vote == ballot ? 'vote_cancel' : ballot ? 'vote_positive' : 'vote_negative')
+        this.post.my_vote === ballot ? 'vote_cancel' : ballot ? 'vote_positive' : 'vote_negative')
       this.$emit('vote')
       this.isVoting = false
     },
@@ -162,13 +166,13 @@ export default {
       await reportPost(this.post.id)
       this.isReporting = false
     },
-    async deletePost() {
+    async deletePost () {
       await deletePost(this.post.id)
       this.$router.push('/')
     }
   },
   components: {
-    TextEditor,
+    TextEditor
   }
 }
 </script>
@@ -220,18 +224,22 @@ export default {
 .alignright {
   float: right;
 }
+
 .no-border {
   border: none;
 }
+
 .dropdown-content {
   min-width: 40%;
   max-width: 50%;
   float: right;
   text-align: right;
 }
+
 .dropdown-item {
   padding: 0.375rem 0.4rem
 }
+
 .button-default {
   color: #888888;
   // border: none;
@@ -239,10 +247,27 @@ export default {
   margin-right: 5px;
   text-decoration: none;
 }
+
 .button-default:focus {
   outline:0;
 }
+
 .button-selected {
   color: #ED3A3A;
+}
+
+.attachments {
+  &__title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: .35rem;
+  }
+
+  margin-bottom: 30px;
+}
+
+.attachment {
+  display: inline-block;
+  margin: 0 15px;
 }
 </style>

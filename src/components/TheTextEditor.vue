@@ -1,5 +1,5 @@
 <template>
-  <div class="editor">
+  <div class="editor" :class="{'editor--editable': this.editable}">
     <EditorMenuBar :editor="editor" v-show="this.editable">
       <div
         class="editor-menu-bar"
@@ -211,11 +211,7 @@ export default {
 </style>
 
 <style lang="scss">
-.editor-content {
-  img {
-    &.ProseMirror-selectednode {
-      filter: brightness(.5);
-    }
-  }
+.editor--editable .editor-content img.ProseMirror-selectednode {
+  filter: brightness(.5);
 }
 </style>
