@@ -23,10 +23,10 @@
                 @click="deleteComment"
                 class="dropdown-item"
               >
-                삭제
+                {{ $t('delete') }}
               </a>
               <a v-else href="#" class="dropdown-item">
-                신고
+                {{ $t('report') }}
               </a>
             </div>
           </div>
@@ -56,8 +56,8 @@
       @click="toggleRecommentInput">
       {{
         showRecommentInput
-        ? '댓글 접기'
-        : '댓글 달기'
+        ? $t('fold-recomment')
+        : $t('recomment')
       }}
     </a>
     <div class="post-recomments">
@@ -78,7 +78,7 @@
           </div>
           <div class="comment-content">
             <textarea
-              placeholder="입력..."
+              :placeholder="$t('placeholder')"
               v-model="content"
               ref="recommentTextarea"
               class="textarea new-recomment"
@@ -92,7 +92,7 @@
           class="button button-submit"
           :class="{ 'is-loading': isUploading }"
           :disabled="isUploading">
-          새 대댓글
+          {{ $t('new-recomment') }}
         </button>
       </div>
     </div>
@@ -171,6 +171,23 @@ export default {
   components: { PostRecomment }
 }
 </script>
+
+<i18n>
+ko:
+  delete: '삭제'
+  report: '신고'
+  fold-recomment: '댓글 접기'
+  recomment: '댓글 달기'
+  placeholder: '입력...'
+  new-recomment: '작성하기'
+en:
+  delete: 'Delete'
+  report: 'Report'
+  fold-recomment: 'Close recomment'
+  recomment: 'Open recomment'
+  placeholder: 'Type here...'
+  new-recomment: 'Send'
+</i18n>
 
 <style lang="scss" scoped>
 .material-icons {

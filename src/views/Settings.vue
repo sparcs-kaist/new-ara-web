@@ -1,13 +1,12 @@
 <template>
   <TheLayout>
     <div>
-
       <div class="title">
-        내 프로필
+        {{ $t('profile') }}
       </div>
       <div class="profile-container">
         <label class="label">
-          프로필
+          {{ $t('profile-photo') }}
         </label>
         <img
           :src="pictureSrc"
@@ -25,7 +24,7 @@
         </div>
       </div>
       <div class="field">
-        <label for="nickname" class="label"> 닉네임 </label>
+        <label for="nickname" class="label"> {{ $t('nickname') }} </label>
         <div class="control">
           <input type="text"
             id="nickname"
@@ -35,7 +34,7 @@
         </div>
       </div>
       <div class="fields-container">
-        <label class="label">추가 설정</label>
+        <label class="label">{{ $t('additional-settings') }}</label>
         <div class="field">
           <label for="sexual" class="checkbox">
             <input type="checkbox"
@@ -43,7 +42,7 @@
               class="checkbox"
               v-model="sexual"
             />
-            성인글 보기
+            {{ $t('r-rated') }}
           </label>
         </div>
         <div class="field">
@@ -52,7 +51,7 @@
               id="social"
               v-model="social"
             />
-            정치글 보기
+            {{ $t('politics') }}
           </label>
         </div>
       </div>
@@ -60,7 +59,7 @@
         class="button button-update"
         :class="{ 'is-loading': updating }"
         @click="updateSettings">
-        업데이트
+        {{ $t('save') }}
       </button>
     </div>
     <div class="title title-danger-zone">
@@ -69,7 +68,7 @@
     <router-link
       :to="{ name: 'logout-handler' }">
       <div class="button button-logout">
-        로그아웃
+        {{ $t('logout') }}
       </div>
     </router-link>
   </TheLayout>
@@ -134,6 +133,27 @@ export default {
   components: { TheLayout, TheSettingBlocks, TheSettingReports }
 }
 </script>
+
+<i18n>
+ko:
+  profile: '프로필'
+  profile-photo: '프로필 사진'
+  nickname: '이름'
+  additional-settings: '추가 설정'
+  r-rated: '성인글 보기'
+  politics: '정치글 보기'
+  save: '저장'
+  logout: '로그아웃'
+en:
+  profile: 'My account'
+  profile-photo: 'Photo'
+  nickname: 'User name'
+  additional-settings: 'Settings'
+  r-rated: 'See adult contents'
+  politics: 'See political content'
+  save: 'Save'
+  logout: 'Logout'
+</i18n>
 
 <style lang="scss" scoped>
 .input-nickname {
