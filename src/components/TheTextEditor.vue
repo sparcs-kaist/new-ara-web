@@ -197,8 +197,18 @@ export default {
       }
     }
   }
+}
+</style>
 
-  p::before {
+<style lang="scss">
+.editor--editable {
+  .editor-content {
+    img.ProseMirror-selectednode {
+      filter: brightness(.5);
+    }
+  }
+  
+  p.is-empty:first-child::before {
     content: attr(data-empty-text);
     float: left;
     color: #aaa;
@@ -206,12 +216,5 @@ export default {
     height: 0;
     font-style: italic;
   }
-}
-
-</style>
-
-<style lang="scss">
-.editor--editable .editor-content img.ProseMirror-selectednode {
-  filter: brightness(.5);
 }
 </style>
