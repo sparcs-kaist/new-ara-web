@@ -143,7 +143,7 @@ export default {
     savePostByThePostWrite () {
       if (!this.loaded) {
         // TODO add error support
-        alert("Please wait for a sec!")
+        alert('Please wait for a sec!')
         return
       }
 

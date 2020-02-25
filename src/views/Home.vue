@@ -1,79 +1,31 @@
 <template>
   <TheLayout>
     <div class="columns is-multiline home">
-      <div class="board today-best column is-6">
-        <h2 class="board-name"> {{ $t('today-best') }} </h2>
-        <div
-          v-for="article in dailyBests"
-          :key="article.id"
-          class="post">
-          <h3 class="post-title">
-            <router-link
-              :to="{
-                name: 'post',
-                params: { postId: article.id }
-              }">
-              {{ article.title }}
-            </router-link>
-          </h3>
-          <div class="post-time">
-            <Timeago :time="article.created_at"/>
-          </div>
+      <div class="column is-6">
+        <div class="board today-best">
+          <h2 class="board-name"> {{ $t('today-best') }} </h2>
+          <BoardTable :articles="dailyBests" minimized />
         </div>
       </div>
-      <div class="board weekly-best column is-6">
-        <h2 class="board-name"> {{ $t('weekly-best') }} </h2>
-        <div
-          v-for="article in weeklyBests"
-          :key="article.id"
-          class="post">
-          <h3 class="post-title">
-            <router-link
-              :to="{
-                name: 'post',
-                params: { postId: article.id }
-              }">
-              {{ article.title }}
-            </router-link>
-          </h3>
-          <div class="post-time">
-            <Timeago :time="article.created_at"/>
-          </div>
+      <div class="column is-6">
+        <div class="board weekly-best">
+          <h2 class="board-name"> {{ $t('weekly-best') }} </h2>
+          <BoardTable :articles="weeklyBests" minimized />
         </div>
       </div>
       <div
         v-for="board in boards"
         :key="board.id"
-        class="board column is-6">
-        <router-link
-          :to="{
-            name: 'board',
-            params: { boardSlug: board.slug }
-          }">
-          <h2 class="board-name"> {{ board[`${$i18n.locale}_name`] }} </h2>
-        </router-link>
-        <div
-          v-for="article in board.recent_articles"
-          :key="article.id"
-          class="post">
-          <h3 class="article-wrapper-big">
-            <router-link
-              :to="{
-                name: 'post',
-                params: { postId: article.id }
-              }">
-              <div class="article-wrapper">
-                <span class="article-title"> {{ article.title }}
-                </span> &nbsp
-                <span class="comment-count">
-                  ({{ article.comments_count }})
-                </span>
-              </div>
-            </router-link>
-          </h3>
-          <div class="post-time">
-            <Timeago :time="article.created_at"/>
-          </div>
+        class="column is-6">
+        <div class="board">
+          <router-link
+            :to="{
+              name: 'board',
+              params: { boardSlug: board.slug }
+            }">
+            <h2 class="board-name"> {{ board[`${$i18n.locale}_name`] }} </h2>
+          </router-link>
+          <BoardTable :articles="board.recent_articles" minimized />
         </div>
       </div>
     </div>
@@ -83,6 +35,7 @@
 <script>
 import { fetchHome } from '@/api'
 import { fetchWithProgress } from './helper.js'
+import BoardTable from '@/components/BoardTable.vue'
 import TheLayout from '@/components/TheLayout.vue'
 import Timeago from '@/components/Timeago.vue'
 
@@ -102,7 +55,7 @@ export default {
     const [ home ] = await fetchWithProgress([ fetchHome() ])
     next(vm => { vm.home = home })
   },
-  components: { TheLayout, Timeago }
+  components: { BoardTable, TheLayout, Timeago }
 }
 </script>
 
@@ -118,65 +71,24 @@ en:
 <style lang="scss" scoped>
 @import '@/theme.scss';
 .columns {
-
   .column {
-    padding: 0 20px 0 0;
+    padding: 0 10px;
 
-    @media screen and (max-width: 768px){
+    @media screen and (max-width: 768px) {
       padding: 0;
-    }
-
-    .home {
-  
-      .board {
-        margin-bottom: 2rem;
-
-        .board-name {
-          font-size: 1.5rem;
-          font-weight: 700;
-          margin-bottom: 0.5em;
-        }
-        .post {
-          display: flex;
-          justify-content: space-between;
-          margin: 0.5rem 0;
-          .comment-count {
-            color: $theme-red;
-          }
-        }
-        .article-wrapper-big {
-          width: 300px;
-          @include breakPoint('min') {
-            max-width: 170px;
-          }
-          @include breakPoint('min-mid') {
-            max-width: 220px;
-          }
-          @include breakPoint('mid-max') {
-            max-width: 250px;
-          }
-          @include breakPoint('max') {
-            max-width: 400px;
-          }
-      
-          .article-title {
-            // width:100%;
-            text-overflow:ellipsis;
-            -o-text-overflow:ellipsis;
-            overflow:hidden;
-            white-space:nowrap;
-            word-wrap:break-word !important;
-            display: block;
-            // added for multiline
-          }
-          .article-wrapper {
-            display: flex;
-          }
-        }
-      }
     }
   }
 }
 
+.board {
+  padding: 20px;
+  background: #fff;
+  margin-bottom: 20px;
 
+  .board-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5em;
+  }
+}
 </style>

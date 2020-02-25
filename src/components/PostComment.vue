@@ -124,7 +124,7 @@ export default {
     likedCount () { return this.comment.positive_vote_count },
     dislikedCount () { return this.comment.negative_vote_count },
     author () { return this.comment.created_by.profile.nickname },
-    authorProfilePictureUrl() { return this.comment.created_by.profile.picture },
+    authorProfilePictureUrl () { return this.comment.created_by.profile.picture },
     date () { return date(this.comment.created_at) },
     now () { return date(new Date()) },
     ...mapGetters([ 'userNickname' ])

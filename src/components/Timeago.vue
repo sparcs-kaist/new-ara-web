@@ -1,7 +1,7 @@
 <template>
-  <span>
+  <time :datetime="normalizedDate">
     {{ timeago }}
-  </span>
+  </time>
 </template>
 
 <script>
@@ -13,6 +13,10 @@ export default {
   computed: {
     timeago () {
       return timeago.format(this.time)
+    },
+
+    normalizedDate () {
+      return new Date(this.time).toUTCString()
     }
   }
 }

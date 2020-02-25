@@ -7,7 +7,8 @@ module.exports = {
       enableInSFC: true
     }
   },
-  chainWebpack: config => {
+
+  chainWebpack(config) {
     config.module
       .rule('i18n')
       .resourceQuery(/blockType=i18n/)
@@ -17,6 +18,7 @@ module.exports = {
       .use('yaml')
       .loader('yaml-loader')
       .end()
+
     config.module
       .rule('yaml')
       .test(/\.yaml$/)
@@ -25,6 +27,26 @@ module.exports = {
       .end()
       .use('yaml-loader')
       .loader('yaml-loader')
+      .end()
+
+    const svgRule = config.module.rule('svg');
+    svgRule.uses.clear();
+
+    svgRule
+      .oneOf('vue-svg-loader')
+      .resourceQuery(/inline/)
+      .use('vue-svg-loader')
+      .loader('vue-svg-loader')
+      .options({ svgo: false })
+      .end()
+      .end()
+      .oneOf('file-loader')
+      .use('file-loader')
+      .loader('file-loader')
+      .options({ name: 'img/[name].[hash:8].[ext]' })
+      .end()
+      .end()
+
     // For Safari hot reloading fix 😥
     // See https://github.com/vuejs/vue-cli/issues/1132 for detail
     if (process.env.NODE_ENV === 'development') {
@@ -34,5 +56,6 @@ module.exports = {
         .end()
     }
   },
+
   productionSourceMap: false
 }

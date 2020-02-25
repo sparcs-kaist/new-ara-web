@@ -12,14 +12,23 @@ $gray: #555555;
   --background-timing: ease-in-out;
 
   // light mode variables
-  --background: white;
+  --background: #f1f2f3;
   --text: #222222;
 
+  body {
+    font-family: 'NanumBarunRoboto', 'Noto Sans CJK KR', sans-serif;
+    background: var(--background);
+  }
 
-  &, body, h1, h2, h3, h4, h5, h6, a, input, textarea, button {
+  &, body, input, textarea, button {
     color: var(--text);
     background-color: var(--background);
+    transition: color var(--duration) var(--text-timing),
+                background-color var(--duration) var(--background-timing);
+  }
 
+  h1, h2, h3, h4, h5, h6, a {
+    color: var(--text);
     transition: color var(--duration) var(--text-timing),
                 background-color var(--duration) var(--background-timing);
   }
@@ -64,7 +73,7 @@ $max-desktop-width: 1472px;
     }
   } @else if $breakpoint == "max" {
     @media (min-width: #{$max-desktop-width}) {
-    @content;
+      @content;
     }
   }
 }

@@ -112,8 +112,7 @@ export default {
     border: 1px solid rgba(0,0,0,0.5);
     border-radius: 5px;
   }
-  
-  
+
   .search {
     width: 100%;
     display: flex;
@@ -127,13 +126,13 @@ export default {
 
     .field {
       width: 100%;
-      
+
       .control-input {
         width: 100%;
       }
     }
   }
-  
+
   .button-write {
     border: none;
     color: white;

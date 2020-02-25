@@ -1,8 +1,7 @@
 <template>
   <div class="board">
     <slot name="title"/>
-    <TheBoardTable
-      :articles="board.results"/>
+    <BoardTable :articles="board.results"/>
     <div class="board-navbar">
       <div class="board-navbar-start">
         <ThePaginator
@@ -22,8 +21,8 @@
 </template>
 
 <script>
+import BoardTable from '@/components/BoardTable.vue'
 import ThePaginator from '@/components/ThePaginator.vue'
-import TheBoardTable from '@/components/TheBoardTable.vue'
 
 export default {
   name: 'the-board',
@@ -36,7 +35,7 @@ export default {
       return this.$route.params.boardSlug
     }
   },
-  components: { ThePaginator, TheBoardTable }
+  components: { BoardTable, ThePaginator }
 }
 </script>
 
