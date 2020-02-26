@@ -8,7 +8,7 @@ module.exports = {
     }
   },
 
-  chainWebpack(config) {
+  chainWebpack (config) {
     config.module
       .rule('i18n')
       .resourceQuery(/blockType=i18n/)
@@ -29,8 +29,8 @@ module.exports = {
       .loader('yaml-loader')
       .end()
 
-    const svgRule = config.module.rule('svg');
-    svgRule.uses.clear();
+    const svgRule = config.module.rule('svg')
+    svgRule.uses.clear()
 
     svgRule
       .oneOf('vue-svg-loader')

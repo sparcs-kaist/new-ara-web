@@ -1,6 +1,7 @@
-import Timeago from 'timeago.js'
+import i18n from '@/i18n.js'
+import { register } from 'timeago.js'
 
-Timeago.register('ko_KR', (number, index) => [
+register('ko', (number, index) => [
   ['방금', '곧'],
   ['%s초 전', '%s초 후'],
   ['1분 전', '1분 후'],
@@ -17,11 +18,18 @@ Timeago.register('ko_KR', (number, index) => [
   ['%s년 전', '%s년 후']
 ][index])
 
-export const timeago = Timeago(null, 'ko_KR')
-
+const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 export const date = timeString => {
   const time = new Date(timeString)
-  return `${time.getMonth() + 1}월 ${time.getDate()}일`
+  const locale = i18n.locale.split(/-_/).shift()
+
+  switch (locale) {
+    case 'ko':
+      return `${time.getMonth() + 1}월 ${time.getDate()}일`
+
+    case 'en':
+      return `${month[time.getMonth()]} ${time.getDate()}`
+  }
 }
 
 export const range = (m, n = null) => {

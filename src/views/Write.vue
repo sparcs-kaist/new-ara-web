@@ -26,6 +26,7 @@ export default {
     return {
       post: null,
       saving: false,
+      saved: false,
       isTitleEmpty: false,
       isContentEmpty: false,
       isBoardEmpty: false
@@ -116,9 +117,12 @@ export default {
         return
       }
       this.saving = false
+      this.saved = true
+      window.removeEventListener('beforeunload', this.beforeUnloadHandler)
       this.$router.push({ name: 'post', params: { postId: result.data.id } })
     }
   },
+
   async beforeRouteEnter ({ params: { postId } }, from, next) {
     // 새로운 글을 작성하는 경우
     if (!postId) {
@@ -129,9 +133,42 @@ export default {
       next(vm => { vm.post = post })
     }
   },
+
+  async beforeRouteLeave (to, from, next) {
+    if (!this.saved) {
+      const response = await this.$store.dispatch('dialog/confirm', this.$t('before-unload'))
+
+      if (response) next()
+      return
+    }
+
+    next()
+  },
+
+  mounted () {
+    this.beforeUnloadHandler = event => {
+      // 대부분의 경우에는 표시되지 않으나 일단 넣어둠
+      event.returnValue = this.$t('before-unload')
+    }
+
+    window.addEventListener('beforeunload', this.beforeUnloadHandler)
+  },
+
+  destroyed () {
+    window.removeEventListener('beforeunload', this.beforeUnloadHandler)
+  },
+
   components: { TheLayout, ThePostWrite }
 }
 </script>
+
+<i18n>
+  ko:
+    'before-unload': '이 포스트는 아직 저장되지 않았습니다! 정말 빠져나가시겠습니까?'
+
+  en:
+    'before-unload': 'This post is not saved yet. Are you sure to exit?'
+</i18n>
 
 <style>
 

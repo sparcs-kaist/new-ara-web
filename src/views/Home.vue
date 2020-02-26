@@ -82,7 +82,8 @@ en:
 
 .board {
   padding: 20px;
-  background: #fff;
+  background: var(--background-lighten-2);
+  transition: background var(--duration) var(--background-timing);
   margin-bottom: 20px;
 
   .board-name {

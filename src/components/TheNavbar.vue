@@ -50,15 +50,6 @@
           class="navbar-item">
           {{ $t('notification') }}
         </router-link>
-        <!-- <a
-          v-if="!isIE"
-          @click="toggleDarkMode"
-          id="toggle-dark-mode"
-          class="navbar-item">
-          <span class="icon">
-            <i class="material-icons">invert_colors</i>
-          </span>
-        </a> -->
         <a class="navbar-item"
           @click="$i18n.locale = $i18n.locale === 'en' ? 'ko' : 'en'"
           id="toggle-language">
@@ -83,7 +74,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import TheNavbarFetchProgressBar from '@/components/TheNavbarFetchProgressBar.vue'
 import TheNavbarAraLogo from '@/components/TheNavbarAraLogo.vue'
 import TheNavbarNotifications from '@/components/TheNavbarNotifications.vue'
@@ -107,8 +98,7 @@ export default {
   methods: {
     toggleMobileMenu () {
       this.isMobileMenuActive = !this.isMobileMenuActive
-    },
-    ...mapActions(['toggleDarkMode'])
+    }
   },
   components: {
     TheNavbarFetchProgressBar,

@@ -1,13 +1,12 @@
 <template>
   <TheLayout>
     <div>
-
       <div class="title">
-        내 프로필
+        {{ $t('my-profile') }}
       </div>
       <div class="profile-container">
         <label class="label">
-          프로필
+          {{ $t('profile') }}
         </label>
         <img
           :src="pictureSrc"
@@ -25,7 +24,7 @@
         </div>
       </div>
       <div class="field">
-        <label for="nickname" class="label"> 닉네임 </label>
+        <label for="nickname" class="label"> {{ $t('nickname') }} </label>
         <div class="control">
           <input type="text"
             id="nickname"
@@ -35,7 +34,7 @@
         </div>
       </div>
       <div class="fields-container">
-        <label class="label">추가 설정</label>
+        <label class="label"> {{ $t('additional') }} </label>
         <div class="field">
           <label for="sexual" class="checkbox">
             <input type="checkbox"
@@ -43,7 +42,7 @@
               class="checkbox"
               v-model="sexual"
             />
-            성인글 보기
+            {{ $t('show-sexual') }}
           </label>
         </div>
         <div class="field">
@@ -52,15 +51,27 @@
               id="social"
               v-model="social"
             />
-            정치글 보기
+            {{ $t('show-political') }}
           </label>
         </div>
       </div>
+
+      <div class="field">
+        <label for="darkMode" class="label"> {{ $t('theme') }} </label>
+        <div class="select">
+          <select id="darkMode" v-model="darkMode">
+            <option value="light"> {{ $t('darkmode-light') }} </option>
+            <option value="dark"> {{ $t('darkmode-dark') }} </option>
+            <option value="system-dark"> {{ $t('darkmode-system') }} </option>
+          </select>
+        </div>
+      </div>
+
       <button
         class="button button-update"
         :class="{ 'is-loading': updating }"
         @click="updateSettings">
-        업데이트
+        {{ $t('update') }}
       </button>
     </div>
     <div class="title title-danger-zone">
@@ -92,7 +103,8 @@ export default {
       pictureSrc: '',
       sexual: false,
       social: false,
-      updating: false
+      updating: false,
+      darkMode: 'light'
     }
   },
   methods: {
@@ -108,8 +120,10 @@ export default {
         }).then(res => {
           store.commit('setUserProfile', res.data)
         })
+
+        await store.dispatch('updateDarkMode', this.darkMode)
       } catch (err) {
-        store.dispatch('error', '설정 변경 중 문제가 발생했습니다.')
+        store.dispatch('showError', this.$t('error-updating'))
       }
       this.updating = false
     },
@@ -123,17 +137,51 @@ export default {
   },
   async beforeRouteEnter (to, from, next) {
     await fetchWithProgress([ store.dispatch('fetchMe') ])
-    const { userNickname, userPicture, userConfig } = store.getters
+    const { userNickname, userPicture, userConfig, darkMode } = store.getters
+
     next(vm => {
       vm.nickname = userNickname
       vm.pictureSrc = userPicture
       vm.sexual = userConfig.sexual
       vm.social = userConfig.social
+      vm.darkMode = darkMode
     })
   },
   components: { TheLayout, TheSettingBlocks, TheSettingReports }
 }
 </script>
+
+<i18n>
+  ko:
+    logout: '로그아웃'
+    update: '업데이트'
+    theme: '테마'
+    darkmode-light: '라이트 모드'
+    darkmode-dark: '다크 모드'
+    darkmode-system: '시스템 설정에 따라'
+    additional: '추가 설정'
+    show-political: '정치글 보기'
+    show-sexual: '성인글 보기'
+    nickname: '닉네임'
+    profile: '프로필'
+    my-profile: '내 프로필'
+    error-updating: '설정 변경 중 문제가 발생했습니다.'
+
+  en:
+    logout: 'Logout'
+    update: 'Update'
+    theme: 'Theme'
+    darkmode-light: 'Light Mode'
+    darkmode-dark: 'Dark Mode'
+    darkmode-system: 'Based on System Settings'
+    additional: 'Additional Preferences'
+    show-political: 'Show political posts'
+    show-sexual: 'Show sexual posts'
+    nickname: 'Nickname'
+    profile: 'Profile'
+    my-profile: 'My Profile'
+    error-updating: 'An error occurred while updating settings'
+</i18n>
 
 <style lang="scss" scoped>
 .input-nickname {
@@ -145,10 +193,6 @@ export default {
   }
 }
 
-.profile-container {
-  height: 5em;
-  width: 5em;
-}
 .profile {
   height: 5em;
   width: 5em;
@@ -161,6 +205,7 @@ export default {
   border-radius: 5px;
   background-color: rgba(0,0,0,0.05);
   padding: 15px;
+  margin-bottom: .75rem;
 }
 
 .button-update {
@@ -173,8 +218,16 @@ export default {
   }
 }
 
-.title-danger-zone {
+.title {
   margin-top: 50px;
+  color: var(--text-lighten-1);
+}
+
+.label {
+  color: var(--text-lighten-1);
+}
+
+.title-danger-zone {
   color: #ED3A3A;
 }
 

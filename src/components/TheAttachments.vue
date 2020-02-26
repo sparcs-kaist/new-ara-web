@@ -230,7 +230,7 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 10px 20px;
-  background: #fafbfc;
+  background: var(--background-lighten-1);
   transition: background var(--duration) var(--background-timing);
   width: 100%;
 
@@ -247,7 +247,7 @@ export default {
   }
 
   &:hover {
-    background: #f1f2f3;
+    background: var(--background-lighten-2);
   }
 }
 

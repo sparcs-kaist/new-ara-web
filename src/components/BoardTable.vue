@@ -1,17 +1,7 @@
 <template>
   <div class="board-table" :class="{ 'board-table--minimized': minimized }">
-    <div class="article" v-for="article in articles" :key="article.id">
-      <div class="article__reaction">
-        <div class="article__reaction__vote">
-          <IconUpvote class="article__reaction__icon" />
-          {{ article.positive_vote_count }}
-        </div>
-
-        <div class="article__reaction__vote">
-          <IconDownvote class="article__reaction__icon" />
-          {{ article.negative_vote_count }}
-        </div>
-      </div>
+    <div class="article" v-for="article in articles" :key="article.id"
+      :class="{ 'article--hot': article.positive_vote_count > 15 }">
 
       <div class="article__content">
         <router-link class="article__title" :to="{
@@ -35,8 +25,13 @@
       </div>
 
       <div class="article__metadata">
-        <div class="article__date">
+        <div class="article__metadata__row">
           <Timeago :time="article.created_at"/>
+
+          <div class="article__metadata__item article__metadata__item--upvote">
+            <IconUpvote class="article__metadata__icon" />
+            {{ article.positive_vote_count }}
+          </div>
         </div>
 
         <div class="article__metadata__row">
@@ -48,6 +43,11 @@
           <div class="article__metadata__item">
             <IconComments class="article__metadata__icon" />
             {{ article.comments_count }}
+          </div>
+
+          <div class="article__metadata__item article__metadata__item--downvote">
+            <IconDownvote class="article__metadata__icon" />
+            {{ article.negative_vote_count }}
           </div>
         </div>
       </div>
@@ -105,15 +105,21 @@ en:
 
 <style lang="scss" scoped>
 @import '@/theme.scss';
+.board-table {
+  &--minimized .article{
+    padding-left: 20px;
+  }
+}
+
 .article {
   display: flex;
   padding: 10px 0;
-  justify-content: center;
+  max-width: 700px;
+  margin: 0 auto;
 
   &__content {
     flex: 1;
     width: 0;
-    max-width: 600px;
   }
 
   &__title, &__author {
@@ -152,23 +158,17 @@ en:
       display: inline-flex;
       align-items: center;
       margin-left: 10px;
+
+      &--upvote, &--downvote {
+        margin-left: 20px;
+      }
     }
   }
 
-  &__reaction {
-    display: flex;
-    margin-right: 10px;
-
-    &__icon {
-      width: 1.5rem;
+  &--hot & {
+    &__metadata__item--upvote {
+      color: var(--theme-red);
       fill: var(--theme-red);
-    }
-
-    &__vote {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-right: 5px;
     }
   }
 }

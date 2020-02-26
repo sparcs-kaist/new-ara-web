@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { timeago } from '@/helper.js'
+import { format } from 'timeago.js'
 import DailyNotifications from '@/components/DailyNotifications'
 import ThePaginator from '@/components/ThePaginator'
 
@@ -30,7 +30,7 @@ export default {
       if (!this.notifications.results) return {}
       return this.notifications.results
         .reduce((acc, notification) => {
-          const timePassed = timeago.format(notification.created_at)
+          const timePassed = format(notification.created_at, this.$i18n.locale)
           if (Object.keys(acc).includes(timePassed)) {
             return {
               ...acc,

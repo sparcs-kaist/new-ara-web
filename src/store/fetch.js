@@ -49,9 +49,11 @@ export default {
     }
   },
   actions: {
-    showError ({ commit }, message) {
+    showError ({ commit, dispatch }, message) {
       commit('updateError', message)
       setTimeout(() => { commit('endError') }, 2000)
+
+      dispatch('dialog/alert', { type: 'error', text: message }, { root: true })
     },
     startProgress ({ commit }) {
       commit('startProgress')

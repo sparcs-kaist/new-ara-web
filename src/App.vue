@@ -3,16 +3,21 @@
     <div id="app">
       <router-view/>
     </div>
+    <TheAlertDialogs />
     <TheFooter />
   </div>
 </template>
 
 <script>
+import TheAlertDialogs from '@/components/TheAlertDialogs.vue'
 import TheFooter from '@/components/TheFooter.vue'
 
 export default {
   name: 'app',
-  components: { TheFooter }
+  components: {
+    TheAlertDialogs,
+    TheFooter
+  }
 }
 </script>
 

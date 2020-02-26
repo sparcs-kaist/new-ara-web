@@ -3,12 +3,13 @@ import Vuex from 'vuex'
 import i18n from '@/i18n.js'
 import { fetchBoardList } from '@/api'
 import auth from './auth.js'
+import dialog from './dialog.js'
 import fetch from './fetch.js'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules: { auth, fetch },
+  modules: { auth, dialog, fetch },
   state: {
     boardList: []
   },

@@ -5,14 +5,15 @@
 </template>
 
 <script>
-import { timeago } from '@/helper.js'
+import { format } from 'timeago.js'
 
 export default {
   name: 'timeago',
   props: [ 'time' ],
   computed: {
     timeago () {
-      return timeago.format(this.time)
+      console.log(format)
+      return format(this.time, this.$i18n.locale)
     },
 
     normalizedDate () {

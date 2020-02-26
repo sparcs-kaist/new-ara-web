@@ -1,14 +1,22 @@
 import { fetchMe, updateDarkMode } from '@/api'
 
 const setDarkMode = (darkMode) => {
-  localStorage.darkMode = darkMode
-
   const rootClassList = document.documentElement.classList
 
-  if (darkMode) {
-    rootClassList.add('dark')
-  } else {
-    rootClassList.remove('dark')
+  switch (darkMode) {
+    case 'light':
+      rootClassList.remove('dark')
+      rootClassList.remove('system-dark')
+      break
+
+    case 'dark':
+      rootClassList.add('dark')
+      rootClassList.remove('system-dark')
+      break
+
+    case 'system-dark':
+      rootClassList.add('system-dark')
+      rootClassList.remove('dark')
   }
 }
 
@@ -36,7 +44,7 @@ export default {
     userConfig ({ userProfile: { see_sexual: sexual, see_social: social } }) {
       return { sexual, social }
     },
-    isDarkModeEnabled ({ userProfile }) {
+    darkMode ({ userProfile }) {
       return userProfile.extra_preferences && userProfile.extra_preferences.darkMode
     }
   },
@@ -62,8 +70,8 @@ export default {
         commit('setUserProfile', await fetchMe())
       }
     },
-    async toggleDarkMode ({ commit, getters: { isDarkModeEnabled } }) {
-      commit('setUserProfile', await updateDarkMode(!isDarkModeEnabled))
+    async updateDarkMode ({ commit, getters: { userId } }, newMode) {
+      commit('setUserProfile', await updateDarkMode(userId, newMode))
     }
   }
 }

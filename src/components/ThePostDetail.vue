@@ -116,7 +116,7 @@ export default {
     },
     // @TODO: I18n
     boardName () {
-      return this.post.parent_board && this.post.parent_board.ko_name
+      return this.post.parent_board && this.post.parent_board[`${this.$i18n.locale}_name`]
     },
     postAuthor () {
       return this.post.created_by && this.post.created_by.profile.nickname
@@ -179,6 +179,7 @@ export default {
 
 <style lang="scss" scoped>
 #title {
+  color: var(--text-lighten-2);
   margin-bottom: 0.25rem;
 }
 
@@ -199,7 +200,7 @@ export default {
   }
 
   .post-author {
-    color:#4a4a4a;
+    color: var(--text-lighten-2);
     font-weight:bold;
 
   }

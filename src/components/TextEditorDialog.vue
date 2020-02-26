@@ -60,14 +60,16 @@ export default {
   max-width: 100%;
   max-height: 100%;
   transform: translate(-50%, -50%);
-  background: #f1f2f3;
+  background: var(--background-lighten-1);
+  border-radius: 5px;
+  overflow: hidden;
 
   // Prevents useless line wrapping bug caused by optimizeLegibility
   text-rendering: auto;
 
   &__header {
     padding: 5px 20px;
-    background: #fff;
+    background: var(--background-lighten-2);
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -98,7 +98,7 @@ export default {
 
 .no-comment-info {
   margin-bottom: 1rem;
-  color: rgba(0,0,0,0.3);
+  color: var(--text);
 }
 
 .textarea {
@@ -138,5 +138,9 @@ export default {
     background-color: rgb(199, 45, 45);
     color: white;
   }
+}
+
+.title {
+   color: var(--text-lighten-2);
 }
 </style>
