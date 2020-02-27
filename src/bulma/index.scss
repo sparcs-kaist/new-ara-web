@@ -7,9 +7,9 @@ $primary: $theme-red;
 $link: $grey-dark;
 $link-hover: $black-bis;
 
-a:hover {
+/* a:hover {
   text-decoration: underline;
-}
+} */
 
 @import './input.scss';
 @import './navbar.scss';

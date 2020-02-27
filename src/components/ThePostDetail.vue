@@ -243,14 +243,16 @@ export default {
 
 .button-default {
   color: #888888;
-  // border: none;
+  outline: none;
+  background-color: var(--background-lighten-1);
+  border: none;
   font-size: 14px;
   margin-right: 5px;
   text-decoration: none;
-}
 
-.button-default:focus {
-  outline:0;
+  &:hover {
+    background-color: var(--background-lighten-2);
+  }
 }
 
 .button-selected {

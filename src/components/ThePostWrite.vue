@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 id="title"> 글쓰기 </h1>
+    <h1 id="title"> {{$t('write')}} </h1>
     <div class="title-wrapper">
       <i
         class="material-icons title-warning"
@@ -26,7 +26,7 @@
         warning
       </i>
       <select v-model="boardId">
-        <option value="" disabled selected> 게시판 </option>
+        <option value="" disabled selected> {{ $t('board') }} </option>
         <option
           v-for="board in boardList"
           :key="board.id"
@@ -36,7 +36,7 @@
         </option>
       </select>
     </div>
-    <p class="help is-danger" v-if="isBoardEmpty && !boardId">게시판을 선택해주세요</p>
+    <p class="help is-danger" v-if="isBoardEmpty && !boardId"> {{ $t('please-select-board') }} </p>
 
     <div class="content-wrapper">
       <TextEditor
@@ -60,7 +60,7 @@
       class="button post-publish-button"
       :class="{ 'is-loading': saving }"
     >
-      게시
+      {{ $t('publish') }}
     </button>
   </div>
 </template>
@@ -86,9 +86,9 @@ export default {
     ...mapGetters([ 'getIdBySlug' ]),
     titlePlaceholder: function () {
       if (this.isTitleEmpty) {
-        return '제목을 입력하세요'
+        return this.$t('please-input-title')
       } else {
-        return '제목'
+        return this.$t('title')
       }
     },
     initialPostContent () {
@@ -168,6 +168,24 @@ export default {
   components: { Attachments, TextEditor }
 }
 </script>
+
+<i18n>
+  ko:
+    write: '글 쓰기'
+    title: '제목'
+    please-enter-title: '제목을 입력해주세요'
+    board: '게시판'
+    please-select-board: '게시판을 선택해주세요'
+    publish: '게시'
+
+  en:
+    write: 'Write'
+    title: 'Title'
+    please-enter-title: 'Please enter the title'
+    board: 'Board'
+    please-select-board: 'Please select the board'
+    publish: 'Publish'
+</i18n>
 
 <style lang="scss" scoped>
 @import '@/theme.scss';

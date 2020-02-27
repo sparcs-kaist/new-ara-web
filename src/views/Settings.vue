@@ -219,8 +219,11 @@ export default {
 }
 
 .title {
-  margin-top: 50px;
   color: var(--text-lighten-1);
+
+  &:not(:first-child) {
+    margin-top: 50px;
+  }
 }
 
 .label {

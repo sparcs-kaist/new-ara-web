@@ -31,8 +31,7 @@
           class="textarea new-comment"
           cols="10"
           rows="3"
-          @keydown.meta.enter="saveComment"
-          @keydown.ctrl.enter="saveComment"
+          @keydown.shift.enter="saveComment"
         />
       </div>
     </div>
@@ -106,12 +105,13 @@ export default {
 }
 
 .comment-input {
-  border: 1px solid rgba(0,0,0,0.3);
+  background: var(--background-darken-2);
   border-radius: 5px;
   padding: 10px 15px 10px 15px;
+  transition: background var(--duration) var(--background-timing);
 
   &:hover {
-    border: 1px solid rgba(0,0,0,0.8);
+    background: var(--background-darken-1_5);
   }
 
   .comment-metadata {
@@ -126,6 +126,10 @@ export default {
       color: #888;
     }
   }
+}
+
+.textarea {
+  background: transparent;
 }
 
 .button-submit {

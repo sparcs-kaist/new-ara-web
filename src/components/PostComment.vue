@@ -1,5 +1,5 @@
 <template>
-  <div class="post-comment">
+  <div class="post-comment" :class="{'post-comment--recomment': isRecomment}">
     <div class="comment-metadata">
       <img :src="authorProfilePictureUrl" class="comment-author-profile-picture"/>
       <div class="comment-author"> {{ author }} </div>
@@ -52,7 +52,7 @@
         {{ dislikedCount }}
       </span>
     </a>
-    <a class="button button-default"
+    <a class="button button-default" v-if="!isRecomment"
       @click="toggleRecommentInput">
       {{
         showRecommentInput
@@ -61,16 +61,18 @@
       }}
     </a>
     <div class="post-recomments">
-      <PostRecomment
+      <PostComment
         v-for="recomment in comment.comments"
+        is-recomment
         :key="recomment.id"
-        :recomment="recomment"
+        :comment="recomment"
         @vote="$emit('vote')"
+        @delete="$emit('delete')"
       />
       <div
         v-show="showRecommentInput"
       >
-        <div
+        <label
           class="recomment-input">
           <div class="comment-metadata">
             <div class="comment-author"> {{ userNickname }} </div>
@@ -84,9 +86,10 @@
               class="textarea new-recomment"
               cols="10"
               rows="3"
+              @keydown.shift.enter="saveRecomment"
             />
           </div>
-        </div>
+        </label>
         <button
           @click="saveRecomment"
           class="button button-submit"
@@ -103,12 +106,12 @@
 import { mapGetters } from 'vuex'
 import { createComment, voteComment, deleteComment } from '@/api'
 import { date } from '@/helper.js'
-import PostRecomment from '@/components/PostRecomment.vue'
 
 export default {
-  name: 'post-comment',
+  name: 'PostComment',
   props: {
-    comment: { required: true }
+    comment: { required: true },
+    isRecomment: Boolean
   },
   data () {
     return {
@@ -167,8 +170,7 @@ export default {
       await deleteComment(this.comment.id)
       this.$emit('delete')
     }
-  },
-  components: { PostRecomment }
+  }
 }
 </script>
 
@@ -179,20 +181,28 @@ export default {
 
 .post-comment {
   margin: 1rem 0;
+
+  &--recomment {
+    border-left: 2px solid var(--background-darken-2);
+    padding-left: 1.5rem;
+  }
 }
 
 .textarea {
+  background: transparent;
   padding: 0px;
 }
 
 .recomment-input {
+  display: block;
   margin-top: 15px;
-  border: 1px solid rgba(0,0,0,0.3);
+  background: var(--background-darken-2);
   border-radius: 5px;
   padding: 10px 15px 10px 15px;
+  transition: background var(--duration) var(--background-timing);
 
   &:hover {
-    border: 1px solid rgba(0,0,0,0.8);
+    background: var(--background-darken-1_5);
   }
 
   .comment-content {
@@ -233,7 +243,7 @@ export default {
 }
 
 .post-recomments {
-  margin-left: 2.5rem;
+  margin-left: 1.5rem;
 }
 
 .alignright {
@@ -266,11 +276,17 @@ export default {
 
 .button-default {
   color: #888888;
+  background-color: var(--background-lighten-1);
   border: none;
   font-size: 14px;
   margin-right: 5px;
   text-decoration: none;
+
+  &:hover {
+    background-color: var(--background-lighten-2);
+  }
 }
+
 .button-selected {
   color: #ED3A3A;
 }

@@ -1,3 +1,4 @@
 all: '모아보기'
 archive: '담아두기'
 notification: '알림'
+write: '글쓰기'

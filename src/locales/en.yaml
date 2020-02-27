@@ -1,3 +1,4 @@
 all: 'All'
 archive: 'Archive'
 notification: 'Notifications'
+write: 'Write'

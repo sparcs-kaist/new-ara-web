@@ -12,7 +12,6 @@ export default {
   props: [ 'time' ],
   computed: {
     timeago () {
-      console.log(format)
       return format(this.time, this.$i18n.locale)
     },
 

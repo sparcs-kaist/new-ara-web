@@ -170,7 +170,7 @@ export default {
 
   en:
     upload: 'Upload Attachments'
-    dropzone-normal: 'Please click here or drag &amp; drop the files.'
+    dropzone-normal: 'Please click here or drag n drop the files.'
     dropzone-drop: 'Please drop here.'
     dropzone-unallowed-extensions: 'This file type is not allowed.'
 </i18n>

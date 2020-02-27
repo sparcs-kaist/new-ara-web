@@ -6,7 +6,7 @@
           {{ $route.params.username }}
         </h1>
         <div class="title-description">
-          사용자
+          {{ $t('user') }}
         </div>
       </div>
     </TheBoard>
@@ -36,6 +36,14 @@ export default {
   components: { TheLayout, TheBoard }
 }
 </script>
+
+<i18n>
+  ko:
+    user: '사용자'
+
+  en:
+    user: 'User'
+</i18n>
 
 <style>
 #title {

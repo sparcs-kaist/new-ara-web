@@ -45,11 +45,23 @@
         </router-link>
       </div>
       <div class="navbar-end">
+        <router-link class="navbar-item"
+          :to="{ name: 'write' }">
+          <span class="icon">
+            <i class="material-icons">create</i>
+          </span>
+          <span>{{ $t('write') }}</span>
+        </router-link>
+
         <router-link
           :to="{ name: 'notifications' }"
           class="navbar-item">
-          {{ $t('notification') }}
+          <span class="icon">
+            <i class="material-icons">notifications</i>
+          </span>
+          <span>{{ $t('notification') }}</span>
         </router-link>
+
         <a class="navbar-item"
           @click="$i18n.locale = $i18n.locale === 'en' ? 'ko' : 'en'"
           id="toggle-language">
@@ -57,6 +69,7 @@
             <i class="material-icons">language</i>
           </span>
         </a>
+
         <router-link
           :to="{ name: 'settings' }"
           class="navbar-item user">
@@ -148,7 +161,8 @@ export default {
       }
 
       .user {
-        margin: 0 15px;
+        margin-left: 7px;
+        margin-right: 15px;
         font-weight: 700;
       }
     }
@@ -190,10 +204,6 @@ export default {
       }
     }
 
-  }
-
-  .user .icon {
-    padding-right: 0.5rem;
   }
 }
 
