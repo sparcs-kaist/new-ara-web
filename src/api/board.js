@@ -16,8 +16,8 @@ export const fetchArticles = ({ boardId, query, page, username } = {}) => {
     .then(({ data }) => data)
 }
 
-export const fetchArchives = () =>
-  http.get('scraps/')
+export const fetchArchives = (context = {}) =>
+  http.get(`scraps/?${queryBuilder(context)}`)
     .then(({ data }) => data)
 
 export const fetchReports = () =>

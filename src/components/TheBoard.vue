@@ -6,11 +6,7 @@
       <div class="board-navbar-start">
         <ThePaginator
           :numPages="board.num_pages"
-          :currentPage="board.current"
-          :baseRouteTo="{
-            name: 'board',
-            params: { boardSlug }
-          }">
+          :currentPage="board.current">
         </ThePaginator>
       </div>
       <div class="board-navbar-end">

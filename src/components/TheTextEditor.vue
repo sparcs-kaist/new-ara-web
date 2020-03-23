@@ -81,7 +81,7 @@ export default {
           new History(),
           new Placeholder({
             emptyNodeClass: 'is-empty',
-            emptyNodeText: 'Write something …',
+            emptyNodeText: this.$t('write-something'),
             showOnlyWhenEditable: true
           })
         ],
@@ -161,6 +161,14 @@ export default {
 }
 </script>
 
+<i18n>
+  ko:
+    write-something: '여기에 입력하세요...'
+
+  en:
+    write-something: 'Write something...'
+</i18n>
+
 <style lang="scss" scoped>
 
 .editor {
@@ -207,7 +215,7 @@ export default {
       filter: brightness(.5);
     }
   }
-  
+
   p.is-empty:first-child::before {
     content: attr(data-empty-text);
     float: left;

@@ -45,13 +45,26 @@ $gray: #555555;
     transition: color var(--duration) var(--text-timing);
   }
 
-  button:hover {
-    color: var(--text);
-    background-color: unset;
+  button, .button {
+    &:hover {
+      color: var(--text);
+      background-color: unset;
+    }
+
+    &:focus {
+      color: var(--text-lighten-1);
+    }
+
+    &.is-primary:hover {
+      background-color: $theme-red-dark;
+    }
   }
 }
 
 @mixin darkTheme {
+  --background-darken-2: #101010;
+  --background-darken-1_5: #181818;
+  --background-darken-1: #1a1a1a;
   --background: #222222;
   --background-lighten-1: #2a2a2a;
   --background-lighten-2: #303030;

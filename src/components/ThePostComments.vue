@@ -37,7 +37,7 @@
     </div>
     <button
       @click="saveComment"
-      class="button button-submit"
+      class="button button-submit is-primary"
       :class="{ 'is-loading': isUploading }"
       :disabled="isUploading">
       새 댓글
@@ -134,14 +134,6 @@ export default {
 
 .button-submit {
   margin-top: 10px;
-  border: none;
-  background-color: #ED3A3A;
-  color: white;
-
-  &:hover {
-    background-color: rgb(199, 45, 45);
-    color: white;
-  }
 }
 
 .title {

@@ -26,8 +26,7 @@ export default {
   name: 'the-paginator',
   props: {
     numPages: Number,
-    currentPage: Number,
-    baseRouteTo: { required: true }
+    currentPage: Number
   },
   computed: {
     pageRangeMin () {
@@ -49,7 +48,6 @@ export default {
     },
     routeTo (page) {
       return {
-        ...this.baseRouteTo,
         query: this.paginatedQuery(page)
       }
     }

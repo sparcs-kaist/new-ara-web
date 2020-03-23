@@ -32,12 +32,12 @@ export default {
       }
     }
   },
-  async beforeRouteEnter (to, from, next) {
-    const [ archive ] = await fetchWithProgress([fetchArchives()])
+  async beforeRouteEnter ({ query }, from, next) {
+    const [ archive ] = await fetchWithProgress([fetchArchives({ ...query })])
     next(vm => { vm.archive = archive })
   },
-  async beforeRouteUpdate (to, from, next) {
-    const [ archive ] = await fetchWithProgress([fetchArchives()])
+  async beforeRouteUpdate ({ query }, from, next) {
+    const [ archive ] = await fetchWithProgress([fetchArchives({ ...query })])
     this.archive = archive
     next()
   },

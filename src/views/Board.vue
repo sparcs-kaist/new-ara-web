@@ -9,7 +9,7 @@
       </div>
 
       <div slot="tools" class="tools">
-        <div class="search">
+        <form class="search" @submit.prevent="search">
           <div class="field has-addons">
             <div class="control-input">
               <input
@@ -20,18 +20,16 @@
               />
             </div>
             <div class="control">
-              <router-link
-                :to="{
-                  query: {
-                    query: this.keywordToSearch
-                  }
-                }"
-                class="button is-text">
-                검색
-              </router-link>
+              <button
+                type="submit"
+                class="button">
+                <span class="icon">
+                  <i class="material-icons">search</i>
+                </span>
+              </button>
             </div>
           </div>
-        </div>
+        </form>
         <div class="write ">
           <router-link
             :to="{
@@ -40,7 +38,7 @@
                 board: $route.params.boardSlug
               }
             }"
-            class="button button-write">
+            class="button is-primary">
             새글 쓰기
           </router-link>
         </div>
@@ -71,6 +69,13 @@ export default {
       return store.getters.getNameById(this.boardId, this.$i18n.locale)
     }
   },
+
+  methods: {
+    search() {
+      this.$router.push({ query: { query: this.keywordToSearch } })
+    }
+  },
+
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
     const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
     const [ board ] = await fetchWithProgress([ fetchArticles({ boardId, ...query }) ])
@@ -125,19 +130,28 @@ export default {
     }
 
     .field {
+      border: none;
       width: 100%;
 
       .control-input {
         width: 100%;
       }
-    }
-  }
 
-  .button-write {
-    border: none;
-    color: white;
-    background-color: #ED3A3A;
-    width: 100%;
+      .input {
+        background: var(--background-darken-1);
+      }
+    }
+
+    .button {
+      border: none;
+      outline: none;
+      background: var(--background-darken-1);
+
+      &:hover {
+        color: var(--text-lighten-1);
+        background: var(--background-darken-2);
+      }
+    }
   }
 }
 </style>
