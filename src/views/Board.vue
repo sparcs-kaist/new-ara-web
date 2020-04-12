@@ -16,7 +16,7 @@
                 v-model="keywordToSearch"
                 class="input input-search"
                 type="text"
-                placeholder="입력..."
+                :placeholder="$t('placeholder')"
               />
             </div>
             <div class="control">
@@ -39,7 +39,7 @@
               }
             }"
             class="button is-primary">
-            새글 쓰기
+            {{ $t('new-post') }}
           </router-link>
         </div>
       </div>
@@ -94,6 +94,17 @@ export default {
   components: { TheLayout, TheBoard }
 }
 </script>
+
+<i18n>
+ko:
+  search: '검색'
+  new-post: '새글 쓰기'
+  placeholder: '입력...'
+en:
+  search: 'Search'
+  new-post: 'New post'
+  placeholder: 'Keyword...'
+</i18n>
 
 <style lang="scss" scoped>
 // @import '@/theme.scss';

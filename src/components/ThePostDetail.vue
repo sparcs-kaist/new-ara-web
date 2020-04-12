@@ -12,7 +12,7 @@
           <div class="dropdown-item">
             <a class="dropdown-item" @click="archive"
               :class="{ 'is-loading': isArchiving }">
-              담아두기
+              {{ $t('archive') }}
             </a>
             <router-link v-if="postUserId === userId" class="dropdown-item"
               :to="{
@@ -21,18 +21,18 @@
                   postId: post.id
                 }
               }">
-              수정
+              {{ $t('edit') }}
             </router-link>
             <a v-if="postUserId === userId"
               @click="deletePost"
               href="#"
               class="dropdown-item">
-              삭제
+              {{ $t('delete') }}
             </a>
             <a v-else class="dropdown-item"
               @click="report"
               :class="{ 'is-loading': isReporting }">
-              신고
+              {{ $t('report') }}
             </a>
           </div>
         </div>
@@ -55,7 +55,7 @@
     </div>
 
     <div class="attachments" v-if="attachments && attachments.length !== 0">
-      <div class="attachments__title">첨부파일</div>
+      <div class="attachments__title">{{ $t('attachments') }}</div>
       <a class="attachment"
         v-for="{id, file, url} in attachments"
         :href="url"
@@ -176,6 +176,21 @@ export default {
   }
 }
 </script>
+
+<i18n>
+ko:
+  archive: '담아두기'
+  edit: '수정'
+  delete: '삭제'
+  report: '신고'
+  attachments: '첨부파일'
+en:
+  archive: 'Archive'
+  edit: 'Edit'
+  delete: 'Delete'
+  report: 'Report'
+  attachments: 'attachments'
+</i18n>
 
 <style lang="scss" scoped>
 #title {

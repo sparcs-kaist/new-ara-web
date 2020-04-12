@@ -1,11 +1,11 @@
 <template>
   <div id="comments" class="post-comments">
-    <div class="title">댓글</div>
+    <div class="title">{{ $t('comments') }}</div>
       <div
         v-show="Object.keys(comments).length == 0"
         class="no-comment-info"
       >
-        댓글이 없습니다.
+        {{ $t('no-comment') }}
       </div>
       <PostComment
         v-show="Object.keys(comments).length != 0"
@@ -17,7 +17,7 @@
         @delete="$emit('refresh')"
       />
     <div class="title">
-      새 댓글 작성
+      {{ $t('new-comment') }}
     </div>
     <div class="comment-input">
       <div class="comment-metadata">
@@ -26,7 +26,7 @@
       </div>
       <div class="comment-content">
         <textarea
-          placeholder="입력..."
+          :placeholder="$t('placeholder')"
           v-model="content"
           class="textarea new-comment"
           cols="10"
@@ -40,7 +40,7 @@
       class="button button-submit is-primary"
       :class="{ 'is-loading': isUploading }"
       :disabled="isUploading">
-      새 댓글
+      {{ $t('send-comment') }}
     </button>
   </div>
 </template>
@@ -89,6 +89,21 @@ export default {
   components: { PostComment }
 }
 </script>
+
+<i18n>
+ko:
+  comments: '댓글'
+  no-comment: '댓글이 없습니다.'
+  new-comment: '새 댓글 작성'
+  send-comment: '작성하기'
+  placeholder: '입력...'
+en:
+  comments: 'Comments'
+  no-comment: 'No comment.'
+  new-comment: 'New comment'
+  send-comment: 'Send'
+  placeholder: 'Type here...'
+</i18n>
 
 <style lang="scss" scoped>
 #comments {

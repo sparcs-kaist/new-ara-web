@@ -2,11 +2,11 @@
   <TheLayout>
     <div>
       <div class="title">
-        {{ $t('my-profile') }}
+        {{ $t('profile') }}
       </div>
       <div class="profile-container">
         <label class="label">
-          {{ $t('profile') }}
+          {{ $t('profile-photo') }}
         </label>
         <img
           :src="pictureSrc"
@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="fields-container">
-        <label class="label"> {{ $t('additional') }} </label>
+        <label class="label">{{ $t('additional-settings') }}</label>
         <div class="field">
           <label for="sexual" class="checkbox">
             <input type="checkbox"
@@ -71,7 +71,7 @@
         class="button button-update"
         :class="{ 'is-loading': updating }"
         @click="updateSettings">
-        {{ $t('update') }}
+        {{ $t('save') }}
       </button>
     </div>
     <div class="title title-danger-zone">
@@ -80,7 +80,7 @@
     <router-link
       :to="{ name: 'logout-handler' }">
       <div class="button button-logout">
-        로그아웃
+        {{ $t('logout') }}
       </div>
     </router-link>
   </TheLayout>
@@ -152,35 +152,35 @@ export default {
 </script>
 
 <i18n>
-  ko:
-    logout: '로그아웃'
-    update: '업데이트'
-    theme: '테마'
-    darkmode-light: '라이트 모드'
-    darkmode-dark: '다크 모드'
-    darkmode-system: '시스템 설정에 따라'
-    additional: '추가 설정'
-    show-political: '정치글 보기'
-    show-sexual: '성인글 보기'
-    nickname: '닉네임'
-    profile: '프로필'
-    my-profile: '내 프로필'
-    error-updating: '설정 변경 중 문제가 발생했습니다.'
+ko:
+  profile: '프로필'
+  profile-photo: '프로필 사진'
+  logout: '로그아웃'
+  save: '저장'
+  theme: '테마'
+  darkmode-light: '라이트 모드'
+  darkmode-dark: '다크 모드'
+  darkmode-system: '시스템 설정에 따라'
+  additional-settings: '추가 설정'
+  show-political: '정치글 보기'
+  show-sexual: '성인글 보기'
+  nickname: '이름'
+  error-updating: '설정 변경 중 문제가 발생했습니다.'
 
-  en:
-    logout: 'Logout'
-    update: 'Update'
-    theme: 'Theme'
-    darkmode-light: 'Light Mode'
-    darkmode-dark: 'Dark Mode'
-    darkmode-system: 'Based on System Settings'
-    additional: 'Additional Preferences'
-    show-political: 'Show political posts'
-    show-sexual: 'Show sexual posts'
-    nickname: 'Nickname'
-    profile: 'Profile'
-    my-profile: 'My Profile'
-    error-updating: 'An error occurred while updating settings'
+en:
+  profile: 'My account'
+  profile-photo: 'Photo'
+  logout: 'Logout'
+  save: 'Save'
+  theme: 'Theme'
+  darkmode-light: 'Light Mode'
+  darkmode-dark: 'Dark Mode'
+  darkmode-system: 'Based on System Settings'
+  additional-settings: 'Settings'
+  show-political: 'Show political posts'
+  show-sexual: 'Show sexual posts'
+  nickname: 'User name'
+  error-updating: 'An error occurred while updating settings'
 </i18n>
 
 <style lang="scss" scoped>
