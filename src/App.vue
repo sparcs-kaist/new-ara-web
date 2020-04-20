@@ -22,8 +22,8 @@ export default {
   #app {
     @media screen and (min-width: 700px) {
       min-height: 100vh;
-      padding-bottom: 54px;
-      margin-bottom: -54px;
+      padding-bottom: 95px;
+      margin-bottom: -95px;
     }
   }
 }

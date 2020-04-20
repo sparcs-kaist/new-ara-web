@@ -1,42 +1,47 @@
 <template>
   <footer class="the-footer">
-    <div class="footer-menu">
-      <div class="footer-item logo-item">
-        <a
-          id="sparcs-logo"
-          href="https://sparcs.org">
-          SPARCS
+    <div class="container footer-items">
+      <div class="footer-logo footer-item">
+        <a href="https://sparcs.org">
+          <img
+            src="@/assets/SPARCS-Black.png"
+            id="sparcs-logo"
+            style="height: 1em"
+          />
         </a>
       </div>
-      <div class="footer-item">
-        <!-- @TODO: footer에서 가는 페이지들 만들기 -->
-        <a href="https://sparcs.org">
-          {{ $t('credit') }}
-        </a>
-      </div>
-      <div class="footer-item">
-        <a href="https://sparcs.org">
-          {{ $t('license') }}
-        </a>
-      </div>
-      <div class="footer-item">
-        <a href="https://sparcs.org">
-          {{ $t('rules') }}
+      <div
+        v-for="(item, index) in footerItems"
+        :key="item.name"
+        class="footer-item"
+        :class="{ 'footer-item-last': index === footerItems.length - 1 }"
+      >
+        <a :href="item.href">
+          {{ item.name }}
         </a>
       </div>
     </div>
-    <!-- <div class="footer-contact">
-      {{ $t('contact') }}:
-      <a href="mailto:ara@sparcs.kaist.ac.kr">
-        ara@sparcs.kaist.ac.kr
-      </a>
-    </div> -->
   </footer>
 </template>
 
 <script>
 export default {
-
+  data () {
+    return {
+      footerItems: [
+        {
+          id: 'credit',
+          name: this.$t('credit'),
+          href: 'https://sparcs.org'
+        },
+        {
+          id: 'license',
+          name: this.$t('license'),
+          href: 'https://sparcs.org'
+        }
+      ]
+    }
+  }
 }
 </script>
 
@@ -44,64 +49,53 @@ export default {
 ko:
   credit: '만든 사람들'
   license: '라이센스'
-  rules: '규칙'
-  contact: '문의'
 en:
   credit: 'Credit'
   license: 'License'
-  rules: 'Rules'
-  contact: 'Contact'
 </i18n>
 
 <style lang="scss" scoped>
 .the-footer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  height: 95px;
+  align-items: center;
+  border-top: 13px solid #d19696;
 
-  position: relative;
-  padding: 15px;
-
-  @media screen and (max-width: 700px) {
-    flex-direction: column;
-  }
-
-  #sparcs-logo {
-    font-family: 'Raleway', sans-serif;
-    float: left;
-  }
-
-  .footer-menu {
+  .footer-items {
     display: flex;
-    flex-direction: row;
+    height: 82px;
+    margin-top: -26px;
+    padding-top: 13px;
+    align-items: center;
+    border-top: 13px solid #ebb7b7;
 
     @media screen and (max-width: 700px) {
-      flex-direction: column-reverse;
+      flex-direction: column;
     }
-
 
     .footer-item {
-      margin: 0 1rem 0 0;
-
-      @media screen and (max-width: 700px) {
-        margin: 1rem 0 0 0;
-      }
-
-      &.logo-item {
-        margin: 0 3rem 0 0;
-
-        @media screen and (max-width: 700px) {
-          margin: 1rem 0 0 0;
-          font-size: 1.3rem;
-        }
+      @media screen and (min-width: 700px) {
+        margin-right: 2rem;
       }
     }
-  }
 
-  .footer-contact {
-    @media screen and (max-width: 700px) {
-      margin-top: 2rem;
-      margin-bottom: 2rem;
+    .footer-logo {
+      font-size: 1.5em;
+
+      @media screen and (min-width: 700px) {
+        margin-right: 5rem;
+        margin-bottom: -0.2em;
+      }
+
+      @media not screen and (min-width: 700px) {
+        margin-top: 5rem;
+        margin-bottom: 2rem;
+      }
+    }
+
+    .footer-item-last {
+      margin-right: 0rem !important;
     }
   }
 }
