@@ -11,10 +11,9 @@
         </a>
       </div>
       <div
-        v-for="(item, index) in footerItems"
+        v-for="item in footerItems"
         :key="item.name"
         class="footer-item"
-        :class="{ 'footer-item-last': index === footerItems.length - 1 }"
       >
         <a :href="item.href">
           {{ item.name }}
@@ -72,6 +71,7 @@ en:
 
     @media screen and (max-width: 700px) {
       flex-direction: column;
+      padding: 0 5rem 0 5rem;
     }
 
     .footer-item {
@@ -92,10 +92,6 @@ en:
         margin-top: 5rem;
         margin-bottom: 2rem;
       }
-    }
-
-    .footer-item-last {
-      margin-right: 0rem !important;
     }
   }
 }
