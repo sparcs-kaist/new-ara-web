@@ -1,26 +1,26 @@
 <template>
-  <div class="Searchbar">
-    <h2 class="Searchbar__landing">
+  <div class="searchbar">
+    <h2 class="searchbar__landing">
       <i18n path="landing.text">
         <template #ara>
-          <span class="Searchbar__landing--bold">{{
+          <span class="searchbar__landing--bold">{{
             $t('landing.ara')
           }}</span>
         </template>
         <template #accurate>
-          <span class="Searchbar__landing--highlight">{{
+          <span class="searchbar__landing--highlight">{{
             $t('landing.accurate')
           }}</span>
         </template>
         <template #fast>
-          <span class="Searchbar__landing--highlight">{{
+          <span class="searchbar__landing--highlight">{{
             $t('landing.fast')
           }}</span>
         </template>
       </i18n>
     </h2>
 
-    <div class="Searchbar__search field">
+    <div class="searchbar__search field">
       <p class="control has-icons-right">
         <input class="input is-large" type="text">
         <span class="icon is-small is-right">
@@ -29,15 +29,15 @@
       </p>
     </div>
 
-    <div class="Keywords">
-      <span class="Keywords__description">
+    <div class="keywords">
+      <span class="keywords__description">
         {{ $t('keyword') }}
       </span>
 
-      <div class="Keywords__divider"></div>
-      <div class="Keywords__list">
-        <span class="Keywords__keyword" v-for="keyword in keywords" :key="keyword">
-          {{ keyword }}
+      <div class="keywords__divider"></div>
+      <div class="keywords__list">
+        <span class="keywords__keyword" v-for="keyword in keywords" :key="keyword.key">
+          {{ keyword[`${$i18n.locale}_name`] }}
         </span>
       </div>
     </div>
@@ -49,7 +49,41 @@ export default {
   data () {
     return {
       keywords: [
-        '근로학생', '강의평가', '수강신청', '계절학기', '성적게시기간', '등록금 납부', '졸업요건'
+        {
+          key: 'students-working',
+          ko_name: '근로학생',
+          en_name: 'Students Working'
+        },
+        {
+          key: 'lecture-review',
+          ko_name: '강의평가',
+          en_name: 'Lecture Review'
+        },
+        {
+          key: 'enrolment',
+          ko_name: '수강신청',
+          en_name: 'Enrolment'
+        },
+        {
+          key: 'season-term',
+          ko_name: '계절학기',
+          en_name: 'Season Term'
+        },
+        {
+          key: 'grade-posting-period',
+          ko_name: '성적게시기간',
+          en_name: 'Grade Posting Period'
+        },
+        {
+          key: 'tuition-payment',
+          ko_name: '등록금 납부',
+          en_name: 'Tuition Payment'
+        },
+        {
+          key: 'graduation-requirements',
+          ko_name: '졸업요건',
+          en_name: 'Graduation Reqs'
+        }
       ]
     }
   }
@@ -75,7 +109,7 @@ en:
 </i18n>
 
 <style lang="scss" scoped>
-.Searchbar {
+.searchbar {
   &__landing {
     color: #484848;
     font-family: 'NanumSquareRound', sans-serif;
@@ -108,11 +142,15 @@ en:
   }
 }
 
-.Keywords {
+.keywords {
   display: flex;
   color: #797979;
   font-family: 'NanumSquareRound', sans-serif;
 
+  &__description {
+    flex-shrink: 0;
+  }
+  
   &__divider {
     display: inline-block;
     border-right: 1px solid #e5e5e5;
@@ -121,6 +159,7 @@ en:
 
   &__list {
     display: inline-flex;
+    flex-wrap: wrap;
   }
 
   &__keyword {
