@@ -1,5 +1,6 @@
 <template>
   <TheLayout>
+    <TheHomeSearchbar />
     <div class="columns is-multiline home">
       <div class="board today-best column is-6">
         <h2 class="board-name"> {{ $t('today-best') }} </h2>
@@ -83,6 +84,7 @@
 <script>
 import { fetchHome } from '@/api'
 import { fetchWithProgress } from './helper.js'
+import TheHomeSearchbar from '@/components/TheHomeSearchbar.vue'
 import TheLayout from '@/components/TheLayout.vue'
 import Timeago from '@/components/Timeago.vue'
 
@@ -102,7 +104,11 @@ export default {
     const [ home ] = await fetchWithProgress([ fetchHome() ])
     next(vm => { vm.home = home })
   },
-  components: { TheLayout, Timeago }
+  components: {
+    TheHomeSearchbar,
+    TheLayout,
+    Timeago
+  }
 }
 </script>
 
@@ -127,7 +133,7 @@ en:
     }
 
     .home {
-  
+
       .board {
         margin-bottom: 2rem;
 
@@ -158,7 +164,7 @@ en:
           @include breakPoint('max') {
             max-width: 400px;
           }
-      
+
           .article-title {
             // width:100%;
             text-overflow:ellipsis;
