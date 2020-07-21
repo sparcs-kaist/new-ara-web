@@ -1,57 +1,32 @@
 <template>
-  <table class="table post-table">
-    <thead>
-      <tr>
-        <th>{{ $t('title') }}</th>
-        <th class="post-table-author has-text-right"> {{ $t('author') }} </th>
-        <th class="post-table-vote has-text-right reaction"> {{ $t('reaction') }} </th>
-        <th class="post-table-hit has-text-right views"> {{ $t('views') }} </th>
-        <th class="post-table-time has-text-right time"> {{ $t('time') }} </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="article in articles"
-        :key="article.id">
-        <td class="article-wrapper-big">
-          <router-link
-            :to="{
-              name: 'post',
-              params: {
-                postId: article.id
-              }
-            }">
-            <div class="article-wrapper">
-              <span class="article-title"> {{ article.title }}
-              </span> &nbsp&nbsp
-              <span class="comment-count">
-                ({{ article.comments_count }})
-              </span>
-            </div>
-          </router-link>
-        </td>
-        <td class="has-text-right">
-          <router-link
-            :to="{
-              name: 'user',
-              params: {
-                username: article.created_by.profile.nickname
-              }
-            }">
+  <div class="board-table">
+    <div class="board-item" v-for="article in articles">
+      <img class="board-item__image" :src="article.created_by.profile.picture">
+
+      <div class="board-item__content">
+        <div class="board-item__header">
+          <span class="board-item__author">
             {{ article.created_by.profile.nickname }}
-          </router-link>
-        </td>
-        <td class="has-text-right reaction">{{ article.positive_vote_count }}</td>
-        <td class="has-text-right views">{{ article.hit_count }}</td>
-        <td class="has-text-right time">
-          <Timeago :time="article.created_at"/>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          </span>
+
+          <Timeago class="board-item__time" :time="article.created_at" />
+        </div>
+
+        <div class="board-item__body">
+          <div class="board-item__title">
+            {{ article.title }}
+          </div>
+
+          <ArticleStatus class="board-item__status" :article="article" />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import ArticleStatus from '@/components/ArticleStatus.vue'
 import Timeago from '@/components/Timeago.vue'
 
 export default {
@@ -60,7 +35,10 @@ export default {
   computed: {
     ...mapGetters([ 'getNameById' ])
   },
-  components: { Timeago }
+  components: {
+    ArticleStatus,
+    Timeago
+  }
 }
 </script>
 
@@ -84,39 +62,50 @@ en:
 <style lang="scss">
 @import '@/theme.scss';
 
-.table.post-table {
+.board-table {
+  font-family: 'NanumSquareRound', sans-serif;
   width: 100%;
+}
 
-  .reaction, .views, .time {
-    @media screen and (max-width: 700px){
-      display: none;
-    }
+.board-item {
+  color: #333333;
+  display: flex;
+  margin: 20px 0;
+
+  &__image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    margin-right: 20px;
   }
 
-  thead th {
-    padding: 0 0 1rem 0;
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  tbody td {
-    padding: 0 0 0.5rem 0;
+  &__author {
+    margin-right: 14px;
   }
 
-  .post-table-title {
-    min-width: 5rem;
+  &__time {
+    color: #a9a9a9;
+    font-size: .8rem;
   }
-  .post-table-author {
-    min-width: 7rem;
+
+  &__body {
+    display: flex;
   }
-  .post-table-vote {
-    min-width: 4rem;
-  }
-  .post-table-hit {
-    min-width: 5rem;
-  }
-  .post-table-time {
-    min-width: 6rem;
+
+  &__title {
+    font-weight: 700;
+    flex: 1;
   }
 }
+
 .comment-count {
   color: $theme-red;
 }

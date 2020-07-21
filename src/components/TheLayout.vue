@@ -4,13 +4,11 @@
     <TheApiErrorNotification/>
     <div class="container">
       <div class="columns">
+        <slot name="aside"></slot>
+
         <div class="column">
           <slot/>
         </div>
-        <!-- <aside
-          class="column is-narrow">
-          <TheAd/>
-        </aside> -->
       </div>
     </div>
     <!-- <TheFooter/> -->

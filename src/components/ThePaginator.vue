@@ -24,11 +24,12 @@ import { range } from '@/helper.js'
 
 export default {
   name: 'the-paginator',
+
   props: {
     numPages: Number,
-    currentPage: Number,
-    baseRouteTo: { required: true }
+    currentPage: Number
   },
+
   computed: {
     pageRangeMin () {
       return Math.floor((this.currentPage - 1) / 10) * 10 + 1
@@ -40,6 +41,7 @@ export default {
       return range(this.pageRangeMin, this.pageRangeMax)
     }
   },
+
   methods: {
     paginatedQuery (page) {
       return {
@@ -49,7 +51,6 @@ export default {
     },
     routeTo (page) {
       return {
-        ...this.baseRouteTo,
         query: this.paginatedQuery(page)
       }
     }
