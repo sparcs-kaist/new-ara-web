@@ -1,42 +1,48 @@
 <template>
   <div class="board-table">
-    <div class="board-item" v-for="article in articles">
-      <img class="board-item__image" :src="article.created_by.profile.picture">
+    <router-link
+    :to="{
+        name: 'post',
+        params: { postId: post.id }
+    }"
+    class="board-item"
+    v-for="post in posts">
+      <img class="board-item__image" :src="post.created_by.profile.picture">
 
       <div class="board-item__content">
         <div class="board-item__header">
           <span class="board-item__author">
-            {{ article.created_by.profile.nickname }}
+            {{ post.created_by.profile.nickname }}
           </span>
 
-          <Timeago class="board-item__time" :time="article.created_at" />
+          <Timeago class="board-item__time" :time="post.created_at" />
         </div>
 
         <div class="board-item__body">
           <div class="board-item__title">
-            {{ article.title }}
+            {{ post.title }}
           </div>
 
-          <ArticleStatus class="board-item__status" :article="article" />
+          <PostStatus class="board-item__status" :post="post" />
         </div>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import ArticleStatus from '@/components/ArticleStatus.vue'
+import PostStatus from '@/components/PostStatus.vue'
 import Timeago from '@/components/Timeago.vue'
 
 export default {
   name: 'the-board-table',
-  props: [ 'articles' ],
+  props: [ 'posts' ],
   computed: {
     ...mapGetters([ 'getNameById' ])
   },
   components: {
-    ArticleStatus,
+    PostStatus,
     Timeago
   }
 }
@@ -102,38 +108,31 @@ en:
 
   &__title {
     font-weight: 700;
-    flex: 1;
+    flex: 1 1 0;
+    width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__status {
+    width: 18rem;
   }
 }
 
 .comment-count {
   color: $theme-red;
 }
+
 .article-title {
-  // width:100%;
-  text-overflow:ellipsis;
-  -o-text-overflow:ellipsis;
-  overflow:hidden;
-  white-space:nowrap;
-  word-wrap:break-word !important;
-  display: block;
-  // added for multiline
+
 }
+
 .article-wrapper-big {
   width: 100%;
-  @include breakPoint('min') {
-    max-width: 600px;
-  }
-  @include breakPoint('min-mid') {
-    max-width: 600px;
-  }
-  @include breakPoint('mid-max') {
-    max-width: 600px;
-  }
-  @include breakPoint('max') {
-    max-width: 600px;
-  }
+  max-width: 600px;
 }
+
 .article-wrapper {
   display: flex;
 }

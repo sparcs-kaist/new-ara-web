@@ -34,5 +34,14 @@ export default {
 .columns {
   width: 100%;
   margin: 0px;
+
+  & > *:not(:last-child) {
+    flex: 1;
+    max-width: 300px;
+  }
+
+  & > *:last-child {
+    flex: 3 1 0;
+  }
 }
 </style>

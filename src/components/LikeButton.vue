@@ -72,13 +72,14 @@
       background: transparent;
       color: #666666;
       flex: 1;
+      white-space: nowrap;
 
       &--selected {
         color: var(--theme-red);
       }
 
       &:not(:last-child) {
-        margin-right: 10px;
+        margin-right: 5px;
       }
 
       &:hover {

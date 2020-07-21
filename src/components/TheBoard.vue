@@ -2,7 +2,7 @@
   <div class="board">
     <slot name="title"/>
 
-    <TheBoardTable :articles="board.results"/>
+    <TheBoardTable :posts="board.results"/>
 
     <div class="board__navbar">
       <ThePaginator
