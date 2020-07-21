@@ -111,6 +111,7 @@ en:
 <style lang="scss" scoped>
 .searchbar {
   &__landing {
+    background: transparent;
     color: #484848;
     font-family: 'NanumSquareRound', sans-serif;
     font-size: 32px;
@@ -118,6 +119,7 @@ en:
 
     &--bold, &--highlight {
       font-weight: 900;
+      white-space: nowrap;
     }
 
     &--highlight {
@@ -150,7 +152,7 @@ en:
   &__description {
     flex-shrink: 0;
   }
-  
+
   &__divider {
     display: inline-block;
     border-right: 1px solid #e5e5e5;

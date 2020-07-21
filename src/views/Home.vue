@@ -1,82 +1,16 @@
 <template>
-  <TheLayout>
-    <TheHomeSearchbar />
-    <div class="columns is-multiline home">
-      <div class="board today-best column is-6">
-        <h2 class="board-name"> {{ $t('today-best') }} </h2>
-        <div
-          v-for="article in dailyBests"
-          :key="article.id"
-          class="post">
-          <h3 class="post-title">
-            <router-link
-              :to="{
-                name: 'post',
-                params: { postId: article.id }
-              }">
-              {{ article.title }}
-            </router-link>
-          </h3>
-          <div class="post-time">
-            <Timeago :time="article.created_at"/>
-          </div>
-        </div>
-      </div>
-      <div class="board weekly-best column is-6">
-        <h2 class="board-name"> {{ $t('weekly-best') }} </h2>
-        <div
-          v-for="article in weeklyBests"
-          :key="article.id"
-          class="post">
-          <h3 class="post-title">
-            <router-link
-              :to="{
-                name: 'post',
-                params: { postId: article.id }
-              }">
-              {{ article.title }}
-            </router-link>
-          </h3>
-          <div class="post-time">
-            <Timeago :time="article.created_at"/>
-          </div>
-        </div>
-      </div>
-      <div
-        v-for="board in boards"
-        :key="board.id"
-        class="board column is-6">
-        <router-link
-          :to="{
-            name: 'board',
-            params: { boardSlug: board.slug }
-          }">
-          <h2 class="board-name"> {{ board[`${$i18n.locale}_name`] }} </h2>
-        </router-link>
-        <div
-          v-for="article in board.recent_articles"
-          :key="article.id"
-          class="post">
-          <h3 class="article-wrapper-big">
-            <router-link
-              :to="{
-                name: 'post',
-                params: { postId: article.id }
-              }">
-              <div class="article-wrapper">
-                <span class="article-title"> {{ article.title }}
-                </span> &nbsp
-                <span class="comment-count">
-                  ({{ article.comments_count }})
-                </span>
-              </div>
-            </router-link>
-          </h3>
-          <div class="post-time">
-            <Timeago :time="article.created_at"/>
-          </div>
-        </div>
-      </div>
+  <TheLayout class="home">
+    <div class="home__searchbar">
+      <TheHomeSearchbar />
+    </div>
+
+    <div class="columns is-multiline">
+      <SmallBoard :listitems="dailyBests">
+        {{ $t('today-best') }}
+      </SmallBoard>
+      <SmallBoard :listitems="weeklyBests">
+        {{ $t('weekly-best') }}
+      </SmallBoard>
     </div>
   </TheLayout>
 </template>
@@ -84,9 +18,9 @@
 <script>
 import { fetchHome } from '@/api'
 import { fetchWithProgress } from './helper.js'
+import SmallBoard from '@/components/SmallBoard.vue'
 import TheHomeSearchbar from '@/components/TheHomeSearchbar.vue'
 import TheLayout from '@/components/TheLayout.vue'
-import Timeago from '@/components/Timeago.vue'
 
 export default {
   name: 'home',
@@ -96,8 +30,8 @@ export default {
     }
   },
   computed: {
-    dailyBests () { return this.home.dailyBests },
-    weeklyBests () { return this.home.weeklyBests },
+    dailyBests () { return this.home.daily_bests },
+    weeklyBests () { return this.home.weekly_bests },
     boards () { return this.home.boards }
   },
   async beforeRouteEnter (to, from, next) {
@@ -105,17 +39,17 @@ export default {
     next(vm => { vm.home = home })
   },
   components: {
+    SmallBoard,
     TheHomeSearchbar,
-    TheLayout,
-    Timeago
+    TheLayout
   }
 }
 </script>
 
 <i18n>
 ko:
-  today-best: '투데이 베스트'
-  weekly-best: '위클리 베스트'
+  today-best: '주간 검색 순위'
+  weekly-best: '일간 검색 순위'
 en:
   today-best: 'Today Best'
   weekly-best: 'Weekly Best'
@@ -123,66 +57,25 @@ en:
 
 <style lang="scss" scoped>
 @import '@/theme.scss';
-.columns {
+.home {
+  background-size: 100% 380px;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(to bottom, #fdf0f0, #ffffff);
 
+  &__searchbar {
+    display: flex;
+    align-items: center;
+    height: 300px;
+  }
+}
+
+.columns {
   .column {
     padding: 0 20px 0 0;
 
     @media screen and (max-width: 768px){
       padding: 0;
     }
-
-    .home {
-
-      .board {
-        margin-bottom: 2rem;
-
-        .board-name {
-          font-size: 1.5rem;
-          font-weight: 700;
-          margin-bottom: 0.5em;
-        }
-        .post {
-          display: flex;
-          justify-content: space-between;
-          margin: 0.5rem 0;
-          .comment-count {
-            color: $theme-red;
-          }
-        }
-        .article-wrapper-big {
-          width: 300px;
-          @include breakPoint('min') {
-            max-width: 170px;
-          }
-          @include breakPoint('min-mid') {
-            max-width: 220px;
-          }
-          @include breakPoint('mid-max') {
-            max-width: 250px;
-          }
-          @include breakPoint('max') {
-            max-width: 400px;
-          }
-
-          .article-title {
-            // width:100%;
-            text-overflow:ellipsis;
-            -o-text-overflow:ellipsis;
-            overflow:hidden;
-            white-space:nowrap;
-            word-wrap:break-word !important;
-            display: block;
-            // added for multiline
-          }
-          .article-wrapper {
-            display: flex;
-          }
-        }
-      }
-    }
   }
 }
-
-
 </style>
