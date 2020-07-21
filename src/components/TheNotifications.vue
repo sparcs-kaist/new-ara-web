@@ -30,7 +30,7 @@ export default {
       if (!this.notifications.results) return {}
       return this.notifications.results
         .reduce((acc, notification) => {
-          const timePassed = timeago(notification.created_at)
+          const timePassed = timeago(notification.created_at, this.$i18n.locale)
           if (Object.keys(acc).includes(timePassed)) {
             return {
               ...acc,
