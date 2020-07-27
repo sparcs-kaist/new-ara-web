@@ -1,12 +1,7 @@
 <template>
   <TheLayout class="board">
     <template #aside>
-      <TheSidebar :listitems="recentArticles">
-        {{ $t('recent') }}
-      </TheSidebar>
-      <TheSidebar :listitems="storedArticles">
-        {{ $t('stored') }}
-      </TheSidebar>
+      <TheSidebar />
     </template>
 
     <TheBoard :board="board">
@@ -37,9 +32,7 @@ export default {
     }
   },
   computed: {
-    boardName () { return store.getters.getNameById(this.boardId, this.$i18n.locale) },
-    recentArticles () { return this.board.recentArticles },
-    storedArticles () { return this.board.storedArticles }
+    boardName () { return store.getters.getNameById(this.boardId, this.$i18n.locale) }
   },
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
     const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
@@ -69,15 +62,11 @@ ko:
   search: '검색'
   new-post: '새글 쓰기'
   placeholder: '입력...'
-  recent: '최근 본 글'
-  stored: '담아둔 글'
 
 en:
   search: 'Search'
   new-post: 'New post'
   placeholder: 'Keyword...'
-  recent: 'recent articles'
-  stored: 'stored articles'
 </i18n>
 
 <style lang="scss" scoped>

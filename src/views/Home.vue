@@ -5,10 +5,10 @@
     </div>
 
     <div class="columns is-multiline">
-      <SmallBoard :listitems="dailyBests">
+      <SmallBoard :listitems="dailyBests" class="column is-6" author>
         {{ $t('today-best') }}
       </SmallBoard>
-      <SmallBoard :listitems="weeklyBests">
+      <SmallBoard :listitems="weeklyBests" class="column is-6" author>
         {{ $t('weekly-best') }}
       </SmallBoard>
     </div>
@@ -30,8 +30,8 @@ export default {
     }
   },
   computed: {
-    dailyBests () { return this.home.daily_bests },
-    weeklyBests () { return this.home.weekly_bests },
+    dailyBests () { return this.home.daily_bests.recent_articles },
+    weeklyBests () { return this.home.weekly_bests.recent_articles },
     boards () { return this.home.boards }
   },
   async beforeRouteEnter (to, from, next) {

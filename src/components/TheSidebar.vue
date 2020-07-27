@@ -3,42 +3,65 @@
     <h2 class="sidebar__name">
       <slot></slot>
     </h2>
-    <div
-    v-for="post in listitems"
-    :key="post.id"
-    class="post">
-      <h3 class="post">
-        <router-link
-        :to="{
-            name: 'post',
-            params: { postId: post.id }
-        }">
-          {{ post.title }}
-        </router-link>
-      </h3>
-    </div>
-      <h3 class="post">
-        글글글
-      </h3>
-      <h3 class="post">
-        hi
-      </h3>
-      <h3 class="post">
-        hi
-      </h3>
+
+    <SmallBoard :listitems="recentArticles">
+      {{ $t('recent') }}
+    </SmallBoard>
+
+    <SmallBoard :listitems="adaptedArchive">
+      {{ $t('stored') }}
+    </SmallBoard>
   </aside>
 </template>
 
 <script>
+import { fetchArchives } from '@/api'
+import SmallBoard from '@/components/SmallBoard.vue'
+
 export default {
   name: 'the-sidebar',
+
+  data() {
+    return {
+      archives: null
+    }
+  },
+
   props: {
     listitems: {
       required: true
     }
+  },
+
+  computed: {
+    adaptedArchive() {
+      if(!this.archives || !this.archives.results)
+        return []
+
+      const results = this.archives.results.slice(0, 5)
+      return results.map(({ parent_article: article }) => article)
+    }
+  },
+
+  async mounted() {
+    this.archives = await fetchArchives()
+  },
+
+  components: {
+    SmallBoard
   }
 }
 </script>
+
+<i18n>
+ko:
+  recent: '최근 본 글'
+  stored: '담아둔 글'
+
+en:
+  recent: 'recent articles'
+  stored: 'stored articles'
+</i18n>
 
 <style lang="scss" scoped>
 @import '@/theme.scss';
