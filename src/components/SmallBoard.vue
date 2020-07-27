@@ -16,7 +16,7 @@
         {{index + 1}}. {{ post.title }}
         </router-link>
       </h3>
-      
+
       <div class="post__username">
         {{article.created_by.profile.nickname}}
       </div>
