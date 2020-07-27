@@ -33,6 +33,9 @@ export default {
     },
     author: {
       type: Boolean
+    },
+    isHome: {
+      type: Boolean
     }
   }
 }

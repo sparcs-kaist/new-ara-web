@@ -27,12 +27,6 @@ export default {
     }
   },
 
-  props: {
-    listitems: {
-      required: true
-    }
-  },
-
   computed: {
     adaptedArchive() {
       if(!this.archives || !this.archives.results)
