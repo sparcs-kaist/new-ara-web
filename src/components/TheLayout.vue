@@ -31,17 +31,30 @@ export default {
   min-width: 100%;
 }
 
+.container {
+  margin-top: 50px;
+}
+
 .columns {
   width: 100%;
   margin: 0px;
 
-  & > *:not(:last-child) {
-    flex: 1;
-    max-width: 300px;
-  }
+  & > * {
+    margin: 0 25px;
 
-  & > *:last-child {
-    flex: 3 1 0;
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:not(:last-child) {
+      flex: 1;
+      max-width: 300px;
+    }
+
+    &:last-child {
+      flex: 3 1 0;
+      margin-right: 0;
+    }
   }
 }
 </style>

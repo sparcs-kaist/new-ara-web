@@ -1,15 +1,20 @@
 <template>
-  <aside class="sidebar">
-    <h2 class="sidebar__name">
-      <slot></slot>
-    </h2>
+  <aside class="sidebar column">
+    <div class="sidebar__search field">
+      <p class="control has-icons-right">
+        <input class="input is-medium" type="text">
+        <span class="icon is-small is-right">
+          <i class="material-icons">search</i>
+        </span>
+      </p>
+    </div>
 
-    <SmallBoard :listitems="recentArticles">
+    <SmallBoard :listitems="recent">
       {{ $t('recent') }}
     </SmallBoard>
 
     <SmallBoard :listitems="adaptedArchive">
-      {{ $t('stored') }}
+      {{ $t('archive') }}
     </SmallBoard>
   </aside>
 </template>
@@ -21,24 +26,25 @@ import SmallBoard from '@/components/SmallBoard.vue'
 export default {
   name: 'the-sidebar',
 
-  data() {
+  data () {
     return {
+      recent: [],
       archives: null
     }
   },
 
   computed: {
-    adaptedArchive() {
-      if(!this.archives || !this.archives.results)
-        return []
+    adaptedArchive () {
+      if (!this.archives || !this.archives.results) return []
 
       const results = this.archives.results.slice(0, 5)
       return results.map(({ parent_article: article }) => article)
     }
   },
 
-  async mounted() {
+  async mounted () {
     this.archives = await fetchArchives()
+    // TODO recent viewed posts
   },
 
   components: {
@@ -50,11 +56,11 @@ export default {
 <i18n>
 ko:
   recent: '최근 본 글'
-  stored: '담아둔 글'
+  archive: '담아둔 글'
 
 en:
   recent: 'recent articles'
-  stored: 'stored articles'
+  archive: 'stored articles'
 </i18n>
 
 <style lang="scss" scoped>
@@ -65,23 +71,8 @@ en:
   margin-bottom: 2rem;
   font-family: 'NanumSquareRound',sans-serif;
 
-  &__name {
-    font-size: 14px;
-    font-weight: 700;
-    margin-top: 48px;
-    margin-right: 48px;
-    margin-bottom: 1.5em;
-    padding-left: 1.5em;
-    border-left: thick solid #ffafaf;
-  }
-
-  .post {
-    border-left: thick solid transparent;
-    font-size: 14px;
-    display: flex;
-    justify-content: space-between;
-    margin: 1em 0;
-    padding-left: 1.5em;
+  & > * {
+    margin-bottom: 50px;
   }
 }
 </style>

@@ -5,6 +5,7 @@
         name: 'post',
         params: { postId: post.id }
     }"
+    :key="post.id"
     class="board-item"
     v-for="post in posts">
       <img class="board-item__image" :src="post.created_by.profile.picture">
@@ -117,6 +118,14 @@ en:
 
   &__status {
     width: 18rem;
+  }
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
   }
 }
 

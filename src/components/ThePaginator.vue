@@ -65,7 +65,10 @@ a.is-active {
 }
 
 .pages {
+  display: flex;
+  justify-content: center;
   margin: 0 -0.25rem;
+
   .page {
     margin: 0 0.25rem;
   }

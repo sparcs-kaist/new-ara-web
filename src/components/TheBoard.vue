@@ -1,6 +1,6 @@
 <template>
   <div class="board">
-    <slot name="title"/>
+    <!-- <slot name="title"/> -->
 
     <TheBoardTable :posts="board.results"/>
 

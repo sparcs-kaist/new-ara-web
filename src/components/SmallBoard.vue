@@ -13,11 +13,11 @@
             name: 'post',
             params: { postId: post.id }
         }">
-        {{index + 1}}. {{ post.title }}
+        {{ getTitle(post, index) }}
         </router-link>
       </h3>
 
-      <div class="post__username" v-if="author">
+      <div class="post__username" v-if="detail">
         {{article.created_by.profile.nickname}}
       </div>
     </div>
@@ -31,11 +31,17 @@ export default {
     listitems: {
       required: true
     },
-    author: {
+    detail: {
       type: Boolean
     },
     isHome: {
       type: Boolean
+    }
+  },
+
+  methods: {
+    getTitle (post, index) {
+      return (this.detail ? `${index + 1}. ` : '') + post.title
     }
   }
 }
