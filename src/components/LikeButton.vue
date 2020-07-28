@@ -1,5 +1,5 @@
 <template>
-  <div class="like-button" :class="{ 'like-button--enabled': voteEnabled }">
+  <div class="like-button" :class="{ 'like-button--enabled': votable }">
     <button class="like-button__item" @click="vote(true)"
       :class="{ 'like-button__item--selected': liked }">
 
@@ -23,30 +23,29 @@
         required: true
       },
 
-      voteFn: {
-        type: Function
+      votable: {
+        type: Boolean
       }
     },
 
     computed: {
+      // my_vote can be true, false, or null
       liked() { return this.item.my_vote === true },
       disliked() { return this.item.my_vote === false },
       likedCount() { return this.item.positive_vote_count },
-      dislikedCount() { return this.item.negative_vote_count },
-      voteEnabled() { return !!this.voteFn }
+      dislikedCount() { return this.item.negative_vote_count }
     },
 
     methods: {
       vote(ballot) {
-        if(!this.voteFn)
+        if(!this.votable)
           return
 
         const myVote = this.item.my_vote === ballot ?
           'vote_cancel' :
           (ballot ? 'vote_positive' : 'vote_negative')
 
-        this.voteFn(this.item.id, myVote)
-        this.$emit('vote')
+        this.$emit('vote', { id: this.item.id, vote: myVote })
       }
     }
   }
