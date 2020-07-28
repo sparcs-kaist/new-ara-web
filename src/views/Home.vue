@@ -9,7 +9,7 @@
         {{ $t('today-best') }}
       </SmallBoard>
 
-      <SmallBoard :listitems="weeklyBests" class="column is-6" detail is-home>
+      <SmallBoard :listitems="weeklyBests" class="column is-6" detail>
         {{ $t('weekly-best') }}
       </SmallBoard>
     </div>

@@ -33,9 +33,6 @@ export default {
     },
     detail: {
       type: Boolean
-    },
-    isHome: {
-      type: Boolean
     }
   },
 
