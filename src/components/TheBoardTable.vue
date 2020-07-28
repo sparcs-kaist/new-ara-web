@@ -1,66 +1,51 @@
 <template>
-  <table class="table post-table">
-    <thead>
-      <tr>
-        <th>{{ $t('title') }}</th>
-        <th class="post-table-author has-text-right"> {{ $t('author') }} </th>
-        <th class="post-table-vote has-text-right reaction"> {{ $t('reaction') }} </th>
-        <th class="post-table-hit has-text-right views"> {{ $t('views') }} </th>
-        <th class="post-table-time has-text-right time"> {{ $t('time') }} </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="article in articles"
-        :key="article.id">
-        <td class="article-wrapper-big">
-          <router-link
-            :to="{
-              name: 'post',
-              params: {
-                postId: article.id
-              }
-            }">
-            <div class="article-wrapper">
-              <span class="article-title"> {{ article.title }}
-              </span> &nbsp&nbsp
-              <span class="comment-count">
-                ({{ article.comments_count }})
-              </span>
-            </div>
-          </router-link>
-        </td>
-        <td class="has-text-right">
-          <router-link
-            :to="{
-              name: 'user',
-              params: {
-                username: article.created_by.profile.nickname
-              }
-            }">
-            {{ article.created_by.profile.nickname }}
-          </router-link>
-        </td>
-        <td class="has-text-right reaction">{{ article.positive_vote_count }}</td>
-        <td class="has-text-right views">{{ article.hit_count }}</td>
-        <td class="has-text-right time">
-          <Timeago :time="article.created_at"/>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="board-table">
+    <router-link
+    :to="{
+        name: 'post',
+        params: { postId: post.id }
+    }"
+    :key="post.id"
+    class="board-item"
+    v-for="post in posts">
+      <img class="board-item__image" :src="post.created_by.profile.picture">
+
+      <div class="board-item__content">
+        <div class="board-item__header">
+          <span class="board-item__author">
+            {{ post.created_by.profile.nickname }}
+          </span>
+
+          <Timeago class="board-item__time" :time="post.created_at" />
+        </div>
+
+        <div class="board-item__body">
+          <div class="board-item__title">
+            {{ post.title }}
+          </div>
+
+          <PostStatus class="board-item__status" :post="post" />
+        </div>
+      </div>
+    </router-link>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import PostStatus from '@/components/PostStatus.vue'
 import Timeago from '@/components/Timeago.vue'
 
 export default {
   name: 'the-board-table',
-  props: [ 'articles' ],
+  props: [ 'posts' ],
   computed: {
     ...mapGetters([ 'getNameById' ])
   },
-  components: { Timeago }
+  components: {
+    PostStatus,
+    Timeago
+  }
 }
 </script>
 
@@ -84,67 +69,79 @@ en:
 <style lang="scss">
 @import '@/theme.scss';
 
-.table.post-table {
+.board-table {
+  font-family: 'NanumSquareRound', sans-serif;
   width: 100%;
+}
 
-  .reaction, .views, .time {
-    @media screen and (max-width: 700px){
-      display: none;
-    }
+.board-item {
+  color: #333333;
+  display: flex;
+  margin: 20px 0;
+
+  &__image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    margin-right: 20px;
   }
 
-  thead th {
-    padding: 0 0 1rem 0;
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  tbody td {
-    padding: 0 0 0.5rem 0;
+  &__author {
+    margin-right: 14px;
   }
 
-  .post-table-title {
-    min-width: 5rem;
+  &__time {
+    color: #a9a9a9;
+    font-size: .8rem;
   }
-  .post-table-author {
-    min-width: 7rem;
+
+  &__body {
+    display: flex;
   }
-  .post-table-vote {
-    min-width: 4rem;
+
+  &__title {
+    font-weight: 700;
+    flex: 1 1 0;
+    width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  .post-table-hit {
-    min-width: 5rem;
+
+  &__status {
+    width: 18rem;
   }
-  .post-table-time {
-    min-width: 6rem;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
   }
 }
+
 .comment-count {
   color: $theme-red;
 }
+
 .article-title {
-  // width:100%;
-  text-overflow:ellipsis;
-  -o-text-overflow:ellipsis;
-  overflow:hidden;
-  white-space:nowrap;
-  word-wrap:break-word !important;
-  display: block;
-  // added for multiline
+
 }
+
 .article-wrapper-big {
   width: 100%;
-  @include breakPoint('min') {
-    max-width: 600px;
-  }
-  @include breakPoint('min-mid') {
-    max-width: 600px;
-  }
-  @include breakPoint('mid-max') {
-    max-width: 600px;
-  }
-  @include breakPoint('max') {
-    max-width: 600px;
-  }
+  max-width: 600px;
 }
+
 .article-wrapper {
   display: flex;
 }

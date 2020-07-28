@@ -1,10 +1,10 @@
 <template>
-  <div class="board column is-6">
+  <div class="board">
     <h2 class="board__name">
       <slot></slot>
     </h2>
     <div
-    v-for="(post, index) in listitems.recent_articles"
+    v-for="(post, index) in listitems"
     :key="post.id"
     class="post">
       <h3 class="post__title">
@@ -13,11 +13,11 @@
             name: 'post',
             params: { postId: post.id }
         }">
-        {{index + 1}}. {{ post.title }}
+        {{ getTitle(post, index) }}
         </router-link>
       </h3>
-      
-      <div class="post__username">
+
+      <div class="post__username" v-if="detail">
         {{article.created_by.profile.nickname}}
       </div>
     </div>
@@ -30,6 +30,15 @@ export default {
   props: {
     listitems: {
       required: true
+    },
+    detail: {
+      type: Boolean
+    }
+  },
+
+  methods: {
+    getTitle (post, index) {
+      return (this.detail ? `${index + 1}. ` : '') + post.title
     }
   }
 }

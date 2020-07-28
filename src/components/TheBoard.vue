@@ -1,22 +1,14 @@
 <template>
   <div class="board">
-    <slot name="title"/>
-    <TheBoardTable
-      :articles="board.results"/>
-    <div class="board-navbar">
-      <div class="board-navbar-start">
-        <ThePaginator
-          :numPages="board.num_pages"
-          :currentPage="board.current"
-          :baseRouteTo="{
-            name: 'board',
-            params: { boardSlug }
-          }">
-        </ThePaginator>
-      </div>
-      <div class="board-navbar-end">
-        <slot name="tools"/>
-      </div>
+    <!-- <slot name="title"/> -->
+
+    <TheBoardTable :posts="board.results"/>
+
+    <div class="board__navbar">
+      <ThePaginator
+        :numPages="board.num_pages"
+        :currentPage="board.current">
+      </ThePaginator>
     </div>
   </div>
 </template>
@@ -29,12 +21,6 @@ export default {
   name: 'the-board',
   props: {
     board: { required: true }
-  },
-  computed: {
-    // @TODO: $route에 대한 의존성 제거
-    boardSlug () {
-      return this.$route.params.boardSlug
-    }
   },
   components: { ThePaginator, TheBoardTable }
 }
