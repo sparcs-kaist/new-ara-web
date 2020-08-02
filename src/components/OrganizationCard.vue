@@ -1,0 +1,58 @@
+<template>
+  <a
+    :href="generateHref"
+    class="organization-card"
+    :style="{ 'background-color': backgroundColor }">
+    <img class="logo" :src="id ? require(`@/assets/Logo${id}.png`) : null" />
+    <span class="name">{{ name }}</span>
+  </a>
+</template>
+
+<style lang="scss" scoped>
+.organization-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 140px;
+  padding:20px;
+  margin: 0 0.5% 15px;
+  border-radius: 10px;
+  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.16);
+
+  .logo {
+    max-width: 90%;
+    max-height: 60%;
+    margin-bottom: 10px;
+  }
+
+  .name {
+    color: #464646;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+</style>
+
+<script>
+export default {
+  name: 'organization-card',
+  props: {
+    name: { required: true },
+    id: { required: true },
+    backgroundColor: { required: false, default: '#fdf0f0' }
+  },
+  computed: {
+    generateHref () {
+      switch (this.id) {
+        case 'KAIST':
+          return 'portal-notice'
+        default:
+          return this.id
+      }
+    }
+  }
+}
+</script>
