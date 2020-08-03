@@ -48,7 +48,7 @@ export default {
       height: 4rem;
       font-size: 3rem;
       font-family: 'Raleway', sans-serif;
-      color: $theme-red;
+      color: var(--theme-400);
     }
     .login-button {
       height: 2rem;

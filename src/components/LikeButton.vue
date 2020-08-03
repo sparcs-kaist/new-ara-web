@@ -61,7 +61,7 @@
     }
 
     &--enabled &__item:hover {
-      color: #303030;
+      color: var(--grey-700);
     }
 
     &__item {
@@ -69,12 +69,12 @@
       align-items: center;
       border: none;
       background: transparent;
-      color: #666666;
+      color: var(--grey-600);
       flex: 1;
       white-space: nowrap;
 
       &--selected {
-        color: var(--theme-red);
+        color: var(--theme-400);
       }
 
       &:not(:last-child) {
@@ -82,7 +82,7 @@
       }
 
       &:hover {
-        color: #666666;
+        color: var(--grey-600);
       }
     }
 

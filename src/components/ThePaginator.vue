@@ -61,7 +61,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/theme.scss';
 a.is-active {
-  color: $theme-red;
+  color: var(--theme-400);
 }
 
 .pages {

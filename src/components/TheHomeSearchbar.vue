@@ -21,9 +21,9 @@
     </h2>
 
     <div class="searchbar__search field">
-      <p class="control has-icons-right">
+      <p class="control has-icons-left">
         <input class="input is-large" type="text">
-        <span class="icon is-small is-right">
+        <span class="icon is-small is-left">
           <i class="material-icons">search</i>
         </span>
       </p>
@@ -34,7 +34,6 @@
         {{ $t('keyword') }}
       </span>
 
-      <div class="keywords__divider"></div>
       <div class="keywords__list">
         <span class="keywords__keyword" v-for="keyword in keywords" :key="keyword.key">
           {{ keyword[`${$i18n.locale}_name`] }}
@@ -112,7 +111,7 @@ en:
 .searchbar {
   &__landing {
     background: transparent;
-    color: #484848;
+    color: var(--text);
     font-family: 'NanumSquareRound', sans-serif;
     font-size: 32px;
     margin-bottom: 20px;
@@ -123,40 +122,37 @@ en:
     }
 
     &--highlight {
-      color: #c46a6a;
+      color: var(--theme-400);
     }
   }
 
   &__search {
-    max-width: 720px;
-
     .input {
-      height: 3.25em;
-      border: 5px solid #d19696;
+      height: 3.8rem;
+      border: 5px solid var(--theme-400);
       border-radius: 10px;
-      font-family: 'Noto Sans CJK KR', sans-serif;
       font-size: 1rem;
+
+      &:active, &:focus, &:hover {
+        box-shadow: 0 0 6px 0 var(--theme-300);
+      }
     }
 
     .icon {
-      color: #d19696;
+      color: var(--theme-400);
     }
   }
 }
 
 .keywords {
   display: flex;
-  color: #797979;
+  color: var(--grey-600);
   font-family: 'NanumSquareRound', sans-serif;
 
   &__description {
+    color: var(--theme-400);
     flex-shrink: 0;
-  }
-
-  &__divider {
-    display: inline-block;
-    border-right: 1px solid #e5e5e5;
-    margin: 0 10px;
+    margin-right: 20px;
   }
 
   &__list {
@@ -165,16 +161,7 @@ en:
   }
 
   &__keyword {
-    margin: 0 5px;
-
-    &::after {
-      content: '·';
-      margin: 0 5px;
-    }
-
-    &:last-child::after {
-      display: none;
-    }
+    margin: 0 20px;
   }
 }
 </style>

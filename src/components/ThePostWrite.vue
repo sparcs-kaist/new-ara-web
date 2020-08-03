@@ -198,7 +198,7 @@ export default {
     color: #ccc;
   }
   &.is-empty::placeholder {
-    color: $theme-red;
+    color: var(--theme-400);
   }
 }
 
