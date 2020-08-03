@@ -1,50 +1,32 @@
 @import url('https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.min.css');
 
-// 아라 테마색
-$theme-red: #ED3A3A;
+$theme-red: #e15858;
 $theme-red-dark: rgb(204, 59, 59);
-$dark: #222222;
-$gray: #555555;
+$dark: #333333;
+$gray: #666666;
 
 :root {
   // global theme variables
-  --theme-red: #ED3A3A;
+  --theme-400: #e15858;
+  --theme-300: #f9c7c7;
+  --theme-100: #fdf0f0;
+
+  --grey-700: #333333;
+  --grey-600: #666666;
+  --grey-400: #a9a9a9;
+  --grey-300: #dbdbdb;
+  --grey-100: #fafafa;
+
+  --text: var(--grey-700);
+  --background: var(--grey-100);
+
   --duration: 0.5s;
   --text-timing: ease-out;
   --background-timing: ease-in-out;
 
-  // light mode variables
-  --background: white;
-  --text: #222222;
-
-
-  &, body, h1, h2, h3, h4, h5, h6, a, input, textarea, button {
-    color: var(--text);
-    background-color: var(--background);
-
-    transition: color var(--duration) var(--text-timing),
-                background-color var(--duration) var(--background-timing);
-  }
-
   .navbar, .navbar-item {
     background-color: transparent;
   }
-
-  input::placeholder {
-    color: #4a4a4a;
-    transition: color var(--duration) var(--text-timing);
-  }
-
-  button:hover {
-    color: var(--text);
-    background-color: unset;
-  }
-}
-
-:root.dark {
-  // @TODO #222 is better than complete black;
-  --background: black;
-  --text: #d0d0d0;
 }
 
 $min-desktop-width: 1088px;
