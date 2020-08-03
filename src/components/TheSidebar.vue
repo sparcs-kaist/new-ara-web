@@ -9,7 +9,7 @@
       </p>
     </div>
 
-    <SmallBoard :listitems="recent">
+    <SmallBoard :listitems="recentArticles">
       {{ $t('recent') }}
     </SmallBoard>
 
@@ -35,7 +35,9 @@ export default {
 
   computed: {
     adaptedArchive () {
-      if (!this.archives || !this.archives.results) return []
+      if (!this.archives || !this.archives.results) {
+        return []
+      }
 
       const results = this.archives.results.slice(0, 5)
       return results.map(({ parent_article: article }) => article)
