@@ -21,7 +21,7 @@
   }
 }
 
-.input {
+.input, .textarea {
   //TODO it is better to use opacity transition on constant box-shadow.
   //     But, as it needs multiple element and input tags don't support pseudo-element, I used box-shadow.
 
@@ -78,4 +78,8 @@ html, body {
   margin: 0;
   padding: 0;
   background: var(--background);
+}
+
+a {
+  color: var(--text);
 }
