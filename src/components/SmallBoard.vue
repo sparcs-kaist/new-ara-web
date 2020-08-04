@@ -7,8 +7,8 @@
     v-for="(post, index) in listitems"
     :key="post.id"
     class="post">
-      <h3 class="post__title">
-        <router-link
+      <h3>
+        <router-link class="post__title"
         :to="{
             name: 'post',
             params: { postId: post.id }
@@ -50,14 +50,14 @@ export default {
 .board {
   max-width: 450px;
   margin-bottom: 2rem;
-  font-family: 'NanumSquareRound',sans-serif;
+  font-family: 'NanumSquareRound', sans-serif;
 
   &__name {
     font-size: 1.2rem;
     font-weight: 700;
     margin-bottom: 0.7em;
     padding-left: 1em;
-    border-left: thick solid #ffafaf;
+    border-left: thick solid var(--theme-300);
   }
 
   .post {
@@ -69,8 +69,12 @@ export default {
     padding-left: 1em;
 
     &__username{
-      color: gray;
+      color: var(--text);
       font-size: 0.7rem;
+    }
+
+    &__title {
+      color: var(--text);
     }
   }
 }

@@ -122,7 +122,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/theme.scss';
 .navbar {
-  border-top: 5px solid var(--theme-red);
+  border-top: 5px solid var(--theme-400);
 
   // @TODO: Is ther a better way of achieving this..?
   .navbar-brand {
@@ -151,7 +151,7 @@ export default {
     .navbar-start, .navbar-end {
       .navbar-item {
         padding: 10px 0px 5px 15px;
-        
+
         @media screen and (max-width: 1087px){
           padding: 5px 0px 10px 15px;
         }
@@ -182,14 +182,14 @@ export default {
             margin: 0 auto;
             padding: 10px 0;
             background-color: rgba(0,0,0,0.65);
-  
+
             border-radius: 5px;
-  
+
             display: flex;
             flex-direction: row;
             justify-content: center;
             align-items: center;
-  
+
             color: white;
 
             &:hover {
@@ -199,7 +199,7 @@ export default {
         }
       }
     }
-      
+
   }
 
   .user .icon {
@@ -211,7 +211,7 @@ export default {
   width: 23px;
   height: 23px;
   object-fit: cover;
-  
+
   border-radius: 100%;
   margin-right: 10px;
 }

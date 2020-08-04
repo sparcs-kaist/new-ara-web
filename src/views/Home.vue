@@ -69,7 +69,7 @@ en:
 .home {
   background-size: 100% 380px;
   background-repeat: no-repeat;
-  background-image: linear-gradient(to bottom, #fdf0f0, #ffffff);
+  background-image: linear-gradient(to bottom, var(--theme-100), transparent);
 
   &__searchbar {
     display: flex;

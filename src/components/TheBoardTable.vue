@@ -75,7 +75,7 @@ en:
 }
 
 .board-item {
-  color: #333333;
+  color: var(--text);
   display: flex;
   margin: 20px 0;
 
@@ -99,7 +99,7 @@ en:
   }
 
   &__time {
-    color: #a9a9a9;
+    color: var(--grey-400);
     font-size: .8rem;
   }
 
@@ -130,7 +130,7 @@ en:
 }
 
 .comment-count {
-  color: $theme-red;
+  color: var(--theme-400);
 }
 
 .article-title {

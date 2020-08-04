@@ -37,7 +37,7 @@ export default {
   align-items: center;
 
   .not-found-404 {
-    color: $theme-red-dark;
+    color: var(--theme-400);
     font-size: 4rem;
     font-weight: bold;
   }
@@ -51,7 +51,7 @@ export default {
   .not-found-go-to-home {
     width: 100px;
     height: 30px;
-    background-color: $gray;
+    background-color: var(--grey-400);
     color: white;
 
     display: flex;
