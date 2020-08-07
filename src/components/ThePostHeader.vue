@@ -1,59 +1,60 @@
 <template>
   <div class="post">
-    <div class="title" id="title">
+    <div id="title">
       {{ post.title }}
     </div>
+    
     <div id="metadata">
       <img :src="userPictureUrl" class="post-author-profile-picture"/>
-      <div>
-        <div class="post-author">
+      
+      <div class="post-header">
+        <div class="post-header__author">
           {{ postAuthor }}
         </div>
-        <div>
-          <span class="post-time">
+
+        <div class="post-header__info">
+          <span class="post-header__time">
             {{ postCreatedAt }}
           </span>
-          <span class="post-status">
-            <span class="post-status">
-              <PostStatus :post="post" />
-            </span>
-            <span class="dropdown is-right is-hoverable alignright">
-              <div class="dropdown-trigger">
-                <button class="button no-border" aria-haspopup="true" aria-controls="dropdownMenu">
-                  <i class="material-icons">more_vert</i>
-                </button>
-              </div>
-              <div class="dropdown-menu" id="dropdownMenu" role="menu">
-                <div class="dropdown-content">
-                  <div class="dropdown-item">
-                    <a class="dropdown-item" @click="archive"
-                      :class="{ 'is-loading': isArchiving }">
-                      {{ $t('archive') }}
-                    </a>
-                    <router-link v-if="postUserId === userId" class="dropdown-item"
-                      :to="{
-                        name: 'write',
-                        params: {
-                          postId: post.id
-                        }
-                      }">
-                        {{ $t('edit') }}
-                    </router-link>
-                    <a v-if="postUserId === userId"
-                      @click="deletePost"
-                      href="#"
-                      class="dropdown-item">
-                      {{ $t('delete') }}
-                    </a>
-                    <a v-else class="dropdown-item"
-                      @click="report"
-                      :class="{ 'is-loading': isReporting }">
-                      {{ $t('report') }}
-                    </a>
-                  </div>
+
+          <PostStatus class="post-header__status" :post="post" />
+
+          <span class="dropdown is-right is-hoverable alignright">
+            <div class="dropdown-trigger">
+              <button class="button no-border" aria-haspopup="true" aria-controls="dropdownMenu">
+                <i class="material-icons">more_vert</i>
+              </button>
+            </div>
+            <div class="dropdown-menu" id="dropdownMenu" role="menu">
+              <div class="dropdown-content">
+                <div class="dropdown-item">
+                  <a class="dropdown-item" @click="archive"
+                    :class="{ 'is-loading': isArchiving }">
+                    {{ $t('archive') }}
+                  </a>
+                  <router-link v-if="postUserId === userId" class="dropdown-item"
+                    :to="{
+                      name: 'write',
+                      params: {
+                        postId: post.id
+                      }
+                    }">
+                      {{ $t('edit') }}
+                  </router-link>
+                  <a v-if="postUserId === userId"
+                    @click="deletePost"
+                    href="#"
+                    class="dropdown-item">
+                    {{ $t('delete') }}
+                  </a>
+                  <a v-else class="dropdown-item"
+                    @click="report"
+                    :class="{ 'is-loading': isReporting }">
+                    {{ $t('report') }}
+                  </a>
                 </div>
               </div>
-            </span>
+            </div>
           </span>
         </div>
       </div>
@@ -146,12 +147,13 @@ en:
 
 <style lang="scss" scoped>
 #title {
+  color:#4a4a4a;
   font-size: 20px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 #metadata {
-  color: #888;
+  color:#4a4a4a;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -165,20 +167,30 @@ en:
     margin-right: 1rem;
   }
 
-  .post-author {
-    color:#4a4a4a;
-    font-size: 15px;
-    font-weight:bold;
-  }
+  .post-header {
+    flex: 1;
 
-  .post-time {
-    color: #888;
-    font-size: 13px;
-    font-weight: normal;
-  }
+    &__author {
+      font-size: 15px;
+      font-weight:bold;
+      margin-bottom: 0rem;
+    }
 
-  .post-status {
-    color:#4a4a4a;
+    &__time {
+      color: #888;
+      font-size: 13px;
+      font-weight: normal;
+      flex: 1;
+    }
+
+    &__info {
+      display: flex;
+      align-items: center;
+    }
+
+    &__status {
+      width: 17rem;
+    }
   }
 }
 
@@ -192,7 +204,9 @@ en:
 
 .no-border {
   border: none;
-  padding: 0;
+  height: 13px;
+  width: 13px;
+  float: right;
 }
 
 .dropdown-content {
