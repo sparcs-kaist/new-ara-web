@@ -1,12 +1,19 @@
 <template>
   <div class="post">
-    <div id="title">
+    <div class="title">
       {{ post.title }}
+      <button class="title__postbutton">
+        이전글
+      </button>
+      <button class="title__postbutton">
+        다음글
+      </button>
+      <button class="title__listbutton">
+        목록
+      </button>
     </div>
-    
     <div id="metadata">
       <img :src="userPictureUrl" class="post-author-profile-picture"/>
-      
       <div class="post-header">
         <div class="post-header__author">
           {{ postAuthor }}
@@ -146,13 +153,37 @@ en:
 </i18n>
 
 <style lang="scss" scoped>
-#title {
+.title {
   color:#4a4a4a;
+  font-family: 'NanumSquareRound',sans-serif;
   font-size: 20px;
   margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex: 1;
+
+  &__postbutton {
+    margin-left: 0.5rem;
+    font-size: 13px;
+    width: 80px;
+    height: 30px;
+    border-radius: 10px;
+    border: solid 1px #dbdbdb;
+  }
+
+  &__listbutton {
+    margin-left: 0.5rem;
+    font-size: 13px;
+    width: 50px;
+    height: 30px;
+    border-radius: 10px;
+    border: solid 1px #dbdbdb;
+  }
 }
 
 #metadata {
+  font-family: 'NanumSquareRound',sans-serif;
   color:#4a4a4a;
   display: flex;
   flex-direction: row;
@@ -172,8 +203,7 @@ en:
 
     &__author {
       font-size: 15px;
-      font-weight:bold;
-      margin-bottom: 0rem;
+      font-weight: bold;
     }
 
     &__time {
