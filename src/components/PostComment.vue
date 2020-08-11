@@ -1,6 +1,6 @@
 <template>
   <div class="comment-wrapper">
-    <div class="comment" :class="{'comment--recomment': isRecomment}" v-if="!isEditing">
+    <div class="comment" :class="{'comment--replyComment': isReplyComment}" v-if="!isEditing">
       <img class="comment__profile" :src="profileImage" />
       <div class="comment__body">
         <div class="comment__header">
@@ -42,19 +42,19 @@
 
         <div class="comment__footer">
           <LikeButton class="comment__vote" :item="comment" @vote="vote" votable />
-          <a class="comment__write" v-if="!isRecomment"
-            @click="toggleRecommentInput">
+          <a class="comment__write" v-if="!isReplyComment"
+            @click="toggleReplyCommentInput">
             {{
-              showRecommentInput
-              ? $t('fold-recomment')
-              : $t('recomment')
+              showReplyCommentInput
+              ? $t('fold-reply-comment')
+              : $t('reply-comment')
             }}
           </a>
         </div>
       </div>
     </div>
 
-    <div class="comment comment--edit" :class="{'comment--recomment': isRecomment}" v-else>
+    <div class="comment comment--edit" :class="{'comment--replyComment': isReplyComment}" v-else>
       <PostCommentEditor
         :text="comment.content"
         :edit-comment="comment.id"
@@ -63,24 +63,24 @@
       />
     </div>
 
-    <div class="recomments">
+    <div class="comment__replyComments">
       <PostComment
-        v-for="recomment in comment.comments"
-        is-recomment
-        :key="recomment.id"
-        :comment="recomment"
+        v-for="replyComment in comment.comments"
+        is-reply-comment
+        :key="replyComment.id"
+        :comment="replyComment"
         @vote="$emit('vote')"
         @delete="$emit('delete')"
-        @update="$emit('update')"
+        @update="$emit('update', $event)"
         @upload="$emit('upload', $event)"
       />
 
-      <div v-show="showRecommentInput">
+      <div v-show="showReplyCommentInput">
         <PostCommentEditor
           :parent-comment="comment.id"
           ref="commentEditor"
           @upload="$emit('upload', $event)"
-          @close="showRecommentInput = false"
+          @close="showReplyCommentInput = false"
         />
       </div>
     </div>
@@ -100,14 +100,14 @@ export default {
 
   props: {
     comment: { required: true },
-    isRecomment: Boolean
+    isReplyComment: Boolean
   },
 
   data () {
     return {
       isEditing: false,
       isVoting: false,
-      showRecommentInput: false
+      showReplyCommentInput: false
     }
   },
 
@@ -130,8 +130,8 @@ export default {
       this.isVoting = false
     },
 
-    toggleRecommentInput () {
-      this.showRecommentInput = !this.showRecommentInput
+    toggleReplyCommentInput () {
+      this.showReplyCommentInput = !this.showReplyCommentInput
       this.$nextTick(() => {
         this.$refs.commentEditor.focus()
       })
@@ -146,9 +146,9 @@ export default {
       this.isEditing = true
     },
 
-    updateComment () {
+    updateComment (event) {
       this.isEditing = false
-      this.$emit('update')
+      this.$emit('update', event)
     }
   },
 
@@ -164,18 +164,18 @@ ko:
   delete: '삭제'
   report: '신고'
   edit: '수정'
-  fold-recomment: '답글접기'
-  recomment: '답글쓰기'
+  fold-reply-comment: '답글접기'
+  reply-comment: '답글쓰기'
   placeholder: '입력...'
-  new-recomment: '작성하기'
+  new-reply-comment: '작성하기'
 en:
   delete: 'Delete'
   report: 'Report'
   edit: 'Edit'
-  fold-recomment: 'Close recomment'
-  recomment: 'Open recomment'
+  fold-reply-comment: 'Close reply comment'
+  reply-comment: 'Open reply comment'
   placeholder: 'Type here...'
-  new-recomment: 'Send'
+  new-reply-comment: 'Send'
 </i18n>
 
 <style lang="scss" scoped>
@@ -239,9 +239,9 @@ en:
   &__write {
     margin-left: 5px;
   }
-}
 
-.recomments {
-  margin-left: 24px;
+  &__replyComments {
+    margin-left: 24px;
+  }
 }
 </style>

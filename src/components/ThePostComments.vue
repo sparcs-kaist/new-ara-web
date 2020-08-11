@@ -10,6 +10,7 @@
         v-for="comment in comments"
         :key="comment.id"
         :comment="comment"
+        @update="$emit('update', $event)"
         @upload="$emit('upload', $event)"
         @vote="$emit('refresh')"
         @delete="$emit('refresh')"
