@@ -4,8 +4,7 @@
     <ThePostComments
       :comments="post.comments"
       :postId="postId"
-      @new-comment-uploaded="addNewComment"
-      @new-recomment-uploaded="addNewRecomment"
+      @upload="addNewComment"
       @refresh="refresh"
     />
     <!-- @TODO: <TheBoard :board="board"/> -->
@@ -32,6 +31,10 @@ export default {
   },
   methods: {
     async addNewComment (comment) {
+      if (comment.parent_comment) {
+        return this.addNewRecomment(comment)
+      }
+
       /* Save the new comment in local first. */
       this.post.comments = [
         ...this.post.comments,
@@ -40,6 +43,7 @@ export default {
       /* Then fetch data from DB. */
       this.refresh()
     },
+
     async addNewRecomment (recomment) {
       /* Save the new recomment in local first. */
       const rootComment = this.post.comments.find(comment => comment.id === recomment.parent_comment)
@@ -50,6 +54,7 @@ export default {
       /* Then fetch data from DB. */
       this.refresh()
     },
+
     // @TODO: 매번 refresh 하는게 최선인지는 좀 생각해 봐야할듯
     async refresh () {
       this.post = await fetchPost({ postId: this.postId })

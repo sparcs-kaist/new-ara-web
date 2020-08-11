@@ -10,12 +10,12 @@ export const timeago = (dateString, localeString) => {
     return format(date, 'PP', { locale })
 
   if(differenceInHours(now, date) >= 24)
-    return formatDistanceStrict(now, date, { unit: 'day', locale })
+    return formatDistanceStrict(date, now, { unit: 'day', locale, addSuffix: true })
 
   if(differenceInMinutes(now, date) >= 60)
-    return formatDistanceStrict(now, date, { unit: 'hour', locale })
+    return formatDistanceStrict(date, now, { unit: 'hour', locale, addSuffix: true })
 
-  return formatDistanceStrict(now, date, { unit: 'minute', roundingMethod: 'ceil', locale })
+  return formatDistanceStrict(date, now, { unit: 'minute', roundingMethod: 'ceil', locale, addSuffix: true })
 }
 
 export const date = timeString => {
