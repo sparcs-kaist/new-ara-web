@@ -1,17 +1,18 @@
 <template>
-  <!-- @TODO: Accessability
-    aria-label="main navigation"
-    role="navigation" -->
-  <div class="navbar is-transparent">
+  <div class="navbar is-transparent" aria-label="main navigation" role="navigation">
     <!-- <TheNavbarFetchProgressBar/> -->
     <div class="navbar-brand">
-      <TheNavbarAraLogo/>
-      <!-- @TODO: Accessability
-        role="button"
-        aria-label="menu"
-        aria-expanded="false" -->
+      <router-link
+        :to="{ name: 'home' }"
+        class="navbar-item">
+        <img src="@/assets/Services-Ara.png" class="ara-logo"/>
+      </router-link>
+      
       <a
         class="navbar-burger"
+        role="button"
+        aria-label="menu"
+        aria-expanded="false"
         :class="{ 'is-active': isMobileMenuActive }"
         @click="toggleMobileMenu">
         <span aria-hidden="true"></span>
@@ -19,18 +20,23 @@
         <span aria-hidden="true"></span>
       </a>
     </div>
+    
     <div
-      class="navbar-menu"
+      class="navbar-menu container"
       :class="{ 'is-active': isMobileMenuActive }">
+      
       <div class="navbar-start">
         <router-link
           :to="{ name: 'board'}"
           class="navbar-item">
+          
           {{ $t('all') }}
         </router-link>
+        
         <TheNavbarArchives
           class="navbar-item"
         />
+        
         <router-link
           v-for="board in boardList"
           :key="board.id"
@@ -41,15 +47,22 @@
             }
           }"
           class="navbar-item">
+          
           {{ board[`${$i18n.locale}_name`] }}
         </router-link>
       </div>
+      
       <div class="navbar-end">
-        <router-link
-          :to="{ name: 'notifications' }"
-          class="navbar-item">
-          {{ $t('notification') }}
-        </router-link>
+        <router-link class="navbar-item navbar-item--write"
+        :to="{ name: 'write' }">
+        
+        <span class="icon">
+          <i class="material-icons">create</i>
+        </span>
+        
+        <span>{{ $t('write') }}</span>
+      </router-link>
+      
         <!-- <a
           v-if="!isIE"
           @click="toggleDarkMode"
@@ -59,19 +72,37 @@
             <i class="material-icons">invert_colors</i>
           </span>
         </a> -->
+
         <a class="navbar-item"
-          @click="$i18n.locale = $i18n.locale === 'en' ? 'ko' : 'en'"
+          @click="changeLocale"
           id="toggle-language">
+          
           <span class="icon">
             <i class="material-icons">language</i>
           </span>
+          
+          <span class="is-hidden-desktop">
+            {{ $t('language') }}
+          </span>
         </a>
+        
+        <router-link
+          :to="{ name: 'notifications' }"
+          class="navbar-item">
+          
+          <span class="icon">
+            <i class="material-icons">notifications</i>
+          </span>
+          
+          <span class="is-hidden-desktop">
+            {{ $t('notification') }}
+          </span>
+        </router-link>
+
         <router-link
           :to="{ name: 'settings' }"
           class="navbar-item user">
-          <!-- <span class="icon">
-            <i class="material-icons">person</i>
-          </span> -->
+          
           <img :src="userPicture" class="picture-url"/>
           <span class="username">
             {{ userNickname }}
@@ -79,24 +110,28 @@
         </router-link>
       </div>
     </div>
+    
+    <TheNavbarNotifications v-if="isNotificationsOpen" />
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import TheNavbarFetchProgressBar from '@/components/TheNavbarFetchProgressBar.vue'
-import TheNavbarAraLogo from '@/components/TheNavbarAraLogo.vue'
 import TheNavbarNotifications from '@/components/TheNavbarNotifications.vue'
 import TheNavbarArchives from '@/components/TheNavbarArchives.vue'
 import isIE from '@/utils/isIE.js'
 
 export default {
   name: 'the-navbar',
+  
   data () {
     return {
-      isMobileMenuActive: false
+      isMobileMenuActive: false,
+      isNotificationsOpen: false
     }
   },
+  
   computed: {
     ...mapState(['boardList']),
     ...mapGetters(['userNickname', 'userPicture']),
@@ -104,107 +139,82 @@ export default {
       return isIE()
     }
   },
+  
   methods: {
     toggleMobileMenu () {
       this.isMobileMenuActive = !this.isMobileMenuActive
     },
+    
+    changeLocale () {
+      this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en';
+    },
+    
     ...mapActions(['toggleDarkMode'])
   },
+  
   components: {
     TheNavbarFetchProgressBar,
-    TheNavbarAraLogo,
     TheNavbarNotifications,
     TheNavbarArchives
   }
 }
 </script>
 
+<i18n>
+ko:
+  language: 'English'
+  notification: '알림'
+  write: '게시글 작성하기'
+  all: '모아보기'
+  
+en:
+  language: '한국어'
+  notification: 'Notifications'
+  write: 'Write a New Post'
+  all: 'All'
+</i18n>
+
 <style lang="scss" scoped>
 @import '@/theme.scss';
-.navbar {
-  border-top: 5px solid var(--theme-400);
 
-  // @TODO: Is ther a better way of achieving this..?
-  .navbar-brand {
-    @media (min-width: 1088px) {
-      width: calc(calc(100% - 960px) / 2);
+.navbar-item {
+  display: flex;
+  
+  &--write {
+    color: var(--theme-400);
+    transition: color var(--duration) var(--text-timing);
+    
+    &:hover {
+      color: var(--theme-500);
     }
-    @media (min-width: 1280px) {
-      width: calc(calc(100% - 1152px) / 2);
-    }
-    @media (min-width: 1472px) {
-      width: calc(calc(100% - 1344px) / 2);
-    }
-    a:hover {
-      text-decoration: none;
+    
+    .icon {
+      margin-right: 10px;
     }
   }
-
-  #toggle-dark-mode, #toggle-language, .user {
-    text-decoration: none;
-  }
-
-  // 왼쪽 음수 여백으로 줄맞춤
-  .navbar-menu {
-    padding: 0;
-
-    .navbar-start, .navbar-end {
-      .navbar-item {
-        padding: 10px 0px 5px 15px;
-
-        @media screen and (max-width: 1087px){
-          padding: 5px 0px 10px 15px;
-        }
-      }
-
-      .user {
-        margin: 0 15px;
-        font-weight: 700;
-      }
+  
+  @include breakPoint(min) {
+    .icon {
+      margin-right: 10px;
     }
-
-    &.is-active {
-      box-shadow: 0px 3px 5px rgba(0,0,0,0.05);
-      padding-bottom: 15px;
-
-      @media screen and (min-width: 1088px)   {
-        box-shadow: none;
-        padding: 0;
-      }
-
-      .navbar-end {
-        .navbar-item.user {
-          font-weight: 700;
-
-          @media screen and (max-width: 1088px) {
-            width: 95%;
-            height: 90%;
-            margin: 0 auto;
-            padding: 10px 0;
-            background-color: rgba(0,0,0,0.65);
-
-            border-radius: 5px;
-
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-
-            color: white;
-
-            &:hover {
-              background-color: rgba(0,0,0,0.75);
-            }
-          }
-        }
-      }
-    }
-
   }
+}
 
-  .user .icon {
-    padding-right: 0.5rem;
-  }
+.navbar-brand {
+  position: absolute;
+}
+
+.navbar-menu {
+  background: transparent !important;
+  font-weight: 500;
+}
+
+.ara-logo {
+  height: 25px;
+}
+
+.user {
+  display: flex;
 }
 
 .picture-url {
@@ -223,9 +233,5 @@ export default {
   right: 0;
   margin: 0 auto;
   width: 40em;
-}
-
-.user-svg {
-  margin-right: 0.5rem;
 }
 </style>
