@@ -15,7 +15,7 @@ const setDarkMode = (darkMode) => {
 export default {
   state: {
     token: localStorage.token,
-    userProfile: {},
+    userProfile: {}
   },
   getters: {
     isLoggedIn ({ token }) {

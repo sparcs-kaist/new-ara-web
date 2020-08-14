@@ -207,7 +207,7 @@ export default {
       filter: brightness(.5);
     }
   }
-  
+
   p.is-empty:first-child::before {
     content: attr(data-empty-text);
     float: left;
