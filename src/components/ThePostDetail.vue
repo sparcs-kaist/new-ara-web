@@ -1,5 +1,7 @@
 <template>
   <div class="post">
+    <hr />
+
     <div class="attachments" v-if="attachments.length > 0">
       <div class="dropdown is-hoverable is-right">
         <div class="dropdown-trigger">
