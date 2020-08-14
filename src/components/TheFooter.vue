@@ -79,7 +79,6 @@ en:
       flex-direction: column-reverse;
     }
 
-
     .footer-item {
       margin: 0 1rem 0 0;
 

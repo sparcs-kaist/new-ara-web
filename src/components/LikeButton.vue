@@ -17,38 +17,37 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      item: {
-        required: true
-      },
-
-      votable: {
-        type: Boolean
-      }
+export default {
+  props: {
+    item: {
+      required: true
     },
 
-    computed: {
-      // my_vote can be true, false, or null
-      liked() { return this.item.my_vote === true },
-      disliked() { return this.item.my_vote === false },
-      likedCount() { return this.item.positive_vote_count },
-      dislikedCount() { return this.item.negative_vote_count }
-    },
+    votable: {
+      type: Boolean
+    }
+  },
 
-    methods: {
-      vote(ballot) {
-        if(!this.votable)
-          return
+  computed: {
+    // my_vote can be true, false, or null
+    liked () { return this.item.my_vote === true },
+    disliked () { return this.item.my_vote === false },
+    likedCount () { return this.item.positive_vote_count },
+    dislikedCount () { return this.item.negative_vote_count }
+  },
 
-        const myVote = this.item.my_vote === ballot ?
-          'vote_cancel' :
-          (ballot ? 'vote_positive' : 'vote_negative')
+  methods: {
+    vote (ballot) {
+      if (!this.votable) { return }
 
-        this.$emit('vote', { id: this.item.id, vote: myVote })
-      }
+      const myVote = this.item.my_vote === ballot
+        ? 'vote_cancel'
+        : (ballot ? 'vote_positive' : 'vote_negative')
+
+      this.$emit('vote', { id: this.item.id, vote: myVote })
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

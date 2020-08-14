@@ -32,8 +32,8 @@ export default {
   },
 
   computed: {
-    commentCount() { return this.post.nested_comments_count },
-    viewCount() { return this.post.hit_count }
+    commentCount () { return this.post.nested_comments_count },
+    viewCount () { return this.post.hit_count }
   },
 
   components: {

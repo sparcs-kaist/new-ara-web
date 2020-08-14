@@ -1,4 +1,4 @@
-import { differenceInDays, differenceInHours, differenceInMinutes, format, formatDistance, formatDistanceStrict } from 'date-fns'
+import { differenceInDays, differenceInHours, differenceInMinutes, format, formatDistanceStrict } from 'date-fns'
 import { enUS, ko } from 'date-fns/locale'
 
 export const timeago = (dateString, localeString) => {
@@ -6,14 +6,11 @@ export const timeago = (dateString, localeString) => {
   const date = new Date(dateString)
   const locale = localeString === 'ko' ? ko : enUS
 
-  if(differenceInDays(now, date) >= 7)
-    return format(date, 'PP', { locale })
+  if (differenceInDays(now, date) >= 7) { return format(date, 'PP', { locale }) }
 
-  if(differenceInHours(now, date) >= 24)
-    return formatDistanceStrict(date, now, { unit: 'day', locale, addSuffix: true })
+  if (differenceInHours(now, date) >= 24) { return formatDistanceStrict(date, now, { unit: 'day', locale, addSuffix: true }) }
 
-  if(differenceInMinutes(now, date) >= 60)
-    return formatDistanceStrict(date, now, { unit: 'hour', locale, addSuffix: true })
+  if (differenceInMinutes(now, date) >= 60) { return formatDistanceStrict(date, now, { unit: 'hour', locale, addSuffix: true }) }
 
   return formatDistanceStrict(date, now, { unit: 'minute', roundingMethod: 'ceil', locale, addSuffix: true })
 }
