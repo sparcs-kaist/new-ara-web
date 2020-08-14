@@ -21,93 +21,85 @@
       </a>
     </div>
 
-    <div
-      class="navbar-menu container"
-      :class="{ 'is-active': isMobileMenuActive }">
+    <div class="container">
+      <div
+        class="navbar-menu"
+        :class="{ 'is-active': isMobileMenuActive }">
 
-      <div class="navbar-start">
-        <router-link
-          :to="{ name: 'board'}"
-          class="navbar-item">
+        <div class="navbar-start">
+          <router-link
+            :to="{ name: 'board'}"
+            class="navbar-item">
 
-          {{ $t('all') }}
-        </router-link>
+            {{ $t('all') }}
+          </router-link>
 
-        <TheNavbarArchives
-          class="navbar-item"
-        />
+          <TheNavbarArchives
+            class="navbar-item"
+          />
 
-        <router-link
-          v-for="board in boardList"
-          :key="board.id"
-          :to="{
-            name: 'board',
-            params: {
-              boardSlug: board.slug
-            }
-          }"
-          class="navbar-item">
+          <router-link
+            v-for="board in boardList"
+            :key="board.id"
+            :to="{
+              name: 'board',
+              params: {
+                boardSlug: board.slug
+              }
+            }"
+            class="navbar-item">
 
-          {{ board[`${$i18n.locale}_name`] }}
-        </router-link>
-      </div>
+            {{ board[`${$i18n.locale}_name`] }}
+          </router-link>
+        </div>
 
-      <div class="navbar-end">
-        <router-link class="navbar-item navbar-item--write"
-        :to="{ name: 'write' }">
+        <div class="navbar-end">
+          <router-link class="navbar-item navbar-item--write"
+          :to="{ name: 'write' }">
 
-        <span class="icon">
-          <i class="material-icons">create</i>
-        </span>
+            <span class="icon">
+              <i class="material-icons">create</i>
+            </span>
 
-        <span>{{ $t('write') }}</span>
-      </router-link>
+            <span>{{ $t('write') }}</span>
+          </router-link>
 
-        <!-- <a
-          v-if="!isIE"
-          @click="toggleDarkMode"
-          id="toggle-dark-mode"
-          class="navbar-item">
-          <span class="icon">
-            <i class="material-icons">invert_colors</i>
-          </span>
-        </a> -->
+          <a class="navbar-item"
+            @click="changeLocale"
+            id="toggle-language">
 
-        <a class="navbar-item"
-          @click="changeLocale"
-          id="toggle-language">
+            <span class="icon">
+              <i class="material-icons">language</i>
+            </span>
 
-          <span class="icon">
-            <i class="material-icons">language</i>
-          </span>
+            <span class="is-hidden-desktop">
+              {{ $t('language') }}
+            </span>
+          </a>
 
-          <span class="is-hidden-desktop">
-            {{ $t('language') }}
-          </span>
-        </a>
+          <router-link
+            :to="{ name: 'notifications' }"
+            class="navbar-item">
 
-        <router-link
-          :to="{ name: 'notifications' }"
-          class="navbar-item">
+            <span class="icon">
+              <i class="material-icons">notifications</i>
+            </span>
 
-          <span class="icon">
-            <i class="material-icons">notifications</i>
-          </span>
+            <span class="is-hidden-desktop">
+              {{ $t('notification') }}
+            </span>
+          </router-link>
 
-          <span class="is-hidden-desktop">
-            {{ $t('notification') }}
-          </span>
-        </router-link>
+          <router-link
+            :to="{ name: 'my-info' }"
+            class="navbar-item user">
 
-        <router-link
-          :to="{ name: 'my-info' }"
-          class="navbar-item user">
-
-          <img :src="userPicture" class="picture-url"/>
-          <span class="username">
-            {{ userNickname }}
-          </span>
-        </router-link>
+            <img :src="userPicture" class="picture-url"/>
+            <span class="username">
+              {{ userNickname }}
+            </span>
+          </router-link>
+        </div>
       </div>
     </div>
 
@@ -202,6 +194,10 @@ en:
 
 .navbar-brand {
   position: absolute;
+
+  @include breakPoint(min) {
+    position: relative;
+  }
 }
 
 .navbar-menu {
