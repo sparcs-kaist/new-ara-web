@@ -5,6 +5,7 @@
     </template>
 
     <ThePostHeader :post="post"/>
+    <ThePostDetail :post="post" />
     <ThePostComments
       :comments="post.comments"
       :postId="postId"
@@ -19,6 +20,7 @@
 <script>
 import { fetchPost } from '@/api'
 import { fetchWithProgress } from './helper.js'
+import ThePostDetail from '@/components/ThePostDetail.vue'
 import ThePostHeader from '@/components/ThePostHeader.vue'
 import ThePostComments from '@/components/ThePostComments.vue'
 import TheBoard from '@/components/TheBoard.vue'
@@ -87,7 +89,7 @@ export default {
     this.post = post
     next()
   },
-  components: { TheLayout, ThePostComments, TheBoard, TheSidebar, ThePostHeader }
+  components: { TheLayout, ThePostComments, ThePostDetail, TheBoard, TheSidebar, ThePostHeader }
 }
 </script>
 

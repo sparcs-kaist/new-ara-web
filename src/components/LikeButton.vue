@@ -54,7 +54,7 @@ export default {
 
 <style lang="scss" scoped>
   .like-button {
-    display: flex;
+    display: inline-flex;
     outline: none;
 
     &--enabled {
