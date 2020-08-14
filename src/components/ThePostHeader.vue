@@ -1,14 +1,29 @@
 <template>
   <div class="post">
     <div class="title">
-      {{ post.title }}
-      <button class="title__postbutton">
+      <div class="title__title">
+        {{ post.title }}
+      </div>
+      <!-- TODO range check and board check-->
+      <button
+        class="title__button"
+        style="width: 80px"
+        @click="$router.push({ name: 'post', params: { postId: post.id - 1 } })"
+      >
         이전글
       </button>
-      <button class="title__postbutton">
+      <button
+        class="title__button"
+        style="width: 80px"
+        @click="$router.push({ name: 'post', params: { postId: post.id + 1 } })"
+      >
         다음글
       </button>
-      <button class="title__listbutton">
+      <button
+        class="title__button"
+        style="width: 50px"
+        @click="$router.push({ name: 'board' })"
+      >
         목록
       </button>
     </div>
@@ -24,7 +39,7 @@
             {{ postCreatedAt }}
           </span>
 
-          <PostStatus class="post-header__status" :post="post" />
+          <PostStatus class="post-header__status" :post="post" :votable="true" />
 
           <span class="dropdown is-right is-hoverable alignright">
             <div class="dropdown-trigger">
@@ -71,11 +86,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { archivePost, reportPost, deletePost, getAttachmentUrls } from '@/api'
+import { archivePost, reportPost, deletePost } from '@/api'
 import { date } from '@/helper.js'
 import TextEditor from '../components/TheTextEditor'
 import PostStatus from '@/components/PostStatus.vue'
-
 export default {
   name: 'the-post-header',
   props: {
@@ -104,19 +118,7 @@ export default {
     },
     ...mapGetters([ 'userId' ])
   },
-  watch: {
-    'post.attachments': {
-      async handler (attachments) {
-        const results = await getAttachmentUrls(attachments)
-        this.attachments = results.map(({ data }) => ({
-          url: data.file,
-          file: decodeURIComponent(new URL(data.file).pathname.split('/').pop()),
-          id: data.id
-        }))
-      },
-      immediate: true
-    }
-  },
+
   methods: {
     async archive () {
       this.isArchiving = true
@@ -154,42 +156,36 @@ en:
 
 <style lang="scss" scoped>
 .title {
-  color:#4a4a4a;
+  color: var(--grey-700);
   font-family: 'NanumSquareRound',sans-serif;
   font-size: 20px;
   margin-bottom: 1.25rem;
   display: flex;
   align-items: center;
-  flex-direction: row;
   flex: 1;
 
-  &__postbutton {
-    margin-left: 0.5rem;
-    font-size: 13px;
-    width: 80px;
-    height: 30px;
-    border-radius: 10px;
-    border: solid 1px #dbdbdb;
+  &__title {
+    flex: 1;
   }
 
-  &__listbutton {
+  &__button {
+    cursor: pointer;
+    background-color: white;
     margin-left: 0.5rem;
     font-size: 13px;
-    width: 50px;
     height: 30px;
     border-radius: 10px;
-    border: solid 1px #dbdbdb;
+    border: solid 1px var(--grey-300);
   }
 }
 
 #metadata {
   font-family: 'NanumSquareRound',sans-serif;
-  color:#4a4a4a;
+  color: var(--grey-700);
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
-
   .post-author-profile-picture {
     width: 40px;
     height: 40px;
@@ -197,55 +193,45 @@ en:
     border-radius: 100%;
     margin-right: 1rem;
   }
-
   .post-header {
     flex: 1;
-
     &__author {
       font-size: 15px;
       font-weight: bold;
     }
-
     &__time {
-      color: #888;
+      color: var(--grey-600);
       font-size: 13px;
       font-weight: normal;
       flex: 1;
     }
-
     &__info {
       display: flex;
       align-items: center;
     }
-
     &__status {
       width: 17rem;
     }
   }
 }
-
 .material-icons {
   font-size: 16px;
 }
-
 .alignright {
   float: right;
 }
-
 .no-border {
   border: none;
   height: 13px;
   width: 13px;
   float: right;
 }
-
 .dropdown-content {
   min-width: 40%;
   max-width: 50%;
   float: right;
   text-align: right;
 }
-
 .dropdown-item {
   padding: 0.2rem 0.4rem
 }

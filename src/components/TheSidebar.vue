@@ -9,7 +9,7 @@
       </p>
     </div>
 
-    <SmallBoard :listitems="recentArticles">
+    <SmallBoard :listitems="recent">
       {{ $t('recent') }}
     </SmallBoard>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="post-status">
-    <LikeButton class="post-status__like" :item="post" />
+    <LikeButton class="post-status__like" :item="post" :votable="votable" @vote="$emit('vote', $event)"/>
 
     <div class="post-status__comment">
       <span class="post-status__label">
@@ -28,6 +28,11 @@ export default {
   props: {
     post: {
       required: true
+    },
+
+    votable: {
+      type: Boolean,
+      default: false
     }
   },
 
