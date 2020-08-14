@@ -1,7 +1,7 @@
 <template>
   <span>
     {{ $t('notification') }}
-    
+
     <NavbarNotificationItem
       v-for="notification in notifications"
       :key="notification.id"
