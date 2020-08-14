@@ -38,7 +38,9 @@ export default {
 
   methods: {
     vote (ballot) {
-      if (!this.votable) { return }
+      if (!this.votable) {
+        return
+      }
 
       const myVote = this.item.my_vote === ballot
         ? 'vote_cancel'

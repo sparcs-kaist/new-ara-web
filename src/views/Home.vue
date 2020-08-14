@@ -32,12 +32,16 @@ export default {
   },
   computed: {
     dailyBests () {
-      if (!this.home.daily_bests) return []
+      if (!this.home.daily_bests) {
+        return []
+      }
 
       return this.home.daily_bests.recent_articles
     },
     weeklyBests () {
-      if (!this.home.weekly_bests) return []
+      if (!this.home.weekly_bests) {
+        return []
+      }
 
       return this.home.weekly_bests.recent_articles
     },
