@@ -10,6 +10,10 @@ export default {
 }
 </script>
 
-<style>
+<i18n>
+ko:
+  archive: '담아두기'
 
-</style>
+en:
+  archive: 'Archive'
+</i18n>
