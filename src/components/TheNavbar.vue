@@ -7,7 +7,7 @@
         class="navbar-item">
         <img src="@/assets/Services-Ara.png" class="ara-logo"/>
       </router-link>
-      
+
       <a
         class="navbar-burger"
         role="button"
@@ -20,23 +20,23 @@
         <span aria-hidden="true"></span>
       </a>
     </div>
-    
+
     <div
       class="navbar-menu container"
       :class="{ 'is-active': isMobileMenuActive }">
-      
+
       <div class="navbar-start">
         <router-link
           :to="{ name: 'board'}"
           class="navbar-item">
-          
+
           {{ $t('all') }}
         </router-link>
-        
+
         <TheNavbarArchives
           class="navbar-item"
         />
-        
+
         <router-link
           v-for="board in boardList"
           :key="board.id"
@@ -47,22 +47,22 @@
             }
           }"
           class="navbar-item">
-          
+
           {{ board[`${$i18n.locale}_name`] }}
         </router-link>
       </div>
-      
+
       <div class="navbar-end">
         <router-link class="navbar-item navbar-item--write"
         :to="{ name: 'write' }">
-        
+
         <span class="icon">
           <i class="material-icons">create</i>
         </span>
-        
+
         <span>{{ $t('write') }}</span>
       </router-link>
-      
+
         <!-- <a
           v-if="!isIE"
           @click="toggleDarkMode"
@@ -76,24 +76,24 @@
         <a class="navbar-item"
           @click="changeLocale"
           id="toggle-language">
-          
+
           <span class="icon">
             <i class="material-icons">language</i>
           </span>
-          
+
           <span class="is-hidden-desktop">
             {{ $t('language') }}
           </span>
         </a>
-        
+
         <router-link
           :to="{ name: 'notifications' }"
           class="navbar-item">
-          
+
           <span class="icon">
             <i class="material-icons">notifications</i>
           </span>
-          
+
           <span class="is-hidden-desktop">
             {{ $t('notification') }}
           </span>
@@ -102,7 +102,7 @@
         <router-link
           :to="{ name: 'settings' }"
           class="navbar-item user">
-          
+
           <img :src="userPicture" class="picture-url"/>
           <span class="username">
             {{ userNickname }}
@@ -110,7 +110,7 @@
         </router-link>
       </div>
     </div>
-    
+
     <TheNavbarNotifications v-if="isNotificationsOpen" />
   </div>
 </template>
@@ -124,14 +124,14 @@ import isIE from '@/utils/isIE.js'
 
 export default {
   name: 'the-navbar',
-  
+
   data () {
     return {
       isMobileMenuActive: false,
       isNotificationsOpen: false
     }
   },
-  
+
   computed: {
     ...mapState(['boardList']),
     ...mapGetters(['userNickname', 'userPicture']),
@@ -139,19 +139,19 @@ export default {
       return isIE()
     }
   },
-  
+
   methods: {
     toggleMobileMenu () {
       this.isMobileMenuActive = !this.isMobileMenuActive
     },
-    
+
     changeLocale () {
-      this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en';
+      this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en'
     },
-    
+
     ...mapActions(['toggleDarkMode'])
   },
-  
+
   components: {
     TheNavbarFetchProgressBar,
     TheNavbarNotifications,
@@ -166,7 +166,7 @@ ko:
   notification: '알림'
   write: '게시글 작성하기'
   all: '모아보기'
-  
+
 en:
   language: '한국어'
   notification: 'Notifications'
@@ -179,20 +179,20 @@ en:
 
 .navbar-item {
   display: flex;
-  
+
   &--write {
     color: var(--theme-400);
     transition: color var(--duration) var(--text-timing);
-    
+
     &:hover {
       color: var(--theme-500);
     }
-    
+
     .icon {
       margin-right: 10px;
     }
   }
-  
+
   @include breakPoint(min) {
     .icon {
       margin-right: 10px;
