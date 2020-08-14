@@ -57,8 +57,8 @@ export default {
 
 <i18n>
 ko:
-  today-best: '주간 검색 순위'
-  weekly-best: '일간 검색 순위'
+  today-best: '오늘의 인기글'
+  weekly-best: '이주의 인기글'
 en:
   today-best: 'Today Best'
   weekly-best: 'Weekly Best'
