@@ -59,8 +59,8 @@ ko:
   archive: '담아둔 글'
 
 en:
-  recent: 'recent articles'
-  archive: 'stored articles'
+  recent: 'Recent Articles'
+  archive: 'Stored Articles'
 </i18n>
 
 <style lang="scss" scoped>
