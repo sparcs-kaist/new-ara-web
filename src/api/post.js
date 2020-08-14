@@ -40,6 +40,11 @@ export const createComment = (newComment) =>
     attachment: null
   })
 
+export const updateComment = (commentId, newComment) =>
+  http.patch(`comments/${commentId}/`, {
+    ...newComment
+  })
+
 export const voteComment = (commentId, action) =>
   http.post(`comments/${commentId}/${action}/`)
 
@@ -74,7 +79,7 @@ export const uploadAttachments = (attachments) => {
   return http.post('attachments/', generateFormData(attachments), httpOptions)
 }
 
-export const getAttachmentUrls = ( attachmentIds ) => {
+export const getAttachmentUrls = (attachmentIds) => {
   const promises = []
   attachmentIds.forEach((id) => {
     promises.push(http.get(`attachments/${id}/`))
