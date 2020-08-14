@@ -1,57 +1,6 @@
 <template>
   <div class="post">
-    <div class="title" id="title">{{ post.title }}</div>
-    <div class="dropdown is-right is-hoverable alignright">
-      <div class="dropdown-trigger">
-        <button class="button no-border" aria-haspopup="true" aria-controls="dropdownMenu">
-          <i class="material-icons">more_vert</i>
-        </button>
-      </div>
-      <div class="dropdown-menu" id="dropdownMenu" role="menu">
-        <div class="dropdown-content">
-          <div class="dropdown-item">
-            <a class="dropdown-item" @click="archive"
-              :class="{ 'is-loading': isArchiving }">
-              {{ $t('archive') }}
-            </a>
-            <router-link v-if="postUserId === userId" class="dropdown-item"
-              :to="{
-                name: 'write',
-                params: {
-                  postId: post.id
-                }
-              }">
-              {{ $t('edit') }}
-            </router-link>
-            <a v-if="postUserId === userId"
-              @click="deletePost"
-              href="#"
-              class="dropdown-item">
-              {{ $t('delete') }}
-            </a>
-            <a v-else class="dropdown-item"
-              @click="report"
-              :class="{ 'is-loading': isReporting }">
-              {{ $t('report') }}
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="metadata">
-      <img :src="userPictureUrl" class="post-author-profile-picture"/>
-      <div class="post-author">
-        {{ postAuthor }}
-      </div>
-      <div class="post-time">
-        {{ postCreatedAt }}
-      </div>
-      <div class="post-board-name">
-        {{ boardName }}
-      </div>
-    </div>
-
-    <div class="attachments">
+    <div class="attachments" v-if="attachments.length > 0">
       <div class="dropdown is-hoverable is-right">
         <div class="dropdown-trigger">
           <a class="attachments__title" aria-haspopup="true" aria-controls="dropdown-menu">
@@ -79,26 +28,19 @@
       <TextEditor :editable="editable" :content="post.content"/>
     </div>
 
-    <div>
-      <a class="button button-default" @click="vote(true)"
-      :class="{ 'button-selected': liked }">
-        <span class="icon">
-          <i class="material-icons">thumb_up</i>
-        </span>
-        <span>
-          {{ postLikedCount }}
-        </span>
-      </a>
-      <a class="button button-default" @click="vote(false)"
-        :class="{ 'button-selected': disliked }">
-        <span class="icon">
-          <i class="material-icons">thumb_down</i>
-        </span>
-        <span>
-          {{ postDislikedCount }}
-        </span>
-      </a>
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+      <LikeButton class="post-status__like" :item="post" votable />
+      <div style="display: flex; align-items: center;">
+        <button class="button" style="margin-right: 10px;">담아두기</button>
+        <button class="button" style="margin-right: 20px;">신고하기</button>
+        <a style="display: flex; align-items: center;">
+          <img :src="userPictureUrl" class="post-author-profile-picture" style="width: 30px; height: 30px; border-radius: 15px; margin-right: 10px;"/>
+          <span>{{ postAuthor }} 님의 게시글 더보기</span>
+          <i class="material-icons" style="font-size: 1.5em;">chevron_right</i>
+        </a>
+      </div>
     </div>
+    <hr />
   </div>
 </template>
 
@@ -106,7 +48,8 @@
 import { mapGetters } from 'vuex'
 import { archivePost, reportPost, votePost, deletePost, getAttachmentUrls } from '@/api'
 import { date } from '@/helper.js'
-import TextEditor from '../components/TheTextEditor'
+import LikeButton from '@/components/LikeButton'
+import TextEditor from '@/components/TheTextEditor'
 
 export default {
   name: 'the-post-detail',
@@ -188,6 +131,7 @@ export default {
     }
   },
   components: {
+    LikeButton,
     TextEditor
   }
 }
@@ -240,12 +184,16 @@ en:
 }
 
 .content {
-  margin: 30px 0px 20px -7px;
+  margin: 30px 0px 20px -5px;
 }
 
 .text-contents-view {
   font-size: 1rem;
   margin: 10px 0px 10px 0px;
+}
+
+.post-status__like {
+  margin-left: -6px;
 }
 
 .material-icons {
@@ -290,6 +238,7 @@ en:
 .attachments {
   display: flex;
   justify-content: flex-end;
+  margin-top: 10px;
   margin-bottom: 30px;
 
   &__title {
