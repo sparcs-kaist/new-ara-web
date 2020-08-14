@@ -60,7 +60,7 @@ ko:
   today-best: '오늘의 인기글'
   weekly-best: '이주의 인기글'
 en:
-  today-best: 'Today Best'
+  today-best: 'Daily Best'
   weekly-best: 'Weekly Best'
 </i18n>
 
