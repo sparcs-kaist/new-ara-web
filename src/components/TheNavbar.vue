@@ -1,27 +1,27 @@
 <template>
   <div class="navbar is-transparent" aria-label="main navigation" role="navigation">
     <!-- <TheNavbarFetchProgressBar/> -->
-    <div class="navbar-brand">
-      <router-link
-        :to="{ name: 'home' }"
-        class="navbar-item">
-        <img src="@/assets/Services-Ara.png" class="ara-logo"/>
-      </router-link>
-
-      <a
-        class="navbar-burger"
-        role="button"
-        aria-label="menu"
-        aria-expanded="false"
-        :class="{ 'is-active': isMobileMenuActive }"
-        @click="toggleMobileMenu">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
-
     <div class="container">
+      <div class="navbar-brand">
+        <router-link
+          :to="{ name: 'home' }"
+          class="navbar-item navbar-ara">
+          <img src="@/assets/Services-Ara.png" class="ara-logo"/>
+        </router-link>
+
+        <a
+          class="navbar-burger"
+          role="button"
+          aria-label="menu"
+          aria-expanded="false"
+          :class="{ 'is-active': isMobileMenuActive }"
+          @click="toggleMobileMenu">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
       <div
         class="navbar-menu"
         :class="{ 'is-active': isMobileMenuActive }">
@@ -169,6 +169,10 @@ en:
 <style lang="scss" scoped>
 @import '@/theme.scss';
 
+.navigation {
+  padding-top: 10px;
+}
+
 .navbar-item {
   display: flex;
 
@@ -192,17 +196,19 @@ en:
   }
 }
 
-.navbar-brand {
-  position: absolute;
+.navbar-start {
+  flex-wrap: wrap;
+  flex: 1;
+}
 
-  @include breakPoint(min) {
-    position: relative;
-  }
+.navbar-ara {
+  margin-right: 20px;
 }
 
 .navbar-menu {
   background: transparent !important;
   font-weight: 500;
+  width: 0;
 }
 
 .ara-logo {
