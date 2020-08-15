@@ -36,6 +36,9 @@ export default {
     userConfig ({ userProfile: { see_sexual: sexual, see_social: social } }) {
       return { sexual, social }
     },
+    userEmail ({ userProfile: { sso_user_info: { email } } }) {
+      return email
+    },
     isDarkModeEnabled ({ userProfile }) {
       return userProfile.extra_preferences && userProfile.extra_preferences.darkMode
     }

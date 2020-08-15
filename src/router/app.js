@@ -5,6 +5,7 @@ import Post from '@/views/Post.vue'
 import Write from '@/views/Write.vue'
 import Settings from '@/views/Settings.vue'
 import Notifications from '@/views/Notifications.vue'
+import MyInfo from '@/views/MyInfo.vue'
 import Home from '@/views/Home.vue'
 import NotFound from '@/views/NotFound.vue'
 import { authGuard } from './auth.js'
@@ -52,6 +53,12 @@ export default [
     path: '/notifications',
     name: 'notifications',
     component: Notifications,
+    beforeEnter: authGuard
+  },
+  {
+    path: '/myinfo',
+    name: 'my-info',
+    component: MyInfo,
     beforeEnter: authGuard
   },
   {

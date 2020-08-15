@@ -3,12 +3,17 @@
     <TheNavbar/>
     <TheApiErrorNotification/>
     <div class="container">
-      <div class="columns">
+      <div class="columns" :class="{ 'default-columns': isColumnLayout }">
         <slot name="aside"></slot>
-
+        <template v-if="isColumnLayout">
         <div class="column">
-          <slot/>
+          <slot />
         </div>
+        </template>
+        <template v-else>
+          <slot />
+        </template>
+        <slot name="aside-right"></slot>
       </div>
     </div>
     <!-- <TheFooter/> -->
@@ -22,7 +27,13 @@ import TheFooter from '@/components/TheFooter.vue'
 import TheApiErrorNotification from '@/components/TheApiErrorNotification.vue'
 
 export default {
-  components: { TheNavbar, TheAd, TheFooter, TheApiErrorNotification }
+  components: { TheNavbar, TheAd, TheFooter, TheApiErrorNotification },
+  props: {
+    isColumnLayout: {
+      type: Boolean,
+      default: true
+    }
+  }
 }
 </script>
 
@@ -35,7 +46,7 @@ export default {
   margin-top: 50px;
 }
 
-.columns {
+.default-columns {
   width: 100%;
   margin: 0px;
 
