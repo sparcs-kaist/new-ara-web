@@ -10,6 +10,7 @@
         style="width: 80px"
         @click="$router.push({ name: 'post', params: { postId: post.id - 1 } })"
       >
+        <i class="material-icons">chevron_left</i>
         이전글
       </button>
       <button
@@ -18,6 +19,7 @@
         @click="$router.push({ name: 'post', params: { postId: post.id + 1 } })"
       >
         다음글
+        <i class="material-icons">chevron_right</i>
       </button>
       <button
         class="title__button"
@@ -169,6 +171,9 @@ en:
   }
 
   &__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     background-color: white;
     margin-left: 0.5rem;
