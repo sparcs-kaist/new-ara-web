@@ -33,14 +33,17 @@
     <div class="post__footer">
       <LikeButton class="post__like" :item="post" votable @vote="$emit('vote', $event)" />
       <div class="post__buttons">
-        <button class="button" @click="archive">담아두기</button>
-        <button class="button" @click="report">신고하기</button>
+        <button class="button" @click="$emit('archive')">
+          {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
+        </button>
+
+        <button class="button" @click="$emit('report')"> {{ $t('report') }} </button>
 
         <router-link :to="{
           name: 'user', params: { username: postAuthor }
         }" class="post__more">
           <img :src="userPictureUrl" class="post__author"/>
-          <span>{{ postAuthor }} 님의 게시글 더보기</span>
+          <span>{{ $t('more', { author: postAuthor }) }}</span>
           <i class="material-icons" style="font-size: 1.5em;">chevron_right</i>
         </router-link>
       </div>
@@ -50,7 +53,7 @@
 </template>
 
 <script>
-import { archivePost, reportPost, getAttachmentUrls } from '@/api'
+import { getAttachmentUrls } from '@/api'
 import LikeButton from '@/components/LikeButton.vue'
 import TextEditor from '@/components/TheTextEditor.vue'
 
@@ -89,17 +92,6 @@ export default {
       immediate: true
     }
   },
-  methods: {
-    async archive () {
-      await archivePost(this.post.id)
-      // TODO refresh sidebar archives, find better way than alert
-      alert(this.$t('archived'))
-    },
-    async report () {
-      await reportPost(this.post.id)
-      alert(this.$t('reported'))
-    }
-  },
   components: {
     LikeButton,
     TextEditor
@@ -110,16 +102,17 @@ export default {
 <i18n>
 ko:
   archive: '담아두기'
-  archived: '담아둔 게시글에 담아졌습니다!'
-  report: '신고'
-  reported: '신고되었습니다!'
+  unarchive: '담아두기 취소'
+  report: '신고하기'
   attachments: '첨부파일 모아보기'
+  more: '{author} 님의 게시글 더 보기'
+
 en:
   archive: 'Archive'
-  archived: 'Successfully added to your archive'
+  unarchive: 'Unarchive'
   report: 'Report'
-  reported: 'Successfully reported!'
   attachments: 'Attachments'
+  more: 'Read more posts by {author}'
 </i18n>
 
 <style lang="scss" scoped>

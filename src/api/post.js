@@ -24,6 +24,9 @@ export const updatePost = ({ postId, newArticle }) =>
 export const archivePost = (postId) =>
   http.post('scraps/', { parent_article: postId })
 
+export const unarchivePost = (postId) =>
+  http.delete('scraps/', { parent_article: postId })
+
 export const reportPost = (postId) =>
   http.post('reports/', { parent_article: postId, reported_by: 1 })
 

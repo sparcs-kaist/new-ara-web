@@ -9,18 +9,18 @@
       </p>
     </div>
 
-    <SmallBoard :listitems="recent" :sidebar="true">
+    <SmallBoard :listitems="recentPosts" sidebar>
       {{ $t('recent') }}
     </SmallBoard>
 
-    <SmallBoard :listitems="adaptedArchive" :sidebar="true">
+    <SmallBoard :listitems="archiveList" sidebar>
       {{ $t('archive') }}
     </SmallBoard>
   </aside>
 </template>
 
 <script>
-import { fetchArchives } from '@/api'
+import { mapState } from 'vuex'
 import SmallBoard from '@/components/SmallBoard.vue'
 
 export default {
@@ -34,19 +34,24 @@ export default {
   },
 
   computed: {
-    adaptedArchive () {
-      if (!this.archives || !this.archives.results) {
-        return []
-      }
+    archiveList () {
+      return this.archivedPosts
+        .slice(0, 5)
+        .map(({ parent_article: article }) => article)
+    },
 
-      const results = this.archives.results.slice(0, 5)
-      return results.map(({ parent_article: article }) => article)
-    }
+    recentList () {
+      return this.recentPosts
+        .slice(0, 5)
+        .map(({ parent_article: article }) => article)
+    },
+
+    ...mapState([ 'recentPosts', 'archivedPosts' ])
   },
 
   async mounted () {
-    this.archives = await fetchArchives()
-    // TODO recent viewed posts
+    await this.$store.dispatch('fetchRecentPosts')
+    await this.$store.dispatch('fetchArchivedPosts')
   },
 
   components: {

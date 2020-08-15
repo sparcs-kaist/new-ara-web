@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import i18n from '@/i18n.js'
-import { fetchBoardList } from '@/api'
+import { fetchArchives, fetchBoardList } from '@/api'
 import auth from './auth.js'
 import fetch from './fetch.js'
 
@@ -10,7 +10,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   modules: { auth, fetch },
   state: {
-    boardList: []
+    boardList: [],
+    recentPosts: [],
+    archivedPosts: []
   },
   getters: {
     hasFetchedBoardList: ({ boardList }) =>
@@ -28,6 +30,14 @@ export default new Vuex.Store({
   mutations: {
     setBoardList (state, boardList) {
       state.boardList = boardList
+    },
+
+    setRecentPosts (state, posts) {
+      state.recentPosts = posts
+    },
+
+    setArchivedPosts (state, posts) {
+      state.archivedPosts = posts
     }
   },
   actions: {
@@ -36,6 +46,15 @@ export default new Vuex.Store({
         const { results } = await fetchBoardList()
         commit('setBoardList', results)
       }
+    },
+
+    async fetchRecentPosts ({ commit }) {
+      // TODO fetch recent posts after backend implementation
+    },
+
+    async fetchArchivedPosts ({ commit }) {
+      const { results } = await fetchArchives()
+      commit('setArchivedPosts', results)
     }
   }
 })

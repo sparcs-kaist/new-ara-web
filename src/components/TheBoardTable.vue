@@ -51,7 +51,6 @@
 import elideText from '@/utils/elideText'
 import { mapGetters } from 'vuex'
 import LikeButton from '@/components/LikeButton.vue'
-import PostStatus from '@/components/PostStatus.vue'
 import Timeago from '@/components/Timeago.vue'
 
 export default {
@@ -65,7 +64,6 @@ export default {
   },
   components: {
     LikeButton,
-    PostStatus,
     Timeago
   }
 }

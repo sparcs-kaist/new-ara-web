@@ -175,8 +175,8 @@ en:
   delete: 'Delete'
   report: 'Report'
   edit: 'Edit'
-  fold-reply-comment: 'Close reply comment'
-  reply-comment: 'Open reply comment'
+  fold-reply-comment: 'Close reply'
+  reply-comment: 'Reply'
   placeholder: 'Type here...'
   new-reply-comment: 'Send'
 </i18n>

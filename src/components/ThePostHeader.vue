@@ -71,31 +71,28 @@
             <div class="dropdown-menu" id="dropdownMenu" role="menu">
               <div class="dropdown-content">
                 <div class="dropdown-item">
-                  <a class="dropdown-item" @click="archive"
-                    :class="{ 'is-loading': isArchiving }">
-                    {{ $t('archive') }}
+                  <a class="dropdown-item" @click="$emit('archive')">
+                    {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
                   </a>
 
-                  <router-link v-if="postUserId === userId" class="dropdown-item"
-                    :to="{
-                      name: 'write',
-                      params: {
-                        postId: post.id
-                      }
-                    }">
-                      {{ $t('edit') }}
-                  </router-link>
+                  <template v-if="postUserId === userId">
+                    <router-link class="dropdown-item"
+                      :to="{
+                        name: 'write',
+                        params: {
+                          postId: post.id
+                        }
+                      }">
+                        {{ $t('edit') }}
+                    </router-link>
 
-                  <a v-if="postUserId === userId"
-                    @click="deletePost"
-                    href="#"
-                    class="dropdown-item">
-                    {{ $t('delete') }}
-                  </a>
-
-                  <a v-else class="dropdown-item"
-                    @click="report"
-                    :class="{ 'is-loading': isReporting }">
+                    <a @click="deletePost"
+                      href="#"
+                      class="dropdown-item">
+                      {{ $t('delete') }}
+                    </a>
+                  </template>
+                  <a v-else class="dropdown-item" @click="$emit('report')">
                     {{ $t('report') }}
                   </a>
                 </div>
@@ -110,7 +107,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { archivePost, reportPost, deletePost } from '@/api'
+import { deletePost } from '@/api'
 import { date } from '@/helper.js'
 import LikeButton from '@/components/LikeButton.vue'
 
@@ -121,8 +118,6 @@ export default {
   },
   data () {
     return {
-      isArchiving: false,
-      isReporting: false,
       attachments: null
     }
   },
@@ -143,16 +138,6 @@ export default {
   },
 
   methods: {
-    async archive () {
-      this.isArchiving = true
-      await archivePost(this.post.id)
-      this.isArchiving = false
-    },
-    async report () {
-      this.isReporting = true
-      await reportPost(this.post.id)
-      this.isReporting = false
-    },
     async deletePost () {
       await deletePost(this.post.id)
       this.$router.push('/')
@@ -167,6 +152,7 @@ export default {
 <i18n>
 ko:
   archive: '담아두기'
+  unarchive: '담기 취소'
   edit: '수정'
   delete: '삭제'
   report: '신고'
@@ -175,6 +161,7 @@ ko:
 
 en:
   archive: 'Archive'
+  unarchive: 'Unarchive'
   edit: 'Edit'
   delete: 'Delete'
   report: 'Report'
