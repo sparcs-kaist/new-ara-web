@@ -1,6 +1,6 @@
 <template>
   <div class="board">
-    <h2 class="board__name">
+    <h2 class="board__name" :class="{ 'sidebar': sidebar }">
       <slot></slot>
     </h2>
     <div
@@ -9,6 +9,7 @@
     class="post">
       <h3>
         <router-link class="post__title"
+        :class="{ 'sidebar__post': sidebar }"
         :to="{
             name: 'post',
             params: { postId: post.id }
@@ -32,6 +33,9 @@ export default {
       required: true
     },
     detail: {
+      type: Boolean
+    },
+    sidebar: {
       type: Boolean
     }
   },
@@ -75,6 +79,14 @@ export default {
 
     &__title {
       color: var(--text);
+    }
+  }
+
+  .sidebar {
+    font-size: 14px;
+
+    &__post {
+      font-size: 13px;
     }
   }
 }

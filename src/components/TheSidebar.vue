@@ -9,11 +9,11 @@
       </p>
     </div>
 
-    <SmallBoard :listitems="recent">
+    <SmallBoard :listitems="recent" :sidebar="true">
       {{ $t('recent') }}
     </SmallBoard>
 
-    <SmallBoard :listitems="adaptedArchive">
+    <SmallBoard :listitems="adaptedArchive" :sidebar="true">
       {{ $t('archive') }}
     </SmallBoard>
   </aside>
