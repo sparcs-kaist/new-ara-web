@@ -5,45 +5,64 @@
         {{ post.title }}
       </div>
       <!-- TODO range check and board check-->
-      <button
-        class="title__button"
-        style="width: 80px"
-        @click="$router.push({ name: 'post', params: { postId: post.id - 1 } })"
+      <router-link
+        class="button title__button title__button--wide"
+        :to="{ name: 'post', params: { postId: post.id - 1 } }"
       >
         <i class="material-icons">chevron_left</i>
         이전글
-      </button>
-      <button
-        class="title__button"
-        style="width: 80px"
-        @click="$router.push({ name: 'post', params: { postId: post.id + 1 } })"
+      </router-link>
+
+      <router-link
+        class="button title__button title__button--wide"
+        :to="{ name: 'post', params: { postId: post.id + 1 } }"
       >
         다음글
         <i class="material-icons">chevron_right</i>
-      </button>
-      <button
-        class="title__button"
-        style="width: 50px"
-        @click="$router.push({ name: 'board' })"
+      </router-link>
+
+      <router-link
+        class="button title__button"
+        :to="{ name: 'board' }"
       >
         목록
-      </button>
+      </router-link>
     </div>
     <div id="metadata">
       <img :src="userPictureUrl" class="post-author-profile-picture"/>
       <div class="post-header">
-        <div class="post-header__author">
+        <router-link :to="{
+          name: 'user', params: { username: postAuthor }
+        }" class="post-header__author">
           {{ postAuthor }}
-        </div>
+        </router-link>
 
         <div class="post-header__info">
           <span class="post-header__time">
             {{ postCreatedAt }}
           </span>
 
-          <PostStatus class="post-header__status" :post="post" :votable="true" />
+          <div class="post-header__status">
+            <LikeButton class="post-header__like" :item="post" votable @vote="$emit('vote', $event)"/>
 
-          <span class="dropdown is-right is-hoverable alignright">
+            <div class="post-header__comment">
+              <span class="post-header__label">
+                {{ $t('comments') }}
+              </span>
+
+              {{ post.nested_comments_count }}
+            </div>
+
+            <div class="post-header__view">
+              <span class="post-header__label">
+                {{ $t('views') }}
+              </span>
+
+              {{ post.hit_count }}
+            </div>
+          </div>
+
+          <span class="dropdown is-right is-hoverable">
             <div class="dropdown-trigger">
               <button class="button no-border" aria-haspopup="true" aria-controls="dropdownMenu">
                 <i class="material-icons">more_vert</i>
@@ -56,6 +75,7 @@
                     :class="{ 'is-loading': isArchiving }">
                     {{ $t('archive') }}
                   </a>
+
                   <router-link v-if="postUserId === userId" class="dropdown-item"
                     :to="{
                       name: 'write',
@@ -65,12 +85,14 @@
                     }">
                       {{ $t('edit') }}
                   </router-link>
+
                   <a v-if="postUserId === userId"
                     @click="deletePost"
                     href="#"
                     class="dropdown-item">
                     {{ $t('delete') }}
                   </a>
+
                   <a v-else class="dropdown-item"
                     @click="report"
                     :class="{ 'is-loading': isReporting }">
@@ -90,8 +112,8 @@
 import { mapGetters } from 'vuex'
 import { archivePost, reportPost, deletePost } from '@/api'
 import { date } from '@/helper.js'
-import TextEditor from '../components/TheTextEditor'
-import PostStatus from '@/components/PostStatus.vue'
+import LikeButton from '@/components/LikeButton.vue'
+
 export default {
   name: 'the-post-header',
   props: {
@@ -106,9 +128,8 @@ export default {
   },
   computed: {
     userPictureUrl () {
-      return this.post.created_by.profile.picture
+      return this.post.created_by && this.post.created_by.profile.picture
     },
-    // @TODO: I18n
     postAuthor () {
       return this.post.created_by && this.post.created_by.profile.nickname
     },
@@ -116,7 +137,7 @@ export default {
       return date(this.post.created_at)
     },
     postUserId () {
-      return this.post.created_by.profile.user_id
+      return this.post.created_by && this.post.created_by.profile.user_id
     },
     ...mapGetters([ 'userId' ])
   },
@@ -138,7 +159,7 @@ export default {
     }
   },
   components: {
-    TextEditor, PostStatus
+    LikeButton
   }
 }
 </script>
@@ -149,11 +170,16 @@ ko:
   edit: '수정'
   delete: '삭제'
   report: '신고'
+  comments: '댓글'
+  views: '조회수'
+
 en:
   archive: 'Archive'
   edit: 'Edit'
   delete: 'Delete'
   report: 'Report'
+  comments: 'Comments'
+  views: 'View'
 </i18n>
 
 <style lang="scss" scoped>
@@ -171,16 +197,12 @@ en:
   }
 
   &__button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background-color: white;
     margin-left: 0.5rem;
-    font-size: 13px;
-    height: 30px;
-    border-radius: 10px;
-    border: solid 1px var(--grey-300);
+    font-size: .9rem;
+
+    &--wide {
+      padding: 0 15px;
+    }
   }
 }
 
@@ -191,6 +213,7 @@ en:
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
+
   .post-author-profile-picture {
     width: 40px;
     height: 40px;
@@ -198,45 +221,55 @@ en:
     border-radius: 100%;
     margin-right: 1rem;
   }
+
   .post-header {
     flex: 1;
+
     &__author {
       font-size: 15px;
       font-weight: bold;
     }
+
     &__time {
       color: var(--grey-600);
       font-size: 13px;
       font-weight: normal;
       flex: 1;
     }
+
     &__info {
       display: flex;
       align-items: center;
     }
+
     &__status {
-      width: 17rem;
+      display: flex;
+
+      & > * {
+        margin: 0 10px;
+      }
     }
   }
 }
+
 .material-icons {
   font-size: 16px;
 }
-.alignright {
-  float: right;
-}
+
 .no-border {
   border: none;
   height: 13px;
   width: 13px;
   float: right;
 }
+
 .dropdown-content {
   min-width: 40%;
   max-width: 50%;
   float: right;
   text-align: right;
 }
+
 .dropdown-item {
   padding: 0.2rem 0.4rem
 }

@@ -4,8 +4,8 @@
       <TheSidebar />
     </template>
 
-    <ThePostHeader :post="post"/>
-    <ThePostDetail :post="post" />
+    <ThePostHeader :post="post" @vote="vote" />
+    <ThePostDetail :post="post" @vote="vote" />
     <ThePostComments
       :comments="post.comments"
       :postId="postId"
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { fetchPost } from '@/api'
+import { fetchPost, votePost } from '@/api'
 import { fetchWithProgress } from './helper.js'
 import ThePostDetail from '@/components/ThePostDetail.vue'
 import ThePostHeader from '@/components/ThePostHeader.vue'
@@ -78,6 +78,11 @@ export default {
     // @TODO: 매번 refresh 하는게 최선인지는 좀 생각해 봐야할듯
     async refresh () {
       this.post = await fetchPost({ postId: this.postId })
+    },
+
+    async vote ({ id, vote }) {
+      await votePost(id, vote)
+      await this.refresh()
     }
   },
   async beforeRouteEnter ({ params: { postId } }, from, next) {

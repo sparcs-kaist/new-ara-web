@@ -1,6 +1,6 @@
 <template>
   <div class="comment-wrapper">
-    <div class="comment" :class="{'comment--replyComment': isReplyComment}" v-if="!isEditing">
+    <div class="comment" :class="{'comment--reply-comment': isReplyComment}" v-if="!isEditing">
       <img class="comment__profile" :src="profileImage" />
       <div class="comment__body">
         <div class="comment__header">
@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <div class="comment comment--edit" :class="{'comment--replyComment': isReplyComment}" v-else>
+    <div class="comment comment--edit" :class="{'comment--reply-comment': isReplyComment}" v-else>
       <PostCommentEditor
         :text="comment.content"
         :edit-comment="comment.id"
@@ -63,7 +63,7 @@
       />
     </div>
 
-    <div class="comment__replyComments">
+    <div class="comment__reply-comments">
       <PostComment
         v-for="replyComment in comment.comments"
         is-reply-comment
@@ -237,10 +237,10 @@ en:
   }
 
   &__write {
-    margin-left: 5px;
+    margin-left: 20px;
   }
 
-  &__replyComments {
+  &__reply-comments {
     margin-left: 24px;
   }
 }

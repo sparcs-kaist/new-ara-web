@@ -53,7 +53,7 @@ ko:
   views: '조회수'
 
 en:
-  comments: 'Comments'
+  comments: 'Reply'
   views: 'View'
 </i18n>
 
@@ -62,20 +62,16 @@ en:
   display: flex;
   font-size: .9rem;
 
-  & > &__like {
-    flex: 2;
-  }
-
   & > *:not(&__like) {
     display: inline-flex;
     justify-content: flex-start;
     align-items: center;
-    flex: 1;
+    min-width: 4rem;
     white-space: nowrap;
   }
 
   & > * {
-    margin-right: 5px;
+    margin-right: 10px;
   }
 
   &__label {

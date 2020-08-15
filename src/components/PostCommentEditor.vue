@@ -10,7 +10,7 @@
           class="comment-editor__editor"
           rows="2"
           :style="{ height }"
-          @keydown.shift.enter="saveComment"
+          @keydown.shift.enter.prevent="saveComment"
           @input="autosize"
         />
       </div>
