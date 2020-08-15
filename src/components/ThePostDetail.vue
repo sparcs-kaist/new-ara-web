@@ -18,7 +18,7 @@
               :key="id"
             >
               <div>
-                <a :href="url">{{ file }}</a>
+                <a :href="url" target="_blank" rel="noopener">{{ file }}</a>
               </div>
             </div>
           </div>

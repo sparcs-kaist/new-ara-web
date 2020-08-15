@@ -4,7 +4,10 @@
       <img class="comment__profile" :src="profileImage" />
       <div class="comment__body">
         <div class="comment__header">
-          <span class="comment__author"> {{ author }} </span>
+          <router-link :to="{ name: 'user', params: { username: author } }" class="comment__author">
+            {{ author }}
+          </router-link>
+
           <span class="comment__time"> {{ date }} </span>
 
           <div class="dropdown is-right is-hoverable">
@@ -206,6 +209,10 @@ en:
 
   &--edit {
     display: block;
+  }
+
+  &__content {
+    white-space: pre-wrap;
   }
 
   &__profile {
