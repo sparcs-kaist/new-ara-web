@@ -173,7 +173,7 @@ en:
 .title {
   color: var(--grey-700);
   font-family: 'NanumSquareRound',sans-serif;
-  font-size: 20px;
+  font-size: 1.5rem;
   margin-bottom: 1.25rem;
   display: flex;
   align-items: center;
@@ -231,6 +231,7 @@ en:
 
     &__status {
       display: flex;
+      font-size: .95rem;
 
       & > * {
         margin: 0 10px;

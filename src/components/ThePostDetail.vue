@@ -141,6 +141,7 @@ en:
 
     & > .button {
       margin-right: 10px;
+      font-size: .9rem;
     }
   }
 
