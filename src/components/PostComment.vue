@@ -1,10 +1,13 @@
 <template>
   <div class="comment-wrapper">
-    <div class="comment" :class="{'comment--replyComment': isReplyComment}" v-if="!isEditing">
+    <div class="comment" :class="{'comment--reply-comment': isReplyComment}" v-if="!isEditing">
       <img class="comment__profile" :src="profileImage" />
       <div class="comment__body">
         <div class="comment__header">
-          <span class="comment__author"> {{ author }} </span>
+          <router-link :to="{ name: 'user', params: { username: author } }" class="comment__author">
+            {{ author }}
+          </router-link>
+
           <span class="comment__time"> {{ date }} </span>
 
           <div class="dropdown is-right is-hoverable">
@@ -54,7 +57,7 @@
       </div>
     </div>
 
-    <div class="comment comment--edit" :class="{'comment--replyComment': isReplyComment}" v-else>
+    <div class="comment comment--edit" :class="{'comment--reply-comment': isReplyComment}" v-else>
       <PostCommentEditor
         :text="comment.content"
         :edit-comment="comment.id"
@@ -63,7 +66,7 @@
       />
     </div>
 
-    <div class="comment__replyComments">
+    <div class="comment__reply-comments">
       <PostComment
         v-for="replyComment in comment.comments"
         is-reply-comment
@@ -172,8 +175,8 @@ en:
   delete: 'Delete'
   report: 'Report'
   edit: 'Edit'
-  fold-reply-comment: 'Close reply comment'
-  reply-comment: 'Open reply comment'
+  fold-reply-comment: 'Close reply'
+  reply-comment: 'Reply'
   placeholder: 'Type here...'
   new-reply-comment: 'Send'
 </i18n>
@@ -208,6 +211,10 @@ en:
     display: block;
   }
 
+  &__content {
+    white-space: pre-wrap;
+  }
+
   &__profile {
     width: 40px;
     height: 40px;
@@ -237,10 +244,10 @@ en:
   }
 
   &__write {
-    margin-left: 5px;
+    margin-left: 20px;
   }
 
-  &__replyComments {
+  &__reply-comments {
     margin-left: 24px;
   }
 }

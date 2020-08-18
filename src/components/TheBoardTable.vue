@@ -23,17 +23,34 @@
           <div class="board-item__title">
             {{ post.title }}
           </div>
-
-          <PostStatus class="board-item__status" :post="post" />
         </div>
+      </div>
+
+      <LikeButton class="post-status post-status__like" :item="post" table elide votable @vote="$emit('vote', $event)"/>
+
+      <div class="post-status post-status__comment">
+        <span class="post-status__label">
+          {{ $t('comments') }}
+        </span>
+
+        {{ elideText(post.nested_comments_count) }}
+      </div>
+
+      <div class="post-status post-status__view">
+        <span class="post-status__label">
+          {{ $t('views') }}
+        </span>
+
+        {{ elideText(post.hit_count) }}
       </div>
     </router-link>
   </div>
 </template>
 
 <script>
+import elideText from '@/utils/elideText'
 import { mapGetters } from 'vuex'
-import PostStatus from '@/components/PostStatus.vue'
+import LikeButton from '@/components/LikeButton.vue'
 import Timeago from '@/components/Timeago.vue'
 
 export default {
@@ -42,8 +59,11 @@ export default {
   computed: {
     ...mapGetters([ 'getNameById' ])
   },
+  methods: {
+    elideText: elideText(2)
+  },
   components: {
-    PostStatus,
+    LikeButton,
     Timeago
   }
 }
@@ -53,17 +73,14 @@ export default {
 ko:
   board: '게시판'
   title: '제목'
-  author: '작성자'
-  reaction: '반응'
+  comments: '댓글'
   views: '조회수'
-  time: '작성 시간'
+
 en:
   board: 'Board'
   title: 'Title'
-  author: 'Author'
-  reaction: 'Reaction'
-  views: 'Views'
-  time: 'Time'
+  comments: 'Reply'
+  views: 'View'
 </i18n>
 
 <style lang="scss">
@@ -116,10 +133,6 @@ en:
     white-space: nowrap;
   }
 
-  &__status {
-    width: 18rem;
-  }
-
   &:first-child {
     margin-top: 0;
   }
@@ -129,20 +142,22 @@ en:
   }
 }
 
-.comment-count {
-  color: var(--theme-400);
-}
+.post-status {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: 10px;
+  white-space: nowrap;
+  font-size: .9rem;
 
-.article-title {
+  &:not(&__like) {
+    width: 4.5rem;
+    overflow: hidden;
+  }
 
-}
-
-.article-wrapper-big {
-  width: 100%;
-  max-width: 600px;
-}
-
-.article-wrapper {
-  display: flex;
+  &__label {
+    font-weight: 700;
+    margin-right: 4px;
+  }
 }
 </style>

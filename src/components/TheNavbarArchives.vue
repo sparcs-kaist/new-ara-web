@@ -12,8 +12,8 @@ export default {
 
 <i18n>
 ko:
-  archive: '담아두기'
+  archive: '담아둔 글'
 
 en:
-  archive: 'Archive'
+  archive: 'Bookmarks'
 </i18n>

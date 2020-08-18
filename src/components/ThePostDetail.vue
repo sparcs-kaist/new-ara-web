@@ -2,7 +2,7 @@
   <div class="post">
     <hr />
 
-    <div class="attachments" v-if="attachments.length > 0">
+    <div class="attachments" v-if="attachments && attachments.length > 0">
       <div class="dropdown is-hoverable is-right">
         <div class="dropdown-trigger">
           <a class="attachments__title" aria-haspopup="true" aria-controls="dropdown-menu">
@@ -12,13 +12,13 @@
           </a>
         </div>
         <div class="dropdown-menu">
-          <div class="dropdown-content" style="padding: 10px; max-width: 100%; text-align: left;">
+          <div class="dropdown-content">
             <div class="attachments__item dropdown-item"
               v-for="{id, file, url} in attachments"
               :key="id"
             >
               <div>
-                <a :href="url">{{ file }}</a>
+                <a :href="url" target="_blank" rel="noopener">{{ file }}</a>
               </div>
             </div>
           </div>
@@ -27,19 +27,25 @@
     </div>
 
     <div class="content">
-      <TextEditor :editable="editable" :content="post.content"/>
+      <TextEditor :editable="false" :content="post.content" v-if="post.content" />
     </div>
 
-    <div style="display: flex; align-items: center; justify-content: space-between;">
-      <LikeButton class="post-status__like" :item="post" votable />
-      <div style="display: flex; align-items: center;">
-        <button class="button" style="margin-right: 10px;">담아두기</button>
-        <button class="button" style="margin-right: 20px;">신고하기</button>
-        <a style="display: flex; align-items: center;">
-          <img :src="userPictureUrl" class="post-author-profile-picture" style="width: 30px; height: 30px; border-radius: 15px; margin-right: 10px;"/>
-          <span>{{ postAuthor }} 님의 게시글 더보기</span>
+    <div class="post__footer">
+      <LikeButton class="post__like" :item="post" votable @vote="$emit('vote', $event)" />
+      <div class="post__buttons">
+        <button class="button" @click="$emit('archive')">
+          {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
+        </button>
+
+        <button class="button" @click="$emit('report')"> {{ $t('report') }} </button>
+
+        <router-link :to="{
+          name: 'user', params: { username: postAuthor }
+        }" class="post__more">
+          <img :src="userPictureUrl" class="post__author"/>
+          <span>{{ $t('more', { author: postAuthor }) }}</span>
           <i class="material-icons" style="font-size: 1.5em;">chevron_right</i>
-        </a>
+        </router-link>
       </div>
     </div>
     <hr />
@@ -47,11 +53,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { archivePost, reportPost, votePost, deletePost, getAttachmentUrls } from '@/api'
-import { date } from '@/helper.js'
-import LikeButton from '@/components/LikeButton'
-import TextEditor from '@/components/TheTextEditor'
+import { getAttachmentUrls } from '@/api'
+import LikeButton from '@/components/LikeButton.vue'
+import TextEditor from '@/components/TheTextEditor.vue'
 
 export default {
   name: 'the-post-detail',
@@ -60,45 +64,24 @@ export default {
   },
   data () {
     return {
-      isArchiving: false,
-      isReporting: false,
-      editable: false,
-      isVoting: false,
       attachments: null
     }
   },
   computed: {
-    liked () { return this.post.my_vote === true },
-    disliked () { return this.post.my_vote === false },
-    likedCount () { return this.post.positive_vote_count },
-    dislikedCount () { return this.post.negative_vote_count },
     userPictureUrl () {
-      return this.post.created_by.profile.picture
-    },
-    // @TODO: I18n
-    boardName () {
-      return this.post.parent_board && this.post.parent_board.ko_name
+      return this.post.created_by && this.post.created_by.profile.picture
     },
     postAuthor () {
       return this.post.created_by && this.post.created_by.profile.nickname
-    },
-    postCreatedAt () {
-      return date(this.post.created_at)
-    },
-    postUserId () {
-      return this.post.created_by.profile.user_id
-    },
-    postLikedCount () {
-      return this.post.positive_vote_count
-    },
-    postDislikedCount () {
-      return this.post.negative_vote_count
-    },
-    ...mapGetters([ 'userId' ])
+    }
   },
   watch: {
     'post.attachments': {
       async handler (attachments) {
+        if (!attachments) {
+          return
+        }
+
         const results = await getAttachmentUrls(attachments)
         this.attachments = results.map(({ data }) => ({
           url: data.file,
@@ -107,29 +90,6 @@ export default {
         }))
       },
       immediate: true
-    }
-  },
-  methods: {
-    async vote (ballot) {
-      this.isVoting = true
-      await votePost(this.post.id,
-        this.post.my_vote === ballot ? 'vote_cancel' : ballot ? 'vote_positive' : 'vote_negative')
-      this.$emit('vote')
-      this.isVoting = false
-    },
-    async archive () {
-      this.isArchiving = true
-      await archivePost(this.post.id)
-      this.isArchiving = false
-    },
-    async report () {
-      this.isReporting = true
-      await reportPost(this.post.id)
-      this.isReporting = false
-    },
-    async deletePost () {
-      await deletePost(this.post.id)
-      this.$router.push('/')
     }
   },
   components: {
@@ -142,16 +102,17 @@ export default {
 <i18n>
 ko:
   archive: '담아두기'
-  edit: '수정'
-  delete: '삭제'
-  report: '신고'
+  unarchive: '담아두기 취소'
+  report: '신고하기'
   attachments: '첨부파일 모아보기'
+  more: '{author} 님의 게시글 더 보기'
+
 en:
-  archive: 'Archive'
-  edit: 'Edit'
-  delete: 'Delete'
+  archive: 'Bookmark'
+  unarchive: 'Delete Bookmark'
   report: 'Report'
   attachments: 'Attachments'
+  more: 'Read more posts by {author}'
 </i18n>
 
 <style lang="scss" scoped>
@@ -159,29 +120,39 @@ en:
   margin-bottom: 0.25rem;
 }
 
-#metadata {
-  color: #888;
-  margin: 1rem 0px 0.5rem 0px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-
-  .post-author-profile-picture {
-    width: 25px;
-    height: 25px;
+.post {
+  &__author {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
     object-fit: cover;
     border-radius: 100%;
-
   }
 
-  .post-author {
-    color:#4a4a4a;
-    font-weight:bold;
-
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
-  .post-author-profile-picture, .post-author, .post-time, .post-board-name {
-    margin-right: 0.75rem;
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+
+    & > .button {
+      margin-right: 10px;
+      font-size: .9rem;
+    }
+  }
+
+  &__more {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+  }
+
+  &__like {
+    margin-left: -6px;
   }
 }
 
@@ -189,52 +160,20 @@ en:
   margin: 30px 0px 20px -5px;
 }
 
-.text-contents-view {
-  font-size: 1rem;
-  margin: 10px 0px 10px 0px;
-}
-
-.post-status__like {
-  margin-left: -6px;
-}
-
 .material-icons {
   font-size: 16px;
 }
 
-.alignright {
-  float: right;
-}
-
-.no-border {
-  border: none;
-}
-
 .dropdown-content {
   min-width: 40%;
-  max-width: 50%;
+  max-width: 100%;
+  padding: 10px;
   float: right;
-  text-align: right;
+  text-align: left;
 }
 
 .dropdown-item {
   padding: 0.375rem 0.4rem
-}
-
-.button-default {
-  color: #888888;
-  // border: none;
-  font-size: 14px;
-  margin-right: 5px;
-  text-decoration: none;
-}
-
-.button-default:focus {
-  outline:0;
-}
-
-.button-selected {
-  color: #ED3A3A;
 }
 
 .attachments {

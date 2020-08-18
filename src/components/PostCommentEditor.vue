@@ -10,7 +10,7 @@
           class="comment-editor__editor"
           rows="2"
           :style="{ height }"
-          @keydown.shift.enter="saveComment"
+          @keydown.shift.enter.prevent="saveComment"
           @input="autosize"
         />
       </div>
@@ -87,6 +87,10 @@ export default {
     },
 
     async saveComment () {
+      if (this.isUploading) {
+        return
+      }
+
       this.isUploading = true
 
       try {
@@ -103,6 +107,7 @@ export default {
 
         this.$emit('upload', result.data)
         this.content = ''
+        this.autosize()
       } catch (err) {
         // @TODO: 채팅 생성에 실패했다고 알려주기
         alert('Failed to write a comment!')
