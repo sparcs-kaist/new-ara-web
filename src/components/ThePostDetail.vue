@@ -108,8 +108,8 @@ ko:
   more: '{author} 님의 게시글 더 보기'
 
 en:
-  archive: 'Archive'
-  unarchive: 'Unarchive'
+  archive: 'Bookmark'
+  unarchive: 'Delete Bookmark'
   report: 'Report'
   attachments: 'Attachments'
   more: 'Read more posts by {author}'

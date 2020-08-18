@@ -67,7 +67,7 @@ ko:
 
 en:
   recent: 'Recent Articles'
-  archive: 'Stored Articles'
+  archive: 'Bookmarks'
 </i18n>
 
 <style lang="scss" scoped>

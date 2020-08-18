@@ -10,14 +10,14 @@
         :to="{ name: 'post', params: { postId: post.id - 1 } }"
       >
         <i class="material-icons">chevron_left</i>
-        이전글
+        {{ $t('previous') }}
       </router-link>
 
       <router-link
         class="button title__button title__button--wide"
         :to="{ name: 'post', params: { postId: post.id + 1 } }"
       >
-        다음글
+        {{ $t('next') }}
         <i class="material-icons">chevron_right</i>
       </router-link>
 
@@ -25,7 +25,7 @@
         class="button title__button"
         :to="{ name: 'board' }"
       >
-        목록
+        {{ $t('list') }}
       </router-link>
     </div>
     <div id="metadata">
@@ -158,15 +158,21 @@ ko:
   report: '신고'
   comments: '댓글'
   views: '조회수'
+  previous: '이전글'
+  next: '다음글'
+  list: '목록'
 
 en:
-  archive: 'Archive'
-  unarchive: 'Unarchive'
+  archive: 'Bookmark'
+  unarchive: 'Delete Bookmark'
   edit: 'Edit'
   delete: 'Delete'
   report: 'Report'
   comments: 'Comments'
   views: 'View'
+  previous: 'Previous'
+  next: 'Next'
+  list: 'Posts'
 </i18n>
 
 <style lang="scss" scoped>
@@ -253,7 +259,6 @@ en:
 
 .dropdown-content {
   min-width: 40%;
-  max-width: 50%;
   float: right;
   text-align: right;
 }
