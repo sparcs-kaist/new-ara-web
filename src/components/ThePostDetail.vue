@@ -133,11 +133,14 @@ en:
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
 
   &__buttons {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
 
     & > .button {
       margin-right: 10px;
@@ -148,6 +151,7 @@ en:
   &__more {
     display: flex;
     align-items: center;
+    margin: 10px 0;
     margin-left: 10px;
   }
 

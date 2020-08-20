@@ -1,5 +1,5 @@
 <template>
-  <aside class="sidebar column">
+  <aside class="sidebar column is-hidden-touch">
     <div class="sidebar__search field">
       <p class="control has-icons-right">
         <input class="input is-medium" type="text">

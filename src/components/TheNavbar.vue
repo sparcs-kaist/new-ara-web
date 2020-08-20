@@ -209,6 +209,11 @@ en:
   background: transparent !important;
   font-weight: 500;
   width: 0;
+
+  @include breakPoint(min) {
+    padding: 15px 10px;
+    width: inherit;
+  }
 }
 
 .ara-logo {
@@ -226,14 +231,5 @@ en:
 
   border-radius: 100%;
   margin-right: 10px;
-}
-
-.notification.is-api-error {
-  position: fixed;
-  top: 1rem;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  width: 40em;
 }
 </style>
