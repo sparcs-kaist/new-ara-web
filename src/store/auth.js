@@ -48,7 +48,7 @@ export default {
       state.userProfile = userProfile
     },
 
-    setAuthState(state, authed) {
+    setAuthState (state, authed) {
       state.authState = authed
     }
   },
@@ -58,7 +58,7 @@ export default {
         commit('setUserProfile', await fetchMe())
       }
 
-      commit('setAuthState', typeof userId !== undefined)
+      commit('setAuthState', typeof userId !== 'undefined')
     },
     async toggleDarkMode ({ commit, getters: { isDarkModeEnabled } }) {
       commit('setUserProfile', await updateDarkMode(!isDarkModeEnabled))
