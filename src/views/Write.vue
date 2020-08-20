@@ -116,7 +116,7 @@ export default {
         return
       }
       this.saving = false
-      this.$router.push({ name: 'post', params: { postId: result.data.id } })
+      this.$router.push({ name: 'post', params: { postId: result.id } })
     }
   },
   async beforeRouteEnter ({ params: { postId } }, from, next) {

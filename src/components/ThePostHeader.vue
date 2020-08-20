@@ -107,7 +107,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { deletePost } from '@/api'
+import { deletePost as apiDeletePost } from '@/api'
 import { date } from '@/helper.js'
 import LikeButton from '@/components/LikeButton.vue'
 
@@ -139,7 +139,7 @@ export default {
 
   methods: {
     async deletePost () {
-      await deletePost(this.post.id)
+      await apiDeletePost(this.post.id)
       this.$router.push('/')
     }
   },

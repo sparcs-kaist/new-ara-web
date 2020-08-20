@@ -87,11 +87,12 @@ export default {
 
     async archive () {
       if (this.post.my_scrap) {
-        await unarchivePost(this.post.id)
+        await unarchivePost(this.post.my_scrap.id)
+        this.post.my_scrap = null
         alert(this.$t('unarchived'))
       } else {
-        const { data } = await archivePost(this.post.id)
-        this.post.my_scrap = data
+        const result = await archivePost(this.post.id)
+        this.post.my_scrap = result
         alert(this.$t('archived'))
       }
       await this.$store.dispatch('fetchArchivedPosts')
