@@ -87,7 +87,7 @@ export default {
 
     async archive () {
       if (this.post.my_scrap) {
-        await unarchivePost(this.post.id)
+        await unarchivePost(this.post.my_scrap.id)
         this.post.my_scrap = null
         alert(this.$t('unarchived'))
       } else {

@@ -25,8 +25,8 @@ export const archivePost = (postId) =>
   http.post('scraps/', { parent_article: postId })
     .then(({ data }) => data)
 
-export const unarchivePost = (postId) =>
-  http.delete('scraps/', { parent_article: postId })
+export const unarchivePost = (scrapId) =>
+  http.delete(`scraps/${scrapId}`)
     .then(({ data }) => data)
 
 export const reportPost = (postId) =>

@@ -4,14 +4,13 @@ import { logout } from '@/api'
 import Facade from '@/views/Facade.vue'
 
 export const authGuard = async (to, from, next) => {
+  await store.dispatch('fetchMe')
+
   if (!store.getters.isLoggedIn) {
     next('/login')
   } else {
     try {
-      await Promise.all([
-        store.dispatch('fetchMe'),
-        store.dispatch('fetchBoardList')
-      ])
+      await store.dispatch('fetchBoardList')
       next()
     } catch (err) {
       // @TODO: 서버장애 페이지..?
