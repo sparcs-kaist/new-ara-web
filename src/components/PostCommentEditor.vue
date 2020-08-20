@@ -105,7 +105,7 @@ export default {
             content: this.content
           }))
 
-        this.$emit('upload', result.data)
+        this.$emit('upload', result)
         this.content = ''
         this.autosize()
       } catch (err) {

@@ -1,4 +1,6 @@
 import store from '@/store'
+import { logout } from '@/api'
+
 import Facade from '@/views/Facade.vue'
 
 export const authGuard = async (to, from, next) => {
@@ -14,6 +16,7 @@ export const authGuard = async (to, from, next) => {
     } catch (err) {
       // @TODO: 서버장애 페이지..?
     }
+    next()
   }
 }
 
@@ -33,16 +36,19 @@ export default [
   {
     path: '/login-handler',
     name: 'login-handler',
-    beforeEnter: ({ query: { token } }, from, next) => {
-      store.commit('updateToken', token)
+    beforeEnter: (to, from, next) => {
+      store.commit('setAuthState', true)
       next('/')
     }
   },
   {
     path: '/logout',
     name: 'logout-handler',
-    beforeEnter: (to, from, next) => {
-      store.commit('deleteToken')
+    beforeEnter: async (to, from, next) => {
+      try {
+        await logout()
+      } catch (err) {}
+      store.commit('setAuthState', false)
       next('/login')
     }
   }

@@ -12,50 +12,58 @@ export const createPost = ({ boardId, newArticle }) =>
     is_content_sexual: false,
     is_content_social: false,
     parent_board: boardId
-  })
+  }).then(({ data }) => data)
 
 export const updatePost = ({ postId, newArticle }) =>
   http.put(`articles/${postId}/`, {
     ...newArticle,
     is_content_sexual: false,
     is_content_social: false
-  })
+  }).then(({ data }) => data)
 
 export const archivePost = (postId) =>
   http.post('scraps/', { parent_article: postId })
+    .then(({ data }) => data)
 
 export const unarchivePost = (postId) =>
   http.delete('scraps/', { parent_article: postId })
+    .then(({ data }) => data)
 
 export const reportPost = (postId) =>
   http.post('reports/', { parent_article: postId, reported_by: 1 })
+    .then(({ data }) => data)
 
 export const deletePost = (postId) =>
   http.delete(`articles/${postId}`)
+    .then(({ data }) => data)
 
 export const votePost = (postId, action) =>
   http.post(`articles/${postId}/${action}/`)
+    .then(({ data }) => data)
 
 export const createComment = (newComment) =>
   http.post('comments/', {
     ...newComment,
     is_anonymous: false,
     attachment: null
-  })
+  }).then(({ data }) => data)
 
 export const updateComment = (commentId, newComment) =>
   http.patch(`comments/${commentId}/`, {
     ...newComment
-  })
+  }).then(({ data }) => data)
 
 export const voteComment = (commentId, action) =>
   http.post(`comments/${commentId}/${action}/`)
+    .then(({ data }) => data)
 
 export const reportComment = (commentId) =>
   http.post('reports/', { parent_comment: commentId, reported_by: 1 })
+    .then(({ data }) => data)
 
 export const deleteComment = (commentId) =>
   http.delete(`comments/${commentId}`)
+    .then(({ data }) => data)
 
 export const uploadAttachments = (attachments) => {
   const generateFormData = (file) => {

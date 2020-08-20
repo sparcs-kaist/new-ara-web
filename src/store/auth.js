@@ -14,12 +14,12 @@ const setDarkMode = (darkMode) => {
 
 export default {
   state: {
-    token: localStorage.token,
+    authState: false,
     userProfile: {}
   },
   getters: {
-    isLoggedIn ({ token }) {
-      return !!token
+    isLoggedIn ({ authState }) {
+      return authState
     },
     userId ({ userProfile: { user } }) {
       return user
@@ -41,19 +41,15 @@ export default {
     }
   },
   mutations: {
-    updateToken (state, newToken) {
-      state.token = newToken
-      localStorage.token = newToken
-    },
-    deleteToken (state) {
-      state.token = ''
-      delete localStorage.token
-    },
     setUserProfile (state, userProfile) {
       const darkMode = userProfile.extra_preferences && userProfile.extra_preferences.darkMode
       setDarkMode(darkMode)
 
       state.userProfile = userProfile
+    },
+
+    setAuthState(state, authed) {
+      state.authState = authed
     }
   },
   actions: {
