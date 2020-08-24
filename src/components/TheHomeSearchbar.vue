@@ -35,6 +35,7 @@
       </span>
 
       <div class="keywords__list">
+        <!-- TODO implement -->
         <span class="keywords__keyword" v-for="keyword in keywords" :key="keyword.key">
           {{ keyword[`${$i18n.locale}_name`] }}
         </span>
@@ -108,13 +109,27 @@ en:
 </i18n>
 
 <style lang="scss" scoped>
+@import "@/theme.scss";
+
 .searchbar {
+  max-width: 800px;
+  width: 100%;
+
+  @include breakPoint(min) {
+    margin: 0 auto;
+  }
+
   &__landing {
     background: transparent;
     color: var(--text);
     font-family: 'NanumSquareRound', sans-serif;
-    font-size: 32px;
+    font-size: 2rem;
     margin-bottom: 20px;
+
+    @include breakPoint(min) {
+      font-size: 1.3rem;
+      text-align: center;
+    }
 
     &--bold, &--highlight {
       font-weight: 900;
@@ -128,8 +143,8 @@ en:
 
   &__search {
     .input {
-      height: 3.8rem;
-      border: 5px solid var(--theme-400);
+      height: 3.4rem;
+      border: 3px solid var(--theme-400);
       border-radius: 10px;
       font-size: 1rem;
 
@@ -149,10 +164,14 @@ en:
   color: var(--grey-600);
   font-family: 'NanumSquareRound', sans-serif;
 
+  @include breakPoint(min) {
+    display: none;
+  }
+
   &__description {
     color: var(--theme-400);
     flex-shrink: 0;
-    margin-right: 20px;
+    margin-right: 10px;
   }
 
   &__list {
@@ -161,7 +180,7 @@ en:
   }
 
   &__keyword {
-    margin: 0 20px;
+    margin: 0 10px;
   }
 }
 </style>

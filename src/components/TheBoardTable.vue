@@ -129,6 +129,7 @@ en:
   }
 
   &__author {
+    font-size: .9rem;
     margin-right: 14px;
   }
 
@@ -142,6 +143,7 @@ en:
   }
 
   &__title {
+    font-size: 1rem;
     font-weight: 700;
     flex: 1 1 0;
     width: 0;
@@ -162,6 +164,7 @@ en:
 .post-status {
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
 
   & > * {
     display: inline-flex;
@@ -174,6 +177,10 @@ en:
     &:not(.post-status__like) {
       width: 4.5rem;
       overflow: hidden;
+
+      @include breakPoint(min) {
+        width: auto;
+      }
     }
   }
 

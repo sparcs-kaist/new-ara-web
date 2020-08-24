@@ -6,7 +6,7 @@
         <router-link
           :to="{ name: 'home' }"
           class="navbar-item navbar-ara">
-          <img src="@/assets/Services-Ara.png" class="ara-logo"/>
+          <img src="@/assets/ServiceAra.svg" class="ara-logo"/>
         </router-link>
 
         <a
@@ -142,6 +142,12 @@ export default {
     },
 
     ...mapActions(['toggleDarkMode'])
+  },
+
+  watch: {
+    $route () {
+      this.isMobileMenuActive = false
+    }
   },
 
   components: {

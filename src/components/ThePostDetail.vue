@@ -141,6 +141,7 @@ en:
     align-items: center;
     justify-content: flex-end;
     flex-wrap: wrap;
+    margin-top: 10px;
 
     & > .button {
       margin-right: 10px;
@@ -157,6 +158,7 @@ en:
 
   &__like {
     margin-left: -6px;
+    margin-top: 10px;
   }
 }
 

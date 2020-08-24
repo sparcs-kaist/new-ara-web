@@ -77,6 +77,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  @import "@/theme.scss";
+
   .like-button {
     display: inline-flex;
     outline: none;
@@ -97,6 +99,10 @@ export default {
       justify-content: flex-start;
       min-width: 4.5rem;
       margin: 0 5px;
+
+      @include breakPoint(min) {
+        min-width: initial;
+      }
     }
 
     &__item {

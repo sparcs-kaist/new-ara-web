@@ -68,6 +68,7 @@ a.is-active {
   display: flex;
   justify-content: center;
   margin: 0 -0.25rem;
+  padding-top: 1rem;
 
   .page {
     margin: 0 0.25rem;
