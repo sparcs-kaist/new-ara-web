@@ -1,19 +1,19 @@
 <template>
   <aside class="sidebar column is-hidden-touch">
     <div class="sidebar__search field">
-      <p class="control has-icons-right">
-        <input class="input is-medium" type="text">
-        <span class="icon is-small is-right">
+      <form class="control has-icons-right" @submit.prevent="search">
+        <input class="input is-medium" name="query" type="text" v-model="searchText">
+        <button class="icon is-small is-right" type="submit">
           <i class="material-icons">search</i>
-        </span>
-      </p>
+        </button>
+      </form>
     </div>
 
-    <SmallBoard :listitems="recentPosts" sidebar>
+    <SmallBoard :listitems="recentPosts" :fromQuery="{ from_view: 'recent' }" sidebar>
       {{ $t('recent') }}
     </SmallBoard>
 
-    <SmallBoard :listitems="archiveList" sidebar>
+    <SmallBoard :listitems="archiveList" :fromQuery="{ from_view: 'scrap' }" sidebar>
       {{ $t('archive') }}
     </SmallBoard>
   </aside>
@@ -29,24 +29,36 @@ export default {
   data () {
     return {
       recent: [],
-      archives: null
+      archives: null,
+      searchText: ''
     }
+  },
+
+  props: {
+    searchable: Boolean
   },
 
   computed: {
     archiveList () {
-      return this.archivedPosts
-        .slice(0, 5)
-        .map(({ parent_article: article }) => article)
+      return this.archivedPosts.slice(0, 5)
     },
 
     recentList () {
-      return this.recentPosts
-        .slice(0, 5)
-        .map(({ parent_article: article }) => article)
+      return this.recentPosts.slice(0, 5)
     },
 
     ...mapState([ 'recentPosts', 'archivedPosts' ])
+  },
+
+  methods: {
+    search () {
+      if (!this.searchable) {
+        this.$router.push({ name: 'board', query: { query: this.searchText } })
+        return
+      }
+
+      this.$router.push({ query: { query: this.searchText } })
+    }
   },
 
   async mounted () {
@@ -80,6 +92,13 @@ en:
 
   & > * {
     margin-bottom: 50px;
+  }
+
+  &__search button.icon {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    pointer-events: auto;
   }
 }
 </style>

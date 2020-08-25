@@ -58,6 +58,7 @@
     transition: color var(--duration) var(--background-timing);
 
     &:hover {
+      color: var(--grey-500);
     }
   }
 }

@@ -11,10 +11,11 @@
         <router-link class="post__title"
         :class="{ 'sidebar__post': sidebar }"
         :to="{
-            name: 'post',
-            params: { postId: post.id }
+          name: 'post',
+          params: { postId: post.id },
+          query: fromQuery
         }">
-        {{ getTitle(post, index) }}
+          {{ getTitle(post, index) }}
         </router-link>
       </h3>
 
@@ -32,9 +33,15 @@ export default {
     listitems: {
       required: true
     },
+
+    fromQuery: {
+      type: Object
+    },
+
     detail: {
       type: Boolean
     },
+
     sidebar: {
       type: Boolean
     }

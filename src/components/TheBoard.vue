@@ -1,8 +1,14 @@
 <template>
   <div class="board">
-    <!-- <slot name="title"/> -->
+    <div class="board-header">
+      <h1 class="board-name">
+        {{ queryTitle }}
+        <slot name="title" />
+      </h1>
+    </div>
+    <hr />
 
-    <TheBoardTable :posts="board.results"/>
+    <TheBoardTable :posts="board.results" :fromQuery="fromQueryWithPage" />
 
     <div class="board__navbar">
       <ThePaginator
@@ -20,13 +26,47 @@ import TheBoardTable from '@/components/TheBoardTable.vue'
 export default {
   name: 'the-board',
   props: {
-    board: { required: true }
+    board: { required: true },
+    title: { type: String },
+    fromQuery: {}
+  },
+  computed: {
+    fromQueryWithPage () {
+      const query = {
+        ...this.fromQuery
+      }
+
+      if (this.$route.query.page) {
+        query.from_page = this.$route.query.page
+      }
+
+      return query
+    },
+    queryTitle () {
+      if (this.$route.query.query) { return this.$t('search', { title: this.title, query: this.$route.query.query }) }
+
+      return this.title
+    }
   },
   components: { ThePaginator, TheBoardTable }
 }
 </script>
 
+<i18n>
+ko:
+  search: '{title}에서 {query} 검색'
+
+en:
+  search: 'Search {query} from {title}'
+</i18n>
+
 <style lang="scss" scoped>
+.board-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
 .board {
   min-width: 100%;
 
