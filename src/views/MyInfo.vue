@@ -6,33 +6,33 @@
           <a>
             <div class="profile-container">
               <img
-                v-if="pictureSrc"
-                :src="pictureSrc"
+                v-if="user.pictureSrc"
+                :src="user.pictureSrc"
                 class="profile-image"
-                alt="프로필 사진"
+                alt="profile image"
               />
             </div>
           </a>
           <div class="row">
-            <h1 class="nickname">{{ nickname }}</h1>
+            <h1 class="nickname">{{ user.nickname }}</h1>
             <a style="margin-left: 0.25rem;" @click="toggleNicknameInput">
               <i class="material-icons" style="font-size: 1.2rem;">create</i>
             </a>
           </div>
-          <h2 class="email">{{ email ? email : '이메일 주소가 없습니다.' }}</h2>
+          <h2 class="email">{{ user.email ? user.email : '이메일 주소가 없습니다.' }}</h2>
         </div>
         <div class="box">
-          <h1 style="font-size: 1.2rem; font-weight: bold;">게시글 보기 설정</h1>
+          <h1 style="font-size: 1.2rem; font-weight: bold;">{{ $t('post-settings')}}</h1>
           <div class="setting-container">
-            <span>성인글 보기 설정</span>
+            <span>{{ $t('post-settings-sexual') }}</span>
             <label class="checkbox">
-              <input @change="toggleSexual" type="checkbox">
+              <input :value="user.sexual" @change="updateSettings" type="checkbox">
             </label>
           </div>
           <div class="setting-container">
-            <span>정치글 보기 설정</span>
+            <span>{{ $t('post-settings-social') }}</span>
             <label class="checkbox">
-              <input @change="toggleSocial" type="checkbox">
+              <input :value="user.social" @change="updateSettings" type="checkbox">
             </label>
           </div>
         </div>
@@ -43,20 +43,20 @@
       <div class="tabs is-boxed" style="margin-bottom: 0;">
         <ul>
           <li :class="{ 'is-active': tabIndex === 0 }">
-            <a @click="changeTabIndex(0)">내가 쓴 글</a>
+            <a @click="changeTabIndex(0)">{{ $t('board-my') }}</a>
           </li>
           <li :class="{ 'is-active': tabIndex === 1 }">
-            <a @click="changeTabIndex(1)">최근 본 글</a>
+            <a @click="changeTabIndex(1)">{{ $t('board-recent') }}</a>
           </li>
           <li :class="{ 'is-active': tabIndex === 2 }">
-            <a @click="changeTabIndex(2)">담아둔 글</a>
+            <a @click="changeTabIndex(2)">{{ $t('board-scrap') }}</a>
           </li>
         </ul>
       </div>
       <div class="box" style="padding: 20px;">
-        <TheBoard v-if="myPosts && tabIndex === 0" :board="myPosts" />
-        <TheBoard v-if="recentViewedPosts && tabIndex === 1" :board="recentViewedPosts" />
-        <TheBoard v-if="scrapPosts && tabIndex === 2" :board="scrapPosts" />
+        <TheBoard v-if="user.myPosts && tabIndex === 0" :board="user.myPosts" />
+        <TheBoard v-if="user.recentViewedPosts && tabIndex === 1" :board="user.recentViewedPosts" />
+        <TheBoard v-if="user.scrapPosts && tabIndex === 2" :board="user.scrapPosts" />
       </div>
     </div>
 
@@ -64,17 +64,17 @@
       <div class="column is-one-quarter">
         <div class="box">
           <h1 style="font-size: 1.2rem; font-weight: bold; margin-bottom: 1rem;">
-            내가 차단한 유저 목록
+            {{ $t('blocked-list') }}
           </h1>
-          <ul v-if="blocks && blocks.results">
-            <li v-for="user in blocks.results" :key="user.id">
+          <ul v-if="user.blocks && user.blocks.results">
+            <li v-for="blockedUser in user.blocks.results" :key="blockedUser.id">
               <div class="block-user">
                 <img
-                  :src="user.user.profile.picture"
+                  :src="blockedUser.user.profile.picture"
                   class="profile-image__block"
                 />
-                {{ user.user.profile.nickname }}
-                <a style="margin-left: auto;" @click="deleteBlockedUser(user.id)">
+                {{ blockedUser.user.profile.nickname }}
+                <a style="margin-left: auto;" @click="deleteBlockedUser(blockedUser.id)">
                   <i class="material-icons" style="font-size: 1.3rem;">close</i>
                 </a>
               </div>
@@ -105,43 +105,37 @@ export default {
   name: 'my-info',
   data () {
     return {
-      nickname: null,
-      email: null,
-      picture: null,
-      pictureSrc: '',
-      sexual: false,
-      social: false,
+      user: {
+        nickname: null,
+        email: null,
+        picture: null,
+        pictureSrc: '',
+        sexual: null,
+        social: null,
+        myPosts: null,
+        recentViewedPosts: null,
+        scrapPosts: null,
+        blocks: null
+      },
       updating: false,
       tabIndex: 0,
-      isNicknameEditable: false,
-      myPosts: null,
-      recentViewedPosts: null,
-      scrapPosts: null,
-      blocks: null
+      isNicknameEditable: false
     }
   },
   methods: {
     changeTabIndex (index) {
       this.tabIndex = index
     },
-    async toggleSexual () {
-      this.sexual = !this.sexual
-      await this.updateSettings()
-    },
-    async toggleSocial () {
-      this.social = !this.social
-      await this.updateSettings()
-    },
     // @TODO: setting update를 vuex에도 반영. 그냥 다시 fetch 해도 될지도 (...)
     async updateSettings () {
       this.updating = true
       try {
         await updateUser(store.getters.userId, {
-          nickname: this.nickname,
-          email: this.email,
-          picture: this.picture,
-          sexual: this.sexual,
-          social: this.social
+          nickname: this.user.nickname,
+          email: this.user.email,
+          picture: this.user.picture,
+          sexual: this.user.sexual,
+          social: this.user.social
         }).then(res => {
           store.commit('setUserProfile', res.data)
           console.log('update profile')
@@ -152,10 +146,10 @@ export default {
       this.updating = false
     },
     pictureHandler ({ target: { files: [ file ] } }) {
-      this.picture = file
+      this.user.picture = file
 
       const reader = new FileReader()
-      reader.onload = e => { this.pictureSrc = e.target.result }
+      reader.onload = e => { this.user.pictureSrc = e.target.result }
       reader.readAsDataURL(file)
     },
     toggleNicknameInput () {
@@ -164,7 +158,7 @@ export default {
     async deleteBlockedUser (userId) {
       try {
         await deleteBlock(userId)
-        this.blocks = await fetchBlocks()
+        this.user.blocks = await fetchBlocks()
       } catch (error) {
         alert('차단 유저 삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.')
       }
@@ -180,15 +174,17 @@ export default {
     const blocks = await fetchBlocks()
 
     next(vm => {
-      vm.nickname = userNickname
-      vm.email = userEmail
-      vm.pictureSrc = userPicture
-      vm.sexual = userConfig.sexual
-      vm.social = userConfig.social
-      vm.myPosts = myPosts
-      vm.recentViewedPosts = recentViewedPosts
-      vm.scrapPosts = scrapPosts
-      vm.blocks = blocks
+      vm.user = {
+        nickname: userNickname,
+        email: userEmail,
+        pictureSrc: userPicture,
+        sexual: userConfig.sexual,
+        social: userConfig.social,
+        myPosts,
+        recentViewedPosts,
+        scrapPosts,
+        blocks
+      }
     })
   },
   components: { TheLayout, TheBoard }
@@ -197,23 +193,21 @@ export default {
 
 <i18n>
 ko:
-  profile: '프로필'
-  profile-photo: '프로필 사진'
-  nickname: '이름'
-  additional-settings: '추가 설정'
-  r-rated: '성인글 보기'
-  politics: '정치글 보기'
-  save: '저장'
-  logout: '로그아웃'
+  post-settings: '게시글 보기 설정'
+  post-settings-sexual: '성인글 보기 설정'
+  post-settings-social: '정치글 보기 설정'
+  board-my: '내가 쓴 글'
+  board-recent: '최근 본 글'
+  board-scrap: '담아둔 글'
+  blocked-list: '내가 차단한 유저 목록'
 en:
-  profile: 'My account'
-  profile-photo: 'Photo'
-  nickname: 'User name'
-  additional-settings: 'Settings'
-  r-rated: 'See adult contents'
-  politics: 'See political content'
-  save: 'Save'
-  logout: 'Logout'
+  post-settings: 'Post settings'
+  post-settings-sexual: 'Show sexual posts'
+  post-settings-social: 'Show political posts'
+  board-my: 'My posts'
+  board-recent: 'Recently viewed'
+  board-scrap: 'Scrapped'
+  blocked-list: 'Blocked users'
 </i18n>
 
 <style lang="scss" scoped>
@@ -239,23 +233,6 @@ en:
   width: 6rem;
   height: 6rem;
   object-fit: cover;
-  border-radius: 50%;
-}
-
-.profile-change {
-  position: relative;
-  right: 2rem;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: auto;
-  margin-top: auto;
-  padding: 8px;
-  background-color: #fafafa;
-  border-color: grey;
-  border-width: 3px;
   border-radius: 50%;
 }
 
