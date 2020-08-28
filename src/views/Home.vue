@@ -83,12 +83,10 @@ en:
 }
 
 .columns {
-  .column {
-    padding: 0 20px 0 0;
+  margin: 0 -10px;
 
-    @media screen and (max-width: 768px){
-      padding: 0;
-    }
+  .column {
+    padding: 10px;
   }
 }
 </style>

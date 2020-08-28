@@ -5,28 +5,31 @@
         {{ post.title }}
       </div>
       <!-- TODO range check and board check-->
-      <router-link
-        class="button title__button title__button--wide"
-        :to="{ name: 'post', params: { postId: post.id - 1 } }"
-      >
-        <i class="material-icons">chevron_left</i>
-        {{ $t('previous') }}
-      </router-link>
 
-      <router-link
-        class="button title__button title__button--wide"
-        :to="{ name: 'post', params: { postId: post.id + 1 } }"
-      >
-        {{ $t('next') }}
-        <i class="material-icons">chevron_right</i>
-      </router-link>
+      <div class="title__buttons">
+        <router-link
+          class="button title__button title__button--wide"
+          :to="{ name: 'post', params: { postId: post.id - 1 } }"
+        >
+          <i class="material-icons">chevron_left</i>
+          {{ $t('previous') }}
+        </router-link>
 
-      <router-link
-        class="button title__button"
-        :to="{ name: 'board' }"
-      >
-        {{ $t('list') }}
-      </router-link>
+        <router-link
+          class="button title__button title__button--wide"
+          :to="{ name: 'post', params: { postId: post.id + 1 } }"
+        >
+          {{ $t('next') }}
+          <i class="material-icons">chevron_right</i>
+        </router-link>
+
+        <router-link
+          class="button title__button"
+          :to="{ name: 'board' }"
+        >
+          {{ $t('list') }}
+        </router-link>
+      </div>
     </div>
     <div id="metadata">
       <img :src="userPictureUrl" class="post-author-profile-picture"/>
@@ -60,45 +63,45 @@
 
               {{ post.hit_count }}
             </div>
-          </div>
 
-          <span class="dropdown is-right is-hoverable">
-            <div class="dropdown-trigger">
-              <button class="button no-border" aria-haspopup="true" aria-controls="dropdownMenu">
-                <i class="material-icons">more_vert</i>
-              </button>
-            </div>
-            <div class="dropdown-menu" id="dropdownMenu" role="menu">
-              <div class="dropdown-content">
-                <div class="dropdown-item">
-                  <a class="dropdown-item" @click="$emit('archive')">
-                    {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
-                  </a>
-
-                  <template v-if="postUserId === userId">
-                    <router-link class="dropdown-item"
-                      :to="{
-                        name: 'write',
-                        params: {
-                          postId: post.id
-                        }
-                      }">
-                        {{ $t('edit') }}
-                    </router-link>
-
-                    <a @click="deletePost"
-                      href="#"
-                      class="dropdown-item">
-                      {{ $t('delete') }}
+            <span class="dropdown is-right is-hoverable">
+              <div class="dropdown-trigger">
+                <button class="button no-border" aria-haspopup="true" aria-controls="dropdownMenu">
+                  <i class="material-icons">more_vert</i>
+                </button>
+              </div>
+              <div class="dropdown-menu" id="dropdownMenu" role="menu">
+                <div class="dropdown-content">
+                  <div class="dropdown-item">
+                    <a class="dropdown-item" @click="$emit('archive')">
+                      {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
                     </a>
-                  </template>
-                  <a v-else class="dropdown-item" @click="$emit('report')">
-                    {{ $t('report') }}
-                  </a>
+
+                    <template v-if="postUserId === userId">
+                      <router-link class="dropdown-item"
+                        :to="{
+                          name: 'write',
+                          params: {
+                            postId: post.id
+                          }
+                        }">
+                          {{ $t('edit') }}
+                      </router-link>
+
+                      <a @click="deletePost"
+                        href="#"
+                        class="dropdown-item">
+                        {{ $t('delete') }}
+                      </a>
+                    </template>
+                    <a v-else class="dropdown-item" @click="$emit('report')">
+                      {{ $t('report') }}
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
-          </span>
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -176,6 +179,8 @@ en:
 </i18n>
 
 <style lang="scss" scoped>
+@import "@/theme.scss";
+
 .title {
   color: var(--grey-700);
   font-family: 'NanumSquareRound',sans-serif;
@@ -197,6 +202,19 @@ en:
       padding: 0 15px;
     }
   }
+
+  @include breakPoint(min) {
+    flex-direction: column;
+
+    &__title {
+      align-self: flex-start;
+    }
+
+    &__buttons {
+      align-self: flex-end;
+      margin-top: 20px;
+    }
+  }
 }
 
 #metadata {
@@ -206,6 +224,7 @@ en:
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
+  position: relative;
 
   .post-author-profile-picture {
     width: 40px;
@@ -240,8 +259,22 @@ en:
       font-size: .95rem;
 
       & > * {
-        margin: 0 10px;
+        margin: 10px;
+        white-space: nowrap;
       }
+    }
+  }
+
+  @include breakPoint(min) {
+    padding-bottom: 2rem;
+
+    .post-header__status {
+      position: absolute;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      right: 0;
+      bottom: -1rem;
+      height: 2.5rem;
     }
   }
 }

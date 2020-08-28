@@ -38,6 +38,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/theme.scss";
+
 .layout {
   min-width: 100%;
 }
@@ -65,6 +67,19 @@ export default {
     &:last-child {
       flex: 3 1 0;
       margin-right: 0;
+    }
+
+    @include breakPoint(min) {
+      margin-left: 10px;
+      margin-right: 10px;
+
+      &:first-child {
+        margin-left: 10px;
+      }
+
+      &:last-child {
+        margin-right: 10px;
+      }
     }
   }
 }

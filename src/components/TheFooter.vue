@@ -2,35 +2,39 @@
   <footer class="the-footer">
     <div class="footer-menu">
       <div class="footer-item logo-item">
-        <a
-          id="sparcs-logo"
-          href="https://sparcs.org">
-          SPARCS
+        <a id="sparcs-logo" href="https://sparcs.org">
+          <img src="@/assets/SparcsLogo.svg" alt="SPARCS"/>
         </a>
       </div>
-      <div class="footer-item">
-        <!-- @TODO: footer에서 가는 페이지들 만들기 -->
-        <a href="https://sparcs.org">
-          {{ $t('credit') }}
-        </a>
+
+      <div class="footer-items">
+        <div class="footer-item">
+          <!-- @TODO: footer에서 가는 페이지들 만들기 -->
+          <a href="https://sparcs.org">
+            {{ $t('credit') }}
+          </a>
+        </div>
+
+        <div class="footer-item">
+          <a href="https://sparcs.org">
+            {{ $t('license') }}
+          </a>
+        </div>
+
+        <div class="footer-item">
+          <a href="https://sparcs.org">
+            {{ $t('rules') }}
+          </a>
+        </div>
       </div>
-      <div class="footer-item">
-        <a href="https://sparcs.org">
-          {{ $t('license') }}
-        </a>
-      </div>
-      <div class="footer-item">
-        <a href="https://sparcs.org">
-          {{ $t('rules') }}
+
+      <div class="footer-contact">
+        {{ $t('contact') }}:
+        <a href="mailto:new-ara@sparcs.org">
+          new-ara@sparcs.org
         </a>
       </div>
     </div>
-    <!-- <div class="footer-contact">
-      {{ $t('contact') }}:
-      <a href="mailto:ara@sparcs.kaist.ac.kr">
-        ara@sparcs.kaist.ac.kr
-      </a>
-    </div> -->
   </footer>
 </template>
 
@@ -54,53 +58,47 @@ en:
 </i18n>
 
 <style lang="scss" scoped>
+@import "@/theme.scss";
+
 .the-footer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 
   position: relative;
-  padding: 15px;
-
-  @media screen and (max-width: 700px) {
-    flex-direction: column;
-  }
+  padding: 15px 30px;
 
   #sparcs-logo {
-    font-family: 'Raleway', sans-serif;
-    float: left;
+    display: flex;
+
+    img {
+      height: 30px;
+    }
   }
 
   .footer-menu {
     display: flex;
+    align-items: center;
     flex-direction: row;
-
-    @media screen and (max-width: 700px) {
-      flex-direction: column-reverse;
-    }
-
-    .footer-item {
-      margin: 0 1rem 0 0;
-
-      @media screen and (max-width: 700px) {
-        margin: 1rem 0 0 0;
-      }
-
-      &.logo-item {
-        margin: 0 3rem 0 0;
-
-        @media screen and (max-width: 700px) {
-          margin: 1rem 0 0 0;
-          font-size: 1.3rem;
-        }
-      }
-    }
+    width: 100%;
   }
 
   .footer-contact {
-    @media screen and (max-width: 700px) {
-      margin-top: 2rem;
-      margin-bottom: 2rem;
+    white-space: nowrap;
+  }
+
+  .footer-items {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    padding-left: 20px;
+
+    .footer-item {
+      margin: 0 10px;
+
+      @include breakPoint (min) {
+        display: none;
+      }
     }
   }
 }

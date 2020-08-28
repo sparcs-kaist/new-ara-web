@@ -1,113 +1,105 @@
 <template>
   <div class="navbar is-transparent" aria-label="main navigation" role="navigation">
     <!-- <TheNavbarFetchProgressBar/> -->
-    <div class="navbar-brand">
-      <router-link
-        :to="{ name: 'home' }"
-        class="navbar-item">
-        <img src="@/assets/Services-Ara.png" class="ara-logo"/>
-      </router-link>
-
-      <a
-        class="navbar-burger"
-        role="button"
-        aria-label="menu"
-        aria-expanded="false"
-        :class="{ 'is-active': isMobileMenuActive }"
-        @click="toggleMobileMenu">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
-
-    <div
-      class="navbar-menu container"
-      :class="{ 'is-active': isMobileMenuActive }">
-
-      <div class="navbar-start">
+    <div class="container">
+      <div class="navbar-brand">
         <router-link
-          :to="{ name: 'board'}"
-          class="navbar-item">
-
-          {{ $t('all') }}
+          :to="{ name: 'home' }"
+          class="navbar-item navbar-ara">
+          <img src="@/assets/ServiceAra.svg" class="ara-logo"/>
         </router-link>
 
-        <TheNavbarArchives
-          class="navbar-item"
-        />
-
-        <router-link
-          v-for="board in boardList"
-          :key="board.id"
-          :to="{
-            name: 'board',
-            params: {
-              boardSlug: board.slug
-            }
-          }"
-          class="navbar-item">
-
-          {{ board[`${$i18n.locale}_name`] }}
-        </router-link>
+        <a
+          class="navbar-burger"
+          role="button"
+          aria-label="menu"
+          aria-expanded="false"
+          :class="{ 'is-active': isMobileMenuActive }"
+          @click="toggleMobileMenu">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
       </div>
 
-      <div class="navbar-end">
-        <router-link class="navbar-item navbar-item--write"
-        :to="{ name: 'write' }">
+      <div
+        class="navbar-menu"
+        :class="{ 'is-active': isMobileMenuActive }">
 
-        <span class="icon">
-          <i class="material-icons">create</i>
-        </span>
+        <div class="navbar-start">
+          <router-link
+            :to="{ name: 'board'}"
+            class="navbar-item">
 
-        <span>{{ $t('write') }}</span>
-      </router-link>
+            {{ $t('all') }}
+          </router-link>
 
-        <!-- <a
-          v-if="!isIE"
-          @click="toggleDarkMode"
-          id="toggle-dark-mode"
-          class="navbar-item">
-          <span class="icon">
-            <i class="material-icons">invert_colors</i>
-          </span>
-        </a> -->
+          <TheNavbarArchives
+            class="navbar-item"
+          />
 
-        <a class="navbar-item"
-          @click="changeLocale"
-          id="toggle-language">
+          <router-link
+            v-for="board in boardList"
+            :key="board.id"
+            :to="{
+              name: 'board',
+              params: {
+                boardSlug: board.slug
+              }
+            }"
+            class="navbar-item">
 
-          <span class="icon">
-            <i class="material-icons">language</i>
-          </span>
+            {{ board[`${$i18n.locale}_name`] }}
+          </router-link>
+        </div>
 
-          <span class="is-hidden-desktop">
-            {{ $t('language') }}
-          </span>
-        </a>
+        <div class="navbar-end">
+          <router-link class="navbar-item navbar-item--write"
+          :to="{ name: 'write' }">
 
-        <router-link
-          :to="{ name: 'notifications' }"
-          class="navbar-item">
+            <span class="icon">
+              <i class="material-icons">create</i>
+            </span>
 
-          <span class="icon">
-            <i class="material-icons">notifications</i>
-          </span>
+            <span>{{ $t('write') }}</span>
+          </router-link>
 
-          <span class="is-hidden-desktop">
-            {{ $t('notification') }}
-          </span>
-        </router-link>
+          <a class="navbar-item"
+            @click="changeLocale"
+            id="toggle-language">
 
-        <router-link
-          :to="{ name: 'my-info' }"
-          class="navbar-item user">
+            <span class="icon">
+              <i class="material-icons">language</i>
+            </span>
 
-          <img :src="userPicture" class="picture-url"/>
-          <span class="username">
-            {{ userNickname }}
-          </span>
-        </router-link>
+            <span class="is-hidden-desktop">
+              {{ $t('language') }}
+            </span>
+          </a>
+
+          <router-link
+            :to="{ name: 'notifications' }"
+            class="navbar-item">
+
+            <span class="icon">
+              <i class="material-icons">notifications</i>
+            </span>
+
+            <span class="is-hidden-desktop">
+              {{ $t('notification') }}
+            </span>
+          </router-link>
+
+          <router-link
+            :to="{ name: 'my-info' }"
+            class="navbar-item user">
+
+            <img :src="userPicture" class="picture-url"/>
+            <span class="username">
+              {{ userNickname }}
+            </span>
+          </router-link>
+        </div>
       </div>
     </div>
 
@@ -152,6 +144,12 @@ export default {
     ...mapActions(['toggleDarkMode'])
   },
 
+  watch: {
+    $route () {
+      this.isMobileMenuActive = false
+    }
+  },
+
   components: {
     TheNavbarFetchProgressBar,
     TheNavbarNotifications,
@@ -177,6 +175,10 @@ en:
 <style lang="scss" scoped>
 @import '@/theme.scss';
 
+.navigation {
+  padding-top: 10px;
+}
+
 .navbar-item {
   display: flex;
 
@@ -200,13 +202,24 @@ en:
   }
 }
 
-.navbar-brand {
-  position: absolute;
+.navbar-start {
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.navbar-ara {
+  margin-right: 20px;
 }
 
 .navbar-menu {
   background: transparent !important;
   font-weight: 500;
+  width: 0;
+
+  @include breakPoint(min) {
+    padding: 15px 10px;
+    width: inherit;
+  }
 }
 
 .ara-logo {
@@ -224,14 +237,5 @@ en:
 
   border-radius: 100%;
   margin-right: 10px;
-}
-
-.notification.is-api-error {
-  position: fixed;
-  top: 1rem;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  width: 40em;
 }
 </style>
