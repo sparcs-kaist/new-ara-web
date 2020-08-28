@@ -67,7 +67,13 @@ export default {
           return { name: 'board', query }
 
         default:
-          return { name: 'board', params: { boardSlug: this.post.parent_board.slug }, query }
+          return {
+            name: 'board',
+            params: {
+              boardSlug: this.post.parent_board ? this.post.parent_board.slug : null
+            },
+            query
+          }
       }
     }
   },

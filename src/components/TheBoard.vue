@@ -1,12 +1,14 @@
 <template>
   <div class="board">
-    <div class="board-header">
-      <h1 class="board-name">
+    <div class="board__header">
+      <h1 class="board__name">
         {{ queryTitle }}
         <slot name="title" />
       </h1>
+
+      <SearchBar class="board__mobile-search is-flex-touch" searchable />
     </div>
-    <hr />
+    <hr class="board__divider" />
 
     <TheBoardTable :posts="board.results" :fromQuery="fromQueryWithPage" />
 
@@ -20,6 +22,7 @@
 </template>
 
 <script>
+import SearchBar from '@/components/SearchBar.vue'
 import ThePaginator from '@/components/ThePaginator.vue'
 import TheBoardTable from '@/components/TheBoardTable.vue'
 
@@ -48,7 +51,11 @@ export default {
       return this.title
     }
   },
-  components: { ThePaginator, TheBoardTable }
+  components: {
+    SearchBar,
+    ThePaginator,
+    TheBoardTable
+  }
 }
 </script>
 
@@ -61,37 +68,30 @@ en:
 </i18n>
 
 <style lang="scss" scoped>
-.board-name {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0 0 1rem 0;
-}
-
 .board {
   min-width: 100%;
 
-  .board-navbar {
+  &__mobile-search {
+    display: none;
+    margin-bottom: 1rem;
+  }
+
+  &__name {
+    flex-shrink: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+  }
+
+  &__header {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+  }
 
-    @media screen and (max-width: 700px) {
-      flex-direction: column;
-    }
-
-    .board-navbar-start {
-
-      @media screen and (max-width: 700px) {
-        margin-bottom: 1rem;
-      }
-    }
-
-    .board-navbar-end {
-      @media screen and (max-width: 700px) {
-        width: 100%;
-      }
-    }
+  &__divider {
+    margin-top: 0;
   }
 }
 </style>

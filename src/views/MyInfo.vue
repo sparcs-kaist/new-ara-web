@@ -13,22 +13,27 @@
               />
             </div>
           </a>
+
           <div class="row">
             <h1 class="nickname">{{ user.nickname }}</h1>
             <a style="margin-left: 0.25rem;" @click="toggleNicknameInput">
               <i class="material-icons" style="font-size: 1.2rem;">create</i>
             </a>
           </div>
+
           <h2 class="email">{{ user.email ? user.email : '이메일 주소가 없습니다.' }}</h2>
         </div>
+
         <div class="box">
           <h1 style="font-size: 1.2rem; font-weight: bold;">{{ $t('post-settings')}}</h1>
+
           <div class="setting-container">
             <span>{{ $t('post-settings-sexual') }}</span>
             <label class="checkbox">
               <input :value="user.sexual" @change="updateSettings" type="checkbox">
             </label>
           </div>
+
           <div class="setting-container">
             <span>{{ $t('post-settings-social') }}</span>
             <label class="checkbox">
@@ -53,10 +58,11 @@
           </li>
         </ul>
       </div>
+
       <div class="box" style="padding: 20px;">
-        <TheBoard v-if="user.myPosts && tabIndex === 0" :board="user.myPosts" />
-        <TheBoard v-if="user.recentViewedPosts && tabIndex === 1" :board="user.recentViewedPosts" />
-        <TheBoard v-if="user.scrapPosts && tabIndex === 2" :board="user.scrapPosts" />
+        <TheBoard v-if="myPosts && tabIndex === 0" :board="myPosts" />
+        <TheBoard v-else-if="tabIndex === 1" :board="recentPosts" />
+        <TheBoard v-else-if="tabIndex === 2" :board="archivedPosts" />
       </div>
     </div>
 
@@ -66,8 +72,9 @@
           <h1 style="font-size: 1.2rem; font-weight: bold; margin-bottom: 1rem;">
             {{ $t('blocked-list') }}
           </h1>
-          <ul v-if="user.blocks && user.blocks.results">
-            <li v-for="blockedUser in user.blocks.results" :key="blockedUser.id">
+
+          <ul v-if="blocks && blocks.results">
+            <li v-for="blockedUser in blocks.results" :key="blockedUser.id">
               <div class="block-user">
                 <img
                   :src="blockedUser.user.profile.picture"
@@ -80,6 +87,7 @@
               </div>
             </li>
           </ul>
+
           <span v-else>차단한 유저가 없습니다.</span>
         </div>
       </div>
@@ -92,11 +100,10 @@ import store from '@/store'
 import {
   updateUser,
   fetchUserPosts,
-  fetchRecentViewedPosts,
-  fetchScrapPosts,
   fetchBlocks,
   deleteBlock
 } from '@/api'
+import { mapState } from 'vuex'
 import { fetchWithProgress } from './helper'
 import TheBoard from '@/components/TheBoard.vue'
 import TheLayout from '@/components/TheLayout.vue'
@@ -111,21 +118,25 @@ export default {
         picture: null,
         pictureSrc: '',
         sexual: null,
-        social: null,
-        myPosts: null,
-        recentViewedPosts: null,
-        scrapPosts: null,
-        blocks: null
+        social: null
       },
+      myPosts: null,
+      blocks: null,
       updating: false,
       tabIndex: 0,
       isNicknameEditable: false
     }
   },
+
+  computed: {
+    ...mapState([ 'recentPosts', 'archivedPosts' ])
+  },
+
   methods: {
     changeTabIndex (index) {
       this.tabIndex = index
     },
+
     // @TODO: setting update를 vuex에도 반영. 그냥 다시 fetch 해도 될지도 (...)
     async updateSettings () {
       this.updating = true
@@ -138,13 +149,13 @@ export default {
           social: this.user.social
         }).then(res => {
           store.commit('setUserProfile', res.data)
-          console.log('update profile')
         })
       } catch (err) {
         store.dispatch('error', '설정 변경 중 문제가 발생했습니다.')
       }
       this.updating = false
     },
+
     pictureHandler ({ target: { files: [ file ] } }) {
       this.user.picture = file
 
@@ -152,9 +163,11 @@ export default {
       reader.onload = e => { this.user.pictureSrc = e.target.result }
       reader.readAsDataURL(file)
     },
+
     toggleNicknameInput () {
       this.isNicknameEditable = !this.isNicknameEditable
     },
+
     async deleteBlockedUser (userId) {
       try {
         await deleteBlock(userId)
@@ -164,14 +177,15 @@ export default {
       }
     }
   },
+
   async beforeRouteEnter (to, from, next) {
-    await fetchWithProgress([ store.dispatch('fetchMe') ])
+    const [ , myPosts, blocks ] = await fetchWithProgress([
+      store.dispatch('fetchMe'),
+      fetchUserPosts(store.getters.userId),
+      fetchBlocks()
+    ])
 
     const { userNickname, userEmail, userPicture, userConfig } = store.getters
-    const myPosts = await fetchUserPosts(store.getters.userId)
-    const recentViewedPosts = await fetchRecentViewedPosts()
-    const scrapPosts = await fetchScrapPosts()
-    const blocks = await fetchBlocks()
 
     next(vm => {
       vm.user = {
@@ -179,12 +193,11 @@ export default {
         email: userEmail,
         pictureSrc: userPicture,
         sexual: userConfig.sexual,
-        social: userConfig.social,
-        myPosts,
-        recentViewedPosts,
-        scrapPosts,
-        blocks
+        social: userConfig.social
       }
+
+      vm.myPosts = myPosts
+      vm.blocks = blocks
     })
   },
   components: { TheLayout, TheBoard }

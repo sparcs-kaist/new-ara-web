@@ -1,13 +1,6 @@
 <template>
   <aside class="sidebar column is-hidden-touch">
-    <div class="sidebar__search field">
-      <form class="control has-icons-right" @submit.prevent="search">
-        <input class="input is-medium" name="query" type="text" v-model="searchText">
-        <button class="icon is-small is-right" type="submit">
-          <i class="material-icons">search</i>
-        </button>
-      </form>
-    </div>
+    <SearchBar class="sidebar__search" :searchable="searchable" />
 
     <SmallBoard :listitems="recentPosts" :fromQuery="{ from_view: 'recent' }" sidebar>
       {{ $t('recent') }}
@@ -21,6 +14,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import SearchBar from '@/components/SearchBar.vue'
 import SmallBoard from '@/components/SmallBoard.vue'
 
 export default {
@@ -29,8 +23,7 @@ export default {
   data () {
     return {
       recent: [],
-      archives: null,
-      searchText: ''
+      archives: null
     }
   },
 
@@ -50,23 +43,13 @@ export default {
     ...mapState([ 'recentPosts', 'archivedPosts' ])
   },
 
-  methods: {
-    search () {
-      if (!this.searchable) {
-        this.$router.push({ name: 'board', query: { query: this.searchText } })
-        return
-      }
-
-      this.$router.push({ query: { query: this.searchText } })
-    }
-  },
-
   async mounted () {
     await this.$store.dispatch('fetchRecentPosts')
     await this.$store.dispatch('fetchArchivedPosts')
   },
 
   components: {
+    SearchBar,
     SmallBoard
   }
 }
@@ -92,13 +75,6 @@ en:
 
   & > * {
     margin-bottom: 50px;
-  }
-
-  &__search button.icon {
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    pointer-events: auto;
   }
 }
 </style>

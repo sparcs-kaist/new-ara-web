@@ -3,9 +3,9 @@
     <hr />
 
     <div class="post-navigation__posts" v-if="sideArticlesEnabled">
-      <BoardItem :post="post.side_articles.before" :fromQuery="$route.query" v-if="post.side_articles.before" />
-      <BoardItem class="post-navigation__post--current" :post="post" :fromQuery="$route.query" />
       <BoardItem :post="post.side_articles.after" :fromQuery="$route.query" v-if="post.side_articles.after" />
+      <BoardItem class="post-navigation__post--current" :post="post" :fromQuery="$route.query" />
+      <BoardItem :post="post.side_articles.before" :fromQuery="$route.query" v-if="post.side_articles.before" />
     </div>
 
     <div class="post-navigation__all">

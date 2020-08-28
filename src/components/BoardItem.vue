@@ -143,7 +143,7 @@ en:
 
   &__title {
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 500;
     flex: 1 1 0;
     width: 0;
     overflow: hidden;
@@ -184,7 +184,7 @@ en:
   }
 
   &__label {
-    font-weight: 700;
+    font-weight: 500;
     margin-right: 4px;
   }
 }
