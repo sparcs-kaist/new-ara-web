@@ -30,8 +30,8 @@
 
       <div class="footer-contact">
         {{ $t('contact') }}:
-        <a href="mailto:ara@sparcs.org">
-          ara@sparcs.org
+        <a href="mailto:new-ara@sparcs.org">
+          new-ara@sparcs.org
         </a>
       </div>
     </div>
@@ -81,6 +81,10 @@ en:
     align-items: center;
     flex-direction: row;
     width: 100%;
+  }
+
+  .footer-contact {
+    white-space: nowrap;
   }
 
   .footer-items {
