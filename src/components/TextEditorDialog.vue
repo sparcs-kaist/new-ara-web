@@ -60,21 +60,25 @@ export default {
   max-width: 100%;
   max-height: 100%;
   transform: translate(-50%, -50%);
-  background: #f1f2f3;
+  background: var(--grey-100);
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 15px 0 rgba(169, 169, 169, .16);
+  overflow: hidden;
 
   // Prevents useless line wrapping bug caused by optimizeLegibility
   text-rendering: auto;
 
   &__header {
-    padding: 5px 20px;
-    background: #fff;
+    padding: 10px 20px;
+    background: var(--theme-400);
+    color: var(--grey-100);
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
   &__title {
-    color: var(--text);
     font-size: 1rem;
     font-weight: 600;
   }
@@ -86,6 +90,8 @@ export default {
 
   &__close {
     cursor: pointer;
+    color: var(--grey-100);
+    display: inline-flex;
   }
 }
 
@@ -101,7 +107,7 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, .8);
+    background: rgba(0, 0, 0, .36);
   }
 }
 

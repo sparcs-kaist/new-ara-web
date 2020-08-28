@@ -31,7 +31,8 @@ export default {
   data () {
     return {
       url: '',
-      pasteListener: null
+      pasteListener: null,
+      pasteAttached: false
     }
   },
 
@@ -44,16 +45,25 @@ export default {
   methods: {
     showDialog (callback) {
       this.url = ''
-      this.$refs.root.showDialog(callback)
 
-      this.pasteListener = document.addEventListener('paste', this.pasteListener)
+      if (this.$refs.root) {
+        this.$refs.root.showDialog(callback)
+      }
+
+      if (!this.pasteAttached) {
+        document.addEventListener('paste', this.pasteListener)
+        this.pasteAttached = true
+      }
     },
 
     hideDialog (...args) {
-      this.$refs.root.hideDialog(...args)
+      if (this.$refs.root) {
+        this.$refs.root.hideDialog(...args)
+      }
 
-      if (this.pasteListener) {
+      if (this.pasteAttached) {
         document.removeEventListener('paste', this.pasteListener)
+        this.pasteAttached = false
       }
     }
   },
@@ -122,18 +132,10 @@ en:
   }
 
   &__button {
-    margin-top: 5px;
+    margin-top: 15px;
     margin-left: auto;
     display: block;
-
-    background: var(--theme-red);
-    border: none;
-    color: #f1f2f3;
-
-    &:hover {
-      background: #dc7272;
-      color: #f1f2f3;
-    }
+    color: var(--theme-400);
   }
 }
 </style>
