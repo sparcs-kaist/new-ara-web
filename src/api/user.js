@@ -34,6 +34,18 @@ export const fetchNotifications = ({ query: { page } }) => {
     .then(({ data }) => data)
 }
 
+export const fetchUserPosts = (userId) =>
+  http.get(`articles/?created_by=${userId}`)
+    .then(({ data }) => data)
+
+export const fetchRecentViewedPosts = () =>
+  http.get('recents/')
+    .then(({ data }) => data)
+
+export const fetchScrapPosts = () =>
+  http.get('scraps/')
+    .then(({ data }) => data)
+
 export const fetchBlocks = () =>
   http.get('blocks/')
     .then(({ data }) => data)

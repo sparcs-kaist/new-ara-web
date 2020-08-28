@@ -100,7 +100,7 @@
         </router-link>
 
         <router-link
-          :to="{ name: 'settings' }"
+          :to="{ name: 'my-info' }"
           class="navbar-item user">
 
           <img :src="userPicture" class="picture-url"/>

@@ -41,20 +41,25 @@ export default {
     async addNewComment (comment) {
       if (comment.parent_comment) {
         /* Save the new recomment in local first. */
+        /*
         const rootComment = this.post.comments.find(parent => parent.id === comment.parent_comment)
         rootComment.comments = [
           ...rootComment.comments,
           comment
         ]
+        */
         /* Then fetch data from DB. */
         return this.refresh()
       }
 
       /* Save the new comment in local first. */
+      /*
       this.post.comments = [
         ...this.post.comments,
         comment
       ]
+      */
+
       /* Then fetch data from DB. */
       return this.refresh()
     },
