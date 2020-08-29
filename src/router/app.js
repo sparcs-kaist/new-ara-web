@@ -3,7 +3,6 @@ import User from '@/views/User.vue'
 import Archive from '@/views/Archive.vue'
 import Post from '@/views/Post.vue'
 import Write from '@/views/Write.vue'
-import Settings from '@/views/Settings.vue'
 import Notifications from '@/views/Notifications.vue'
 import MyInfo from '@/views/MyInfo.vue'
 import Home from '@/views/Home.vue'
@@ -41,12 +40,6 @@ export default [
     name: 'write',
     component: Write,
     props: true,
-    beforeEnter: authGuard
-  },
-  {
-    path: '/settings',
-    name: 'settings',
-    component: Settings,
     beforeEnter: authGuard
   },
   {
