@@ -23,3 +23,9 @@ jsconfig.json
 
 # Coverage
 coverage/
+
+# Docker-specific files
+.storybook
+.git
+stories
+tests
