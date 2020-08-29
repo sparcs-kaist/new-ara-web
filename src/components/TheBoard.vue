@@ -8,7 +8,7 @@
 
       <SearchBar class="board__mobile-search is-flex-touch" searchable />
     </div>
-    <hr class="board__divider" />
+    <hr class="board__divider" v-if="title" />
 
     <TheBoardTable :posts="board.results" :fromQuery="fromQueryWithPage" />
 

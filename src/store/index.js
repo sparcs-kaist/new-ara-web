@@ -1,7 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import i18n from '@/i18n.js'
-import { fetchArchivedPosts as apiFetchArchivedPosts, fetchBoardList } from '@/api'
+import {
+  fetchArchivedPosts as apiFetchArchivedPosts,
+  fetchBoardList,
+  fetchRecentViewedPosts
+} from '@/api'
 import auth from './auth.js'
 import fetch from './fetch.js'
 
@@ -49,11 +53,12 @@ export default new Vuex.Store({
     },
 
     async fetchRecentPosts ({ commit }) {
-      // TODO fetch recent posts after backend implementation
+      const { results } = await fetchRecentViewedPosts({ pageSize: 5 })
+      commit('setRecentPosts', results)
     },
 
     async fetchArchivedPosts ({ commit }) {
-      const { results } = await apiFetchArchivedPosts()
+      const { results } = await apiFetchArchivedPosts({ pageSize: 5 })
       commit('setArchivedPosts', results)
     }
   }

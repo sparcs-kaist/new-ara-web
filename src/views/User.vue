@@ -4,7 +4,7 @@
       <TheSidebar searchable />
     </template>
 
-    <TheBoard :board="board" :title="username" :from-query="{ from_view: 'user', user: username }">
+    <TheBoard :board="board" :title="user.nickname" :from-query="{ from_view: 'user', user: user.id }">
       <template #title>
         <div class="title-description">
           사용자
@@ -25,12 +25,6 @@ export default {
   name: 'user',
   data () {
     return { board: {}, user: {} }
-  },
-
-  computed: {
-    username () {
-      return this.user.nickname
-    }
   },
 
   async beforeRouteEnter ({ params: { username }, query }, from, next) {

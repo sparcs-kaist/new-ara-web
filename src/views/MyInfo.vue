@@ -47,22 +47,26 @@
     <div class="column is-half">
       <div class="tabs is-boxed" style="margin-bottom: 0;">
         <ul>
-          <li :class="{ 'is-active': tabIndex === 0 }">
-            <a @click="changeTabIndex(0)">{{ $t('board-my') }}</a>
+          <li :class="{ 'is-active': $route.query.board !== 'recent' && $route.query.board !== 'archive' }">
+            <router-link :to="{ query: { board: 'my'} }">
+              {{ $t('board-my') }}
+            </router-link>
           </li>
-          <li :class="{ 'is-active': tabIndex === 1 }">
-            <a @click="changeTabIndex(1)">{{ $t('board-recent') }}</a>
+          <li :class="{ 'is-active': $route.query.board === 'recent' }">
+            <router-link :to="{ query: { board: 'recent'} }">
+              {{ $t('board-recent') }}
+            </router-link>
           </li>
-          <li :class="{ 'is-active': tabIndex === 2 }">
-            <a @click="changeTabIndex(2)">{{ $t('board-scrap') }}</a>
+          <li :class="{ 'is-active': $route.query.board === 'archive' }">
+            <router-link :to="{ query: { board: 'archive'} }">
+              {{ $t('board-archive') }}
+            </router-link>
           </li>
         </ul>
       </div>
 
       <div class="box" style="padding: 20px;">
-        <TheBoard v-if="myPosts && tabIndex === 0" :board="myPosts" />
-        <TheBoard v-else-if="tabIndex === 1" :board="recentPosts" />
-        <TheBoard v-else-if="tabIndex === 2" :board="archivedPosts" />
+        <TheBoard v-if="posts" :board="posts" />
       </div>
     </div>
 
@@ -99,14 +103,33 @@
 import store from '@/store'
 import {
   updateUser,
-  fetchUserPosts,
+  fetchArchivedPosts,
+  fetchArticles,
   fetchBlocks,
+  fetchRecentViewedPosts,
   deleteBlock
 } from '@/api'
 import { mapState } from 'vuex'
 import { fetchWithProgress } from './helper'
 import TheBoard from '@/components/TheBoard.vue'
 import TheLayout from '@/components/TheLayout.vue'
+
+const fetchByQuery = query => {
+  const { board } = query
+  const context = { ...query, board: undefined }
+
+  switch (board) {
+    case 'recent':
+      return fetchRecentViewedPosts(query)
+
+    case 'archive':
+      return fetchArchivedPosts(query)
+
+    default:
+      context.username = store.getters.userId
+      return fetchArticles(context)
+  }
+}
 
 export default {
   name: 'my-info',
@@ -120,7 +143,7 @@ export default {
         sexual: null,
         social: null
       },
-      myPosts: null,
+      posts: null,
       blocks: null,
       updating: false,
       tabIndex: 0,
@@ -178,10 +201,10 @@ export default {
     }
   },
 
-  async beforeRouteEnter (to, from, next) {
-    const [ , myPosts, blocks ] = await fetchWithProgress([
+  async beforeRouteEnter ({ query }, from, next) {
+    const [ , posts, blocks ] = await fetchWithProgress([
       store.dispatch('fetchMe'),
-      fetchUserPosts(store.getters.userId),
+      fetchByQuery(query),
       fetchBlocks()
     ])
 
@@ -196,10 +219,17 @@ export default {
         social: userConfig.social
       }
 
-      vm.myPosts = myPosts
+      vm.posts = posts
       vm.blocks = blocks
     })
   },
+
+  async beforeRouteUpdate ({ query }, from, next) {
+    const [ posts ] = await fetchWithProgress([ fetchByQuery(query) ])
+    this.posts = posts
+    next()
+  },
+
   components: { TheLayout, TheBoard }
 }
 </script>
@@ -211,7 +241,7 @@ ko:
   post-settings-social: '정치글 보기 설정'
   board-my: '내가 쓴 글'
   board-recent: '최근 본 글'
-  board-scrap: '담아둔 글'
+  board-archive: '담아둔 글'
   blocked-list: '내가 차단한 유저 목록'
 en:
   post-settings: 'Post settings'
@@ -219,7 +249,7 @@ en:
   post-settings-social: 'Show political posts'
   board-my: 'My posts'
   board-recent: 'Recently viewed'
-  board-scrap: 'Scrapped'
+  board-archive: 'Bookmarks'
   blocked-list: 'Blocked users'
 </i18n>
 

@@ -39,7 +39,7 @@
       <img :src="userPictureUrl" class="post-author-profile-picture"/>
       <div class="post-header">
         <router-link :to="{
-          name: 'user', params: { username: postAuthor }
+          name: 'user', params: { username: postAuthorId }
         }" class="post-header__author">
           {{ postAuthor }}
         </router-link>
@@ -137,6 +137,9 @@ export default {
     },
     postAuthor () {
       return this.post.created_by && this.post.created_by.profile.nickname
+    },
+    postAuthorId () {
+      return this.post.created_by && this.post.created_by.id
     },
     postCreatedAt () {
       return date(this.post.created_at)

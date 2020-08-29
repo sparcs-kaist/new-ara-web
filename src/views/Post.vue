@@ -122,7 +122,7 @@ export default {
 
     // @TODO: 매번 refresh 하는게 최선인지는 좀 생각해 봐야할듯
     async refresh () {
-      this.post = await fetchPost({ postId: this.postId })
+      this.post = await fetchPost({ postId: this.postId, context: this.$route.query })
     },
 
     async vote ({ id, vote }) {

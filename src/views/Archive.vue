@@ -1,7 +1,7 @@
 <template>
   <TheLayout>
     <template #aside>
-      <TheSidebar />
+      <TheSidebar searchable />
     </template>
 
     <TheBoard :board="archive" :title="$t('archive')" :from-query="{ from_view: 'scrap' }" />
@@ -20,12 +20,12 @@ export default {
   data () {
     return { archive: {} }
   },
-  async beforeRouteEnter (to, from, next) {
-    const [ archive ] = await fetchWithProgress([ fetchArchivedPosts() ])
+  async beforeRouteEnter ({ query }, from, next) {
+    const [ archive ] = await fetchWithProgress([ fetchArchivedPosts(query) ])
     next(vm => { vm.archive = archive })
   },
-  async beforeRouteUpdate (to, from, next) {
-    const [ archive ] = await fetchWithProgress([ fetchArchivedPosts() ])
+  async beforeRouteUpdate ({ query }, from, next) {
+    const [ archive ] = await fetchWithProgress([ fetchArchivedPosts(query) ])
     this.archive = archive
     next()
   },
