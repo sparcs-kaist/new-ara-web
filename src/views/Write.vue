@@ -5,9 +5,7 @@
       v-if="postFetched"
       :post="post"
       :saving="saving"
-      :isTitleEmpty="isTitleEmpty"
-      :isContentEmpty="isContentEmpty"
-      :isBoardEmpty="isBoardEmpty"
+      :empty-warnings="emptyWarnings"
       @save-post="savePost"
     />
   </TheLayout>
@@ -26,9 +24,7 @@ export default {
     return {
       post: null,
       saving: false,
-      isTitleEmpty: false,
-      isContentEmpty: false,
-      isBoardEmpty: false
+      emptyWarnings: []
     }
   },
   computed: {
@@ -42,18 +38,27 @@ export default {
   },
   methods: {
     async savePost (newArticle) {
-      const { title, boardId, attachments } = newArticle
+      const { title, boardId, categoryId, attachments } = newArticle
+
+      this.emptyWarnings = []
       if (title === '') {
-        this.isTitleEmpty = true
+        this.emptyWarnings.push('title')
       }
+
       if (this.$refs.write.getContent() === '<p></p>') {
-        this.isContentEmpty = true
+        this.emptyWarnings.push('content')
         alert('Cannot post empty article')
       }
+
       if (boardId === '') {
-        this.isBoardEmpty = true
+        this.emptyWarnings.push('board')
       }
-      if (this.isTitleEmpty || this.isContentEmpty || this.isBoardEmpty) {
+
+      if (categoryId === '$not-set') {
+        this.emptyWarnings.push('category')
+      }
+
+      if (this.emptyWarnings.length > 0) {
         return
       }
 
@@ -87,7 +92,8 @@ export default {
       newArticle = {
         title,
         content,
-        attachments: attachmentIds
+        attachments: attachmentIds,
+        parent_topic: categoryId
       }
       let result
       try {

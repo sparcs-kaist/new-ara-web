@@ -1,30 +1,40 @@
 <template>
-  <div class="attachments">
-    <h2 class="attachments__title">{{$t('upload')}}</h2>
-    <label class="attachments__dropzone dropzone"
-      :class="{
-        'dropzone--failed': dropzoneFailedReason,
-        'dropzone--enabled': dropzoneEnabled
-      }"
-      @dragover.stop.prevent="dropzoneEnabled = true"
-      @dragleave.stop.prevent="dropzoneEnabled = false"
-      @drop.stop.prevent="handleDropUpload">
+  <div class="attachments" :class="{
+    'attachments--failed': dropzoneFailedReason,
+    'attachments--enabled': dropzoneEnabled
+  }">
+    <div class="attachments__header">
+      <h2 class="attachments__title"> {{ $t('upload') }} </h2>
+      <button class="attachments__upload button" @click="openUpload">
+        {{ $t('upload-button') }}
+      </button>
+    </div>
 
-      <input class="dropzone__upload" type="file" ref="upload" @change="handleDialogUpload">
-      {{dropzoneMessage}}
-    </label>
+    <div class="attachments__content">
+      <label class="attachments__dropzone dropzone"
+        @dragover.stop.prevent="dropzoneEnabled = true"
+        @dragleave.stop.prevent="dropzoneEnabled = false"
+        @drop.stop.prevent="handleDropUpload">
 
-    <transition-group class="attachments__filelist" name="filelist-fade" tag="div">
-      <div class="attachments__file file" v-for="file in files" :key="file.key" @click="deleteFile(file)">
-        <img class="file__thumbnail" v-if="file.type === 'image'" :src="file.blobUrl">
+        <input class="dropzone__upload" type="file" ref="upload" @change="handleDialogUpload">
+      </label>
 
-        <div class="file__details">
-          {{file.name}}
+      <span class="attachments__message"> {{dropzoneMessage}} </span>
 
-          <i class="material-icons">delete_outline</i>
+      <transition-group class="attachments__filelist" name="filelist-fade" tag="div">
+        <div class="attachments__file file" v-for="file in files" :key="file.key">
+          <img class="file__thumbnail" v-if="file.type === 'image'" :src="file.blobUrl">
+
+          <div class="file__details">
+            {{file.name}}
+
+            <button class="file__delete" @click.prevent="deleteFile(file)">
+              <i class="material-icons">delete_outline</i>
+            </button>
+          </div>
         </div>
-      </div>
-    </transition-group>
+      </transition-group>
+    </div>
   </div>
 </template>
 
@@ -87,6 +97,10 @@ export default {
           uploaded: true
         })
       })
+    },
+
+    openUpload () {
+      this.$refs.upload.click()
     },
 
     handleUpload (fileList) {
@@ -164,39 +178,82 @@ export default {
 <i18n>
   ko:
     upload: '첨부파일'
-    dropzone-normal: '여기를 클릭하거나 파일을 드래그 앤 드롭해주세요.'
+    upload-button: '가져오기'
+    dropzone-normal: '가져오기 버튼을 클릭하거나 파일을 드래그 앤 드롭해주세요.'
     dropzone-drop: '여기에 드롭해주세요.'
     dropzone-unallowed-extensions: '허용되지 않은 확장자입니다.'
 
   en:
     upload: 'Upload Attachments'
-    dropzone-normal: 'Please click here or drag &amp; drop the files.'
+    upload-button: 'Import'
+    dropzone-normal: 'Please click import button or drag & drop the files.'
     dropzone-drop: 'Please drop here.'
     dropzone-unallowed-extensions: 'This file type is not allowed.'
 </i18n>
 
 <style lang="scss" scoped>
 .attachments {
-  width: 60%;
   margin-bottom: 40px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
 
   &__title {
     color: var(--text);
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 30px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-right: 15px;
   }
 
   &__filelist {
     position: relative;
     margin-top: 5px;
   }
+
+  &__content {
+    position: relative;
+    background: var(--grey-100);
+    border: 1px solid var(--grey-300);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 0;
+    transition: all var(--duration) var(--background-timing);
+  }
+
+  &--enabled &__content {
+    border-color: rgba(0, 0, 0, 0.7);
+  }
+
+  &--failed &__content {
+    // Didn't use --theme-red as it is "theme" color, not error color
+    border-color: #ed3a3a;
+    background: #ed3a3a;
+    color: var(--grey-100);
+  }
+
+  &__message {
+    padding-left: 20px;
+    padding-bottom: 30px;
+    color: var(--grey-400);
+    font-weight: 500;
+  }
+
+  &__dropzone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+  }
 }
 
 .dropzone {
   display: block;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
   text-align: center;
   padding: 20px 40px;
   width: 100%;
@@ -204,18 +261,6 @@ export default {
   color: var(--text);
   font-size: 1rem;
   font-weight: 500;
-  transition: all var(--duration) var(--background-timing);
-
-  &--failed {
-    // Didn't use --theme-red as it is "theme" color, not error color
-    border-color: #ed3a3a;
-    background: #ed3a3a;
-    color: #f1f2f3;
-  }
-
-  &--enabled {
-    border-color: rgba(0, 0, 0, 0.7);
-  }
 
   &__upload {
     position: absolute;
@@ -226,11 +271,10 @@ export default {
 }
 
 .file {
-  cursor: pointer;
   display: flex;
   flex-direction: column;
+  pointer-events: none;
   padding: 10px 20px;
-  background: #fafbfc;
   transition: background var(--duration) var(--background-timing);
   width: 100%;
 
@@ -246,8 +290,23 @@ export default {
     justify-content: space-between;
   }
 
-  &:hover {
-    background: #f1f2f3;
+  &__delete {
+    cursor: pointer;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 5px;
+    height: 2rem;
+    width: 2rem;
+    transition: background var(--duration) var(--background-timing);
+    pointer-events: auto;
+    z-index: 2;
+
+    &:hover {
+      background: var(--grey-300);
+    }
   }
 }
 

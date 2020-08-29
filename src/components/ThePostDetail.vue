@@ -163,7 +163,7 @@ en:
 }
 
 .content {
-  margin: 30px 0px 20px -5px;
+  margin: 30px 0 20px 0;
 }
 
 .material-icons {

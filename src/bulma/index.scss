@@ -74,6 +74,30 @@
   }
 }
 
+.select {
+  &:not(.is-multiple) {
+    height: initial;
+  }
+
+  select {
+    background: transparent;
+    border-radius: 10px;
+    border: solid 2px var(--grey-300) !important;
+    padding: 0 10px;
+    box-shadow: 0 0 6px 0 transparent;
+    transition: all var(--duration) var(--background-timing);
+
+    &:active, &:focus, &:hover {
+      box-shadow: 0 0 6px 0 var(--grey-400);
+      border-color: transparent;
+    }
+  }
+
+  &::after {
+    border-color: var(--grey-700) !important;
+  }
+}
+
 html, body {
   margin: 0;
   padding: 0;
