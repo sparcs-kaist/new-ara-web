@@ -45,7 +45,7 @@ export default [
     name: 'logout-handler',
     beforeEnter: async (to, from, next) => {
       try {
-        await logout()
+        await logout(store.getters.userId)
       } catch (err) {}
       store.commit('setAuthState', false)
       next('/login')

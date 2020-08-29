@@ -58,12 +58,16 @@ export default {
   actions: {
     async fetchMe ({ commit, getters }) {
       const { hasFetched } = getters
-      if (!hasFetched) {
-        commit('setUserProfile', await fetchMe())
-      }
+      try {
+        if (!hasFetched) {
+          commit('setUserProfile', await fetchMe())
+        }
 
-      const { userId } = getters
-      commit('setAuthState', userId !== undefined)
+        const { userId } = getters
+        commit('setAuthState', userId !== undefined)
+      } catch (err) {
+        commit('setAuthState', false)
+      }
     },
     async toggleDarkMode ({ commit, getters: { isDarkModeEnabled } }) {
       commit('setUserProfile', await updateDarkMode(!isDarkModeEnabled))

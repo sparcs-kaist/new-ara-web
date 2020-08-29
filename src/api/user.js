@@ -58,6 +58,6 @@ export const updateDarkMode = (userId, darkMode) =>
   http.patch(`user_profiles/${userId}/`, { extra_preferences: { darkMode } })
     .then(({ data }) => data)
 
-export const logout = () =>
-  http.delete('/users/sso_logout')
+export const logout = (userId) =>
+  http.delete(`/users/${userId}/sso_logout`)
     .then(({ data }) => data)
