@@ -44,10 +44,17 @@ export default [
     path: '/logout',
     name: 'logout-handler',
     beforeEnter: async (to, from, next) => {
-      try {
-        await logout(store.getters.userId)
-      } catch (err) {}
-      store.commit('setAuthState', false)
+      if (!store.getters.userId) {
+        await store.dispatch('fetchMe')
+      }
+
+      if (store.getters.isLoggedIn) {
+        try {
+          await logout(store.getters.userId)
+        } catch (err) {}
+        store.commit('setAuthState', false)
+      }
+
       next('/login')
     }
   }

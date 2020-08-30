@@ -36,7 +36,7 @@ instance.interceptors
     resp => resp,
     err => {
       if (err.response.status === 401) {
-        router.push('/logout')
+        router.push('/login')
       } else if (err.response.status === 404) {
         router.push('/404')
       }
