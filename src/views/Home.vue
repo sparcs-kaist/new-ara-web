@@ -5,11 +5,11 @@
     </div>
 
     <div class="columns is-multiline">
-      <SmallBoard :listitems="dailyBests" class="column is-6" detail>
+      <SmallBoard :listitems="dailyBests" class="home__board column is-6" detail>
         {{ $t('today-best') }}
       </SmallBoard>
 
-      <SmallBoard :listitems="weeklyBests" class="column is-6" detail>
+      <SmallBoard :listitems="weeklyBests" class="home__board column is-6" detail>
         {{ $t('weekly-best') }}
       </SmallBoard>
     </div>
@@ -36,16 +36,15 @@ export default {
         return []
       }
 
-      return this.home.daily_bests.recent_articles
+      return this.home.daily_bests
     },
     weeklyBests () {
       if (!this.home.weekly_bests) {
         return []
       }
 
-      return this.home.weekly_bests.recent_articles
-    },
-    boards () { return this.home.boards }
+      return this.home.weekly_bests
+    }
   },
   async beforeRouteEnter (to, from, next) {
     const [ home ] = await fetchWithProgress([ fetchHome() ])
@@ -79,6 +78,10 @@ en:
     display: flex;
     align-items: center;
     height: 300px;
+  }
+
+  &__board {
+    margin-top: 10px;
   }
 }
 

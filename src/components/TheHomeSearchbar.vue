@@ -20,14 +20,14 @@
       </i18n>
     </h2>
 
-    <div class="searchbar__search field">
+    <form class="searchbar__search field" action="board" @submit.prevent="search">
       <p class="control has-icons-left">
-        <input class="input is-large" type="text">
-        <span class="icon is-small is-left">
+        <input class="input is-large" type="text" v-model="query" name="query">
+        <button class="icon is-small is-left" type="submit">
           <i class="material-icons">search</i>
-        </span>
+        </button>
       </p>
-    </div>
+    </form>
 
     <div class="keywords">
       <span class="keywords__description">
@@ -35,56 +35,79 @@
       </span>
 
       <div class="keywords__list">
-        <!-- TODO implement -->
-        <span class="keywords__keyword" v-for="keyword in keywords" :key="keyword.key">
+        <router-link :to="{
+            name: 'board',
+            query: {
+              query: keyword[`${$i18n.locale}_name`]
+            }
+          }"
+          class="keywords__keyword"
+          v-for="keyword in keywords"
+          :key="keyword.key">
+
           {{ keyword[`${$i18n.locale}_name`] }}
-        </span>
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+// @TODO after backend implementation, change it to fetching backend
+const keywords = [
+  {
+    key: 'students-working',
+    ko_name: '근로학생',
+    en_name: 'Students Working'
+  },
+  {
+    key: 'lecture-review',
+    ko_name: '강의평가',
+    en_name: 'Lecture Review'
+  },
+  {
+    key: 'enrolment',
+    ko_name: '수강신청',
+    en_name: 'Enrolment'
+  },
+  {
+    key: 'season-term',
+    ko_name: '계절학기',
+    en_name: 'Season Term'
+  },
+  {
+    key: 'grade-posting-period',
+    ko_name: '성적게시기간',
+    en_name: 'Grade Posting Period'
+  },
+  {
+    key: 'tuition-payment',
+    ko_name: '등록금 납부',
+    en_name: 'Tuition Payment'
+  },
+  {
+    key: 'graduation-requirements',
+    ko_name: '졸업요건',
+    en_name: 'Graduation Reqs'
+  }
+]
+
 export default {
   data () {
     return {
-      keywords: [
-        {
-          key: 'students-working',
-          ko_name: '근로학생',
-          en_name: 'Students Working'
-        },
-        {
-          key: 'lecture-review',
-          ko_name: '강의평가',
-          en_name: 'Lecture Review'
-        },
-        {
-          key: 'enrolment',
-          ko_name: '수강신청',
-          en_name: 'Enrolment'
-        },
-        {
-          key: 'season-term',
-          ko_name: '계절학기',
-          en_name: 'Season Term'
-        },
-        {
-          key: 'grade-posting-period',
-          ko_name: '성적게시기간',
-          en_name: 'Grade Posting Period'
-        },
-        {
-          key: 'tuition-payment',
-          ko_name: '등록금 납부',
-          en_name: 'Tuition Payment'
-        },
-        {
-          key: 'graduation-requirements',
-          ko_name: '졸업요건',
-          en_name: 'Graduation Reqs'
+      query: '',
+      keywords
+    }
+  },
+
+  methods: {
+    search () {
+      this.$router.push({
+        name: 'board',
+        query: {
+          query: this.query
         }
-      ]
+      })
     }
   }
 }
@@ -155,6 +178,14 @@ en:
 
     .icon {
       color: var(--theme-400);
+      border: none;
+      cursor: pointer;
+      background: transparent;
+      pointer-events: auto;
+
+      &:hover {
+        color: var(--theme-500);
+      }
     }
   }
 }
