@@ -1,16 +1,10 @@
 <template>
   <TheLayout class="board">
     <template #aside>
-      <TheSidebar />
+      <TheSidebar searchable />
     </template>
 
-    <TheBoard :board="board">
-      <template #title>
-        <h1 class="board-name">
-          {{ boardName }}
-        </h1>
-      </template>
-    </TheBoard>
+    <TheBoard :board="board" :title="boardName" :from-query="fromQuery" />
   </TheLayout>
 </template>
 
@@ -24,16 +18,19 @@ import TheSidebar from '@/components/TheSidebar.vue'
 
 export default {
   name: 'board',
+
   data () {
     return {
       board: {},
-      boardId: null,
-      keywordToSearch: ''
+      boardId: null
     }
   },
+
   computed: {
-    boardName () { return store.getters.getNameById(this.boardId, this.$i18n.locale) }
+    boardName () { return store.getters.getNameById(this.boardId, this.$i18n.locale) },
+    fromQuery () { return { from_view: this.boardId ? 'board' : 'all' } }
   },
+
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
     const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
     const [ board ] = await fetchWithProgress([ fetchArticles({ boardId, ...query }) ])
@@ -42,6 +39,7 @@ export default {
       vm.boardId = boardId
     })
   },
+
   async beforeRouteUpdate ({ params: { boardSlug }, query }, from, next) {
     const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
     const [ board ] = await fetchWithProgress([ fetchArticles({ boardId, ...query }) ])
@@ -49,6 +47,7 @@ export default {
     this.boardId = boardId
     next()
   },
+
   components: {
     TheBoard,
     TheLayout,
@@ -56,25 +55,3 @@ export default {
   }
 }
 </script>
-
-<i18n>
-ko:
-  search: '검색'
-  new-post: '새글 쓰기'
-  placeholder: '입력...'
-
-en:
-  search: 'Search'
-  new-post: 'New post'
-  placeholder: 'Keyword...'
-</i18n>
-
-<style lang="scss" scoped>
-// @import '@/theme.scss';
-
-.board-name {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0 0 1rem 0;
-}
-</style>

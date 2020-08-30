@@ -40,7 +40,7 @@
         <button class="button" @click="$emit('report')"> {{ $t('report') }} </button>
 
         <router-link :to="{
-          name: 'user', params: { username: postAuthor }
+          name: 'user', params: { username: postAuthorId }
         }" class="post__more">
           <img :src="userPictureUrl" class="post__author"/>
           <span>{{ $t('more', { author: postAuthor }) }}</span>
@@ -73,6 +73,9 @@ export default {
     },
     postAuthor () {
       return this.post.created_by && this.post.created_by.profile.nickname
+    },
+    postAuthorId () {
+      return this.post.created_by && this.post.created_by.id
     }
   },
   watch: {

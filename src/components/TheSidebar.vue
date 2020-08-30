@@ -1,19 +1,12 @@
 <template>
   <aside class="sidebar column is-hidden-touch">
-    <div class="sidebar__search field">
-      <p class="control has-icons-right">
-        <input class="input is-medium" type="text">
-        <span class="icon is-small is-right">
-          <i class="material-icons">search</i>
-        </span>
-      </p>
-    </div>
+    <SearchBar class="sidebar__search" :searchable="searchable" />
 
-    <SmallBoard :listitems="recentPosts" sidebar>
+    <SmallBoard :listitems="recentPosts" :fromQuery="{ from_view: 'recent' }" sidebar>
       {{ $t('recent') }}
     </SmallBoard>
 
-    <SmallBoard :listitems="archiveList" sidebar>
+    <SmallBoard :listitems="archiveList" :fromQuery="{ from_view: 'scrap' }" sidebar>
       {{ $t('archive') }}
     </SmallBoard>
   </aside>
@@ -21,6 +14,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import SearchBar from '@/components/SearchBar.vue'
 import SmallBoard from '@/components/SmallBoard.vue'
 
 export default {
@@ -33,17 +27,17 @@ export default {
     }
   },
 
+  props: {
+    searchable: Boolean
+  },
+
   computed: {
     archiveList () {
-      return this.archivedPosts
-        .slice(0, 5)
-        .map(({ parent_article: article }) => article)
+      return this.archivedPosts.slice(0, 5)
     },
 
     recentList () {
-      return this.recentPosts
-        .slice(0, 5)
-        .map(({ parent_article: article }) => article)
+      return this.recentPosts.slice(0, 5)
     },
 
     ...mapState([ 'recentPosts', 'archivedPosts' ])
@@ -55,6 +49,7 @@ export default {
   },
 
   components: {
+    SearchBar,
     SmallBoard
   }
 }

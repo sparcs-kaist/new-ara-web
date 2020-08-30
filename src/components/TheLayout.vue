@@ -6,9 +6,9 @@
       <div class="columns" :class="{ 'default-columns': isColumnLayout }">
         <slot name="aside"></slot>
         <template v-if="isColumnLayout">
-        <div class="column">
-          <slot />
-        </div>
+          <div class="column">
+            <slot />
+          </div>
         </template>
         <template v-else>
           <slot />
@@ -46,11 +46,18 @@ export default {
 
 .container {
   margin-top: 50px;
+
+  @include breakPoint(min) {
+    margin-top: 10px;
+  }
+}
+
+.columns {
+  margin: 0px;
 }
 
 .default-columns {
   width: 100%;
-  margin: 0px;
 
   & > * {
     margin: 0 25px;

@@ -1,10 +1,10 @@
 <template>
-  <TheLayout class="post">
+  <TheLayout class="post" :key="postId">
     <template #aside>
       <TheSidebar />
     </template>
 
-    <ThePostHeader :post="post" @archive="archive" @report="report" @vote="vote" />
+    <ThePostHeader :post="post" :context="context" @archive="archive" @report="report" @vote="vote" />
     <ThePostDetail :post="post" @archive="archive" @report="report" @vote="vote" />
     <ThePostComments
       :comments="post.comments"
@@ -13,6 +13,7 @@
       @update="updateComment"
       @refresh="refresh"
     />
+    <ThePostNavigation :post="post" :context="context" />
     <!-- @TODO: <TheBoard :board="board"/> -->
   </TheLayout>
 </template>
@@ -20,9 +21,10 @@
 <script>
 import { archivePost, fetchPost, reportPost, unarchivePost, votePost } from '@/api'
 import { fetchWithProgress } from './helper.js'
+import ThePostComments from '@/components/ThePostComments.vue'
 import ThePostDetail from '@/components/ThePostDetail.vue'
 import ThePostHeader from '@/components/ThePostHeader.vue'
-import ThePostComments from '@/components/ThePostComments.vue'
+import ThePostNavigation from '@/components/ThePostNavigation.vue'
 import TheBoard from '@/components/TheBoard.vue'
 import TheLayout from '@/components/TheLayout.vue'
 import TheSidebar from '@/components/TheSidebar.vue'
@@ -35,6 +37,44 @@ export default {
   data () {
     return {
       post: {}
+    }
+  },
+  computed: {
+    /* eslint-disable camelcase */
+    context () {
+      const { from_view, from_page, search_query } = this.$route.query
+      const query = {}
+      if (from_page) {
+        query['page'] = from_page
+      }
+
+      if (search_query) {
+        query['query'] = search_query
+      }
+
+      switch (from_view) {
+        case 'user':
+          return { name: 'user', params: { created_by: this.$route.query.user }, query }
+
+        case 'recent':
+          query.board = 'recent'
+          return { name: 'myinfo', query }
+
+        case 'scrap':
+          return { name: 'archive', query }
+
+        case 'all':
+          return { name: 'board', query }
+
+        default:
+          return {
+            name: 'board',
+            params: {
+              boardSlug: this.post.parent_board ? this.post.parent_board.slug : null
+            },
+            query
+          }
+      }
     }
   },
   methods: {
@@ -82,7 +122,7 @@ export default {
 
     // @TODO: 매번 refresh 하는게 최선인지는 좀 생각해 봐야할듯
     async refresh () {
-      this.post = await fetchPost({ postId: this.postId })
+      this.post = await fetchPost({ postId: this.postId, context: this.$route.query })
     },
 
     async vote ({ id, vote }) {
@@ -109,18 +149,30 @@ export default {
     }
   },
 
-  async beforeRouteEnter ({ params: { postId } }, from, next) {
-    const [ post ] = await fetchWithProgress([ fetchPost({ postId }) ])
+  async beforeRouteEnter ({ params: { postId }, query }, from, next) {
+    const [ post ] = await fetchWithProgress([
+      fetchPost({ postId, context: query })
+    ])
     next(vm => { vm.post = post })
   },
 
-  async beforeRouteUpdate ({ params: { postId } }, from, next) {
-    const [ post ] = await fetchWithProgress([ fetchPost({ postId }) ])
+  async beforeRouteUpdate ({ params: { postId }, query }, from, next) {
+    const [ post ] = await fetchWithProgress([
+      fetchPost({ postId, context: query })
+    ])
     this.post = post
     next()
   },
 
-  components: { TheLayout, ThePostComments, ThePostDetail, TheBoard, TheSidebar, ThePostHeader }
+  components: {
+    TheBoard,
+    TheLayout,
+    ThePostComments,
+    ThePostDetail,
+    ThePostHeader,
+    ThePostNavigation,
+    TheSidebar
+  }
 }
 </script>
 

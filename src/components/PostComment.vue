@@ -4,7 +4,7 @@
       <img class="comment__profile" :src="profileImage" />
       <div class="comment__body">
         <div class="comment__header">
-          <router-link :to="{ name: 'user', params: { username: author } }" class="comment__author">
+          <router-link :to="{ name: 'user', params: { username: authorId } }" class="comment__author">
             {{ author }}
           </router-link>
 
@@ -116,6 +116,7 @@ export default {
 
   computed: {
     author () { return this.comment.created_by.profile.nickname },
+    authorId () { return this.comment.created_by.id },
     profileImage () { return this.comment.created_by.profile.picture },
     date () { return timeago(this.comment.created_at, this.$i18n.locale) },
     ...mapGetters([ 'userNickname' ])

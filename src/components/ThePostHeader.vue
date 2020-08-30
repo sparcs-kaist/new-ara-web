@@ -7,25 +7,29 @@
       <!-- TODO range check and board check-->
 
       <div class="title__buttons">
-        <router-link
+        <component
           class="button title__button title__button--wide"
-          :to="{ name: 'post', params: { postId: post.id - 1 } }"
+          :is="prevPost ? 'router-link' : 'span'"
+          :disabled="!prevPost"
+          :to="prevPost && { name: 'post', params: { postId: prevPost.id }, query: $route.query }"
         >
           <i class="material-icons">chevron_left</i>
           {{ $t('previous') }}
-        </router-link>
+        </component>
 
-        <router-link
+        <component
           class="button title__button title__button--wide"
-          :to="{ name: 'post', params: { postId: post.id + 1 } }"
+          :is="nextPost ? 'router-link' : 'span'"
+          :disabled="!nextPost"
+          :to="nextPost && { name: 'post', params: { postId: nextPost.id }, query: $route.query }"
         >
           {{ $t('next') }}
           <i class="material-icons">chevron_right</i>
-        </router-link>
+        </component>
 
         <router-link
           class="button title__button"
-          :to="{ name: 'board' }"
+          :to="context"
         >
           {{ $t('list') }}
         </router-link>
@@ -35,7 +39,7 @@
       <img :src="userPictureUrl" class="post-author-profile-picture"/>
       <div class="post-header">
         <router-link :to="{
-          name: 'user', params: { username: postAuthor }
+          name: 'user', params: { username: postAuthorId }
         }" class="post-header__author">
           {{ postAuthor }}
         </router-link>
@@ -117,7 +121,10 @@ import LikeButton from '@/components/LikeButton.vue'
 export default {
   name: 'the-post-header',
   props: {
-    post: { required: true }
+    post: { required: true },
+    context: {
+      type: Object
+    }
   },
   data () {
     return {
@@ -131,11 +138,20 @@ export default {
     postAuthor () {
       return this.post.created_by && this.post.created_by.profile.nickname
     },
+    postAuthorId () {
+      return this.post.created_by && this.post.created_by.id
+    },
     postCreatedAt () {
       return date(this.post.created_at)
     },
     postUserId () {
       return this.post.created_by && this.post.created_by.profile.user_id
+    },
+    nextPost () {
+      return this.post.side_articles && this.post.side_articles.after
+    },
+    prevPost () {
+      return this.post.side_articles && this.post.side_articles.before
     },
     ...mapGetters([ 'userId' ])
   },
@@ -257,6 +273,7 @@ en:
     &__status {
       display: flex;
       font-size: .95rem;
+      margin-top: -10px;
 
       & > * {
         margin: 10px;

@@ -1,39 +1,56 @@
 <template>
   <TheLayout>
-    <TheBoard :board="board">
-      <div slot="title">
-        <h1 id="title">
-          {{ $route.params.username }}
-        </h1>
+    <template #aside>
+      <TheSidebar searchable />
+    </template>
+
+    <TheBoard :board="board" :title="user.nickname" :from-query="{ from_view: 'user', user: user.id }">
+      <template #title>
         <div class="title-description">
           사용자
         </div>
-      </div>
+      </template>
     </TheBoard>
   </TheLayout>
 </template>
 
 <script>
-import { fetchArticles } from '@/api'
+import { fetchArticles, fetchUser } from '@/api'
 import { fetchWithProgress } from './helper.js'
-import TheLayout from '@/components/TheLayout.vue'
 import TheBoard from '@/components/TheBoard.vue'
+import TheLayout from '@/components/TheLayout.vue'
+import TheSidebar from '@/components/TheSidebar.vue'
 
 export default {
   name: 'user',
   data () {
-    return { board: {} }
+    return { board: {}, user: {} }
   },
+
   async beforeRouteEnter ({ params: { username }, query }, from, next) {
-    const [ board ] = await fetchWithProgress([ fetchArticles({ username, ...query }) ])
-    next(vm => { vm.board = board })
+    const [ board, user ] = await fetchWithProgress([
+      fetchArticles({ username, ...query }),
+      fetchUser(username)
+    ])
+    next(vm => {
+      vm.board = board
+      vm.user = user
+    })
   },
   async beforeRouteUpdate ({ params: { username }, query }, from, next) {
-    const [ board ] = await fetchWithProgress([ fetchArticles({ username, ...query }) ])
+    const [ board, user ] = await fetchWithProgress([
+      fetchArticles({ username, ...query }),
+      fetchUser(username)
+    ])
     this.board = board
+    this.user = user
     next()
   },
-  components: { TheLayout, TheBoard }
+  components: {
+    TheBoard,
+    TheLayout,
+    TheSidebar
+  }
 }
 </script>
 
