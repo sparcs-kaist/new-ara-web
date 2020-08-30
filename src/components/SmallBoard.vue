@@ -1,26 +1,29 @@
 <template>
-  <div class="board">
-    <h2 class="board__name" :class="{ 'sidebar': sidebar }">
+  <div class="board" :class="{ 'board--sidebar': sidebar }">
+    <h2 class="board__name">
       <slot></slot>
     </h2>
     <div
     v-for="(post, index) in listitems"
     :key="post.id"
-    class="post">
+    class="board__post post">
       <h3>
         <router-link class="post__title"
-        :class="{ 'sidebar__post': sidebar }"
         :to="{
           name: 'post',
           params: { postId: post.id },
           query: fromQuery
         }">
-          {{ getTitle(post, index) }}
+          <span class="post__index" v-if="detail">
+            {{ index + 1 }}
+          </span>
+
+          {{ post.title }}
         </router-link>
       </h3>
 
       <div class="post__username" v-if="detail">
-        {{article.created_by.profile.nickname}}
+        {{post.created_by.profile.nickname}}
       </div>
     </div>
   </div>
@@ -44,12 +47,6 @@ export default {
 
     sidebar: {
       type: Boolean
-    }
-  },
-
-  methods: {
-    getTitle (post, index) {
-      return (this.detail ? `${index + 1}. ` : '') + post.title
     }
   }
 }
@@ -75,13 +72,19 @@ export default {
     border-left: thick solid transparent;
     display: flex;
     font-size: 1.0rem;
+    align-items: center;
     justify-content: space-between;
     margin: 0.5rem 0;
-    padding-left: 1em;
+    padding: 5px 1rem;
+
+    &__index {
+      font-weight: 500;
+      margin-right: 10px;
+    }
 
     &__username{
       color: var(--text);
-      font-size: 0.7rem;
+      font-size: 0.85rem;
     }
 
     &__title {
@@ -89,11 +92,15 @@ export default {
     }
   }
 
-  .sidebar {
-    font-size: 14px;
+  &--sidebar & {
+    &__name {
+      font-size: 14px;
+    }
 
     &__post {
       font-size: 13px;
+      padding: 0;
+      padding-left: 1rem;
     }
   }
 }
