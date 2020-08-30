@@ -2,6 +2,7 @@ $theme-red: #e15858;
 $theme-red-dark: rgb(204, 59, 59);
 $dark: #333333;
 $gray: #666666;
+$family-sans-serif: var(--font);
 
 :root {
   // global theme variables
@@ -22,6 +23,8 @@ $gray: #666666;
   --duration: 0.5s;
   --text-timing: ease-out;
   --background-timing: ease-in-out;
+
+  --font: 'Noto Sans KR', sans-serif;
 
   .navbar, .navbar-item {
     background-color: transparent;

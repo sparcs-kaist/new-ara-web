@@ -145,7 +145,7 @@ en:
   &__landing {
     background: transparent;
     color: var(--text);
-    font-family: 'NanumSquareRound', sans-serif;
+    font-family: var(--font);
     font-size: 2rem;
     margin-bottom: 20px;
 
@@ -193,7 +193,7 @@ en:
 .keywords {
   display: flex;
   color: var(--grey-600);
-  font-family: 'NanumSquareRound', sans-serif;
+  font-family: var(--font);
 
   @include breakPoint(min) {
     display: none;
@@ -201,6 +201,7 @@ en:
 
   &__description {
     color: var(--theme-400);
+    font-weight: 500;
     flex-shrink: 0;
     margin-right: 10px;
   }

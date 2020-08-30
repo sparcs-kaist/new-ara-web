@@ -199,7 +199,7 @@ en:
 
 .title {
   color: var(--grey-700);
-  font-family: 'NanumSquareRound',sans-serif;
+  font-family: var(--font);
   font-size: 1.5rem;
   margin-bottom: 1.25rem;
   display: flex;
@@ -234,7 +234,7 @@ en:
 }
 
 #metadata {
-  font-family: 'NanumSquareRound',sans-serif;
+  font-family: var(--font);
   color: var(--grey-700);
   display: flex;
   flex-direction: row;

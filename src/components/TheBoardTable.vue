@@ -18,7 +18,7 @@ export default {
 
 <style lang="scss">
 .board-table {
-  font-family: 'NanumSquareRound', sans-serif;
+  font-family: var(--font);
   width: 100%;
 }
 </style>
