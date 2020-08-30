@@ -13,12 +13,39 @@
 
 .button {
   color: var(--grey-text);
-  background: var(--background);
+  background: transparent;
   border-radius: 10px;
   border: solid 1px var(--grey-300);
+  transition: all var(--duration) var(--background-timing);
 
-  &:hover {
-    background-color: var(--grey-100);
+  &:hover, &:focus {
+    &:not(:active) {
+      border-color: var(--grey-300);
+      box-shadow: 0 2px 6px 0 var(--grey-300);
+      outline: none;
+    }
+
+    &, .button:active {
+      background: transparent;
+    }
+  }
+
+  &:active {
+    border-color: var(--grey-400);
+  }
+
+  &.is-text {
+    &:hover, &:focus {
+      &:not(:active) {
+        background: var(--grey-100);
+        box-shadow: none;
+        border-color: transparent;
+      }
+    }
+
+    &:active {
+      border-color: transparent;
+    }
   }
 }
 
