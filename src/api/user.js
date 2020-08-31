@@ -39,7 +39,7 @@ export const fetchBlocks = () =>
     .then(({ data }) => data)
 
 export const deleteBlock = (blockId) =>
-  http.delete(`blocks/${blockId}`)
+  http.delete(`blocks/${blockId}/`)
     .then(({ data }) => data)
 
 export const updateDarkMode = (userId, darkMode) =>

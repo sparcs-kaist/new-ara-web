@@ -26,7 +26,7 @@ export const archivePost = (postId) =>
     .then(({ data }) => data)
 
 export const unarchivePost = (scrapId) =>
-  http.delete(`scraps/${scrapId}`)
+  http.delete(`scraps/${scrapId}/`)
     .then(({ data }) => data)
 
 export const reportPost = (postId) =>
@@ -34,7 +34,7 @@ export const reportPost = (postId) =>
     .then(({ data }) => data)
 
 export const deletePost = (postId) =>
-  http.delete(`articles/${postId}`)
+  http.delete(`articles/${postId}/`)
     .then(({ data }) => data)
 
 export const votePost = (postId, action) =>
@@ -62,7 +62,7 @@ export const reportComment = (commentId) =>
     .then(({ data }) => data)
 
 export const deleteComment = (commentId) =>
-  http.delete(`comments/${commentId}`)
+  http.delete(`comments/${commentId}/`)
     .then(({ data }) => data)
 
 export const uploadAttachments = (attachments) => {
