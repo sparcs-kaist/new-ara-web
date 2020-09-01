@@ -3,25 +3,55 @@
     <template #aside>
       <div class="column is-one-quarter">
         <div class="box">
-          <a>
-            <div class="profile-container">
-              <img
-                v-if="user.pictureSrc"
-                :src="user.pictureSrc"
-                class="profile-image"
-                alt="profile image"
-              />
+          <div
+            class="profile-container"
+            :style="{ backgroundColor: user.pictureSrc ? 'white' : 'grey' }"
+          >
+            <img
+              v-if="user.pictureSrc"
+              :src="user.pictureSrc"
+              class="profile-container__image"
+              alt="profile image"
+            />
+            <label>
+              <input
+                type="file"
+                style="display: none;"
+                @change="pictureHandler"
+              >
+              <a class="profile-container__button">
+                <i class="material-icons">camera_alt</i>
+              </a>
+            </label>
+          </div>
+          <div>
+            <div class="row" v-if="!isNicknameEditable">
+              <h1 class="nickname">{{ user.nickname }}</h1>
+              <a style="margin-left: 0.25rem;" @click="toggleNicknameInput">
+                <i class="material-icons" style="font-size: 1.2rem;">create</i>
+              </a>
             </div>
-          </a>
-
-          <div class="row">
-            <h1 class="nickname">{{ user.nickname }}</h1>
-            <a style="margin-left: 0.25rem;" @click="toggleNicknameInput">
-              <i class="material-icons" style="font-size: 1.2rem;">create</i>
-            </a>
+            <div v-else>
+              <input class="nickname nickname__input" v-model="newNickname">
+              <div class="nickname__buttons">
+                <button
+                  class="button"
+                  @click="toggleNicknameInput(false)"
+                  style="margin-right: 0.2rem;"
+                >
+                  {{ $t('cancel') }}
+                </button>
+                <button
+                  class="button is-link"
+                  :class="{ 'is-loading': updating }"
+                  @click="toggleNicknameInput(true)">
+                  {{ $t('save') }}
+                </button>
+              </div>
+            </div>
           </div>
 
-          <h2 class="email">{{ user.email ? user.email : '이메일 주소가 없습니다.' }}</h2>
+          <h2 class="email">{{ user.email ? user.email : $t('empty-email') }}</h2>
         </div>
 
         <div class="box">
@@ -30,22 +60,30 @@
           <div class="setting-container">
             <span>{{ $t('post-settings-sexual') }}</span>
             <label class="checkbox">
-              <input :value="user.sexual" @change="updateSettings" type="checkbox">
+              <input v-model="user.sexual" type="checkbox">
             </label>
           </div>
 
           <div class="setting-container">
             <span>{{ $t('post-settings-social') }}</span>
             <label class="checkbox">
-              <input :value="user.social" @change="updateSettings" type="checkbox">
+              <input v-model="user.social" type="checkbox">
             </label>
+          </div>
+          <div class="setting-container__button">
+            <button
+              class="button"
+              :class="{ 'is-loading': updating }"
+              @click="updateSettings">
+              {{ $t('save') }}
+            </button>
           </div>
         </div>
       </div>
     </template>
 
     <div class="column is-half">
-      <div class="tabs is-boxed" style="margin-bottom: 0;">
+      <div class="tabs is-boxed" style="margin: 0 0 0 -1px;">
         <ul>
           <li :class="{ 'is-active': $route.query.board !== 'recent' && $route.query.board !== 'archive' }">
             <router-link :to="{ query: { board: 'my'} }">
@@ -65,7 +103,7 @@
         </ul>
       </div>
 
-      <div class="box" style="padding: 20px;">
+      <div class="board-container">
         <TheBoard v-if="posts" :board="posts" />
       </div>
     </div>
@@ -77,7 +115,7 @@
             {{ $t('blocked-list') }}
           </h1>
 
-          <ul v-if="blocks && blocks.results">
+          <ul v-if="blocks && blocks.results && blocks.results.length > 0">
             <li v-for="blockedUser in blocks.results" :key="blockedUser.id">
               <div class="block-user">
                 <img
@@ -91,8 +129,7 @@
               </div>
             </li>
           </ul>
-
-          <span v-else>차단한 유저가 없습니다.</span>
+          <span v-else>{{ $t('blocked-list-empty') }}</span>
         </div>
       </div>
     </template>
@@ -147,7 +184,8 @@ export default {
       blocks: null,
       updating: false,
       tabIndex: 0,
-      isNicknameEditable: false
+      isNicknameEditable: false,
+      newNickname: null
     }
   },
 
@@ -161,8 +199,8 @@ export default {
     },
 
     // @TODO: setting update를 vuex에도 반영. 그냥 다시 fetch 해도 될지도 (...)
-    async updateSettings () {
-      this.updating = true
+    async updateSettings (showUpdating = true) {
+      this.updating = true && showUpdating
       try {
         await updateUser(store.getters.userId, {
           nickname: this.user.nickname,
@@ -176,19 +214,32 @@ export default {
       } catch (err) {
         store.dispatch('error', '설정 변경 중 문제가 발생했습니다.')
       }
-      this.updating = false
+      this.updating = false && showUpdating
     },
-
-    pictureHandler ({ target: { files: [ file ] } }) {
-      this.user.picture = file
+    async pictureHandler ({ target: { files: [ file ] } }) {
+      let pictureSrc
 
       const reader = new FileReader()
-      reader.onload = e => { this.user.pictureSrc = e.target.result }
+      reader.onload = e => { pictureSrc = e.target.result }
       reader.readAsDataURL(file)
-    },
 
-    toggleNicknameInput () {
-      this.isNicknameEditable = !this.isNicknameEditable
+      this.user.picture = file
+      await this.updateSettings(false)
+
+      this.user.pictureSrc = pictureSrc
+    },
+    async toggleNicknameInput (isUpdate = false) {
+      if (!this.isNicknameEditable) {
+        this.newNickname = this.user.nickname
+        this.isNicknameEditable = true
+      } else {
+        if (isUpdate && this.user.nickname !== this.newNickname) {
+          this.user.nickname = this.newNickname
+          await this.updateSettings()
+        }
+
+        this.isNicknameEditable = false
+      }
     },
 
     async deleteBlockedUser (userId) {
@@ -236,6 +287,7 @@ export default {
 
 <i18n>
 ko:
+  empty-email: '이메일 주소가 없습니다.'
   post-settings: '게시글 보기 설정'
   post-settings-sexual: '성인글 보기 설정'
   post-settings-social: '정치글 보기 설정'
@@ -243,7 +295,11 @@ ko:
   board-recent: '최근 본 글'
   board-archive: '담아둔 글'
   blocked-list: '내가 차단한 유저 목록'
+  blocked-list-empty: '차단한 유저가 없습니다.'
+  save: '저장'
+  cancel: '취소'
 en:
+  empty-email: 'No email address'
   post-settings: 'Post settings'
   post-settings-sexual: 'Show sexual posts'
   post-settings-social: 'Show political posts'
@@ -251,6 +307,9 @@ en:
   board-recent: 'Recently viewed'
   board-archive: 'Bookmarks'
   blocked-list: 'Blocked users'
+  blocked-list-empty: 'There are no blocked users.'
+  save: 'Save'
+  cancel: 'Cancel'
 </i18n>
 
 <style lang="scss" scoped>
@@ -264,24 +323,54 @@ en:
 }
 
 .profile-container {
+  position: relative;
   display: inline-flex;
   width: 6rem;
   height: 6rem;
   margin-bottom: 0.5rem;
-  background-color: grey;
   border-radius: 50%;
 }
 
-.profile-image {
+.profile-container__image {
   width: 6rem;
   height: 6rem;
   object-fit: cover;
   border-radius: 50%;
 }
 
+.profile-container__button {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background-color: #fafafa;
+  border-radius: 50%;
+
+  i {
+    font-size: 1.3rem;
+  }
+}
+
 .nickname {
   font-size: 1.4rem;
   font-weight: 800;
+}
+
+.nickname__input {
+  width: 100%;
+  margin-bottom: 0.3rem;
+}
+
+.nickname__buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 0.3rem;
 }
 
 .email {
@@ -294,6 +383,21 @@ en:
   align-items: center;
   justify-content: space-between;
   margin-top: 0.5rem;
+}
+
+.setting-container__button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.board-container {
+  padding: 2rem;
+  background-color: white;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
 }
 
 .block-user {
