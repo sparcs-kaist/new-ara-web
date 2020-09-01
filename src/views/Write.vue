@@ -24,6 +24,7 @@ export default {
     return {
       post: null,
       saving: false,
+      saved: false,
       emptyWarnings: []
     }
   },
@@ -115,7 +116,6 @@ export default {
           })
         }
       } catch (err) {
-        // @TODO: 에러 핸들링
         /*
          * @TODO: 아마 attachment 삭제...?
          * 근데 그 때 강인이형 말로는 S3 가격 얼마 안 비싸서
@@ -131,6 +131,8 @@ export default {
         return
       }
       this.saving = false
+      this.saved = true
+      window.removeEventListener('beforeunload', this.beforeUnloadHandler)
       this.$router.push({ name: 'post', params: { postId: result.id } })
     }
   },
@@ -144,6 +146,25 @@ export default {
       next(vm => { vm.post = post })
     }
   },
+
+  async beforeRouteLeave (to, from, next) {
+    if (!this.saved) {
+      const response = await this.$store.dispatch('dialog/confirm', this.$t('before-unload'))
+      if (response) next()
+      return
+    }
+    next()
+  },
+  mounted () {
+    this.beforeUnloadHandler = event => {
+      // 대부분의 경우에는 표시되지 않으나 일단 넣어둠
+      event.returnValue = this.$t('before-unload')
+    }
+    window.addEventListener('beforeunload', this.beforeUnloadHandler)
+  },
+  destroyed () {
+    window.removeEventListener('beforeunload', this.beforeUnloadHandler)
+  },
   components: { TheLayout, ThePostWrite }
 }
 </script>
@@ -154,10 +175,12 @@ ko:
   attachment-failed: '첨부파일 업로드에 실패했습니다. 용량을 다시 한번 확인해주세요.'
   create-failed: '글 작성에 실패했습니다. 다시 한 번 시도해주세요.'
   update-failed: '글 수정에 실패했습니다. 다시 한 번 시도해주세요.'
+  before-unload: '이 포스트는 아직 저장되지 않았습니다! 정말 빠져나가시겠습니까?'
 
 en:
   no-empty: 'Please fill in the empty input.'
   attachment-failed: 'Failed to upload attachments. Please double check the size of files.'
   create-failed: 'Failed to write the post. Please try again after a while.'
   update-failed: 'Failed to update the post. Please try again after a while.'
+  before-unload: 'This post is not saved yet. Are you sure to exit?'
 </i18n>
