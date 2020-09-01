@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
-    <TheNavbar/>
-    <TheApiErrorNotification/>
+    <TheNavbar />
+    <TheAlertDialogs />
     <div class="container">
       <div class="columns" :class="{ 'default-columns': isColumnLayout }">
         <slot name="aside"></slot>
@@ -16,18 +16,15 @@
         <slot name="aside-right"></slot>
       </div>
     </div>
-    <!-- <TheFooter/> -->
   </div>
 </template>
 
 <script>
+import TheAlertDialogs from '@/components/TheAlertDialogs.vue'
 import TheNavbar from '@/components/TheNavbar.vue'
-import TheAd from '@/components/TheAd.vue'
-import TheFooter from '@/components/TheFooter.vue'
-import TheApiErrorNotification from '@/components/TheApiErrorNotification.vue'
 
 export default {
-  components: { TheNavbar, TheAd, TheFooter, TheApiErrorNotification },
+  components: { TheAlertDialogs, TheNavbar },
   props: {
     isColumnLayout: {
       type: Boolean,

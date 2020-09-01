@@ -47,7 +47,6 @@ export default {
 
       if (this.$refs.write.getContent() === '<p></p>') {
         this.emptyWarnings.push('content')
-        alert('Cannot post empty article')
       }
 
       if (boardId === '') {
@@ -59,6 +58,11 @@ export default {
       }
 
       if (this.emptyWarnings.length > 0) {
+        this.$store.dispatch('dialog/toast', {
+          type: 'warning',
+          text: this.$t('no-empty')
+        })
+
         return
       }
 
@@ -77,8 +81,10 @@ export default {
             item.key = results[index].data.id
           })
         } catch (err) {
-          /* @TODO: 에러 핸들링 */
-          alert('Failed to upload attachments!')
+          this.$store.dispatch('dialog/toast', {
+            type: 'error',
+            text: this.$t('attachment-failed')
+          })
           this.saving = false
           return
         }
@@ -116,8 +122,11 @@ export default {
          * 별로 상관 없다고 했던 것 같아용
          * - swan
          */
-        if (!this.isEditing) alert('Failed to create a post!')
-        else alert('Failed to update the post!')
+
+        this.$store.dispatch('dialog/toast', {
+          type: 'error',
+          text: this.isEditing ? this.$t('create-failed') : this.$t('update-failed')
+        })
         this.saving = false
         return
       }
@@ -139,6 +148,16 @@ export default {
 }
 </script>
 
-<style>
+<i18n>
+ko:
+  no-empty: '빈 칸을 채워주세요.'
+  attachment-failed: '첨부파일 업로드에 실패했습니다. 용량을 다시 한번 확인해주세요.'
+  create-failed: '글 작성에 실패했습니다. 다시 한 번 시도해주세요.'
+  update-failed: '글 수정에 실패했습니다. 다시 한 번 시도해주세요.'
 
-</style>
+en:
+  no-empty: 'Please fill in the empty input.'
+  attachment-failed: 'Failed to upload attachments. Please double check the size of files.'
+  create-failed: 'Failed to write the post. Please try again after a while.'
+  update-failed: 'Failed to update the post. Please try again after a while.'
+</i18n>

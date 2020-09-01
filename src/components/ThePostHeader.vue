@@ -206,6 +206,9 @@ export default {
 
   methods: {
     async deletePost () {
+      const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-delete'))
+      if (!result) return
+
       await apiDeletePost(this.post.id)
       this.$router.push('/')
     }
@@ -230,6 +233,7 @@ ko:
   list: '목록'
   block: '사용자 차단'
   unblock: '사용자 차단해제'
+  confirm-delete: '정말로 삭제하시겠습니까?'
 
 en:
   archive: 'Bookmark'
@@ -244,6 +248,7 @@ en:
   list: 'Posts'
   block: 'Block User'
   unblock: 'Unblock User'
+  confirm-delete: 'Are you really want to delete this post?'
 </i18n>
 
 <style lang="scss" scoped>

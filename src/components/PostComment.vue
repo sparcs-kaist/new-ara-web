@@ -32,7 +32,7 @@
                     </a>
                   </template>
 
-                  <a v-else href="#" class="dropdown-item">
+                  <a v-else @click="reportComment" class="dropdown-item">
                     {{ $t('report') }}
                   </a>
                 </div>
@@ -95,7 +95,7 @@ import LikeButton from '@/components/LikeButton.vue'
 import PostCommentEditor from '@/components/PostCommentEditor.vue'
 
 import { mapGetters } from 'vuex'
-import { voteComment, deleteComment } from '@/api'
+import { voteComment, deleteComment, reportComment } from '@/api'
 import { timeago } from '@/helper.js'
 
 export default {
@@ -142,8 +142,18 @@ export default {
     },
 
     async deleteComment () {
+      const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-delete'))
+      if (!result) return
+
       await deleteComment(this.comment.id)
       this.$emit('delete')
+    },
+
+    async reportComment () {
+      const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-report'))
+      if (!result) return
+
+      await reportComment(this.comment.id)
     },
 
     editComment () {
@@ -172,6 +182,8 @@ ko:
   reply-comment: '답글쓰기'
   placeholder: '입력...'
   new-reply-comment: '작성하기'
+  confirm-delete: '정말로 이 댓글을 삭제하시겠습니까?'
+  confirm-report: '정말로 이 댓글을 신고하시겠습니까?'
 en:
   delete: 'Delete'
   report: 'Report'
@@ -180,6 +192,8 @@ en:
   reply-comment: 'Reply'
   placeholder: 'Type here...'
   new-reply-comment: 'Send'
+  confirm-delete: 'Are you really want to delete this comment?'
+  confirm-report: 'Are you really want to report this comment?'
 </i18n>
 
 <style lang="scss" scoped>

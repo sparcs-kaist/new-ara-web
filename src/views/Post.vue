@@ -152,29 +152,35 @@ export default {
       if (this.post.my_scrap) {
         await unarchivePost(this.post.my_scrap.id)
         this.post.my_scrap = null
-        alert(this.$t('unarchived'))
+        this.$store.dispatch('dialog/toast', this.$t('unarchived'))
       } else {
         const result = await archivePost(this.post.id)
         this.post.my_scrap = result
-        alert(this.$t('archived'))
+        this.$store.dispatch('dialog/toast', this.$t('archived'))
       }
       await this.$store.dispatch('fetchArchivedPosts')
     },
 
     async report () {
+      const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-report'))
+      if (!result) return
+
       await reportPost(this.post.id)
-      alert(this.$t('reported'))
+      this.$store.dispatch('dialog/toast', this.$t('reported'))
     },
 
     async block () {
       if (!this.post.created_by.is_blocked) {
+        const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-block'))
+        if (!result) return
+
         await blockUser(this.post.created_by.id)
         this.post.created_by.is_blocked = true
-        alert(this.$t('blocked'))
+        this.$store.dispatch('dialog/toast', this.$t('blocked'))
       } else {
         await unblockUser(this.post.created_by.id)
         this.post.created_by.is_blocked = false
-        alert(this.$t('unblocked'))
+        this.$store.dispatch('dialog/toast', this.$t('unblocked'))
       }
 
       this.$router.push()
@@ -222,6 +228,8 @@ ko:
   reported: '신고되었습니다!'
   blocked: '해당 유저가 차단되었습니다!'
   unblocked: '해당 유저가 차단해제되었습니다!'
+  confirm-report: '정말로 신고하시겠습니까?'
+  confirm-block: '정말로 차단하시겠습니까?'
 
 en:
   archived: 'Successfully added to your archive!'
@@ -229,4 +237,6 @@ en:
   reported: 'Successfully reported!'
   blocked: 'The user has been blocked!'
   unblocked: 'The user has been unblocked!'
+  confirm-report: 'Are you really want to report this post?'
+  confirm-block: 'Are you really want to block this user?'
 </i18n>

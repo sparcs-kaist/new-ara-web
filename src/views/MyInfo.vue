@@ -212,7 +212,10 @@ export default {
           store.commit('setUserProfile', res.data)
         })
       } catch (err) {
-        store.dispatch('error', '설정 변경 중 문제가 발생했습니다.')
+        this.$store.dispatch('dialog/toast', {
+          text: this.$t('setting-change-failed'),
+          type: 'error'
+        })
       }
       this.updating = false && showUpdating
     },
@@ -247,7 +250,10 @@ export default {
         await deleteBlock(userId)
         this.user.blocks = await fetchBlocks()
       } catch (error) {
-        alert('차단 유저 삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.')
+        this.$store.dispatch('dialog/toast', {
+          text: this.$t('unblock-failed'),
+          type: 'error'
+        })
       }
     }
   },
@@ -298,6 +304,9 @@ ko:
   blocked-list-empty: '차단한 유저가 없습니다.'
   save: '저장'
   cancel: '취소'
+  setting-change-failed: '설정 변경 중 문제가 발생했습니다.'
+  unblock-failed: '차단 유저 삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+
 en:
   empty-email: 'No email address'
   post-settings: 'Post settings'
@@ -310,6 +319,8 @@ en:
   blocked-list-empty: 'There are no blocked users.'
   save: 'Save'
   cancel: 'Cancel'
+  setting-change-failed: 'Failed while updating settings.'
+  unblock-failed: 'Failed while unblocking user. Please try again after a while.'
 </i18n>
 
 <style lang="scss" scoped>
