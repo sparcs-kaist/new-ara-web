@@ -14,7 +14,7 @@
             [{{ post.parent_topic[`${$i18n.locale}_name`] }}]
           </span>
 
-          {{ post.title }}
+          {{ title }}
         </span>
       </div>
 
@@ -113,9 +113,20 @@
                       {{ $t('delete') }}
                     </a>
                   </template>
-                  <a v-else class="dropdown-item" @click="$emit('report')">
-                    {{ $t('report') }}
-                  </a>
+                  <template v-else>
+                    <a class="dropdown-item" @click="$emit('report')">
+                      {{ $t('report') }}
+                    </a>
+
+                    <a class="dropdown-item" @click="$emit('block')">
+                      <template v-if="isBlocked">
+                        {{ $t('unblock') }}
+                      </template>
+                      <template v-else>
+                        {{ $t('block') }}
+                      </template>
+                    </a>
+                  </template>
                 </div>
               </div>
             </div>
@@ -137,9 +148,8 @@ export default {
   name: 'the-post-header',
   props: {
     post: { required: true },
-    context: {
-      type: Object
-    }
+    context: { type: Object },
+    showHidden: { type: Boolean }
   },
   data () {
     return {
@@ -174,6 +184,23 @@ export default {
     boardName () {
       return this.post.parent_board && this.post.parent_board[`${this.$i18n.locale}_name`]
     },
+    title () {
+      if (this.post.is_hidden) {
+        if (this.showHidden) {
+          return this.post.hidden_title
+        }
+
+        return this.post.why_hidden
+          .slice(0, 1)
+          .map(reason => reason.detail)
+          .join(' ')
+      }
+
+      return this.post.title
+    },
+    isBlocked () {
+      return this.post.created_by && this.post.created_by.is_blocked
+    },
     ...mapGetters([ 'userId' ])
   },
 
@@ -201,6 +228,8 @@ ko:
   previous: '이전글'
   next: '다음글'
   list: '목록'
+  block: '사용자 차단'
+  unblock: '사용자 차단해제'
 
 en:
   archive: 'Bookmark'
@@ -213,6 +242,8 @@ en:
   previous: 'Previous'
   next: 'Next'
   list: 'Posts'
+  block: 'Block User'
+  unblock: 'Unblock User'
 </i18n>
 
 <style lang="scss" scoped>

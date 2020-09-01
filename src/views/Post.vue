@@ -4,8 +4,25 @@
       <TheSidebar />
     </template>
 
-    <ThePostHeader :post="post" :context="context" @archive="archive" @report="report" @vote="vote" />
-    <ThePostDetail :post="post" @archive="archive" @report="report" @vote="vote" />
+    <ThePostHeader
+      :post="post"
+      :context="context"
+      :showHidden="showHidden"
+      @archive="archive"
+      @report="report"
+      @vote="vote"
+      @block="block"
+    />
+
+    <ThePostDetail
+      :post="post"
+      :showHidden="showHidden"
+      @archive="archive"
+      @report="report"
+      @vote="vote"
+      @show-hidden="showHidden = true"
+    />
+
     <ThePostComments
       :comments="post.comments"
       :postId="postId"
@@ -19,7 +36,7 @@
 </template>
 
 <script>
-import { archivePost, fetchPost, reportPost, unarchivePost, votePost } from '@/api'
+import { archivePost, blockUser, fetchPost, reportPost, unarchivePost, unblockUser, votePost } from '@/api'
 import { fetchWithProgress } from './helper.js'
 import ThePostComments from '@/components/ThePostComments.vue'
 import ThePostDetail from '@/components/ThePostDetail.vue'
@@ -36,7 +53,8 @@ export default {
   },
   data () {
     return {
-      post: {}
+      post: {},
+      showHidden: false
     }
   },
   computed: {
@@ -146,6 +164,26 @@ export default {
     async report () {
       await reportPost(this.post.id)
       alert(this.$t('reported'))
+    },
+
+    async block () {
+      if (!this.post.created_by.is_blocked) {
+        await blockUser(this.post.created_by.id)
+        this.post.created_by.is_blocked = true
+        alert(this.$t('blocked'))
+      } else {
+        await unblockUser(this.post.created_by.id)
+        this.post.created_by.is_blocked = false
+        alert(this.$t('unblocked'))
+      }
+
+      this.$router.push()
+      /*
+      const [ post ] = await fetchWithProgress([
+        fetchPost({ postId: this.post.id, context: this.$route.query })
+      ])
+      this.post = post
+      */
     }
   },
 
@@ -161,6 +199,7 @@ export default {
       fetchPost({ postId, context: query })
     ])
     this.post = post
+    this.showHidden = false
     next()
   },
 
@@ -181,9 +220,13 @@ ko:
   archived: '담아둔 게시글에 담아졌습니다!'
   unarchived: '담아둔 게시글에서 제거하였습니다!'
   reported: '신고되었습니다!'
+  blocked: '해당 유저가 차단되었습니다!'
+  unblocked: '해당 유저가 차단해제되었습니다!'
 
 en:
   archived: 'Successfully added to your archive!'
   unarchived: 'Successfully removed from your archive!'
   reported: 'Successfully reported!'
+  blocked: 'The user has been blocked!'
+  unblocked: 'The user has been unblocked!'
 </i18n>
