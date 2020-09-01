@@ -340,6 +340,12 @@ export default {
     padding: 8px;
     border-bottom: 1px solid var(--grey-300);
 
+    position: sticky;
+    top: 0;
+    background: var(--grey-100);
+    border-radius: 10px 10px 0 0;
+    z-index: 1;
+
     .menubar__button {
       background-color: transparent;
       cursor: pointer;
