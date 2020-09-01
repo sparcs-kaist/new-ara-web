@@ -1,7 +1,5 @@
 <template>
   <div class="post">
-    <hr />
-
     <div class="attachments" v-if="attachments && attachments.length > 0">
       <div class="dropdown is-hoverable is-right">
         <div class="dropdown-trigger">
@@ -27,7 +25,10 @@
     </div>
 
     <div class="content">
-      <TextEditor :editable="false" :content="post.content" v-if="post.content" />
+      <TextEditor :editable="false" :content="content" v-if="content" ref="editor" />
+      <button v-if="post.is_hidden && !showHidden" class="button" @click="$emit('show-hidden')">
+        {{ $t('show-hidden') }}
+      </button>
     </div>
 
     <div class="post__footer">
@@ -60,7 +61,8 @@ import TextEditor from '@/components/TheTextEditor.vue'
 export default {
   name: 'the-post-detail',
   props: {
-    post: { required: true }
+    post: { required: true },
+    showHidden: { type: Boolean }
   },
   data () {
     return {
@@ -76,6 +78,19 @@ export default {
     },
     postAuthorId () {
       return this.post.created_by && this.post.created_by.id
+    },
+    content () {
+      if (this.post.is_hidden) {
+        if (this.showHidden) {
+          return this.post.hidden_content
+        }
+
+        return this.post.why_hidden
+          .map(reason => reason.detail)
+          .join(' ')
+      }
+
+      return this.post.content
     }
   },
   watch: {
@@ -109,6 +124,7 @@ ko:
   report: '신고하기'
   attachments: '첨부파일 모아보기'
   more: '{author} 님의 게시글 더 보기'
+  show-hidden: '숨김글 보기'
 
 en:
   archive: 'Bookmark'
@@ -116,6 +132,7 @@ en:
   report: 'Report'
   attachments: 'Attachments'
   more: 'Read more posts by {author}'
+  show-hidden: 'Show hidden posts'
 </i18n>
 
 <style lang="scss" scoped>

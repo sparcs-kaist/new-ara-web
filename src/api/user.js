@@ -27,6 +27,12 @@ export const updateUser = (userId, { nickname, picture, sexual, social }) => {
   )
 }
 
+export const blockUser = (userId) =>
+  http.post('/blocks/', { user: userId })
+
+export const unblockUser = (userId) =>
+  http.post(`/blocks/without_id/`, { blocked: userId })
+
 export const fetchNotifications = ({ query: { page } }) => {
   const context = {}
   if (page) context.page = page

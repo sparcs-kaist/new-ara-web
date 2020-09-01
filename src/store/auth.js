@@ -1,4 +1,4 @@
-import { fetchMe, updateDarkMode } from '@/api'
+import { fetchMe as apiFetchMe, updateDarkMode } from '@/api'
 
 const setDarkMode = (darkMode) => {
   localStorage.darkMode = darkMode
@@ -60,7 +60,7 @@ export default {
       const { hasFetched } = getters
       try {
         if (!hasFetched) {
-          commit('setUserProfile', await fetchMe())
+          commit('setUserProfile', await apiFetchMe())
         }
 
         const { userId } = getters

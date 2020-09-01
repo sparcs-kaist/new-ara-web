@@ -166,7 +166,7 @@
       <EditorContent :editor="editor" class="editor-content" />
     </div>
 
-    <div class="dialogs" v-if="!showOnly">
+    <div class="dialogs" v-if="editable">
       <TheTextEditorImageDialog ref="imageDialog" @attach-files="attachFiles" />
     </div>
   </div>
@@ -196,7 +196,15 @@ import TheTextEditorImageDialog from '@/components/TheTextEditorImageDialog'
 
 export default {
   name: 'the-text-editor',
-  props: ['showOnly', 'content', 'editable'],
+  props: {
+    content: {
+      type: String,
+      default: ''
+    },
+    editable: {
+      type: Boolean
+    }
+  },
   data () {
     return {
       editor: new Editor({
@@ -283,6 +291,14 @@ export default {
           node.attrs['src'] = newItem.file // TODO is it correct?
         }
       })
+    }
+  },
+
+  watch: {
+    content (newContent) {
+      if (!this.editable) {
+        this.editor.setContent(newContent)
+      }
     }
   },
 

@@ -71,7 +71,7 @@ en:
 .sidebar {
   max-width: 135px;
   margin-bottom: 2rem;
-  font-family: 'NanumSquareRound',sans-serif;
+  font-family: var(--font);
 
   & > * {
     margin-bottom: 50px;

@@ -79,9 +79,9 @@
     <div class="write__content">
       <TextEditor
         ref="textEditor"
-        editable="true"
         :content="initialPostContent"
         @attach-files="attachFiles"
+        editable
       />
 
       <i

@@ -116,6 +116,7 @@ export default {
       margin: 0 10px;
       flex: 1;
       white-space: nowrap;
+      transition: color var(--duration) var(--background-timing);
 
       &--selected {
         color: var(--theme-400);

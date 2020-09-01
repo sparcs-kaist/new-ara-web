@@ -58,7 +58,7 @@ export default {
 .board {
   max-width: 450px;
   margin-bottom: 2rem;
-  font-family: 'NanumSquareRound', sans-serif;
+  font-family: var(--font);
 
   &__name {
     font-size: 1.2rem;

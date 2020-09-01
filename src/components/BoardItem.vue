@@ -21,6 +21,10 @@
 
         <div class="board-item__title-wrapper">
           <div class="board-item__title">
+            <span class="board-item__topic" v-if="post.parent_topic">
+              [{{ post.parent_topic[`${$i18n.locale}_name`] }}]
+            </span>
+
             {{ post.title }}
           </div>
         </div>
@@ -109,6 +113,7 @@ en:
 
   &__body {
     display: flex;
+    align-items: center;
     flex: 1;
   }
 
@@ -151,6 +156,11 @@ en:
     white-space: nowrap;
   }
 
+  &__topic {
+    color: var(--grey-400);
+    font-weight: 400;
+  }
+
   &:first-child {
     margin-top: 0;
   }
@@ -172,6 +182,7 @@ en:
     margin-right: 10px;
     white-space: nowrap;
     font-size: .9rem;
+    font-weight: 400;
 
     &:not(.post-status__like) {
       width: 4.5rem;

@@ -6,7 +6,7 @@
     </div>
     <div class="button-container is-blocker has-text-centered">
       <div class="inner-container">
-        <div class="logo"> ARA </div>
+        <div class="logo"> <img src="@/assets/ServiceAra.svg"> </div>
         <a class="login-button" :href="loginUrl"> SPARCS SSO로 로그인 </a>
       </div>
     </div>
@@ -45,10 +45,9 @@ export default {
   .inner-container {
     margin-top: 40vh;
     .logo {
-      height: 4rem;
-      font-size: 3rem;
-      font-family: 'Raleway', sans-serif;
-      color: var(--theme-400);
+      img {
+        height: 4rem;
+      }
     }
     .login-button {
       height: 2rem;

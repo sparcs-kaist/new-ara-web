@@ -1,10 +1,22 @@
 <template>
   <div class="post">
     <div class="title">
-      <div class="title__title">
-        {{ post.title }}
+      <div class="title__title-wrapper">
+        <router-link class="title__board" :to="{
+          name: 'board',
+          params: { boardSlug }
+        }">
+          {{ boardName }}
+        </router-link>
+
+        <span class="title__title">
+          <span class="title__topic" v-if="post.parent_topic">
+            [{{ post.parent_topic[`${$i18n.locale}_name`] }}]
+          </span>
+
+          {{ title }}
+        </span>
       </div>
-      <!-- TODO range check and board check-->
 
       <div class="title__buttons">
         <component
@@ -35,7 +47,7 @@
         </router-link>
       </div>
     </div>
-    <div id="metadata">
+    <div class="metadata">
       <img :src="userPictureUrl" class="post-author-profile-picture"/>
       <div class="post-header">
         <router-link :to="{
@@ -44,71 +56,85 @@
           {{ postAuthor }}
         </router-link>
 
-        <div class="post-header__info">
-          <span class="post-header__time">
-            {{ postCreatedAt }}
-          </span>
+        <div class="post-header__time">
+          {{ postCreatedAt }}
+        </div>
 
-          <div class="post-header__status">
-            <LikeButton class="post-header__like" :item="post" votable @vote="$emit('vote', $event)"/>
+        <div class="post-header__status">
+          <LikeButton class="post-header__status-item" :item="post" votable @vote="$emit('vote', $event)"/>
 
-            <div class="post-header__comment">
-              <span class="post-header__label">
-                {{ $t('comments') }}
-              </span>
+          <div class="post-header__status-item">
+            <span class="post-header__label">
+              {{ $t('comments') }}
+            </span>
 
-              {{ post.nested_comments_count }}
+            {{ post.nested_comments_count }}
+          </div>
+
+          <div class="post-header__status-item">
+            <span class="post-header__label">
+              {{ $t('views') }}
+            </span>
+
+            {{ post.hit_count }}
+          </div>
+
+          <span class="dropdown is-right is-hoverable">
+            <div class="post-header__status-item dropdown-trigger">
+              <button
+                class="post-header__dropdown-button"
+                aria-haspopup="true"
+                aria-controls="dropdownMenu">
+
+                <i class="material-icons">more_vert</i>
+              </button>
             </div>
+            <div class="dropdown-menu" id="dropdownMenu" role="menu">
+              <div class="dropdown-content">
+                <div class="dropdown-item">
+                  <a class="dropdown-item" @click="$emit('archive')">
+                    {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
+                  </a>
 
-            <div class="post-header__view">
-              <span class="post-header__label">
-                {{ $t('views') }}
-              </span>
+                  <template v-if="postUserId === userId">
+                    <router-link class="dropdown-item"
+                      :to="{
+                        name: 'write',
+                        params: {
+                          postId: post.id
+                        }
+                      }">
+                        {{ $t('edit') }}
+                    </router-link>
 
-              {{ post.hit_count }}
-            </div>
-
-            <span class="dropdown is-right is-hoverable">
-              <div class="dropdown-trigger">
-                <button class="button no-border" aria-haspopup="true" aria-controls="dropdownMenu">
-                  <i class="material-icons">more_vert</i>
-                </button>
-              </div>
-              <div class="dropdown-menu" id="dropdownMenu" role="menu">
-                <div class="dropdown-content">
-                  <div class="dropdown-item">
-                    <a class="dropdown-item" @click="$emit('archive')">
-                      {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
+                    <a @click="deletePost"
+                      href="#"
+                      class="dropdown-item">
+                      {{ $t('delete') }}
                     </a>
-
-                    <template v-if="postUserId === userId">
-                      <router-link class="dropdown-item"
-                        :to="{
-                          name: 'write',
-                          params: {
-                            postId: post.id
-                          }
-                        }">
-                          {{ $t('edit') }}
-                      </router-link>
-
-                      <a @click="deletePost"
-                        href="#"
-                        class="dropdown-item">
-                        {{ $t('delete') }}
-                      </a>
-                    </template>
-                    <a v-else class="dropdown-item" @click="$emit('report')">
+                  </template>
+                  <template v-else>
+                    <a class="dropdown-item" @click="$emit('report')">
                       {{ $t('report') }}
                     </a>
-                  </div>
+
+                    <a class="dropdown-item" @click="$emit('block')">
+                      <template v-if="isBlocked">
+                        {{ $t('unblock') }}
+                      </template>
+                      <template v-else>
+                        {{ $t('block') }}
+                      </template>
+                    </a>
+                  </template>
                 </div>
               </div>
-            </span>
-          </div>
+            </div>
+          </span>
         </div>
       </div>
     </div>
+    <hr class="divider" />
   </div>
 </template>
 
@@ -122,9 +148,8 @@ export default {
   name: 'the-post-header',
   props: {
     post: { required: true },
-    context: {
-      type: Object
-    }
+    context: { type: Object },
+    showHidden: { type: Boolean }
   },
   data () {
     return {
@@ -153,6 +178,29 @@ export default {
     prevPost () {
       return this.post.side_articles && this.post.side_articles.before
     },
+    boardSlug () {
+      return this.post.parent_board && this.post.parent_board.slug
+    },
+    boardName () {
+      return this.post.parent_board && this.post.parent_board[`${this.$i18n.locale}_name`]
+    },
+    title () {
+      if (this.post.is_hidden) {
+        if (this.showHidden) {
+          return this.post.hidden_title
+        }
+
+        return this.post.why_hidden
+          .slice(0, 1)
+          .map(reason => reason.detail)
+          .join(' ')
+      }
+
+      return this.post.title
+    },
+    isBlocked () {
+      return this.post.created_by && this.post.created_by.is_blocked
+    },
     ...mapGetters([ 'userId' ])
   },
 
@@ -180,6 +228,8 @@ ko:
   previous: '이전글'
   next: '다음글'
   list: '목록'
+  block: '사용자 차단'
+  unblock: '사용자 차단해제'
 
 en:
   archive: 'Bookmark'
@@ -192,6 +242,8 @@ en:
   previous: 'Previous'
   next: 'Next'
   list: 'Posts'
+  block: 'Block User'
+  unblock: 'Unblock User'
 </i18n>
 
 <style lang="scss" scoped>
@@ -199,20 +251,33 @@ en:
 
 .title {
   color: var(--grey-700);
-  font-family: 'NanumSquareRound',sans-serif;
-  font-size: 1.5rem;
-  margin-bottom: 1.25rem;
+  font-family: var(--font);
+  font-size: 1.35rem;
+  margin-bottom: 20px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex: 1;
 
-  &__title {
+  &__title-wrapper {
+    display: flex;
+    flex-direction: column;
     flex: 1;
+  }
+
+  &__topic {
+    margin-right: 10px;
+  }
+
+  &__board {
+    color: var(--theme-400);
+    font-weight: 500;
+    margin-bottom: 12px;
   }
 
   &__button {
     margin-left: 0.5rem;
     font-size: .9rem;
+    font-weight: 400;
 
     &--wide {
       padding: 0 15px;
@@ -233,8 +298,8 @@ en:
   }
 }
 
-#metadata {
-  font-family: 'NanumSquareRound',sans-serif;
+.metadata {
+  font-family: var(--font);
   color: var(--grey-700);
   display: flex;
   flex-direction: row;
@@ -251,6 +316,8 @@ en:
   }
 
   .post-header {
+    display: flex;
+    flex-direction: column;
     flex: 1;
 
     &__author {
@@ -265,46 +332,58 @@ en:
       flex: 1;
     }
 
-    &__info {
-      display: flex;
-      align-items: center;
+    &__status {
+      display: inline-flex;
+      align-self: flex-end;
+      justify-content: flex-end;
+      font-size: .95rem;
+      margin-top: -30px;
     }
 
-    &__status {
-      display: flex;
-      font-size: .95rem;
-      margin-top: -10px;
+    &__status-item {
+      display: inline-flex;
+      align-items: center;
+      margin: 10px;
+      white-space: nowrap;
+    }
 
-      & > * {
-        margin: 10px;
-        white-space: nowrap;
+    &__label {
+      margin-right: 5px;
+      font-weight: 500;
+    }
+
+    &__dropdown-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: 5px;
+      background: transparent;
+      width: 1.8rem;
+      height: 1.8rem;
+    }
+
+    .dropdown:hover {
+      .post-header__dropdown-button {
+        background: var(--grey-300);
       }
     }
   }
 
   @include breakPoint(min) {
-    padding-bottom: 2rem;
-
     .post-header__status {
-      position: absolute;
+      margin-top: 0;
       flex-wrap: wrap;
-      justify-content: flex-end;
-      right: 0;
-      bottom: -1rem;
-      height: 2.5rem;
     }
   }
 }
 
-.material-icons {
-  font-size: 16px;
+.divider {
+  margin-top: 10px;
 }
 
-.no-border {
-  border: none;
-  height: 13px;
-  width: 13px;
-  float: right;
+.material-icons {
+  font-size: 16px;
 }
 
 .dropdown-content {
