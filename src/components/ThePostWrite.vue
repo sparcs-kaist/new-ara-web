@@ -229,8 +229,10 @@ export default {
 
     savePostByThePostWrite () {
       if (!this.loaded) {
-        // TODO add error support
-        alert('Please wait for a sec!')
+        this.$store.dispatch('dialog/toast', {
+          text: this.$t('uploading'),
+          type: 'info'
+        })
         return
       }
 
@@ -275,6 +277,7 @@ ko:
   write-publish: '게시글 등록하기'
   write-edit: '게시글 수정하기'
   no-category: '말머리 없음'
+  uploading: '현재 업로딩 중입니다.'
 
 en:
   write: 'Write a post'
@@ -286,6 +289,7 @@ en:
   no-category: 'No Category'
   write-publish: 'Publish Post'
   write-edit: 'Save Post'
+  uploading: 'It is currently uploading post. Please wait for a second.'
 </i18n>
 
 <style lang="scss" scoped>

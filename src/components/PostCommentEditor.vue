@@ -109,8 +109,10 @@ export default {
         this.content = ''
         this.autosize()
       } catch (err) {
-        // @TODO: 채팅 생성에 실패했다고 알려주기
-        alert('Failed to write a comment!')
+        this.$store.dispatch('dialog/toast', {
+          text: this.$t('write-failed'),
+          type: 'error'
+        })
       }
 
       this.isUploading = false
@@ -132,11 +134,13 @@ ko:
   placeholder: '댓글을 작성하세요.'
   new-comment: '등록'
   close-comment: '취소'
+  write-failed: '댓글 작성에 실패하였습니다'
 
 en:
   placeholder: 'Type here...'
   new-comment: 'Send'
   close-comment: 'Cancel'
+  write-failed: 'Failed to write comment'
 </i18n>
 
 <style lang="scss" scoped>

@@ -24,8 +24,8 @@ export default {
 }
 .fetch-progress {
   height: 100%;
-  background-color: #007AFF;
-  box-shadow: 0 0 2px #007AFF;
+  background-color: var(--theme-400);
+  box-shadow: 0 0 2px var(--theme-400);
   transition: width 0.1s ease;
 }
 </style>
