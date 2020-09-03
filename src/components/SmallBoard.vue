@@ -7,7 +7,7 @@
     v-for="(post, index) in listitems"
     :key="post.id"
     class="board__post post">
-      <h3>
+      <h3 class="post__title-wrapper">
         <router-link class="post__title"
         :to="{
           name: 'post',
@@ -76,6 +76,7 @@ export default {
     justify-content: space-between;
     margin: 0.5rem 0;
     padding: 5px 1rem;
+    white-space: nowrap;
 
     &__index {
       font-weight: 500;
@@ -85,10 +86,17 @@ export default {
     &__username{
       color: var(--text);
       font-size: 0.85rem;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
     &__title {
       color: var(--text);
+    }
+
+    &__title-wrapper {
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
 

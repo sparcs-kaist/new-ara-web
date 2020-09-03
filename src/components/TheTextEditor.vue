@@ -370,6 +370,7 @@ export default {
   }
 
   .editor-content {
+    text-rendering: optimizeLegibility;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
