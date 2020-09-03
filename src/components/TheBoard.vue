@@ -39,6 +39,10 @@ export default {
         ...this.fromQuery
       }
 
+      if (this.$route.query.query) {
+        query.search_query = this.$route.query.query
+      }
+
       if (this.$route.query.page) {
         query.from_page = this.$route.query.page
       }

@@ -1,7 +1,7 @@
 <template>
   <TheLayout>
     <template #aside>
-      <TheSidebar searchable />
+      <TheSidebar />
     </template>
 
     <TheBoard :board="archive" :title="$t('archive')" :from-query="{ from_view: 'scrap' }" />
