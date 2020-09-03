@@ -104,7 +104,7 @@
       </div>
 
       <div class="board-container">
-        <TheBoard v-if="posts" :board="posts" />
+        <TheBoard v-if="posts" :board="posts" :fromQuery="fromQuery" />
       </div>
     </div>
 
@@ -146,7 +146,7 @@ import {
   fetchRecentViewedPosts,
   deleteBlock
 } from '@/api'
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { fetchWithProgress } from './helper'
 import TheBoard from '@/components/TheBoard.vue'
 import TheLayout from '@/components/TheLayout.vue'
@@ -190,7 +190,21 @@ export default {
   },
 
   computed: {
-    ...mapState([ 'recentPosts', 'archivedPosts' ])
+    ...mapState([ 'recentPosts', 'archivedPosts' ]),
+    ...mapGetters([ 'userId' ]),
+
+    fromQuery () {
+      switch (this.$route.query.board) {
+        case 'recent':
+          return { from_view: 'recent' }
+
+        case 'archive':
+          return { from_view: 'scrap' }
+
+        default:
+          return { from_view: 'user', created_by: this.userId }
+      }
+    }
   },
 
   methods: {
@@ -202,7 +216,7 @@ export default {
     async updateSettings (showUpdating = true) {
       this.updating = true && showUpdating
       try {
-        await updateUser(store.getters.userId, {
+        await updateUser(this.userId, {
           nickname: this.user.nickname,
           email: this.user.email,
           picture: this.user.picture,

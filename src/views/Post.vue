@@ -72,11 +72,11 @@ export default {
 
       switch (from_view) {
         case 'user':
-          return { name: 'user', params: { created_by: this.$route.query.user }, query }
+          return { name: 'user', params: { username: this.$route.query.created_by }, query }
 
         case 'recent':
           query.board = 'recent'
-          return { name: 'myinfo', query }
+          return { name: 'my-info', query }
 
         case 'scrap':
           return { name: 'archive', query }
