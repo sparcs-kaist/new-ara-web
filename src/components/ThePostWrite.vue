@@ -135,7 +135,6 @@ export default {
       boardId: '',
       categoryId: '$not-set',
       title: '',
-      content: '',
       loaded: true
     }
   },
@@ -186,7 +185,6 @@ export default {
       this.boardId = this.post.parent_board.id
       this.categoryId = this.post.topic ? this.post.topic.id : '$not-set'
       this.title = this.post.title
-      this.content = this.post.content
       this.loaded = false
     }
     const { board } = this.$route.query
