@@ -56,6 +56,18 @@
           {{ $t('input-category-warning') }}
         </p>
       </div>
+
+      <div class="write__input write__content-checkbox">
+        <label class="checkbox">
+          {{ $t('is-sexual') }}
+          <input type="checkbox" v-model="isSexual">
+        </label>
+
+        <label class="checkbox">
+          {{ $t('is-social') }}
+          <input type="checkbox" v-model="isSocial">
+        </label>
+      </div>
     </div>
 
     <div class="write__row">
@@ -135,6 +147,8 @@ export default {
       boardId: '',
       categoryId: '$not-set',
       title: '',
+      isSexual: false,
+      isSocial: false,
       loaded: true
     }
   },
@@ -185,6 +199,8 @@ export default {
       this.boardId = this.post.parent_board.id
       this.categoryId = this.post.topic ? this.post.topic.id : '$not-set'
       this.title = this.post.title
+      this.isSocial = this.post.is_content_social
+      this.isSexual = this.post.is_content_sexual
       this.loaded = false
     }
     const { board } = this.$route.query
@@ -234,12 +250,14 @@ export default {
         return
       }
 
-      const { title, boardId, categoryId } = this
+      const { title, boardId, categoryId, isSocial, isSexual } = this
       this.$emit('save-post',
         {
           title,
           boardId,
           categoryId,
+          isSocial,
+          isSexual,
           attachments: this.$refs.attachments.files
         }
       )
@@ -276,6 +294,8 @@ ko:
   write-edit: '게시글 수정하기'
   no-category: '말머리 없음'
   uploading: '현재 업로딩 중입니다.'
+  is-sexual: '성인글'
+  is-social: '정치글'
 
 en:
   write: 'Write a post'
@@ -288,6 +308,8 @@ en:
   write-publish: 'Publish Post'
   write-edit: 'Save Post'
   uploading: 'It is currently uploading post. Please wait for a second.'
+  is-sexual: 'Adult Post'
+  is-social: 'Politics Post'
 </i18n>
 
 <style lang="scss" scoped>
@@ -341,6 +363,16 @@ en:
 
   &__title-input {
     display: flex;
+  }
+
+  &__content-checkbox {
+    align-items: center;
+    flex-direction: row;
+    padding-bottom: 5px;
+
+    .checkbox {
+      margin: 5px;
+    }
   }
 
   &__warning {

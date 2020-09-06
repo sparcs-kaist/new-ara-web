@@ -9,16 +9,12 @@ export const createPost = ({ boardId, newArticle }) =>
   http.post('articles/', {
     ...newArticle,
     is_anonymous: false,
-    is_content_sexual: false,
-    is_content_social: false,
     parent_board: boardId
   }).then(({ data }) => data)
 
 export const updatePost = ({ postId, newArticle }) =>
   http.put(`articles/${postId}/`, {
-    ...newArticle,
-    is_content_sexual: false,
-    is_content_social: false
+    ...newArticle
   }).then(({ data }) => data)
 
 export const archivePost = (postId) =>

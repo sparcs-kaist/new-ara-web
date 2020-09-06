@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     async savePost (newArticle) {
-      const { title, boardId, categoryId, attachments } = newArticle
+      const { title, boardId, categoryId, isSexual, isSocial, attachments } = newArticle
 
       this.emptyWarnings = []
       if (title === '') {
@@ -100,8 +100,11 @@ export default {
         title,
         content,
         attachments: attachmentIds,
-        parent_topic: categoryId
+        parent_topic: categoryId,
+        is_content_sexual: isSexual,
+        is_content_social: isSocial
       }
+
       let result
       try {
         if (!this.isEditing) {
