@@ -4,6 +4,10 @@
       <TheHomeSearchbar />
     </div>
 
+    <div class="home__organizations">
+      <TheOrganizations />
+    </div>
+
     <div class="columns is-multiline">
       <SmallBoard :listitems="dailyBests" class="home__board column is-6" detail>
         {{ $t('today-best') }}
@@ -21,6 +25,7 @@ import { fetchHome } from '@/api'
 import { fetchWithProgress } from './helper.js'
 import SmallBoard from '@/components/SmallBoard.vue'
 import TheHomeSearchbar from '@/components/TheHomeSearchbar.vue'
+import TheOrganizations from '@/components/TheOrganizations.vue'
 import TheLayout from '@/components/TheLayout.vue'
 
 export default {
@@ -53,6 +58,7 @@ export default {
   components: {
     SmallBoard,
     TheHomeSearchbar,
+    TheOrganizations,
     TheLayout
   }
 }
@@ -82,6 +88,10 @@ en:
 
   &__board {
     margin-top: 10px;
+  }
+
+  &__organizations {
+    margin-bottom: 70px;
   }
 }
 
