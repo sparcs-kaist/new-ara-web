@@ -1,11 +1,11 @@
 <template>
-  <a
-    :href="generateHref"
+  <router-link
+    :to="generateHref"
     class="organization-card"
     :style="{ 'background-color': backgroundColor }">
     <img class="logo" v-if="id" :src="require(`@/assets/Logo${id}.png`)" />
     <span class="name">{{ name }}</span>
-  </a>
+  </router-link>
 </template>
 
 <style lang="scss" scoped>
@@ -50,6 +50,8 @@ export default {
       switch (this.id) {
         case 'KAIST':
           return 'portal-notice'
+        case null:
+          return ''
         default:
           return this.id
       }
