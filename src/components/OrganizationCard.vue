@@ -3,7 +3,7 @@
     :href="generateHref"
     class="organization-card"
     :style="{ 'background-color': backgroundColor }">
-    <img class="logo" :src="id ? require(`@/assets/Logo${id}.png`) : null" />
+    <img class="logo" v-if="id" :src="require(`@/assets/Logo${id}.png`)" />
     <span class="name">{{ name }}</span>
   </a>
 </template>
@@ -22,9 +22,10 @@
   box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.16);
 
   .logo {
-    max-width: 90%;
-    max-height: 60%;
+    width: 90%;
+    height: 60%;
     margin-bottom: 10px;
+    object-fit: contain;
   }
 
   .name {
