@@ -3,7 +3,6 @@
     <template #aside>
       <TheSidebar />
     </template>
-
     <TheBoard :board="archive" :title="$t('archive')" :from-query="{ from_view: 'scrap' }" />
   </TheLayout>
 </template>
@@ -33,6 +32,12 @@ export default {
     TheBoard,
     TheLayout,
     TheSidebar
+  },
+  beforeCreate () {
+    document.title = this.$t('document-title')
+  },
+  beforeUpdate () {
+    document.title = this.$t('document-title')
   }
 }
 </script>
@@ -44,3 +49,12 @@ export default {
   margin-bottom: 1rem;
 }
 </style>
+
+<i18n>
+  ko:
+    document-title: 'Ara - 담아두기'
+    archive: '담아두기'
+  en:
+    document-title: 'Archive'
+    archive: 'Archive'
+</i18n>

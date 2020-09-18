@@ -168,7 +168,13 @@ export default {
   destroyed () {
     window.removeEventListener('beforeunload', this.beforeUnloadHandler)
   },
-  components: { TheLayout, ThePostWrite }
+  components: { TheLayout, ThePostWrite },
+  beforeCreate () {
+    document.title = this.$t('document-title')
+  },
+  beforeUpdate () {
+    document.title = this.$t('document-title')
+  }
 }
 </script>
 
@@ -179,6 +185,7 @@ ko:
   create-failed: '글 작성에 실패했습니다. 다시 한 번 시도해주세요.'
   update-failed: '글 수정에 실패했습니다. 다시 한 번 시도해주세요.'
   before-unload: '이 포스트는 아직 저장되지 않았습니다! 정말 빠져나가시겠습니까?'
+  document-title: 'Ara - 글쓰기'
 
 en:
   no-empty: 'Please fill in the empty input.'
@@ -186,4 +193,5 @@ en:
   create-failed: 'Failed to write the post. Please try again after a while.'
   update-failed: 'Failed to update the post. Please try again after a while.'
   before-unload: 'This post is not saved yet. Are you sure to exit?'
+  document-title: 'Ara Write'
 </i18n>

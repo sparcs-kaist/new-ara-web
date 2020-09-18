@@ -25,9 +25,22 @@ export default {
     this.notifications = notifications
     next()
   },
-  components: { TheLayout, TheNotifications }
+  components: { TheLayout, TheNotifications },
+  beforeCreate () {
+    document.title = this.$t('document-title')
+  },
+  beforeUpdate () {
+    document.title = this.$t('document-title')
+  }
 }
 </script>
 
 <style>
 </style>
+
+<i18n>
+  ko:
+    document-title: 'Ara - 알림'
+  en:
+    document-title: 'Ara Notifications'
+</i18n>

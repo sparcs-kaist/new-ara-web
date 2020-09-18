@@ -197,6 +197,7 @@ export default {
     const [ post ] = await fetchWithProgress([
       fetchPost({ postId, context: query })
     ])
+    // document.title = `Ara - ${post.title}`
     next(vm => { vm.post = post })
   },
 
@@ -204,6 +205,7 @@ export default {
     const [ post ] = await fetchWithProgress([
       fetchPost({ postId, context: query })
     ])
+    // document.title = `Ara - ${post.title}`
     this.post = post
     this.showHidden = false
     next()
@@ -230,6 +232,7 @@ ko:
   unblocked: '해당 유저가 차단해제되었습니다!'
   confirm-report: '정말로 신고하시겠습니까?'
   confirm-block: '정말로 차단하시겠습니까?'
+  document-title: 'Ara - {title}'
 
 en:
   archived: 'Successfully added to your archive!'
@@ -239,4 +242,5 @@ en:
   unblocked: 'The user has been unblocked!'
   confirm-report: 'Are you really want to report this post?'
   confirm-block: 'Are you really want to block this user?'
+  document-title: 'Ara - {title}'
 </i18n>
