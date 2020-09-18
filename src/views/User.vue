@@ -32,6 +32,7 @@ export default {
       fetchArticles({ username, ...query }),
       fetchUser(username)
     ])
+    document.title = `Ara - ${user.nickname}`
     next(vm => {
       vm.board = board
       vm.user = user
@@ -42,6 +43,7 @@ export default {
       fetchArticles({ username, ...query }),
       fetchUser(username)
     ])
+    document.title = `Ara - ${user.nickname}`
     this.board = board
     this.user = user
     next()

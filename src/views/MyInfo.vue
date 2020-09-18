@@ -287,6 +287,8 @@ export default {
 
       vm.posts = posts
       vm.blocks = blocks
+
+      document.title = vm.$t('document-title')
     })
   },
 
@@ -315,6 +317,7 @@ ko:
   cancel: '취소'
   setting-change-failed: '설정 변경 중 문제가 발생했습니다.'
   unblock-failed: '차단 유저 삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+  document-title: 'Ara - 내정보'
 
 en:
   empty-email: 'No email address'
@@ -330,6 +333,7 @@ en:
   cancel: 'Cancel'
   setting-change-failed: 'Failed while updating settings.'
   unblock-failed: 'Failed while unblocking user. Please try again after a while.'
+  document-title: 'Ara - MyInfo'
 </i18n>
 
 <style lang="scss" scoped>

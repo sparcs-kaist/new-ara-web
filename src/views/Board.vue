@@ -37,6 +37,7 @@ export default {
     next(vm => {
       vm.board = board
       vm.boardId = boardId
+      document.title = `Ara - ${vm.boardName}`
     })
   },
 
@@ -45,9 +46,9 @@ export default {
     const [ board ] = await fetchWithProgress([ fetchArticles({ boardId, ...query }) ])
     this.board = board
     this.boardId = boardId
+    document.title = `Ara - ${this.boardName}`
     next()
   },
-
   components: {
     TheBoard,
     TheLayout,

@@ -197,6 +197,7 @@ export default {
     const [ post ] = await fetchWithProgress([
       fetchPost({ postId, context: query })
     ])
+    document.title = `Ara - ${post.title}`
     next(vm => { vm.post = post })
   },
 
@@ -204,6 +205,7 @@ export default {
     const [ post ] = await fetchWithProgress([
       fetchPost({ postId, context: query })
     ])
+    document.title = `Ara - ${post.title}`
     this.post = post
     this.showHidden = false
     next()

@@ -18,7 +18,10 @@ export default {
   },
   async beforeRouteEnter ({ query }, from, next) {
     const [ notifications ] = await fetchWithProgress([ fetchNotifications({ query }) ])
-    next(vm => { vm.notifications = notifications })
+    next(vm => {
+      vm.notifications = notifications
+      document.title = vm.$t('document-title')
+    })
   },
   async beforeRouteUpdate ({ query }, from, next) {
     const [ notifications ] = await fetchWithProgress([ fetchNotifications({ query }) ])
@@ -31,3 +34,10 @@ export default {
 
 <style>
 </style>
+
+<i18n>
+  ko:
+    document-title: 'Ara - 알림'
+  en:
+    document-title: 'Ara - Notifications'
+</i18n>
