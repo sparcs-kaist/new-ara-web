@@ -197,6 +197,11 @@ en:
 </i18n>
 
 <style lang="scss" scoped>
+@import "@/theme.scss";
+.dropdown {
+  margin-left: auto;
+}
+
 .dropdown-button {
   display: inline-flex;
   align-items: center;
@@ -249,6 +254,10 @@ en:
     margin-right: 24px;
   }
 
+  &__body {
+    flex: 1;
+  }
+
   &__header {
     display: flex;
     align-items: center;
@@ -278,6 +287,10 @@ en:
 
   &__reply-comments {
     margin-left: 60px;
+
+    @include breakPoint(min) {
+      margin-left: 30px;
+    }
   }
 }
 </style>
