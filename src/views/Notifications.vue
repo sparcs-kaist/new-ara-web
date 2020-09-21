@@ -18,7 +18,10 @@ export default {
   },
   async beforeRouteEnter ({ query }, from, next) {
     const [ notifications ] = await fetchWithProgress([ fetchNotifications({ query }) ])
-    next(vm => { vm.notifications = notifications })
+    next(vm => {
+      vm.notifications = notifications
+      document.title = vm.$t('document-title')
+    })
   },
   async beforeRouteUpdate ({ query }, from, next) {
     const [ notifications ] = await fetchWithProgress([ fetchNotifications({ query }) ])
@@ -26,12 +29,6 @@ export default {
     next()
   },
   components: { TheLayout, TheNotifications },
-  beforeCreate () {
-    document.title = this.$t('document-title')
-  },
-  beforeUpdate () {
-    document.title = this.$t('document-title')
-  }
 }
 </script>
 

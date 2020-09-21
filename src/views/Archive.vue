@@ -17,11 +17,14 @@ import TheSidebar from '@/components/TheSidebar.vue'
 export default {
   name: 'archive',
   data () {
-    return { archive: {} }
+    return { archive: {}, boardName: {en:'Archive', ko:'담아두기'} }
   },
   async beforeRouteEnter ({ query }, from, next) {
     const [ archive ] = await fetchWithProgress([ fetchArchivedPosts(query) ])
-    next(vm => { vm.archive = archive })
+    next(vm => {
+      vm.archive = archive
+      document.title = vm.$t('document-title')
+    })
   },
   async beforeRouteUpdate ({ query }, from, next) {
     const [ archive ] = await fetchWithProgress([ fetchArchivedPosts(query) ])
@@ -32,12 +35,6 @@ export default {
     TheBoard,
     TheLayout,
     TheSidebar
-  },
-  beforeCreate () {
-    document.title = this.$t('document-title')
-  },
-  beforeUpdate () {
-    document.title = this.$t('document-title')
   }
 }
 </script>

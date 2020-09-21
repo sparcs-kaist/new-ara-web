@@ -37,49 +37,23 @@ export default {
     next(vm => {
       vm.board = board
       vm.boardId = boardId
+      document.title = `Ara - ${vm.boardName}`
     })
   },
 
   async beforeRouteUpdate ({ params: { boardSlug }, query }, from, next) {
+    console.log('update')
     const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
     const [ board ] = await fetchWithProgress([ fetchArticles({ boardId, ...query }) ])
     this.board = board
     this.boardId = boardId
+    document.title = `Ara - ${this.boardName}`
     next()
   },
   components: {
     TheBoard,
     TheLayout,
     TheSidebar
-  },
-  beforeCreate () {
-    document.title = this.$t(`document-title.${this.$route.params.boardSlug}`)
-  },
-  beforeUpdate () {
-    document.title = this.$t(`document-title.${this.$route.params.boardSlug}`)
   }
 }
 </script>
-
-<i18n>
-  ko:
-    document-title:
-      undefined: 'Ara - 모아보기'
-      food: 'Ara - 식사이야기'
-      archive: 'Ara - 담아두기'
-      'portal-notice': 'Ara - 포탈공지'
-      'organization-notice': 'Ara - 학생공지'
-      qa: 'Ara - Q&A'
-      wanted: 'Ara - Wanted'
-      market: 'Ara - 장터'
-  en:
-    document-title:
-      undefined: 'Ara - All'
-      food: 'Ara - food'
-      archive: 'Ara - Archive'
-      'portal-notice': 'Ara - Portal Notice'
-      'organization-notice': 'Ara - Organization Notice'
-      qa: 'Ara - Q&A'
-      wanted: 'Ara - Wanted'
-      market: 'Ara - Buy & Sell'
-</i18n>

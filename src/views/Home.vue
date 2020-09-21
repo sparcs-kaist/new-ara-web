@@ -53,7 +53,10 @@ export default {
   },
   async beforeRouteEnter (to, from, next) {
     const [ home ] = await fetchWithProgress([ fetchHome() ])
-    next(vm => { vm.home = home })
+    next(vm => {
+      vm.home = home
+      document.title = vm.$t('document-title')
+    })
   },
   components: {
     SmallBoard,
@@ -61,12 +64,6 @@ export default {
     TheOrganizations,
     TheLayout
   },
-  beforeCreate () {
-    document.title = this.$t('document-title')
-  },
-  beforeUpdate () {
-    document.title = this.$t('document-title')
-  }
 }
 </script>
 

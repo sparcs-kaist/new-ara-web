@@ -197,15 +197,16 @@ export default {
     const [ post ] = await fetchWithProgress([
       fetchPost({ postId, context: query })
     ])
-    // document.title = `Ara - ${post.title}`
+    document.title = `Ara - ${post.title}`
     next(vm => { vm.post = post })
   },
 
   async beforeRouteUpdate ({ params: { postId }, query }, from, next) {
+    console.log('route update')
     const [ post ] = await fetchWithProgress([
       fetchPost({ postId, context: query })
     ])
-    // document.title = `Ara - ${post.title}`
+    document.title = `Ara - ${post.title}`
     this.post = post
     this.showHidden = false
     next()

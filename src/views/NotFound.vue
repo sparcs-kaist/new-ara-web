@@ -21,14 +21,10 @@
 export default {
   name: 'not-found',
   beforeRouteEnter (to, from, next) {
-    next()
+    next(vm => {
+      document.title = vm.$t('document-title')
+    })
   },
-  beforeCreate () {
-    document.title = this.$t('document-title')
-  },
-  beforeUpdate () {
-    document.title = this.$t('document-title')
-  }
 }
 </script>
 
