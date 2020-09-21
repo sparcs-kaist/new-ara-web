@@ -79,37 +79,6 @@
             </button>
           </div>
         </div>
-      </div>
-    </template>
-
-    <div class="column is-half">
-      <div class="tabs is-boxed" style="margin: 0 0 0 -1px;">
-        <ul>
-          <li :class="{ 'is-active': $route.query.board !== 'recent' && $route.query.board !== 'archive' }">
-            <router-link :to="{ query: { board: 'my'} }">
-              {{ $t('board-my') }}
-            </router-link>
-          </li>
-          <li :class="{ 'is-active': $route.query.board === 'recent' }">
-            <router-link :to="{ query: { board: 'recent'} }">
-              {{ $t('board-recent') }}
-            </router-link>
-          </li>
-          <li :class="{ 'is-active': $route.query.board === 'archive' }">
-            <router-link :to="{ query: { board: 'archive'} }">
-              {{ $t('board-archive') }}
-            </router-link>
-          </li>
-        </ul>
-      </div>
-
-      <div class="board-container">
-        <TheBoard v-if="posts" :board="posts" :fromQuery="fromQuery" />
-      </div>
-    </div>
-
-    <template #aside-right>
-      <div class="column is-one-quarter">
         <div class="box">
           <h1 style="font-size: 1.2rem; font-weight: bold; margin-bottom: 1rem;">
             {{ $t('blocked-list') }}
@@ -133,6 +102,32 @@
         </div>
       </div>
     </template>
+    <!--Deleted 'is-half'.-->
+    <div class="column ">
+      <div class="tabs is-boxed" style="margin: 0 0 0 -1px;">
+        <ul>
+          <li :class="{ 'is-active': $route.query.board !== 'recent' && $route.query.board !== 'archive' }">
+            <router-link :to="{ query: { board: 'my'} }">
+              {{ $t('board-my') }}
+            </router-link>
+          </li>
+          <li :class="{ 'is-active': $route.query.board === 'recent' }">
+            <router-link :to="{ query: { board: 'recent'} }">
+              {{ $t('board-recent') }}
+            </router-link>
+          </li>
+          <li :class="{ 'is-active': $route.query.board === 'archive' }">
+            <router-link :to="{ query: { board: 'archive'} }">
+              {{ $t('board-archive') }}
+            </router-link>
+          </li>
+        </ul>
+      </div>
+      <!--Deleted aside-right and the contents of them have been re-located to above.-->
+      <div class="board-container">
+        <TheBoard v-if="posts" :board="posts" :fromQuery="fromQuery" />
+      </div>
+    </div>
   </TheLayout>
 </template>
 
@@ -342,6 +337,18 @@ en:
 </i18n>
 
 <style lang="scss" scoped>
+/*h1{
+  word-break:keep-all;
+}
+
+span{
+  word-break:keep-all; 
+}*/
+//Temporary-solution. But better then the code in the comment above.
+.column{
+  min-width:300px;
+}
+
 .box {
   padding: 40px;
 }
