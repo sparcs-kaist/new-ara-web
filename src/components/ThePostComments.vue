@@ -1,6 +1,6 @@
 <template>
   <div id="comments" class="comments">
-    <div class="comments__title">{{ $t('comments') }} {{ commentCount }}</div>
+    <div class="comments__title">{{ $t('comments') }} ({{ commentCount }})</div>
 
     <div class="comments__container comments__container--empty" v-if="commentCount == 0">
       {{ $t('no-comment') }}
@@ -61,6 +61,10 @@ en:
 <style lang="scss" scoped>
 .comments {
   margin-top: 2rem;
+
+  &__title {
+    font-size: 1rem;
+  }
 
   &__container {
     margin-bottom: 1rem;
