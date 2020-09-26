@@ -17,6 +17,10 @@
         {{ $t('weekly-best') }}
       </SmallBoard>
     </div>
+
+    <div class="renew-popup">
+      <RenewPopup />
+    </div>
   </TheLayout>
 </template>
 
@@ -27,6 +31,7 @@ import SmallBoard from '@/components/SmallBoard.vue'
 import TheHomeSearchbar from '@/components/TheHomeSearchbar.vue'
 import TheOrganizations from '@/components/TheOrganizations.vue'
 import TheLayout from '@/components/TheLayout.vue'
+import RenewPopup from '@/components/RenewPopup.vue'
 
 export default {
   name: 'home',
@@ -56,6 +61,7 @@ export default {
     next(vm => { vm.home = home })
   },
   components: {
+    RenewPopup,
     SmallBoard,
     TheHomeSearchbar,
     TheOrganizations,
@@ -101,5 +107,12 @@ en:
   .column {
     padding: 10px;
   }
+}
+
+.renew-popup{
+  position:fixed;
+  top:50%; left:50%;
+  transform: translate(-50%,-50%);
+  z-index:10000;
 }
 </style>
