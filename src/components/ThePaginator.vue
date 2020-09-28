@@ -12,7 +12,7 @@
       class="page"
       :class="{ 'is-active': page === currentPage }">{{ page }}</router-link>
     <router-link
-      v-if="pageRangeMax > pageRangeMin + 9"
+      v-if="numPages > pageRangeMin + 9"
       :to="routeTo(pageRangeMin + 10)">
       &gt;
     </router-link>
