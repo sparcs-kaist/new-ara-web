@@ -142,11 +142,16 @@ export default {
   async beforeRouteEnter ({ params: { postId } }, from, next) {
     // 새로운 글을 작성하는 경우
     if (!postId) {
-      next() // !주의: next는 한번만 호출돼야 함
+      next(vm => {
+        document.title = vm.$t('document-title.write')
+      }) // !주의: next는 한번만 호출돼야 함
     // 기존 글을 수정하는 경우
     } else {
       const [ post ] = await fetchWithProgress([ fetchPost({ postId }) ])
-      next(vm => { vm.post = post })
+      next(vm => {
+        document.title = vm.$t('document-title.revise')
+        vm.post = post
+      })
     }
   },
 
@@ -179,6 +184,9 @@ ko:
   create-failed: '글 작성에 실패했습니다. 다시 한 번 시도해주세요.'
   update-failed: '글 수정에 실패했습니다. 다시 한 번 시도해주세요.'
   before-unload: '이 포스트는 아직 저장되지 않았습니다! 정말 빠져나가시겠습니까?'
+  document-title:
+    write: 'Ara - 글쓰기'
+    revise: 'Ara - 수정하기'
 
 en:
   no-empty: 'Please fill in the empty input.'
@@ -186,4 +194,7 @@ en:
   create-failed: 'Failed to write the post. Please try again after a while.'
   update-failed: 'Failed to update the post. Please try again after a while.'
   before-unload: 'This post is not saved yet. Are you sure to exit?'
+  document-title:
+    write: 'Ara - Write'
+    revise: 'Ara - Revise'
 </i18n>

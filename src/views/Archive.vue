@@ -3,7 +3,6 @@
     <template #aside>
       <TheSidebar />
     </template>
-
     <TheBoard :board="archive" :title="$t('archive')" :from-query="{ from_view: 'scrap' }" />
   </TheLayout>
 </template>
@@ -22,7 +21,10 @@ export default {
   },
   async beforeRouteEnter ({ query }, from, next) {
     const [ archive ] = await fetchWithProgress([ fetchArchivedPosts(query) ])
-    next(vm => { vm.archive = archive })
+    next(vm => {
+      vm.archive = archive
+      document.title = vm.$t('document-title')
+    })
   },
   async beforeRouteUpdate ({ query }, from, next) {
     const [ archive ] = await fetchWithProgress([ fetchArchivedPosts(query) ])
@@ -44,3 +46,12 @@ export default {
   margin-bottom: 1rem;
 }
 </style>
+
+<i18n>
+  ko:
+    document-title: 'Ara - 담아두기'
+    archive: '담아두기'
+  en:
+    document-title: 'Archive'
+    archive: 'Archive'
+</i18n>

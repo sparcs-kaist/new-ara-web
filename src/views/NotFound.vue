@@ -19,9 +19,21 @@
 
 <script>
 export default {
-  name: 'not-found'
+  name: 'not-found',
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      document.title = vm.$t('document-title')
+    })
+  }
 }
 </script>
+
+<i18n>
+  ko:
+    document-title: 'Ara - 페이지 없음'
+  en:
+    document-title: 'Ara - Not Found'
+</i18n>
 
 <style lang="scss">
 @import '@/theme.scss';
