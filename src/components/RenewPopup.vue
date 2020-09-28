@@ -87,9 +87,6 @@ en:
     padding-top:56px;
     padding-bottom:72px;
     padding-right:56px;
-    min-width:360px;
-    max-width:630px;
-    max-height:409px;
     background-color: var(--grey-100);
     border-radius: 10px;
     box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.64);
