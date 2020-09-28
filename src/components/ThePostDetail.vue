@@ -45,7 +45,7 @@
         }" class="post__more">
           <img :src="userPictureUrl" class="post__author"/>
           <span>{{ $t('more', { author: postAuthor }) }}</span>
-          <i class="material-icons" style="font-size: 1.5em;">chevron_right</i>
+          <i class="material-icons">chevron_right</i>
         </router-link>
       </div>
     </div>
@@ -170,6 +170,7 @@ en:
   }
 
   &__more {
+    font-size: .9rem;
     display: flex;
     align-items: center;
     margin: 10px 0;
@@ -177,6 +178,7 @@ en:
   }
 
   &__like {
+    font-size: 0.9rem;
     margin-left: -6px;
     margin-top: 10px;
   }
