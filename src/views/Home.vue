@@ -53,7 +53,10 @@ export default {
   },
   async beforeRouteEnter (to, from, next) {
     const [ home ] = await fetchWithProgress([ fetchHome() ])
-    next(vm => { vm.home = home })
+    next(vm => {
+      vm.home = home
+      document.title = vm.$t('document-title')
+    })
   },
   components: {
     SmallBoard,
@@ -68,9 +71,11 @@ export default {
 ko:
   today-best: '오늘의 인기글'
   weekly-best: '이주의 인기글'
+  document-title: 'Ara - 홈'
 en:
   today-best: 'Daily Best'
   weekly-best: 'Weekly Best'
+  document-title: 'Ara - Home'
 </i18n>
 
 <style lang="scss" scoped>
