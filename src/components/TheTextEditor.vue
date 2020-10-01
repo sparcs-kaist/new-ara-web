@@ -184,7 +184,6 @@ import {
   History,
   HorizontalRule,
   Italic,
-  Link,
   ListItem,
   OrderedList,
   Placeholder,
@@ -194,6 +193,7 @@ import {
 import AttachmentImage from '@/editor/AttachmentImage'
 import CodeBlock from '@/editor/CodeBlock'
 import TheTextEditorImageDialog from '@/components/TheTextEditorImageDialog'
+import LinkBookmark from "@/editor/LinkBookmark";
 
 export default {
   name: 'the-text-editor',
@@ -210,6 +210,7 @@ export default {
     return {
       editor: new Editor({
         extensions: [
+          new LinkBookmark(), //Bold, Italic과 underscore inputRule이 겹침 => url 우선
           new AttachmentImage(),
           new Blockquote(),
           new Bold(),
@@ -221,7 +222,6 @@ export default {
           new History(),
           new HorizontalRule(),
           new Italic(),
-          new Link(),
           new ListItem(),
           new OrderedList(),
           new Placeholder({

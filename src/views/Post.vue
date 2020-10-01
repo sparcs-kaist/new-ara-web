@@ -37,7 +37,7 @@
 
 <script>
 import { archivePost, blockUser, fetchPost, reportPost, unarchivePost, unblockUser, votePost } from '@/api'
-import { fetchWithProgress } from './helper.js'
+import { fetchWithProgress, modifyURL } from './helper.js'
 import ThePostComments from '@/components/ThePostComments.vue'
 import ThePostDetail from '@/components/ThePostDetail.vue'
 import ThePostHeader from '@/components/ThePostHeader.vue'
@@ -141,6 +141,7 @@ export default {
     // @TODO: 매번 refresh 하는게 최선인지는 좀 생각해 봐야할듯
     async refresh () {
       this.post = await fetchPost({ postId: this.postId, context: this.$route.query })
+      if(this.post.parent_board.id === 1) this.post.content = this.modifyURL(this.post)
     },
 
     async vote ({ id, vote }) {
@@ -194,18 +195,20 @@ export default {
   },
 
   async beforeRouteEnter ({ params: { postId }, query }, from, next) {
-    const [ post ] = await fetchWithProgress([
+    let [ post ] = await fetchWithProgress([
       fetchPost({ postId, context: query })
     ])
     document.title = `Ara - ${post.title}`
+    if(post.parent_board.id === 1) post.content = modifyURL(post)
     next(vm => { vm.post = post })
   },
 
   async beforeRouteUpdate ({ params: { postId }, query }, from, next) {
-    const [ post ] = await fetchWithProgress([
+    let [ post ] = await fetchWithProgress([
       fetchPost({ postId, context: query })
     ])
     document.title = `Ara - ${post.title}`
+    if(post.parent_board.id === 1) post.content = modifyURL(post)
     this.post = post
     this.showHidden = false
     next()
