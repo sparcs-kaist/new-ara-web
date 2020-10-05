@@ -100,7 +100,7 @@ export default {
       min-width: 4.5rem;
       margin: 0 5px;
 
-      @include breakPoint(min) {
+      @include breakPoint(mid) {
         min-width: initial;
       }
     }
