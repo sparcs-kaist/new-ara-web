@@ -6,7 +6,10 @@
         <slot name="title" />
       </h1>
 
-      <SearchBar class="board__mobile-search is-flex-touch" searchable />
+      <div class="board__options">
+        <slot name="option" />
+        <SearchBar class="board__mobile-search is-flex-touch" searchable />
+      </div>
     </div>
     <hr class="board__divider" v-if="title" />
 
@@ -96,6 +99,15 @@ en:
 
   &__divider {
     margin-top: 0;
+  }
+
+  &__options {
+    margin-left: auto;
+    padding-left: 15px;
+
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
   }
 }
 </style>

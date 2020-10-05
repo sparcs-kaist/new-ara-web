@@ -5,9 +5,10 @@ export const fetchBoardList = () =>
   http.get('boards/')
     .then(({ data }) => data)
 
-export const fetchArticles = ({ boardId, query, page, pageSize, username } = {}) => {
+export const fetchArticles = ({ boardId, query, page, pageSize, topicId, username } = {}) => {
   const context = {}
   if (boardId) context.parent_board = boardId
+  if (topicId) context.parent_topic = topicId
   if (query) context.main_search__contains = query
   if (page) context.page = page
   if (pageSize) context.page_size = pageSize
