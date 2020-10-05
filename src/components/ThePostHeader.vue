@@ -346,6 +346,7 @@ en:
     }
 
     &__status-item {
+      font-size: 0.9rem;
       display: inline-flex;
       align-items: center;
       margin: 10px;

@@ -197,10 +197,20 @@ en:
 </i18n>
 
 <style lang="scss" scoped>
+@import "@/theme.scss";
+.dropdown {
+  margin-left: auto;
+}
+
 .dropdown-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
-  outline: none;
+  border-radius: 5px;
   background: transparent;
+  width: 1.8rem;
+  height: 1.8rem;
 
   .material-icons {
     font-size: .9rem;
@@ -215,7 +225,13 @@ en:
 }
 
 .dropdown-item {
-  padding: 0.375rem 0.4rem
+  padding: 0.2rem 0.4rem;
+}
+
+.dropdown:hover {
+  .dropdown-button {
+    background: var(--grey-300);
+  }
 }
 
 .comment {
@@ -238,6 +254,10 @@ en:
     margin-right: 24px;
   }
 
+  &__body {
+    flex: 1;
+  }
+
   &__header {
     display: flex;
     align-items: center;
@@ -247,23 +267,30 @@ en:
     color: var(--grey-600);
     font-size: .75rem;
     margin-left: 10px;
+    margin-right: 5px;
   }
 
   &__author {
     font-size: .9rem;
+    font-weight: bold;
   }
 
   &__footer {
     display: flex;
     margin-top: 8px;
+    font-size: .9rem;
   }
 
   &__write {
-    margin-left: 20px;
+    margin-left: 15px;
   }
 
   &__reply-comments {
-    margin-left: 24px;
+    margin-left: 60px;
+
+    @include breakPoint(min) {
+      margin-left: 30px;
+    }
   }
 }
 </style>

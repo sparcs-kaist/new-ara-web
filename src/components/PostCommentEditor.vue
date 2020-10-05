@@ -8,7 +8,7 @@
           v-model="content"
           ref="input"
           class="comment-editor__editor"
-          rows="2"
+          rows="1"
           :style="{ height }"
           @keydown.shift.enter.prevent="saveComment"
           @input="autosize"
@@ -148,7 +148,7 @@ en:
     position: relative;
 
     &__input {
-      padding: 18px 24px;
+      padding: 16px 24px;
       max-height: none;
       min-height: unset;
       height: auto;
@@ -172,10 +172,11 @@ en:
     }
 
     &__buttons {
+      font-size: 1rem;
       position: absolute;
       color: var(--grey-600);
       right: 24px;
-      bottom: 18px;
+      bottom: 16px;
 
       button {
         text-decoration: none;
