@@ -43,18 +43,35 @@ export default {
   props: {
     name: { required: true },
     id: { required: true },
+    slug: { required: false },
     backgroundColor: { required: false, default: '#fdf0f0' }
   },
   computed: {
     generateHref () {
       switch (this.id) {
         case 'KAIST':
-          return 'portal-notice'
+          return {
+            name: 'board',
+            params: {
+              boardSlug: 'portal-notice'
+            }
+          }
         case null:
-          return ''
+          return {
+            name: 'board'
+          }
         default:
-          return this.id
+          return this.generateOrganizationHref()
       }
+    }
+  },
+  methods: {
+    generateOrganizationHref () {
+      if (this.slug) {
+        return `board/organization-notice?topic=${this.slug}`
+      }
+
+      return ''
     }
   }
 }

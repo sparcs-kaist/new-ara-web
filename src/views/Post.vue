@@ -71,7 +71,7 @@ export default {
       }
 
       if (from_view === 'topic') {
-        query.topic = this.post.parent_topic.slug
+        query.topic = this.post.parent_topic?.slug
       }
 
       switch (from_view) {
