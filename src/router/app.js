@@ -7,6 +7,7 @@ import Notifications from '@/views/Notifications.vue'
 import MyInfo from '@/views/MyInfo.vue'
 import Home from '@/views/Home.vue'
 import NotFound from '@/views/NotFound.vue'
+import RenewalLandingPage from '@/views/RenewalLandingPage.vue'
 import { authGuard } from './auth.js'
 
 export default [
@@ -64,5 +65,10 @@ export default [
     name: 'home',
     component: Home,
     beforeEnter: authGuard
+  },
+  {
+    path: '/landing',
+    name: 'landing',
+    component: RenewalLandingPage
   }
 ]
