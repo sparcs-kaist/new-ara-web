@@ -1,6 +1,6 @@
 <template>
   <TheLayout>
-    <TheNotifications :notifications="notifications" :title="this.$t('title')">
+    <TheNotifications :notifications="notifications" :title="$t('title')">
     </TheNotifications>
   </TheLayout>
 </template>
