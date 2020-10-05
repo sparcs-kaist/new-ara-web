@@ -234,11 +234,11 @@ export default {
           social: this.user.social
         }).then(res => {
           store.commit('setUserProfile', res.data)
-          //Toast
+          // Toast
           this.$store.dispatch('dialog/toast', {
-          text: this.$t('success'),
-          type: 'confirm'
-        })
+            text: this.$t('success'),
+            type: 'confirm'
+          })
         })
       } catch (err) {
         this.$store.dispatch('dialog/toast', {
