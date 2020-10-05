@@ -20,7 +20,7 @@
         </div>
 
         <div class="board-item__title-wrapper">
-          <div class="board-item__title">
+          <div class="board-item__title" :title="post.title">
             <span class="board-item__topic" v-if="post.parent_topic">
               [{{ post.parent_topic[`${$i18n.locale}_name`] }}]
             </span>
@@ -103,7 +103,7 @@ en:
   display: flex;
   margin: 20px 0;
 
-  @include breakPoint(min) {
+  @include breakPoint(mid) {
     flex-direction: column;
 
     &:last-child {
@@ -188,7 +188,7 @@ en:
       width: 4.5rem;
       overflow: hidden;
 
-      @include breakPoint(min) {
+      @include breakPoint(mid) {
         width: auto;
       }
     }

@@ -44,7 +44,7 @@ export default {
 .container {
   margin-top: 50px;
 
-  @include breakPoint(min) {
+  @include breakPoint(mid) {
     margin-top: 10px;
   }
 }
@@ -66,6 +66,10 @@ export default {
     &:not(:last-child) {
       flex: 1;
       max-width: 300px;
+
+      @include breakPoint(mid) {
+        max-width: 250px;
+      }
     }
 
     &:last-child {
@@ -73,7 +77,7 @@ export default {
       margin-right: 0;
     }
 
-    @include breakPoint(min) {
+    @include breakPoint(mid) {
       margin-left: 10px;
       margin-right: 10px;
 
