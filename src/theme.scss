@@ -33,12 +33,17 @@ $body-rendering: auto;
   }
 }
 
+$mobile-width: 768px;
 $min-desktop-width: 1088px;
 $mid-desktop-width: 1280px;
 $max-desktop-width: 1472px;
 
 @mixin breakPoint($breakpoint) {
-  @if $breakpoint == "min" {
+  @if $breakpoint == "mobile" {
+    @media (max-width: #{$mobile-width}) {
+      @content;
+    }
+  } @else if $breakpoint == "min" {
     @media (max-width: #{$min-desktop-width}) {
       @content;
     }
