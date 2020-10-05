@@ -193,7 +193,7 @@ import {
 import AttachmentImage from '@/editor/AttachmentImage'
 import CodeBlock from '@/editor/CodeBlock'
 import TheTextEditorImageDialog from '@/components/TheTextEditorImageDialog'
-import LinkBookmark from "@/editor/LinkBookmark";
+import LinkBookmark from '@/editor/LinkBookmark'
 
 export default {
   name: 'the-text-editor',
@@ -210,7 +210,7 @@ export default {
     return {
       editor: new Editor({
         extensions: [
-          new LinkBookmark(), //Bold, Italic과 underscore inputRule이 겹침 => url 우선
+          new LinkBookmark(), // Bold, Italic과 underscore inputRule이 겹침 => url 우선
           new AttachmentImage(),
           new Blockquote(),
           new Bold(),

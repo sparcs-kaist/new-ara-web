@@ -6,32 +6,32 @@
 </template>
 
 <script>
-  export default {
-    name: "ThePostBookmark",
-    props:['node', 'updateAttrs', 'view'],
-    computed: {
-      href: {
-        get() {
-          return this.node.attrs.href
-        }
-      },
-      title: {
-        get(){
-          const URL_REGEX = /(https?:\/\/)?((www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,})\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/g
-          const raw_title = this.node.attrs.title
-          let match = []
-          if(raw_title === null || raw_title === "") return "URL"
-          else if ((match = URL_REGEX.exec(raw_title.replace(" ", ""))) !== null) {
-            let domains = match[2].split(".")
-            domains.pop()
-            for(let i of domains.reverse()) if(i.length > 2) return i.toUpperCase()
-            return raw_title
-          } else return raw_title
-        }
+export default {
+  name: 'ThePostBookmark',
+  props: ['node', 'updateAttrs', 'view'],
+  computed: {
+    href: {
+      get () {
+        return this.node.attrs.href
       }
     },
-
+    title: {
+      get () {
+        const URL_REGEX = /(https?:\/\/)?((www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,})\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/g
+        const rawTitle = this.node.attrs.title
+        let match = []
+        if (rawTitle === null || rawTitle === '') return 'URL'
+        else if ((match = URL_REGEX.exec(rawTitle.replace(' ', ''))) !== null) {
+          let domains = match[2].split('.')
+          domains.pop()
+          for (let i of domains.reverse()) if (i.length > 2) return i.toUpperCase()
+          return rawTitle
+        } else return rawTitle
+      }
+    }
   }
+
+}
 </script>
 
 <style lang="scss" scoped>
@@ -49,7 +49,6 @@
     font-style: normal;
     font-weight: normal;
     text-decoration: none;
-
 
     &:hover{
       box-shadow: 0 0 6px 0 #a9a9a9;
@@ -78,8 +77,5 @@
       color: #333333;
     }
   }
-
-
-
 
 </style>
