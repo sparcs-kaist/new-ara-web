@@ -57,6 +57,7 @@
 import { getAttachmentUrls } from '@/api'
 import LikeButton from '@/components/LikeButton.vue'
 import TextEditor from '@/components/TheTextEditor.vue'
+import { urlParser } from '../utils/urlParser'
 
 export default {
   name: 'the-post-detail',
@@ -91,7 +92,6 @@ export default {
       }
 
       if (this.post.url) {
-        const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/g
         let htmlObject = document.createElement('div')
         htmlObject.innerHTML = this.post.content
 
@@ -99,22 +99,20 @@ export default {
           let raw = i.getElementsByTagName('a')
           let rawText = i.innerText
           let links = []
-          let innerText = ''
 
           if (raw.length > 0) {
             let j = null
             while ((j = i.getElementsByTagName('a')).length !== 0) {
               j = j[0]
               let href = j.getAttribute('href')
-              if (new RegExp(URL_REGEX).test(href)) links.push([href, j.innerHTML, j.innerText])
+              if (urlParser(href)) links.push([href, j.innerHTML, j.innerText])
               let newNode = document.createElement('span')
               newNode.innerHTML = !j.innerHTML ? j.innerHTML : j.innerText
               j.parentNode.replaceChild(newNode, j)
             }
           } else {
-            let regexUrl = new RegExp(URL_REGEX)
-            while ((innerText = regexUrl.exec(rawText)) !== null) {
-              links.push([innerText[0], '', innerText[0]])
+            for (let innerUrl of urlParser(rawText, false, true)) {
+              links.push([innerUrl[0], '', innerUrl[0]])
             }
           }
 

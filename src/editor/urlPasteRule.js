@@ -1,7 +1,8 @@
 import { Plugin } from 'prosemirror-state'
 import { Slice, Fragment } from 'prosemirror-model'
+import { urlParser } from '../utils/urlParser'
 
-export function nodePasteRule (regexp, type, getAttrs) {
+export function urlPasteRule (type, getAttrs) {
   const handler = fragment => {
     const nodes = []
 
@@ -9,9 +10,8 @@ export function nodePasteRule (regexp, type, getAttrs) {
       if (child.isText) {
         const { text } = child
         let pos = 0
-        let match
-
-        while ((match = regexp.exec(text)) !== null) {
+        let matches = urlParser(text, false, true)
+        for (let match of matches) {
           if (match[0]) {
             const start = match.index
             const end = start + match[0].length

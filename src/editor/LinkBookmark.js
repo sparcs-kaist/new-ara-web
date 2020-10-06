@@ -1,8 +1,6 @@
 import { Node } from 'tiptap'
 import ThePostBookmark from '../components/ThePostBookmark'
-import {nodePasteRule} from './nodePasteRule'
-
-const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/g
+import { urlPasteRule } from './urlPasteRule'
 
 export default class LinkBookmark extends Node {
   get schema () {
@@ -38,8 +36,7 @@ export default class LinkBookmark extends Node {
 
   pasteRules ({ type }) {
     return [
-      nodePasteRule(
-        URL_REGEX,
+      urlPasteRule(
         type,
         match => {
           return {

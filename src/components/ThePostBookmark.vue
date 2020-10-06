@@ -6,6 +6,9 @@
 </template>
 
 <script>
+
+import { urlParser } from '../utils/urlParser'
+
 export default {
   name: 'ThePostBookmark',
   props: ['node', 'updateAttrs', 'view'],
@@ -17,16 +20,15 @@ export default {
     },
     title: {
       get () {
-        const URL_REGEX = /(https?:\/\/)?((www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,})\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/g
         const rawTitle = this.node.attrs.title
-        let match = []
-        if (rawTitle === null || rawTitle === '') return 'URL'
-        else if ((match = URL_REGEX.exec(rawTitle.replace(' ', ''))) !== null) {
-          let domains = match[2].split('.')
+        if (!rawTitle || rawTitle.replace(' ', '').length === 0) return 'URL'
+        let match = urlParser(rawTitle, true)
+        if (match) {
+          let domains = match[1].split('.')
           domains.pop()
           for (let i of domains.reverse()) if (i.length > 2) return i.toUpperCase()
-          return rawTitle
-        } else return rawTitle
+        }
+        return rawTitle
       }
     }
   }
