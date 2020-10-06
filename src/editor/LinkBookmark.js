@@ -24,16 +24,14 @@ export default class LinkBookmark extends Node {
           getAttrs: dom => {
             let rawHref = dom.getAttribute('href')
             return {
-              href: rawHref[0] === '!' ? rawHref.substring(1) : rawHref,
+              href: rawHref,
               title: dom.innerText
             }
           }
         }
       ],
       toDOM: node => {
-        // fetchPost 할 때 post.content내 컴포넌트의 attribute 값이 url 형식이면 날아가버리는 거 같아서
-        // (백엔드에서 따로 없애는 부분이 있나요?) 임시 방편으로 앞에 느낌표를 붙여 저장하도록 함
-        return ['a', {href: `!${node.attrs.href}`}, node.attrs.href]
+        return ['a', {href: node.attrs.href}, node.attrs.href]
       }
     }
   }
@@ -52,20 +50,6 @@ export default class LinkBookmark extends Node {
       )
     ]
   }
-
-  /*  inputRules({ type }) {
-    return [
-      nodeInputRule(
-        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=][\s]*)/g,
-        type,
-        match => {
-          return {
-            href : match[0]
-          }
-        },
-      ),
-    ]
-  } */
 
   get name () {
     return 'link-bookmark'
