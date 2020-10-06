@@ -20,9 +20,7 @@
     "vue": "^2.6.10",
     "vue-i18n": "^8.16.0",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
-    "prosemirror-model": "latest",
-    "prosemirror-state": "latest"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
