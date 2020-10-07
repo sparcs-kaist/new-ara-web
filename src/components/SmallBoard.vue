@@ -2,6 +2,9 @@
   <div class="board" :class="{ 'board--sidebar': sidebar }">
     <h2 class="board__name">
       <slot></slot>
+      <router-link class="board__more" :to="href" v-if="href">
+        {{ $t('more') }}
+      </router-link>
     </h2>
     <div
     v-for="(post, index) in listitems"
@@ -47,10 +50,22 @@ export default {
 
     sidebar: {
       type: Boolean
+    },
+
+    href: {
+      type: Object
     }
   }
 }
 </script>
+
+<i18n>
+  ko:
+    more: '더 보기'
+
+  en:
+    more: 'More'
+</i18n>
 
 <style lang="scss" scoped>
 @import '@/theme.scss';
@@ -61,11 +76,18 @@ export default {
   font-family: var(--font);
 
   &__name {
+    display: flex;
+    justify-content: space-between;
     font-size: 1.2rem;
     font-weight: 700;
     margin-bottom: 0.7em;
     padding-left: 1em;
     border-left: thick solid var(--theme-300);
+  }
+
+  &__more {
+    font-size: 1rem;
+    font-weight: 500;
   }
 
   .post {

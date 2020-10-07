@@ -9,12 +9,26 @@
     </div>
 
     <div class="columns is-multiline">
-      <SmallBoard :listitems="dailyBests" class="home__board column is-6" detail>
+      <SmallBoard :listitems="dailyBests" class="home__board column is-4" detail>
         {{ $t('today-best') }}
       </SmallBoard>
 
-      <SmallBoard :listitems="weeklyBests" class="home__board column is-6" detail>
+      <SmallBoard :listitems="weeklyBests" class="home__board column is-4" detail>
         {{ $t('weekly-best') }}
+      </SmallBoard>
+
+      <SmallBoard v-if="notice"
+        :listitems="notice"
+        :href="{
+          name: 'board',
+          params: {
+            boardSlug: 'ara-notice'
+          }
+        }"
+        class="home__board column is-4"
+        detail
+      >
+        {{ $t('ara-notice') }}
       </SmallBoard>
     </div>
 
@@ -25,8 +39,10 @@
 </template>
 
 <script>
-import { fetchHome } from '@/api'
+import { fetchArticles, fetchHome } from '@/api'
 import { fetchWithProgress } from './helper.js'
+import store from '@/store'
+
 import SmallBoard from '@/components/SmallBoard.vue'
 import TheHomeSearchbar from '@/components/TheHomeSearchbar.vue'
 import TheOrganizations from '@/components/TheOrganizations.vue'
@@ -37,7 +53,8 @@ export default {
   name: 'home',
   data () {
     return {
-      home: {}
+      home: {},
+      notice: []
     }
   },
   computed: {
@@ -57,9 +74,20 @@ export default {
     }
   },
   async beforeRouteEnter (to, from, next) {
-    const [ home ] = await fetchWithProgress([ fetchHome() ])
+    const promises = [ fetchHome() ]
+
+    const boardId = store.getters.getIdBySlug('ara-notice')
+    if (boardId) {
+      promises.push(fetchArticles({
+        boardId,
+        pageSize: 5
+      }))
+    }
+
+    const [ home, notice ] = await fetchWithProgress(promises)
     next(vm => {
       vm.home = home
+      vm.notice = notice?.results
       document.title = vm.$t('document-title')
     })
   },
@@ -77,10 +105,12 @@ export default {
 ko:
   today-best: '오늘의 인기글'
   weekly-best: '이주의 인기글'
+  ara-notice: '뉴아라 공지'
   document-title: 'Ara - 홈'
 en:
   today-best: 'Daily Best'
   weekly-best: 'Weekly Best'
+  ara-notice: 'Ara Notice'
   document-title: 'Ara - Home'
 </i18n>
 
@@ -115,11 +145,12 @@ en:
 }
 
 .renew-popup{
-  position:fixed;
-  top:50%; left:50%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%,-50%);
-  z-index:10000;
-  max-width:630px;
-  width:100%;
+  z-index: 10000;
+  max-width: 630px;
+  width: 100%;
 }
 </style>

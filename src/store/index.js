@@ -24,11 +24,11 @@ export default new Vuex.Store({
     hasFetchedBoardList: ({ boardList }) =>
       boardList.length !== 0,
     getIdBySlug: ({ boardList }) => (slug) =>
-      boardList.find(board => board.slug === slug).id,
+      boardList.find(board => board.slug === slug)?.id,
     getBoardById: ({ boardList }) => id =>
       boardList.find(board => board.id === id),
     getSlugById: ({ boardList }) => (id) =>
-      boardList.find(board => board.id === id).slug,
+      boardList.find(board => board.id === id)?.slug,
     // @TODO: i18n..
     getNameById: ({ boardList }) => (id, locale) => {
       const board = boardList.find(board => board.id === id)
