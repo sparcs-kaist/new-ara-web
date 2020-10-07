@@ -90,20 +90,23 @@
             </span>
           </router-link>
 
-          <a class="navbar-item" :class="{ 'is-active': isMobileMenuActive }">
-              logout
+          <a class="navbar-item is-hidden-desktop" href="/logout">
+              {{ $t('logout') }}
           </a>
 
           <div class="navbar-item">
             <div class="dropdown is-right is-hoverable">
-              <div class="dropdown-trigger navbar-item user">
+              <router-link
+                :to="{ name: isMobileMenuActive ? 'my-info' : null }"
+                class="user">
+
                 <img :src="userPicture" class="picture-url"/>
                 <span class="username">
                   {{ userNickname }}
                 </span>
-              </div>
+              </router-link>
 
-              <div class="dropdown-menu" id="dropdownMenu" role="menu" :class="{'is-active': !isMobileMenuActive}">
+              <div class="dropdown-menu is-hidden-touch" id="dropdownMenu" role="menu">
                 <div class="dropdown-content">
                   <div class="dropdown-item">
                     <router-link
