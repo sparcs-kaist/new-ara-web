@@ -90,32 +90,36 @@
             </span>
           </router-link>
 
+          <a class="navbar-item" :class="{ 'is-active': isMobileMenuActive }">
+              logout
+          </a>
+
           <div class="navbar-item">
             <div class="dropdown is-right is-hoverable">
-            <div class="dropdown-trigger navbar-item user">
-              <img :src="userPicture" class="picture-url"/>
-              <span class="username">
-                {{ userNickname }}
-              </span>
-            </div>
+              <div class="dropdown-trigger navbar-item user">
+                <img :src="userPicture" class="picture-url"/>
+                <span class="username">
+                  {{ userNickname }}
+                </span>
+              </div>
 
-            <div class="dropdown-menu" id="dropdownMenu" role="menu">
-              <div class="dropdown-content">
-                <div class="dropdown-item">
-                  <router-link
-                    :to="{ name: 'my-info' }"
-                    class="navbar-item user">
-                    {{ $t('my-page') }}
-                  </router-link>
-                  <a
-                    href="/logout"
-                    class="navbar-item user logout">
-                    {{ $t('logout') }}
-                  </a>
+              <div class="dropdown-menu" id="dropdownMenu" role="menu" :class="{'is-active': !isMobileMenuActive}">
+                <div class="dropdown-content">
+                  <div class="dropdown-item">
+                    <router-link
+                      :to="{ name: 'my-info' }"
+                      class="navbar-item user">
+                      {{ $t('my-page') }}
+                    </router-link>
+                    <a
+                      href="/logout"
+                      class="navbar-item user logout">
+                      {{ $t('logout') }}
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
           </div>
         </div>
       </div>
