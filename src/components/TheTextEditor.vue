@@ -1,5 +1,6 @@
 <template>
   <div class="editor" :class="{'editor--editable': this.editable, 'editor--focused': this.editor.focused}">
+    <blockquote v-if="editor.imgError && !this.editable"><p><strong>이미지를 불러오는데 실패했습니다.</strong></p><p>포탈 공지를 불러오려면 확인해주세요</p></blockquote>
     <EditorMenuBar :editor="editor" v-show="this.editable">
       <div
         class="editor-menu-bar"
@@ -431,6 +432,18 @@ export default {
   }
 }
 </style>
+
+<!--
+<i18n>
+  ko:
+  img-invalid-title: '담아둔 게시글에 담아졌습니다!'
+  img-invalid-subtitle: '담아둔 게시글에서 제거하였습니다!'
+
+  en:
+  img-invalid-title: '담아둔 게시글에 담아졌습니다!'
+  img-invalid-subtitle: '담아둔 게시글에서 제거하였습니다!'
+</i18n>
+-->
 
 <style lang="scss">
 .editor--editable {
