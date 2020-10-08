@@ -91,14 +91,41 @@
           </router-link>
 
           <router-link
-            :to="{ name: 'my-info' }"
-            class="navbar-item user">
-
-            <img :src="userPicture" class="picture-url"/>
-            <span class="username">
-              {{ userNickname }}
-            </span>
+            :to="{ name: 'logout-handler' }"
+            class="navbar-item is-hidden-desktop">
+            {{ $t('logout') }}
           </router-link>
+
+          <div class="navbar-item">
+            <div class="dropdown is-right is-hoverable">
+              <router-link
+                :to="{ name: isMobileMenuActive ? 'my-info' : null }"
+                class="user">
+
+                <img :src="userPicture" class="picture-url"/>
+                <span class="username">
+                  {{ userNickname }}
+                </span>
+              </router-link>
+
+              <div class="dropdown-menu is-hidden-touch" id="dropdownMenu" role="menu">
+                <div class="dropdown-content">
+                  <div class="dropdown-item">
+                    <router-link
+                      :to="{ name: 'my-info' }"
+                      class="navbar-item user">
+                      {{ $t('my-page') }}
+                    </router-link>
+                    <router-link
+                      :to="{ name: 'logout-handler' }"
+                      class="navbar-item user logout">
+                      {{ $t('logout') }}
+                    </router-link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -164,16 +191,43 @@ ko:
   notification: '알림'
   write: '게시글 작성하기'
   all: '모아보기'
+  my-page: '마이페이지'
+  logout: '로그아웃'
 
 en:
   language: '한국어'
   notification: 'Notifications'
   write: 'Write a New Post'
   all: 'All'
+  my-page: 'my page'
+  logout: 'logout'
 </i18n>
 
 <style lang="scss" scoped>
 @import '@/theme.scss';
+
+.logout {
+    color: var(--theme-400);
+    transition: color var(--duration) var(--text-timing);
+}
+
+.dropdown-content {
+  min-width: 30%;
+  max-width: 50%;
+  border-radius: 10px;
+  width: 13rem;
+  float: right;
+  text-align: right;
+  box-shadow: 0 2px 6px 0 rgba(169, 169, 169, 0.64);
+  background-color: #ffffff;
+}
+
+.dropdown-item {
+  padding: 0.2rem 0.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .navigation {
   padding-top: 10px;
