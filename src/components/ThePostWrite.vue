@@ -1,6 +1,6 @@
 <template>
   <div class="write">
-    <h1 class="write__title"> {{ $t('write') }} </h1>
+    <h1 class="write__title"> {{ writeTitle }} </h1>
     <hr />
 
     <div class="write__row">
@@ -145,6 +145,7 @@ export default {
   data () {
     return {
       boardId: '',
+      writeTitle: this.$t('write'),
       categoryId: '$not-set',
       title: '',
       isSexual: false,
@@ -202,6 +203,7 @@ export default {
       this.isSocial = this.post.is_content_social
       this.isSexual = this.post.is_content_sexual
       this.loaded = false
+      this.writeTitle = this.$t('write-edit')
     }
     const { board } = this.$route.query
     if (board) {
@@ -306,7 +308,7 @@ en:
   input-category-warning: 'You should select a category'
   no-category: 'No Category'
   write-publish: 'Publish Post'
-  write-edit: 'Save Post'
+  write-edit: 'Edit a post'
   uploading: 'It is currently uploading post. Please wait for a second.'
   is-sexual: 'Adult Post'
   is-social: 'Politics Post'
