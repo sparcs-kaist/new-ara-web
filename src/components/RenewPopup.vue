@@ -23,7 +23,15 @@
         </div>
 
         <div class="redirects">
-          <div class="new-ara-guide">
+          <router-link
+            class="new-ara-guide"
+            :to="{
+              name: 'board',
+              params: {
+                boardSlug: 'ara-notice'
+              }
+            }
+          ">
             <div style="display: flex; flex-direction: column;">
               {{ $t("new_ara_guide_name") }}
               <p class="new-ara-guide-exp">
@@ -34,7 +42,7 @@
             <span class="icon" style="margin-left: 10px;">
               <i class="material-icons">chevron_right</i>
             </span>
-          </div>
+          </router-link>
           <a class="old-ara-link" href="https://ara.kaist.ac.kr/">
             {{ $t("old_ara_link") }}
             <span class="icon" style="margin-left: 10px;">
