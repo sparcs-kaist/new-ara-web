@@ -47,6 +47,15 @@
 
         <button
           class="menubar__button"
+          @click="showLinkDialog()"
+        >
+          <span class="icon">
+            <i class="material-icons">link</i>
+          </span>
+        </button>
+
+        <button
+          class="menubar__button"
           @click="commands.horizontal_rule"
         >
           <span class="icon">
@@ -168,6 +177,7 @@
 
     <div class="dialogs" v-if="editable">
       <TheTextEditorImageDialog ref="imageDialog" @attach-files="attachFiles" />
+      <TheTextEditorLinkDialog ref="linkDialog" />
     </div>
   </div>
 </template>
@@ -184,16 +194,22 @@ import {
   History,
   HorizontalRule,
   Italic,
+  Link,
   ListItem,
   OrderedList,
   Placeholder,
   Strike,
+  Table,
+  TableHeader,
+  TableCell,
+  TableRow,
   Underline
 } from 'tiptap-extensions'
 import AttachmentImage from '@/editor/AttachmentImage'
 import CodeBlock from '@/editor/CodeBlock'
-import TheTextEditorImageDialog from '@/components/TheTextEditorImageDialog'
 import LinkBookmark from '@/editor/LinkBookmark'
+import TheTextEditorImageDialog from '@/components/TheTextEditorImageDialog'
+import TheTextEditorLinkDialog from '@/components/TheTextEditorLinkDialog'
 
 export default {
   name: 'the-text-editor',
@@ -222,6 +238,7 @@ export default {
           new History(),
           new HorizontalRule(),
           new Italic(),
+          new Link(),
           new ListItem(),
           new OrderedList(),
           new Placeholder({
@@ -230,6 +247,10 @@ export default {
             showOnlyWhenEditable: true
           }),
           new Strike(),
+          new Table(),
+          new TableHeader(),
+          new TableCell(),
+          new TableRow(),
           new Underline()
         ],
         content: this.content,
@@ -249,6 +270,28 @@ export default {
           command({ src: imageUrl })
         }
       })
+    },
+
+    showLinkDialog () {
+      const { commands, schema, view, selection, state: { doc } } = this.editor
+
+      const { from, to } = selection
+      const text = doc.textBetween(from, to, ' ')
+
+      this.$refs.linkDialog.showDialog((url, title, isBookmark) => {
+        const { state: { tr } } = this.editor
+
+        if (isBookmark) {
+          commands.linkBookmark({ href: url, title })
+        } else {
+          const node = schema.text(
+            title,
+            [ schema.marks.link.create({ href: url }) ]
+          )
+
+          view.dispatch(tr.replaceSelectionWith(node, false))
+        }
+      }, text || '')
     },
 
     attachFiles (files) {
@@ -311,7 +354,8 @@ export default {
   components: {
     EditorContent,
     EditorMenuBar,
-    TheTextEditorImageDialog
+    TheTextEditorImageDialog,
+    TheTextEditorLinkDialog
   }
 }
 </script>
@@ -407,6 +451,12 @@ export default {
     pointer-events: none;
     height: 0;
     font-style: italic;
+  }
+}
+
+.editor-content {
+  a {
+    color: #00b8d4;
   }
 }
 </style>

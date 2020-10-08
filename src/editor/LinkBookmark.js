@@ -1,6 +1,5 @@
 import { Node } from 'tiptap'
 import ThePostBookmark from '../components/ThePostBookmark'
-import { urlPasteRule } from './urlPasteRule'
 
 export default class LinkBookmark extends Node {
   get schema () {
@@ -18,7 +17,7 @@ export default class LinkBookmark extends Node {
       draggable: true,
       parseDOM: [
         {
-          tag: 'a',
+          tag: 'a[data-bookmark][href]',
           getAttrs: dom => {
             let rawHref = dom.getAttribute('href')
             return {
@@ -29,27 +28,23 @@ export default class LinkBookmark extends Node {
         }
       ],
       toDOM: node => {
-        return ['a', {href: node.attrs.href}, node.attrs.href]
+        return ['a', { href: node.attrs.href, 'data-bookmark': true }, node.attrs.title]
       }
     }
   }
 
-  pasteRules ({ type }) {
-    return [
-      urlPasteRule(
-        type,
-        match => {
-          return {
-            href: match[0],
-            title: match[0]
-          }
-        }
-      )
-    ]
+  commands ({ type }) {
+    return attrs => (state, dispatch) => {
+      const { selection } = state
+      const position = selection.$cursor ? selection.$cursor.pos : selection.$to.pos
+      const node = type.create(attrs)
+      const transaction = state.tr.insert(position, node)
+      dispatch(transaction)
+    }
   }
 
   get name () {
-    return 'link-bookmark'
+    return 'linkBookmark'
   }
 
   get view () {
