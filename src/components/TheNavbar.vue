@@ -90,9 +90,11 @@
             </span>
           </router-link>
 
-          <a class="navbar-item is-hidden-desktop" href="/logout">
-              {{ $t('logout') }}
-          </a>
+          <router-link
+            :to="{ name: 'logout-handler' }"
+            class="navbar-item is-hidden-desktop">
+            {{ $t('logout') }}
+          </router-link>
 
           <div class="navbar-item">
             <div class="dropdown is-right is-hoverable">
@@ -114,11 +116,11 @@
                       class="navbar-item user">
                       {{ $t('my-page') }}
                     </router-link>
-                    <a
-                      href="/logout"
+                    <router-link
+                      :to="{ name: 'logout-handler' }"
                       class="navbar-item user logout">
                       {{ $t('logout') }}
-                    </a>
+                    </router-link>
                   </div>
                 </div>
               </div>
