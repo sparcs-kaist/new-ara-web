@@ -25,6 +25,7 @@
     </div>
 
     <div class="content">
+
       <ThePostBookmark
         class="content__bookmark"
         :node="{ attrs: { title: post.title, href: post.url } }"

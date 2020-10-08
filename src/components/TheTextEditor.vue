@@ -1,5 +1,10 @@
 <template>
   <div class="editor" :class="{'editor--editable': this.editable, 'editor--focused': this.editor.focused}">
+    <blockquote v-if="imgError && !this.editable">
+      <p><strong>{{$t('img-invalid-title')}}</strong></p>
+      <p>{{$t('img-invalid-subtitle')}}</p>
+    </blockquote>
+
     <EditorMenuBar :editor="editor" v-show="this.editable">
       <div
         class="editor-menu-bar"
@@ -224,10 +229,13 @@ export default {
   },
   data () {
     return {
+      imgError: false,
       editor: new Editor({
         extensions: [
           new LinkBookmark(), // Bold, Italic과 underscore inputRule이 겹침 => url 우선
-          new AttachmentImage(),
+          new AttachmentImage({
+            errorCallback: () => { this.imgError = true }
+          }),
           new Blockquote(),
           new Bold(),
           new BulletList(),
@@ -431,6 +439,16 @@ export default {
   }
 }
 </style>
+
+<i18n>
+ko:
+  img-invalid-title: '이미지를 불러오는데 실패했습니다. 포탈 공지 글인 경우 위 링크를 클릭해 주세요.'
+  img-invalid-subtitle: '(로그인 후 포탈 메인 페이지가 보인다면 링크를 다시 클릭해 주세요)'
+
+en:
+  img-invalid-title: 'Failed to load image. If it is a portal notice, please click the link above.'
+  img-invalid-subtitle: 'If you see the portal main page after logging in, click the link again.'
+</i18n>
 
 <style lang="scss">
 .editor--editable {

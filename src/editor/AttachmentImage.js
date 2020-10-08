@@ -1,5 +1,6 @@
 import { Node } from 'tiptap'
 import { nodeInputRule } from 'tiptap-commands'
+import TheAttachmentImage from '../components/TheAttachmentImage'
 
 /**
  * Matches following attributes in Markdown-typed image: [, alt, src, title]
@@ -71,5 +72,9 @@ export default class AttachmentImage extends Node {
         }
       })
     ]
+  }
+
+  get view () {
+    return TheAttachmentImage
   }
 }
