@@ -8,7 +8,7 @@
 
 export default {
   name: 'TheAttachmentImage',
-  props: ['node', 'updateAttrs', 'view', 'editor'],
+  props: ['node', 'updateAttrs', 'view', 'options'],
   computed: {
     src () {
       return this.node.attrs.src
@@ -23,14 +23,13 @@ export default {
       get () {
         return this.node.attrs['data-attachment']
       }
-    },
-    loadedFailed () {
-      return false
     }
   },
   methods: {
     imageLoadError () {
-      this.$set(this.editor, 'imgError', true)
+      if (this.options.errorCallback) {
+        this.options.errorCallback()
+      }
     }
   }
 }

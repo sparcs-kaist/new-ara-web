@@ -1,6 +1,10 @@
 <template>
   <div class="editor" :class="{'editor--editable': this.editable, 'editor--focused': this.editor.focused}">
-    <blockquote v-if="editor.imgError && !this.editable"><p><strong>이미지를 불러오는데 실패했습니다.</strong></p><p>포탈 공지를 불러오려면 확인해주세요</p></blockquote>
+    <blockquote v-if="imgError && !this.editable">
+      <p><strong>이미지를 불러오는데 실패했습니다.</strong></p>
+      <p>포탈 공지를 불러오려면 확인해주세요</p>
+    </blockquote>
+
     <EditorMenuBar :editor="editor" v-show="this.editable">
       <div
         class="editor-menu-bar"
@@ -225,10 +229,13 @@ export default {
   },
   data () {
     return {
+      imgError: false,
       editor: new Editor({
         extensions: [
           new LinkBookmark(), // Bold, Italic과 underscore inputRule이 겹침 => url 우선
-          new AttachmentImage(),
+          new AttachmentImage({
+            errorCallback: () => { this.imgError = true }
+          }),
           new Blockquote(),
           new Bold(),
           new BulletList(),
