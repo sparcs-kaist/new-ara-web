@@ -33,28 +33,42 @@ export default {
       return rawTitle
     }
   }
-
 }
 </script>
 
 <style lang="scss" scoped>
   .bookmark-box {
+    display: flex;
+    position: relative;
     max-width: 544px;
     height: auto;
     border-radius: 10px;
-    transition: box-shadow .3s;
-    box-shadow: 0 0 2px 0 #a9a9a9;
-    background-color: #ffffff;
+    border: 1px solid var(--grey-300);
+    box-shadow: 0 0 2px 0 var(--grey-400);
+    background-color: var(--background);
     margin-top: 18px;
     margin-bottom: 18px;
-    display: flex;
     flex-direction: column;
     font-style: normal;
     font-weight: normal;
     text-decoration: none;
 
-    &:hover{
-      box-shadow: 0 0 6px 0 #a9a9a9;
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 10px;
+      box-shadow: 0 0 6px 0 var(--grey-400);
+      opacity: 0;
+      transition: opacity var(--duration) var(--background-timing);
+    }
+
+    &:hover::before {
+      opacity: 1;
     }
 
     .box-title {
@@ -63,7 +77,7 @@ export default {
       text-align: left;
       padding: 0 0 0 0;
       margin: 18px 28px 0 28px;
-      color: #003333;
+      color: var(--grey-700);
     }
 
     .icon{
@@ -77,7 +91,7 @@ export default {
       text-align: left;
       padding: 6px 0 0 0;
       margin: 0 28px 18px 28px;
-      color: #333333;
+      color: var(--grey-700);
     }
   }
 

@@ -19,13 +19,13 @@
     </div>
 
     <div class="link-dialog__buttons">
-      <button class="button link-dialog__button" @click="hideDialog(url, title, false)">
+      <button class="button link-dialog__button" @click="hideDialog(url, titleDefault, false)">
         {{ $t('link-add') }}
       </button>
 
       <button
         class="button link-dialog__button link-dialog__button--primary"
-        @click="hideDialog(url, title, true)"
+        @click="hideDialog(url, titleDefault, true)"
       >
         {{ $t('bookmark-add') }}
       </button>
@@ -47,6 +47,12 @@ export default {
   computed: {
     urlEmpty () {
       return this.url.length === 0
+    },
+
+    titleDefault () {
+      if (!this.title.trim()) return this.url
+
+      return this.title
     }
   },
 
