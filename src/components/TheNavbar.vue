@@ -39,7 +39,7 @@
           />
 
           <router-link
-            v-for="board in boardList"
+            v-for="board in boardListVisible"
             :key="board.id"
             :to="{
               name: 'board',
@@ -154,6 +154,9 @@ export default {
   computed: {
     ...mapState(['boardList']),
     ...mapGetters(['userNickname', 'userPicture']),
+    boardListVisible () {
+      return this.boardList.filter(v => !v.is_hidden)
+    },
     isIE () {
       return isIE()
     }
