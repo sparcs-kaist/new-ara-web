@@ -5,6 +5,7 @@
       :key="organization.name"
       :name="organization.name"
       :id="organization.id"
+      :slug="organization.slug || undefined"
       :backgroundColor="organization.backgroundColor || undefined"
     />
     <div v-for="i in 7" :key="i" class="organization-dummy" />
@@ -40,12 +41,12 @@ export default {
       organizations: [
         { name: '포탈공지', id: 'KAIST', backgroundColor: '#dbdbdb' },
         { name: '전체 게시물', id: null, backgroundColor: '#f9c7c7' },
-        { name: '동아리연합회', id: 'UA' },
-        { name: '생활관 자치회', id: null },
-        { name: '학생복지위원회', id: 'SWF' },
-        { name: '총학생회', id: 'SA' },
-        { name: '새내기학생회', id: 'NSA' },
-        { name: '협동조합', id: 'KCOOP' }
+        { name: '동아리연합회', id: 'UA', slug: 'clubs-union' },
+        { name: '생활관 자치회', id: 'GSDC', slug: 'dorm-council' },
+        { name: '학생복지위원회', id: 'SWF', slug: 'welfare-cmte' },
+        { name: '총학생회', id: 'SA', slug: 'undergrad-assoc' },
+        { name: '새내기학생회', id: 'NSA', slug: 'freshman-council' },
+        { name: '협동조합', id: 'KCOOP', slug: 'kcoop' }
       ]
     }
   }
