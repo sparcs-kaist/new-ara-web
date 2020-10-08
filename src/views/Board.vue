@@ -12,7 +12,7 @@
       </template>
 
       <template #option v-if="topics && topics.length > 0">
-        <div class="dropdown is-hoverable board__filter">
+        <div class="dropdown is-hoverable is-right board__filter">
 
           <div class="dropdown-trigger">
             <a class="board__filter-trigger" aria-haspopup="true" aria-controls="dropdown-menu">
@@ -84,8 +84,9 @@ export default {
 
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
     const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
-    const topic = query.topic
-      ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
+    const boardData = store.getters.getBoardById(boardId)
+    const topic = (query.topic && boardData)
+      ? boardData.topics.find(topic => topic.slug === query.topic)
       : null
 
     const topicId = topic ? topic.id : null
