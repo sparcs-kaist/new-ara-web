@@ -57,6 +57,7 @@
 import { getAttachmentUrls } from '@/api'
 import LikeButton from '@/components/LikeButton.vue'
 import TextEditor from '@/components/TheTextEditor.vue'
+import { urlParser } from '../utils/urlParser'
 
 export default {
   name: 'the-post-detail',
@@ -88,6 +89,40 @@ export default {
         return this.post.why_hidden
           .map(reason => reason.detail)
           .join(' ')
+      }
+
+      if (this.post.url) {
+        let htmlObject = document.createElement('div')
+        htmlObject.innerHTML = this.post.content
+
+        for (let i of htmlObject.children) {
+          let raw = i.getElementsByTagName('a')
+          let rawText = i.innerText
+          let links = []
+
+          if (raw.length > 0) {
+            let j = null
+            while ((j = i.getElementsByTagName('a')).length !== 0) {
+              j = j[0]
+              let href = j.getAttribute('href')
+              if (urlParser(href)) links.push([href, j.innerHTML, j.innerText])
+              let newNode = document.createElement('span')
+              newNode.innerHTML = !j.innerHTML ? j.innerHTML : j.innerText
+              j.parentNode.replaceChild(newNode, j)
+            }
+          } else {
+            for (let innerUrl of urlParser(rawText, false, true)) {
+              links.push([innerUrl[0], '', innerUrl[0]])
+            }
+          }
+
+          for (let j of links) {
+            i.innerHTML += `<a href=${j[0]}>${(j[2] ? j[2] : j[0])}</a>`
+          }
+        }
+
+        htmlObject.innerHTML = `<p style=""><a href=${this.post.url}>PORTAL NOTICE</a></p><p></p>` + htmlObject.innerHTML
+        return htmlObject.outerHTML
       }
 
       return this.post.content
