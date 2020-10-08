@@ -11,25 +11,26 @@ import { urlParser } from '../utils/urlParser'
 
 export default {
   name: 'ThePostBookmark',
-  props: ['node', 'updateAttrs', 'view'],
+  props: [ 'node' ],
   computed: {
-    href: {
-      get () {
-        return this.node.attrs.href
-      }
+    href () {
+      return this.node.attrs.href
     },
-    title: {
-      get () {
-        const rawTitle = this.node.attrs.title
-        if (!rawTitle || rawTitle.replace(' ', '').length === 0) return 'URL'
-        let match = urlParser(rawTitle, true)
-        if (match) {
-          let domains = match[1].split('.')
-          domains.pop()
-          for (let i of domains.reverse()) if (i.length > 2) return i.toUpperCase()
+
+    title () {
+      const rawTitle = this.node.attrs.title
+      if (!rawTitle || rawTitle.replace(' ', '').length === 0) return 'URL'
+
+      let match = urlParser(rawTitle, true)
+      if (match) {
+        let domains = match[1].split('.')
+        domains.pop()
+        for (let i of domains.reverse()) {
+          if (i.length > 2) return i.toUpperCase()
         }
-        return rawTitle
       }
+
+      return rawTitle
     }
   }
 
