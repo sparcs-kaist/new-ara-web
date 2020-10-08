@@ -1,8 +1,8 @@
 <template>
   <div class="editor" :class="{'editor--editable': this.editable, 'editor--focused': this.editor.focused}">
     <blockquote v-if="imgError && !this.editable">
-      <p><strong>이미지를 불러오는데 실패했습니다.</strong></p>
-      <p>포탈 공지를 불러오려면 확인해주세요</p>
+      <p><strong>{{$t('img-invalid-title')}}</strong></p>
+      <p>{{$t('img-invalid-subtitle')}}</p>
     </blockquote>
 
     <EditorMenuBar :editor="editor" v-show="this.editable">
@@ -440,17 +440,15 @@ export default {
 }
 </style>
 
-<!--
 <i18n>
-  ko:
-  img-invalid-title: '담아둔 게시글에 담아졌습니다!'
-  img-invalid-subtitle: '담아둔 게시글에서 제거하였습니다!'
+ko:
+  img-invalid-title: '이미지를 불러오는데 실패했습니다. 포탈 공지 글인 경우 위 링크를 클릭해 주세요.'
+  img-invalid-subtitle: '(로그인 후 포탈 메인 페이지가 보인다면 링크를 다시 클릭해 주세요)'
 
-  en:
-  img-invalid-title: '담아둔 게시글에 담아졌습니다!'
-  img-invalid-subtitle: '담아둔 게시글에서 제거하였습니다!'
+en:
+  img-invalid-title: 'Failed to load image. If it is a portal notice, please click the link above.'
+  img-invalid-subtitle: 'If you see the portal main page after logging in, click the link again.'
 </i18n>
--->
 
 <style lang="scss">
 .editor--editable {
