@@ -1,6 +1,6 @@
 <template>
   <TheLayout>
-    <TheNotifications :notifications="notifications">
+    <TheNotifications :notifications="notifications" :title="$t('title')">
     </TheNotifications>
   </TheLayout>
 </template>
@@ -38,6 +38,8 @@ export default {
 <i18n>
   ko:
     document-title: 'Ara - 알림'
+    title: '알림'
   en:
     document-title: 'Ara - Notifications'
+    title: 'Notifications'
 </i18n>
