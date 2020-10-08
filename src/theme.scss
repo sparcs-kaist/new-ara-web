@@ -33,17 +33,30 @@ $body-rendering: auto;
   }
 }
 
+$mobile-width: 768px;
 $min-desktop-width: 1088px;
 $mid-desktop-width: 1280px;
 $max-desktop-width: 1472px;
 
 @mixin breakPoint($breakpoint) {
-  @if $breakpoint == "min" {
+  @if $breakpoint == "mobile" {
+    @media (max-width: #{$mobile-width}) {
+      @content;
+    }
+  } @else if $breakpoint == "mobile-min" {
+    @media (min-width: #{$mobile-width}) and (max-width: #{$min-desktop-width}) {
+      @content;
+    }
+  } @else if $breakpoint == "min" {
     @media (max-width: #{$min-desktop-width}) {
       @content;
     }
   } @else if $breakpoint == "min-mid" {
     @media (min-width: #{$min-desktop-width}) and (max-width: #{$mid-desktop-width}) {
+      @content;
+    }
+  } @else if $breakpoint == "mid" {
+    @media (max-width: #{$mid-desktop-width}) {
       @content;
     }
   } @else if $breakpoint == "mid-max" {

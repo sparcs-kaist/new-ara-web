@@ -2,7 +2,11 @@
   <TheLayout :isColumnLayout="false">
     <template #aside>
       <div class="column is-one-quarter">
-        <div class="box">
+        <div class="box profile-box">
+          <a class="setting-button" @click="mobileSettings = !mobileSettings">
+            <i class="material-icons">settings</i>
+          </a>
+
           <div
             class="profile-container"
             :style="{ backgroundColor: user.pictureSrc ? 'white' : 'grey' }"
@@ -24,7 +28,8 @@
               </a>
             </label>
           </div>
-          <div>
+
+          <div class="nickname-container">
             <div class="row" v-if="!isNicknameEditable">
               <h1 class="nickname">{{ user.nickname }}</h1>
               <a style="margin-left: 0.25rem;" @click="toggleNicknameInput">
@@ -49,56 +54,65 @@
                 </button>
               </div>
             </div>
-          </div>
-
-          <h2 class="email">{{ user.email ? user.email : $t('empty-email') }}</h2>
-        </div>
-
-        <div class="box">
-          <h1 style="font-size: 1.2rem; font-weight: bold;">{{ $t('post-settings')}}</h1>
-
-          <div class="setting-container">
-            <span>{{ $t('post-settings-sexual') }}</span>
-            <label class="checkbox">
-              <input v-model="user.sexual" type="checkbox">
-            </label>
-          </div>
-
-          <div class="setting-container">
-            <span>{{ $t('post-settings-social') }}</span>
-            <label class="checkbox">
-              <input v-model="user.social" type="checkbox">
-            </label>
-          </div>
-          <div class="setting-container__button">
-            <button
-              class="button"
-              :class="{ 'is-loading': updating }"
-              @click="updateSettings">
-              {{ $t('save') }}
-            </button>
+            <h2 class="email">{{ user.email ? user.email : $t('empty-email') }}</h2>
           </div>
         </div>
-        <div class="box">
-          <h1 style="font-size: 1.2rem; font-weight: bold; margin-bottom: 1rem;">
-            {{ $t('blocked-list') }}
-          </h1>
 
-          <ul v-if="blocks && blocks.results && blocks.results.length > 0">
-            <li v-for="blockedUser in blocks.results" :key="blockedUser.id">
-              <div class="block-user">
-                <img
-                  :src="blockedUser.user.profile.picture"
-                  class="profile-image__block"
-                />
-                {{ blockedUser.user.profile.nickname }}
-                <a style="margin-left: auto;" @click="deleteBlockedUser(blockedUser.id)">
-                  <i class="material-icons" style="font-size: 1.3rem;">close</i>
-                </a>
-              </div>
-            </li>
-          </ul>
-          <span v-else>{{ $t('blocked-list-empty') }}</span>
+        <div class="boxes" :class="{ 'boxes--mobile-open': mobileSettings }">
+          <div class="mobile-header">
+            <a class="mobile-header__back" @click="mobileSettings = false">
+              <i class="material-icons">chevron_left</i>
+            </a>
+            <span class="mobile-header__title"> {{ $t('settings') }} </span>
+          </div>
+
+          <div class="box">
+            <h1 class="box__title">{{ $t('post-settings')}}</h1>
+
+            <div class="setting-container">
+              <span>{{ $t('post-settings-sexual') }}</span>
+              <label class="checkbox">
+                <input v-model="user.sexual" type="checkbox">
+              </label>
+            </div>
+
+            <div class="setting-container">
+              <span>{{ $t('post-settings-social') }}</span>
+              <label class="checkbox">
+                <input v-model="user.social" type="checkbox">
+              </label>
+            </div>
+            <div class="setting-container__button">
+              <button
+                class="button"
+                :class="{ 'is-loading': updating }"
+                @click="updateSettings">
+                {{ $t('save') }}
+              </button>
+            </div>
+          </div>
+
+          <div class="box">
+            <h1 class="box__title">
+              {{ $t('blocked-list') }}
+            </h1>
+
+            <ul v-if="blocks && blocks.results && blocks.results.length > 0">
+              <li v-for="blockedUser in blocks.results" :key="blockedUser.id">
+                <div class="block-user">
+                  <img
+                    :src="blockedUser.user.profile.picture"
+                    class="profile-image__block"
+                  />
+                  {{ blockedUser.user.profile.nickname }}
+                  <a style="margin-left: auto;" @click="deleteBlockedUser(blockedUser.id)">
+                    <i class="material-icons" style="font-size: 1.3rem;">close</i>
+                  </a>
+                </div>
+              </li>
+            </ul>
+            <span v-else>{{ $t('blocked-list-empty') }}</span>
+          </div>
         </div>
       </div>
     </template>
@@ -180,7 +194,8 @@ export default {
       updating: false,
       tabIndex: 0,
       isNicknameEditable: false,
-      newNickname: null
+      newNickname: null,
+      mobileSettings: false
     }
   },
 
@@ -219,6 +234,11 @@ export default {
           social: this.user.social
         }).then(res => {
           store.commit('setUserProfile', res.data)
+          // Toast
+          this.$store.dispatch('dialog/toast', {
+            text: this.$t('success'),
+            type: 'confirm'
+          })
         })
       } catch (err) {
         this.$store.dispatch('dialog/toast', {
@@ -318,6 +338,8 @@ ko:
   setting-change-failed: '설정 변경 중 문제가 발생했습니다.'
   unblock-failed: '차단 유저 삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
   document-title: 'Ara - 내정보'
+  success: '저장되었습니다.'
+  settings: '설정'
 
 en:
   empty-email: 'No email address'
@@ -334,16 +356,21 @@ en:
   setting-change-failed: 'Failed while updating settings.'
   unblock-failed: 'Failed while unblocking user. Please try again after a while.'
   document-title: 'Ara - MyInfo'
+  success: 'Saved successful.'
+  settings: 'Settings'
 </i18n>
 
 <style lang="scss" scoped>
+@import "@/theme.scss";
+
 /*h1{
   word-break:keep-all;
 }
 
 span{
-  word-break:keep-all; 
+  word-break:keep-all;
 }*/
+
 //Temporary-solution. But better then the code in the comment above.
 .column{
   min-width:300px;
@@ -351,11 +378,63 @@ span{
 
 .box {
   padding: 40px;
+  background: #fff;
+
+  &__title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  @include breakPoint(mobile) {
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, .16);
+    padding: 20px;
+
+    &__title {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+.boxes {
+  @include breakPoint(mobile) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 21;
+
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(10vh);
+    transition: all var(--duration) var(--background-timing);
+    transition-property: visibility, transform, opacity;
+
+    width: 100%;
+    height: 100vh;
+    padding: 0 10px;
+    overflow: auto;
+    background: var(--grey-100);
+
+    &--mobile-open {
+      visibility: visible;
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 }
 
 .row {
   display: flex;
   align-items: center;
+}
+
+.profile-box {
+  position: relative;
+  @include breakPoint(mobile) {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }
 
 .profile-container {
@@ -365,48 +444,83 @@ span{
   height: 6rem;
   margin-bottom: 0.5rem;
   border-radius: 50%;
-}
 
-.profile-container__image {
-  width: 6rem;
-  height: 6rem;
-  object-fit: cover;
-  border-radius: 50%;
-}
+  &__image {
+    width: 6rem;
+    height: 6rem;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 
-.profile-container__button {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  background-color: #fafafa;
-  border-radius: 50%;
+  &__button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background-color: #fafafa;
+    border-radius: 50%;
 
-  i {
-    font-size: 1.3rem;
+    i {
+      font-size: 1.3rem;
+    }
+  }
+
+  @include breakPoint(mobile) {
+    width: 3rem;
+    height: 3rem;
+    margin-right: 2rem;
+
+    &__image {
+      width: 3rem;
+      height: 3rem;
+    }
+
+    &__button {
+      right: -0.5rem;
+      bottom: -0.5rem;
+    }
   }
 }
 
 .nickname {
   font-size: 1.4rem;
   font-weight: 800;
+
+  @include breakPoint(mobile) {
+    font-size: 1.1rem;
+    word-break: break-all;
+
+    &__input {
+      margin-left: 2px;
+    }
+  }
+
+  &__input {
+    width: 100%;
+    margin-bottom: 0.3rem;
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 0.3rem;
+  }
 }
 
-.nickname__input {
-  width: 100%;
-  margin-bottom: 0.3rem;
-}
-
-.nickname__buttons {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: 0.3rem;
+.nickname-container {
+  @include breakPoint(mobile) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 0;
+    flex: 1;
+  }
 }
 
 .email {
@@ -414,18 +528,51 @@ span{
   font-size: 0.8rem;
 }
 
+.setting-button {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  display: none;
+
+  .material-icons {
+    font-size: 1.3rem;
+  }
+
+  @include breakPoint(mobile) {
+    display: inline;
+  }
+}
+
+.mobile-header {
+  position: relative;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  font-weight: 500;
+
+  &__back {
+    position: absolute;
+    left: 5px;
+  }
+
+  @include breakPoint(mobile) {
+    display: flex;
+  }
+}
+
 .setting-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 0.5rem;
-}
 
-.setting-container__button {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-top: 1rem;
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
 }
 
 .board-container {

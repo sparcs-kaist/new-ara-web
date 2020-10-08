@@ -20,12 +20,16 @@
         </div>
 
         <div class="board-item__title-wrapper">
-          <div class="board-item__title">
+          <div class="board-item__title" :title="post.title">
             <span class="board-item__topic" v-if="post.parent_topic">
               [{{ post.parent_topic[`${$i18n.locale}_name`] }}]
             </span>
 
             {{ post.title }}
+          </div>
+
+          <div class="board-item__new" v-if="post.read_status === 'N'">
+            {{ $t('new') }}
           </div>
         </div>
       </div>
@@ -89,10 +93,12 @@ export default {
 ko:
   comments: '댓글'
   views: '조회수'
+  new: 'new'
 
 en:
   comments: 'Reply'
   views: 'View'
+  new: 'new'
 </i18n>
 
 <style lang="scss" scoped>
@@ -103,7 +109,7 @@ en:
   display: flex;
   margin: 20px 0;
 
-  @include breakPoint(min) {
+  @include breakPoint(mid) {
     flex-direction: column;
 
     &:last-child {
@@ -121,12 +127,15 @@ en:
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    flex: 0 0 auto;
 
     margin-right: 20px;
   }
 
   &__content {
     flex: 1;
+    width: 0;
+    margin-right: 10px;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -144,13 +153,13 @@ en:
 
   &__title-wrapper {
     display: flex;
+    align-items: center;
   }
 
   &__title {
     font-size: 1rem;
     font-weight: 500;
-    flex: 1 1 0;
-    width: 0;
+    flex: 0 1 auto;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -159,6 +168,13 @@ en:
   &__topic {
     color: var(--grey-400);
     font-weight: 400;
+  }
+
+  &__new {
+    color: var(--theme-400);
+    font-size: .8rem;
+    font-weight: 500;
+    margin-left: 5px;
   }
 
   &:first-child {
@@ -188,7 +204,7 @@ en:
       width: 4.5rem;
       overflow: hidden;
 
-      @include breakPoint(min) {
+      @include breakPoint(mid) {
         width: auto;
       }
     }

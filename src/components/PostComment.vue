@@ -125,10 +125,8 @@ export default {
   methods: {
     async vote (ballot) {
       this.isVoting = true
-      await voteComment(this.comment.id,
-        this.comment.my_vote === ballot
-          ? 'vote_cancel'
-          : ballot ? 'vote_positive' : 'vote_negative'
+      await voteComment(
+        ballot.id, ballot.vote
       )
       this.$emit('vote')
       this.isVoting = false
