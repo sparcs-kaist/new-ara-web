@@ -63,11 +63,15 @@ export default {
       const { from_view, from_page, search_query } = this.$route.query
       const query = {}
       if (from_page) {
-        query['page'] = from_page
+        query.page = from_page
       }
 
       if (search_query) {
-        query['query'] = search_query
+        query.query = search_query
+      }
+
+      if (from_view === 'topic') {
+        query.topic = this.post.parent_topic.slug
       }
 
       switch (from_view) {
