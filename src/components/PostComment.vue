@@ -41,7 +41,15 @@
           </div>
         </div>
 
-        <div class="comment__content">{{comment.content}}</div>
+        <div class="comment__content">
+          {{ content }}
+
+          <div v-if="comment.is_hidden && !showHidden">
+            <button class="button" @click="showHidden = true">
+              {{ $t('show-hidden') }}
+            </button>
+          </div>
+        </div>
 
         <div class="comment__footer">
           <LikeButton class="comment__vote" :item="comment" @vote="vote" votable />
@@ -110,7 +118,8 @@ export default {
     return {
       isEditing: false,
       isVoting: false,
-      showReplyCommentInput: false
+      showReplyCommentInput: false,
+      showHidden: false
     }
   },
 
@@ -119,7 +128,21 @@ export default {
     authorId () { return this.comment.created_by.id },
     profileImage () { return this.comment.created_by.profile.picture },
     date () { return timeago(this.comment.created_at, this.$i18n.locale) },
-    ...mapGetters([ 'userNickname' ])
+    ...mapGetters([ 'userNickname' ]),
+
+    content () {
+      if (this.comment.is_hidden) {
+        if (this.showHidden) {
+          return this.comment.hidden_content
+        }
+
+        return this.comment.why_hidden
+          .map(v => v.detail.join('\n'))
+          .join('\n')
+      }
+
+      return this.comment.content
+    }
   },
 
   methods: {
@@ -182,6 +205,7 @@ ko:
   new-reply-comment: '작성하기'
   confirm-delete: '정말로 이 댓글을 삭제하시겠습니까?'
   confirm-report: '정말로 이 댓글을 신고하시겠습니까?'
+  show-hidden: '숨김글 보기'
 en:
   delete: 'Delete'
   report: 'Report'
@@ -192,6 +216,7 @@ en:
   new-reply-comment: 'Send'
   confirm-delete: 'Are you really want to delete this comment?'
   confirm-report: 'Are you really want to report this comment?'
+  show-hidden: 'Show Hidden Comment'
 </i18n>
 
 <style lang="scss" scoped>

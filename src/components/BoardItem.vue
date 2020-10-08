@@ -25,7 +25,7 @@
               [{{ post.parent_topic[`${$i18n.locale}_name`] }}]
             </span>
 
-            {{ post.title }}
+            {{ title }}
           </div>
 
           <div class="board-item__new" v-if="post.read_status === 'N'">
@@ -78,6 +78,15 @@ export default {
     },
 
     current: Boolean
+  },
+  computed: {
+    title () {
+      if (this.post.is_hidden) {
+        return this.post.why_hidden.map(v => v.detail).join('\n')
+      }
+
+      return this.post.title
+    }
   },
   methods: {
     elideText: elideText(2)
