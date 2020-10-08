@@ -68,7 +68,15 @@ export default {
   methods: {
     generateOrganizationHref () {
       if (this.slug) {
-        return `board/organization-notice?topic=${this.slug}`
+        return {
+          name: 'board',
+          params: {
+            boardSlug: 'organization-notice'
+          },
+          query: {
+            topic: this.slug
+          }
+        }
       }
 
       return ''
