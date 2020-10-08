@@ -32,9 +32,7 @@
       </SmallBoard>
     </div>
 
-    <div class="renew-popup">
-      <RenewPopup />
-    </div>
+    <RenewPopup />
   </TheLayout>
 </template>
 
@@ -142,15 +140,5 @@ en:
   .column {
     padding: 10px;
   }
-}
-
-.renew-popup{
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  z-index: 10000;
-  max-width: 630px;
-  width: 100%;
 }
 </style>
