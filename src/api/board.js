@@ -42,7 +42,7 @@ export const fetchRecentViewedPosts = ({ page, pageSize } = {}) => {
   if (page) context.page = page
   if (pageSize) context.page_size = pageSize
 
-  return http.get(`recents/?${queryBuilder(context)}`)
+  return http.get(`articles/recent/?${queryBuilder(context)}`)
     .then(({ data }) => data)
 }
 
