@@ -1,6 +1,13 @@
 <template>
     <div class="parent">
         <div class="Popup_Landing">
+            <a class="lang"
+            @click="changeLocale"
+            id="toggle-language">
+            <span class="icon">
+              <i class="material-icons">language</i>
+            </span>
+          </a>
             <div class="internal">
                 <div class="origin" v-if="!help_popup">
                 <img src="@/assets/ServiceAra.svg"
@@ -103,7 +110,9 @@ export default {
 
   },
   methods: {
-    
+    changeLocale () {
+      this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en'
+    }
   }
 }
 </script>
@@ -118,6 +127,11 @@ export default {
         height:100vh;
         background-color:rgba(0, 0, 0, 0.18);
     }
+}
+.lang{
+    position:absolute;
+    top:20px;
+    right:20px;
 }
 .Popup_Landing{
     @media all and (min-width:790px) and (min-height:740px){
