@@ -245,8 +245,8 @@ export default {
           new Heading({ levels: [ 1, 2, 3 ] }),
           new History(),
           new HorizontalRule(),
-          new Italic(),
           new Link(),
+          new Italic(),
           new ListItem(),
           new OrderedList(),
           new Placeholder({

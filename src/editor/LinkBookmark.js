@@ -17,6 +17,8 @@ export default class LinkBookmark extends Node {
       draggable: true,
       parseDOM: [
         {
+          // Should be parsed before Link parses
+          priority: 51,
           tag: 'a[data-bookmark][href]',
           getAttrs: dom => {
             let rawHref = dom.getAttribute('href')

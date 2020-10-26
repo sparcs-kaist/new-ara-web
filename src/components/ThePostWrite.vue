@@ -198,12 +198,15 @@ export default {
   created () {
     if (this.post) {
       this.boardId = this.post.parent_board.id
-      this.categoryId = this.post.topic ? this.post.topic.id : '$not-set'
       this.title = this.post.title
       this.isSocial = this.post.is_content_social
       this.isSexual = this.post.is_content_sexual
       this.loaded = false
       this.writeTitle = this.$t('write-edit')
+
+      this.$nextTick(() => {
+        this.categoryId = this.post.parent_topic ? this.post.parent_topic.id : '$not-set'
+      })
     }
     const { board } = this.$route.query
     if (board) {
