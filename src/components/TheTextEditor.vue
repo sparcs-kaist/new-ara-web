@@ -232,6 +232,7 @@ export default {
       imgError: false,
       editor: new Editor({
         extensions: [
+          new Link(),
           new LinkBookmark(), // Bold, Italic과 underscore inputRule이 겹침 => url 우선
           new AttachmentImage({
             errorCallback: () => { this.imgError = true }
@@ -246,7 +247,6 @@ export default {
           new History(),
           new HorizontalRule(),
           new Italic(),
-          new Link(),
           new ListItem(),
           new OrderedList(),
           new Placeholder({
