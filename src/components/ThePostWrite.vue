@@ -206,7 +206,7 @@ export default {
       this.writeTitle = this.$t('write-edit')
 
       this.$nextTick(() => {
-        this.categoryId = this.post.parent_topic ? this.post.parent_topic.id : '$not-set'
+        this.categoryId = this.post.parent_topic ? this.post.parent_topic.id : ''
       })
     }
     const { board } = this.$route.query
