@@ -51,7 +51,7 @@ export default {
   name: 'organization-card',
   props: {
     name: { type: String, required: true },
-    id: { type: String, required: true },
+    id: { type: String },
     icon: { type: String },
     slug: { type: String },
     backgroundColor: { type: String, default: '#fdf0f0' }
