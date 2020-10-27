@@ -1,5 +1,4 @@
 import { Node } from 'tiptap'
-import { nodeInputRule } from 'tiptap-commands'
 import TheAttachmentImage from '../components/TheAttachmentImage'
 
 /**
@@ -9,8 +8,10 @@ import TheAttachmentImage from '../components/TheAttachmentImage'
  * ![Lorem](image.jpg) -> [, "Lorem", "image.jpg"]
  * ![](image.jpg "Ipsum") -> [, "", "image.jpg", "Ipsum"]
  * ![Lorem](image.jpg "Ipsum") -> [, "Lorem", "image.jpg", "Ipsum"]
+*
+ * (Disabled as we do not support foreign images)
+ * const IMAGE_INPUT_REGEX = /!\[(.+|:?)\]\((\S+)(?:(?:\s+)["'](\S+)["'])?\)/
  */
-const IMAGE_INPUT_REGEX = /!\[(.+|:?)\]\((\S+)(?:(?:\s+)["'](\S+)["'])?\)/
 
 // Rewrite of default Image plugin of tiptap as it is hard to integrate with attachments,
 // and it handles image as data-uri when drag & drop
@@ -38,7 +39,7 @@ export default class AttachmentImage extends Node {
       draggable: true,
       parseDOM: [
         {
-          tag: 'img[src]',
+          tag: this.options.editable ? 'img[src][data-attachment]' : 'img[src]',
           getAttrs: dom => ({
             src: dom.getAttribute('src'),
             title: dom.getAttribute('title'),
@@ -61,7 +62,7 @@ export default class AttachmentImage extends Node {
     }
   }
 
-  inputRules ({ type }) {
+  /* inputRules ({ type }) {
     return [
       nodeInputRule(IMAGE_INPUT_REGEX, type, match => {
         const [, alt, src, title] = match
@@ -72,7 +73,7 @@ export default class AttachmentImage extends Node {
         }
       })
     ]
-  }
+  } */
 
   get view () {
     return TheAttachmentImage
