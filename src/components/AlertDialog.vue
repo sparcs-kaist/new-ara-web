@@ -1,14 +1,11 @@
 <template>
-  <div class="alert-dialog" :class="{ 'alert-dialog--toast': dialog.toast }"  :style="colors">
-    <div class="alert-dialog__body">
-      <div class="alert-dialog__icon">
-        <span>{{ iconName }}</span>
-      </div>
+  <div class="alert-dialog" :class="{ 'alert-dialog--toast': dialog.toast }">
+    <div class="alert-dialog__icon">
+      <i class="material-icons">{{ iconName }}</i>
+    </div>
 
-      <div class="alert-dialog__content">
-        <h2 class="alert-dialog__title">{{ title }}</h2>
-        <div class="alert-dialog__text">{{ dialog.text }}</div>
-      </div>
+    <div class="alert-dialog__content">
+      <div class="content-text">{{ dialog.text }}</div>
     </div>
 
     <div class="alert-dialog__buttons" v-if="hasButtons">
@@ -32,30 +29,11 @@
 </template>
 
 <script>
-const types = {
-  confirm: {
-    icon: '?',
-    accent: '#fbc02d',
-    darken: '#fab70f'
-  },
-
-  error: {
-    icon: '!',
-    accent: '#ed3a3a',
-    darken: '#ea1e1e'
-  },
-
-  warning: {
-    icon: '!',
-    accent: '#fbc02d',
-    darken: '#fab70f'
-  },
-
-  info: {
-    icon: 'i',
-    accent: '#46c6ce',
-    darken: '#34bbc4'
-  }
+const icons = {
+  confirm: 'check_circle_outline',
+  error: 'error_outline',
+  warning: 'highlight_off',
+  info: 'info_outline'
 }
 
 export default {
@@ -69,20 +47,8 @@ export default {
   },
 
   computed: {
-    title () {
-      return this.dialog.title || this.$t(this.dialog.type)
-    },
-
     iconName () {
-      return types[this.dialog.type].icon
-    },
-
-    colors () {
-      const type = types[this.dialog.type]
-      return {
-        '--alert-color': type.accent,
-        '--alert-color-darken': type.darken
-      }
+      return icons[this.dialog.type]
     },
 
     hasButtons () {
@@ -122,12 +88,22 @@ export default {
   top: 50%;
   left: 50%;
   padding: 20px;
-  width: 100%;
-  max-width: 400px;
-  background: var(--background);
-  border-radius: 5px;
+  width: 90%;
+  max-width: 350px;
+  background: var(--grey-100);
+  border-radius: 10px;
   transform: translate(-50%, -50%);
   z-index: 32;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+
+  &__icon {
+    color: var(--theme-400);
+    .material-icons {
+      font-size: 40px;
+    }
+  }
 
   &--toast {
     position: relative;
@@ -135,64 +111,51 @@ export default {
     left: 0;
     width: 100%;
     transform: none;
-
+    padding: 0 20px;
     box-shadow: 0 2px 6px 0 var(--grey-400);
     margin: 10px 0;
-  }
-
-  &__icon {
-    color: #fff;
-    background: var(--alert-color);
-    width: 3rem;
-    height: 3rem;
-    font-size: 1.3rem;
-    line-height: 3rem;
-    border-radius: 3px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  &__body {
     display: flex;
+    flex-flow: row;
+    align-items: center;
+    .material-icons {
+      font-size: 30px;
+    }
+    .content-text {
+      margin-left: 10px;
+    }
   }
 
   &__content {
-    flex: 1;
-    margin-left: 20px;
-  }
-
-  &__title {
-    font-size: 1.4rem;
-    font-weight: 700;
+    margin-bottom: 1.5rem;
+    margin-top: 1.2rem;
   }
 
   &__buttons {
     display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
+    justify-content: center;
   }
 
   &__button {
     cursor: pointer;
-    background: var(--grey-100);
+    background: var(--background);
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     margin: 0 5px;
     padding: 8px 20px;
     transition: background .4s ease;
+    box-shadow: 0 2px 6px 0 rgba(169, 169, 169, 0.16);
 
     &:hover {
       background: var(--grey-300);
     }
 
     &--accent {
-      color: #fff;
-      background: var(--alert-color);
+      color: var(--theme-400);
+      font-weight: 500;
 
       &:hover {
         color: #fff;
-        background: var(--alert-color-darken);
+        background: var(--theme-400);
       }
     }
   }
