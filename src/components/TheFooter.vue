@@ -22,7 +22,7 @@
         </div>
 
         <div class="footer-item">
-          <a href="https://sparcs.org">
+          <a @click="$refs.terms.openTermsPopup()">
             {{ $t('rules') }}
           </a>
         </div>
@@ -35,12 +35,15 @@
         </a>
       </div>
     </div>
+    <TermsPopup agree_terms_of_service_at="userprofile.agree_terms_of_service_at" ref="terms" :show="false"/>
+    <!-- TODO: 유저 프로필로부터 userprofile.agree_terms_of_service_at 가져와 넘겨주기 -->
   </footer>
 </template>
 
 <script>
+import TermsPopup from './TermsPopup'
 export default {
-
+  components: {TermsPopup}
 }
 </script>
 
@@ -48,12 +51,12 @@ export default {
 ko:
   credit: '만든 사람들'
   license: '라이센스'
-  rules: '규칙'
+  rules: '이용 약관'
   contact: '문의'
 en:
   credit: 'Credit'
   license: 'License'
-  rules: 'Rules'
+  rules: 'Terms of Service'
   contact: 'Contact'
 </i18n>
 
