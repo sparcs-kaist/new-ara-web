@@ -247,6 +247,7 @@ en:
   .modal{
     z-index: 30;
   }
+
   .container {
     background-color: var(--grey-100);
     padding: 28px;
@@ -323,18 +324,6 @@ en:
     object-fit: contain;
   }
 
-  .SPARCS_black {
-    width: 338px;
-    height: 100px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    object-fit: contain;
-    opacity: 0.03;
-
-  }
-
   .title {
     display: flex;
     flex-direction: row;
@@ -355,19 +344,6 @@ en:
       margin-left: auto;
       margin-right: 30px;
     }
-  }
-
-  h2 {
-    font-weight: bold;
-  }
-
-  ul {
-    padding-left: 15px;
-    list-style: square;
-  }
-
-  ol {
-    padding-left: 15px;
   }
 
   .close {
