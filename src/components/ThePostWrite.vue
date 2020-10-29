@@ -93,7 +93,7 @@
         ref="textEditor"
         :content="initialPostContent"
         @attach-files="attachFiles"
-        @open-upload="openUpload"
+        @open-image-upload="openImageUpload"
         editable
       />
 
@@ -269,8 +269,8 @@ export default {
       )
     },
 
-    openUpload () {
-      this.$refs.attachments.openUpload()
+    openImageUpload () {
+      this.$refs.attachments.openImageUpload()
     },
 
     updateAttachments (attachmentUpdate) {

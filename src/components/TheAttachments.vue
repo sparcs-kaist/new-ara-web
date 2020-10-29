@@ -16,7 +16,13 @@
         @dragleave.stop.prevent="dropzoneEnabled = false"
         @drop.stop.prevent="handleDropUpload">
 
-        <input class="dropzone__upload" type="file" ref="upload" @change="handleDialogUpload">
+        <input
+          class="dropzone__upload"
+          :accept="accepted"
+          type="file"
+          ref="upload"
+          @change="handleDialogUpload"
+        >
       </label>
 
       <span class="attachments__message"> {{dropzoneMessage}} </span>
@@ -35,6 +41,8 @@
         </div>
       </transition-group>
     </div>
+
+    <input class="dropzone__upload" type="file" accept="image/*" ref="imageUpload" @change="handleImageUpload">
   </div>
 </template>
 
@@ -69,6 +77,10 @@ export default {
   },
 
   computed: {
+    accepted () {
+      return ALLOWED_EXTENSIONS.map(ext => `.${ext}`).join(',')
+    },
+
     dropzoneMessage () {
       if (this.dropzoneFailedReason) {
         return this.$t(this.dropzoneFailedReason)
@@ -102,6 +114,10 @@ export default {
 
     openUpload () {
       this.$refs.upload.click()
+    },
+
+    openImageUpload () {
+      this.$refs.imageUpload.click()
     },
 
     handleUpload (fileList) {
@@ -149,6 +165,13 @@ export default {
 
     handleDialogUpload (event) {
       const files = this.$refs.upload.files
+      if (!files) return
+
+      this.handleUpload(files)
+    },
+
+    handleImageUpload (event) {
+      const files = this.$refs.imageUpload.files
       if (!files) return
 
       this.handleUpload(files)

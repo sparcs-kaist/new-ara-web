@@ -150,7 +150,7 @@
 
         <button
           class="menubar__button"
-          @click="$emit('open-upload')"
+          @click="$emit('open-image-upload')"
         >
           <span class="icon">
             <i class="material-icons">image</i>
