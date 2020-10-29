@@ -159,7 +159,10 @@ export default {
     ...mapGetters([ 'getIdBySlug' ]),
 
     initialPostContent () {
-      return this.post ? this.post.content : null
+      if (!this.post) return null
+      if (this.post.is_hidden) return this.post.hidden_content
+
+      return this.post.content
     },
 
     boardList () {
