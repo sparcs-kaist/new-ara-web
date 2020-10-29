@@ -39,6 +39,8 @@ instance.interceptors
         router.push('/login')
       } else if (err.response.status === 404) {
         router.push('/404')
+      } else if (err.response.status === 418) {
+        router.push('/tos')
       }
 
       return Promise.reject(err)

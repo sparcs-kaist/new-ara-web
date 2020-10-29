@@ -52,6 +52,10 @@ export const updateDarkMode = (userId, darkMode) =>
   http.patch(`user_profiles/${userId}/`, { extra_preferences: { darkMode } })
     .then(({ data }) => data)
 
+export const updateTos = (userId) =>
+  http.patch(`/user_profiles/${userId}/agree_terms_of_service`)
+    .then(({ data }) => data)
+
 export const logout = (userId) =>
   http.delete(`/users/${userId}/sso_logout`)
     .then(({ data }) => data)

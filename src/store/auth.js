@@ -1,4 +1,4 @@
-import { fetchMe as apiFetchMe, updateDarkMode } from '@/api'
+import { fetchMe as apiFetchMe, updateTos, updateDarkMode } from '@/api'
 
 const setDarkMode = (darkMode) => {
   localStorage.darkMode = darkMode
@@ -68,6 +68,10 @@ export default {
       } catch (err) {
         commit('setAuthState', false)
       }
+    },
+    async agreeTos ({ dispatch, getters: { userId } }) {
+      await updateTos(userId)
+      return dispatch('fetchMe')
     },
     async toggleDarkMode ({ commit, getters: { isDarkModeEnabled } }) {
       commit('setUserProfile', await updateDarkMode(!isDarkModeEnabled))

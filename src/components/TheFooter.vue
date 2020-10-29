@@ -35,15 +35,21 @@
         </a>
       </div>
     </div>
-    <TermsPopup agree_terms_of_service_at="userprofile.agree_terms_of_service_at" ref="terms" :show="false"/>
-    <!-- TODO: 유저 프로필로부터 userprofile.agree_terms_of_service_at 가져와 넘겨주기 -->
+    <TermsPopup :agree-tos-at="agreeTosAt" ref="terms" :show="false"/>
   </footer>
 </template>
 
 <script>
 import TermsPopup from './TermsPopup'
 export default {
-  components: {TermsPopup}
+  computed: {
+    agreeTosAt () {
+      return this.$store.state.auth.userProfile?.['agree_terms_of_service_at']
+    }
+  },
+  components: {
+    TermsPopup
+  }
 }
 </script>
 

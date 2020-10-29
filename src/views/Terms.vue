@@ -7,11 +7,22 @@
 <script>
 import TermsPopup from '../components/TermsPopup'
 import TheLayout from '../components/TheLayout'
+
 export default {
   name: 'Terms',
-  components: {TheLayout, TermsPopup},
-  created () {
-    // TODO: 약관에 동의되어 있는 경우 home으로 리디렉션..?
+
+  beforeRounterEnter (from, to, next) {
+    if (this.$store.state.userProfile.agree_terms_of_service_at) {
+      next('/')
+      return
+    }
+
+    next()
+  },
+
+  components: {
+    TermsPopup,
+    TheLayout
   }
 }
 </script>
