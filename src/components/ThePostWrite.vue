@@ -12,7 +12,7 @@
 
       <div class="write__input">
         <div class="select" :class="{ 'is-placeholder': !boardId }" >
-          <select v-model="boardId">
+          <select v-model="boardId" :disabled="editMode">
             <option value="" disabled selected> {{ $t('input-board') }} </option>
             <option
               v-for="board in boardList"
@@ -33,7 +33,7 @@
 
       <div class="write__input">
         <div class="select" :class="{ 'is-placeholder': categoryNotSet }">
-          <select v-model="categoryId">
+          <select v-model="categoryId" :disabled="editMode">
             <option value="$not-set" disabled selected> {{ $t('input-category') }} </option>
             <option value="" v-if="boardId"> {{ $t('no-category') }} </option>
 
@@ -146,7 +146,6 @@ export default {
   data () {
     return {
       boardId: '',
-      writeTitle: this.$t('write'),
       categoryId: '$not-set',
       title: '',
       isSexual: false,
@@ -193,6 +192,15 @@ export default {
 
     isTitleWarning () {
       return !this.title && this.emptyWarnings.includes('title')
+    },
+
+    editMode () {
+      return !!this.post
+    },
+
+    writeTitle () {
+      if (this.editMode) return this.$t('write-edit')
+      return this.$t('write')
     }
   },
 
@@ -203,7 +211,6 @@ export default {
       this.isSocial = this.post.is_content_social
       this.isSexual = this.post.is_content_sexual
       this.loaded = false
-      this.writeTitle = this.$t('write-edit')
 
       this.$nextTick(() => {
         this.categoryId = this.post.parent_topic ? this.post.parent_topic.id : ''
