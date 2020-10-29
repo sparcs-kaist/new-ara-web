@@ -43,7 +43,7 @@
           {{ $t('comments') }}
         </span>
 
-        {{ elideText(post.nested_comments_count) }}
+        {{ elideText(post.comment_count) }}
       </div>
 
       <div class="post-status__view">
