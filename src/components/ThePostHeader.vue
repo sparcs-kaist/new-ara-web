@@ -68,7 +68,7 @@
               {{ $t('comments') }}
             </span>
 
-            {{ post.nested_comments_count }}
+            {{ post.comment_count }}
           </div>
 
           <div class="post-header__status-item">

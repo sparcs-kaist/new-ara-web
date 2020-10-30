@@ -17,7 +17,7 @@
       />
     </div>
 
-    <PostCommentEditor :parentArticle="postId" @upload="$emit('upload', $event)" />
+    <PostCommentEditor :parentArticle="post.id" @upload="$emit('upload', $event)" />
   </div>
 </template>
 
@@ -29,15 +29,15 @@ export default {
   name: 'the-post-comments',
 
   props: {
-    comments: { required: true },
-    postId: { required: true }
+    post: { required: true },
+    comments: { required: true }
   },
 
   computed: {
     commentCount () {
-      if (!this.comments) return 0
+      if (!this.post || !this.comments) return 0
 
-      return Object.keys(this.comments).length
+      return this.post.comment_count
     }
   },
 
