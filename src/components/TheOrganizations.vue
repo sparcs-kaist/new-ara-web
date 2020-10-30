@@ -2,7 +2,7 @@
   <div class="the-organizations">
     <OrganizationCard
       v-for="organization in organizations"
-      :key="organization.name"
+      :key="organization.id"
       v-bind="organization"
     />
     <div v-for="i in 7" :key="i" class="organization-dummy" />
@@ -37,7 +37,7 @@ export default {
     return {
       organizations: [
         { name: '포탈공지', id: 'KAIST', backgroundColor: '#dbdbdb' },
-        { name: '전체 게시물', icon: 'dashboard', backgroundColor: '#f9c7c7' },
+        { name: '전체 게시물', id: 'all', icon: 'dashboard', backgroundColor: '#f9c7c7' },
         { name: '동아리연합회', id: 'UA', slug: 'clubs-union' },
         { name: '생활관 자치회', id: 'GSDC', slug: 'dorm-council' },
         { name: '학생복지위원회', id: 'SWF', slug: 'welfare-cmte' },
