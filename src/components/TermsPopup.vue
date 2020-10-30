@@ -51,7 +51,7 @@
 export default {
   name: 'TermsPopup',
   props: {
-    agreeTosAt: Boolean,
+    agreeTosAt: {},
     show: {
       type: Boolean,
       default: true
