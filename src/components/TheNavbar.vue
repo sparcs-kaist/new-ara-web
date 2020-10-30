@@ -94,7 +94,7 @@
           <div class="navbar-item">
             <div class="dropdown is-right is-hoverable">
               <router-link
-                :to="{ name: isMobileMenuActive ? 'my-info' : null }"
+                :to="isMobileMenuActive ? { name: 'my-info' } : $route.fullPath"
                 class="user">
 
                 <img :src="userPicture" class="picture-url"/>
