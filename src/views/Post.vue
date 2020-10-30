@@ -24,8 +24,8 @@
     />
 
     <ThePostComments
+      :post="post"
       :comments="post.comments"
-      :postId="postId"
       @upload="addNewComment"
       @update="updateComment"
       @refresh="refresh"
