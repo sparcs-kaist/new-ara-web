@@ -9,7 +9,6 @@ import Home from '@/views/Home.vue'
 import NotFound from '@/views/NotFound.vue'
 import RenewalLandingPage from '@/views/RenewalLandingPage.vue'
 import { authGuard } from './auth.js'
-import Terms from '../views/Terms'
 
 export default [
   {
@@ -71,11 +70,5 @@ export default [
     path: '/landing',
     name: 'landing',
     component: RenewalLandingPage
-  },
-  {
-    path: '/tos',
-    name: 'terms',
-    component: Terms,
-    beforeEnter: authGuard
   }
 ]

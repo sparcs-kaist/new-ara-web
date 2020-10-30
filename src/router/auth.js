@@ -2,6 +2,7 @@ import store from '@/store'
 import { logout } from '@/api'
 
 import Facade from '@/views/Facade.vue'
+import Terms from '@/views/Terms.vue'
 
 export const authGuard = async (to, from, next) => {
   await store.dispatch('fetchMe')
@@ -56,6 +57,19 @@ export default [
       }
 
       next('/login')
+    }
+  },
+  {
+    path: '/tos',
+    name: 'terms',
+    component: Terms,
+    beforeEnter: async (to, from, next) => {
+      await store.dispatch('fetchMe')
+      if (!store.getters.isLoggedIn) {
+        next('/login')
+      } else {
+        next()
+      }
     }
   }
 ]
