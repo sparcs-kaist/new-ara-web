@@ -269,7 +269,9 @@ en:
 }
 
 .navbar-container {
-  display: flex;
+  @media screen and (min-width: 1088px) {
+    display: flex;
+  }
   width: 100%;
 }
 
@@ -290,7 +292,7 @@ en:
   @include containerMinWidth();
 
   .navbar-item {
-    padding: 0 5px;
+    padding: 8px 5px;
 
     &:last-child {
       padding-right: 15px;
