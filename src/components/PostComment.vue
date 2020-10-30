@@ -267,6 +267,8 @@ en:
 
   &__content {
     white-space: pre-wrap;
+    word-break: break-word;
+    word-wrap: break-word;
   }
 
   &__profile {

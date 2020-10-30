@@ -3,8 +3,8 @@
     :to="generateHref"
     class="organization-card"
     :style="{ 'background-color': backgroundColor }">
-    <img class="logo" v-if="id" :src="require(`@/assets/Logo${id}.png`)" />
-    <i class="logo logo--icon material-icons" v-else-if="icon">{{icon}}</i>
+    <i class="logo logo--icon material-icons" v-if="icon">{{icon}}</i>
+    <img class="logo" v-else-if="id" :src="require(`@/assets/Logo${id}.png`)" />
     <span class="name">{{ name }}</span>
   </router-link>
 </template>
@@ -51,7 +51,7 @@ export default {
   name: 'organization-card',
   props: {
     name: { type: String, required: true },
-    id: { type: String },
+    id: { type: String, required: true },
     icon: { type: String },
     slug: { type: String },
     backgroundColor: { type: String, default: '#fdf0f0' }
@@ -66,7 +66,7 @@ export default {
               boardSlug: 'portal-notice'
             }
           }
-        case null:
+        case 'all':
           return {
             name: 'board'
           }

@@ -57,5 +57,5 @@ export const updateTos = (userId) =>
     .then(({ data }) => data)
 
 export const logout = (userId) =>
-  http.delete(`/users/${userId}/sso_logout`)
+  http.delete(`/users/${userId}/sso_logout/`)
     .then(({ data }) => data)
