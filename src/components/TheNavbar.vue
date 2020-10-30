@@ -290,7 +290,7 @@ en:
   @include containerMinWidth();
 
   .navbar-item {
-    padding: 0 5px;
+    padding: 8px 5px;
 
     &:last-child {
       padding-right: 15px;
