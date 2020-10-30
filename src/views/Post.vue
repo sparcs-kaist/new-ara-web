@@ -187,13 +187,7 @@ export default {
         this.$store.dispatch('dialog/toast', this.$t('unblocked'))
       }
 
-      this.$router.push()
-      /*
-      const [ post ] = await fetchWithProgress([
-        fetchPost({ postId: this.post.id, context: this.$route.query })
-      ])
-      this.post = post
-      */
+      await this.refresh()
     }
   },
 

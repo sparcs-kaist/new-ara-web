@@ -295,7 +295,7 @@ export default {
     async deleteBlockedUser (userId) {
       try {
         await deleteBlock(userId)
-        this.user.blocks = await fetchBlocks()
+        this.blocks = await fetchBlocks()
       } catch (error) {
         this.$store.dispatch('dialog/toast', {
           text: this.$t('unblock-failed'),
