@@ -1,5 +1,5 @@
 <template>
-  <TheLayout :isColumnLayout="false">
+  <TheLayout class="my-info" :isColumnLayout="false">
     <template #aside>
       <div class="column is-one-quarter">
         <div class="box profile-box">
@@ -136,10 +136,12 @@
             </router-link>
           </li>
         </ul>
+
+        <SearchBar class="desktop-search is-hidden-touch" searchable small />
       </div>
       <!--Deleted aside-right and the contents of them have been re-located to above.-->
       <div class="board-container">
-        <TheBoard v-if="posts" :board="posts" :fromQuery="fromQuery" />
+        <TheBoard v-if="posts" :title="boardTitle" :board="posts" :fromQuery="fromQuery" />
       </div>
     </div>
   </TheLayout>
@@ -157,6 +159,7 @@ import {
 } from '@/api'
 import { mapGetters, mapState } from 'vuex'
 import { fetchWithProgress } from './helper'
+import SearchBar from '@/components/SearchBar.vue'
 import TheBoard from '@/components/TheBoard.vue'
 import TheLayout from '@/components/TheLayout.vue'
 
@@ -213,6 +216,21 @@ export default {
 
         default:
           return { from_view: 'user', created_by: this.userId }
+      }
+    },
+
+    boardTitle () {
+      if (!this.$route.query.query) return ''
+
+      switch (this.$route.query.board) {
+        case 'recent':
+          return this.$t('board-recent')
+
+        case 'archive':
+          return this.$t('board-archive')
+
+        default:
+          return this.$t('board-my')
       }
     }
   },
@@ -318,7 +336,7 @@ export default {
     next()
   },
 
-  components: { TheLayout, TheBoard }
+  components: { SearchBar, TheLayout, TheBoard }
 }
 </script>
 
@@ -372,13 +390,66 @@ span{
 }*/
 
 //Temporary-solution. But better then the code in the comment above.
-.column{
-  min-width:300px;
+.column {
+  min-width: 300px;
+}
+
+.my-info {
+  background: var(--grey-100);
+}
+
+.tabs {
+  height: 3rem;
+  overflow: visible;
+
+  ul {
+    align-items: stretch;
+    border: none;
+    overflow: hidden;
+    overflow-x: auto;
+  }
+
+  li {
+    display: flex;
+    align-items: stretch;
+    border: none;
+    border-radius: 6px 6px 0 0;
+    transition: background var(--duration) var(--background-timing);
+
+    &.is-active {
+      box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.16);
+
+      &:hover {
+        background: transparent;
+      }
+
+      a:hover {
+        background: #fafafa;
+      }
+    }
+
+    &:hover {
+      background: whitesmoke;
+    }
+
+    a {
+      border: none;
+      border-radius: 6px 6px 0 0;
+      position: relative;
+      z-index: 1;
+      transition: background all var(--duration) var(--background-timing);
+
+      &:hover {
+        background: transparent;
+      }
+    }
+  }
 }
 
 .box {
   padding: 40px;
   background: #fff;
+  box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.16);
 
   &__title {
     font-size: 1.2rem;
@@ -387,7 +458,6 @@ span{
   }
 
   @include breakPoint(mobile) {
-    box-shadow: 0 0 15px 0 rgba(0, 0, 0, .16);
     padding: 20px;
 
     &__title {
@@ -575,12 +645,23 @@ span{
   }
 }
 
+.desktop-search {
+  margin-top: -10px;
+
+  &::v-deep .input {
+    background: #fff;
+    box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.16);
+    border: none;
+  }
+}
+
 .board-container {
+  margin-top: -3px;
   padding: 2rem;
   background-color: white;
-  border-radius: 0 0 6px 6px;
-  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
-  -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  border-radius: 6px;
+  box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.16);
+  position: relative;
 }
 
 .block-user {

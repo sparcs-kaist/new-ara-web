@@ -37,8 +37,9 @@ export const fetchArchivedPosts = (...args) =>
           .map(({ parent_article: article }) => article)
     }))
 
-export const fetchRecentViewedPosts = ({ page, pageSize } = {}) => {
+export const fetchRecentViewedPosts = ({ query, page, pageSize } = {}) => {
   const context = {}
+  if (query) context.main_search__contains = query
   if (page) context.page = page
   if (pageSize) context.page_size = pageSize
 

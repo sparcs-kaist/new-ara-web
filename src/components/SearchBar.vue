@@ -1,5 +1,5 @@
 <template>
-  <div class="searchbar field">
+  <div class="searchbar field" :class="{ 'searchbar--small': small }">
     <form class="control has-icons-right" @submit.prevent="search">
       <input class="input is-medium" name="query" type="text" v-model="searchText">
       <button class="icon is-small is-right" type="submit">
@@ -16,7 +16,8 @@ export default {
   },
 
   props: {
-    searchable: Boolean
+    searchable: Boolean,
+    small: Boolean
   },
 
   methods: {
@@ -26,7 +27,7 @@ export default {
         return
       }
 
-      this.$router.push({ query: { query: this.searchText } })
+      this.$router.push({ query: { ...this.$route.query, query: this.searchText } })
     }
   }
 }
@@ -48,6 +49,11 @@ export default {
       height: 2.5rem;
       font-size: .8rem;
     }
+  }
+
+  &--small .input {
+    height: 2.5rem;
+    font-size: .8rem;
   }
 }
 </style>
