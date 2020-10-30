@@ -82,7 +82,7 @@ export default {
       }))
     }
 
-    const [ home, notice ] = await fetchWithProgress(promises)
+    const [ home, notice ] = await fetchWithProgress(promises, 'home-failed-fetch')
     next(vm => {
       vm.home = home
       vm.notice = notice?.results

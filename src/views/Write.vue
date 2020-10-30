@@ -84,7 +84,7 @@ export default {
         } catch (err) {
           this.$store.dispatch('dialog/toast', {
             type: 'error',
-            text: this.$t('attachment-failed')
+            text: this.$t('attachment-failed') + (err.apierr ? '\n' + err.apierr : '')
           })
           this.saving = false
           return
@@ -128,7 +128,9 @@ export default {
 
         this.$store.dispatch('dialog/toast', {
           type: 'error',
-          text: this.isEditing ? this.$t('create-failed') : this.$t('update-failed')
+          text:
+            (this.isEditing ? this.$t('create-failed') : this.$t('update-failed')) +
+            (err.apierr ? '\n' + err.apierr : '')
         })
         this.saving = false
         return
@@ -148,7 +150,7 @@ export default {
       }) // !주의: next는 한번만 호출돼야 함
     // 기존 글을 수정하는 경우
     } else {
-      const [ post ] = await fetchWithProgress([ fetchPost({ postId }) ])
+      const [ post ] = await fetchWithProgress([ fetchPost({ postId }) ], 'write-failed-fetch')
       next(vm => {
         document.title = vm.$t('document-title.revise')
         vm.post = post
@@ -166,7 +168,7 @@ export default {
       document.title = this.$t('document-title.write')
       this.post = null
     } else {
-      const [ post ] = await fetchWithProgress([ fetchPost({ postId }) ])
+      const [ post ] = await fetchWithProgress([ fetchPost({ postId }) ], 'write-failed-fetch')
       document.title = this.$t('document-title.revise')
       this.post = post
     }
@@ -201,7 +203,7 @@ ko:
   attachment-failed: '첨부파일 업로드에 실패했습니다. 용량을 다시 한번 확인해주세요.'
   create-failed: '글 작성에 실패했습니다. 다시 한 번 시도해주세요.'
   update-failed: '글 수정에 실패했습니다. 다시 한 번 시도해주세요.'
-  before-unload: '이 포스트는 아직 저장되지 않았습니다! 정말 빠져나가시겠습니까?'
+  before-unload: "이 포스트는 아직 저장되지 않았습니다!\n정말 빠져나가시겠습니까?"
   document-title:
     write: 'Ara - 글쓰기'
     revise: 'Ara - 수정하기'
@@ -211,7 +213,7 @@ en:
   attachment-failed: 'Failed to upload attachments. Please double check the size of files.'
   create-failed: 'Failed to write the post. Please try again after a while.'
   update-failed: 'Failed to update the post. Please try again after a while.'
-  before-unload: 'This post is not saved yet. Are you sure to exit?'
+  before-unload: "This post is not saved yet.\nAre you sure to exit?"
   document-title:
     write: 'Ara - Write'
     revise: 'Ara - Revise'

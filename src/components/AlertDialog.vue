@@ -89,7 +89,7 @@ export default {
   left: 50%;
   padding: 20px;
   width: 90%;
-  max-width: 350px;
+  max-width: 450px;
   background: var(--grey-100);
   border-radius: 10px;
   transform: translate(-50%, -50%);
@@ -109,7 +109,7 @@ export default {
     position: relative;
     top: 0;
     left: 0;
-    width: 100%;
+    width: auto;
     transform: none;
     padding: 0 20px;
     box-shadow: 0 2px 6px 0 var(--grey-400);
@@ -117,10 +117,13 @@ export default {
     display: flex;
     flex-flow: row;
     align-items: center;
+
     .material-icons {
       font-size: 30px;
     }
+
     .content-text {
+      text-align: left;
       margin-left: 10px;
     }
   }
@@ -128,6 +131,12 @@ export default {
   &__content {
     margin-bottom: 1.5rem;
     margin-top: 1.2rem;
+
+    .content-text {
+      text-align: center;
+      white-space: pre-line;
+      word-wrap: break-word;
+    }
   }
 
   &__buttons {

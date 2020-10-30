@@ -31,7 +31,7 @@ export default {
     const [ board, user ] = await fetchWithProgress([
       fetchArticles({ username, ...query }),
       fetchUser(username)
-    ])
+    ], 'user-failed-fetch')
     document.title = `Ara - ${user.nickname}`
     next(vm => {
       vm.board = board
@@ -42,7 +42,7 @@ export default {
     const [ board, user ] = await fetchWithProgress([
       fetchArticles({ username, ...query }),
       fetchUser(username)
-    ])
+    ], 'user-failed-fetch')
     document.title = `Ara - ${user.nickname}`
     this.board = board
     this.user = user

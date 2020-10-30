@@ -260,7 +260,7 @@ export default {
         })
       } catch (err) {
         this.$store.dispatch('dialog/toast', {
-          text: this.$t('setting-change-failed'),
+          text: this.$t('setting-change-failed') + (err.apierr ? '\n' + err.apierr : ''),
           type: 'error'
         })
       }
@@ -296,9 +296,9 @@ export default {
       try {
         await deleteBlock(userId)
         this.blocks = await fetchBlocks()
-      } catch (error) {
+      } catch (err) {
         this.$store.dispatch('dialog/toast', {
-          text: this.$t('unblock-failed'),
+          text: this.$t('unblock-failed') + (err.apierr ? '\n' + err.apierr : ''),
           type: 'error'
         })
       }
@@ -310,7 +310,7 @@ export default {
       store.dispatch('fetchMe'),
       fetchByQuery(query),
       fetchBlocks()
-    ])
+    ], 'myinfo-failed-fetch')
 
     const { userNickname, userEmail, userPicture, userConfig } = store.getters
 
@@ -331,7 +331,7 @@ export default {
   },
 
   async beforeRouteUpdate ({ query }, from, next) {
-    const [ posts ] = await fetchWithProgress([ fetchByQuery(query) ])
+    const [ posts ] = await fetchWithProgress([ fetchByQuery(query) ], 'myinfo-failed-fetch')
     this.posts = posts
     next()
   },

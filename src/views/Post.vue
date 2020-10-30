@@ -194,7 +194,7 @@ export default {
   async beforeRouteEnter ({ params: { postId }, query }, from, next) {
     const [ post ] = await fetchWithProgress([
       fetchPost({ postId, context: query })
-    ])
+    ], 'post-failed-fetch')
     document.title = `Ara - ${post.title}`
     next(vm => { vm.post = post })
   },
@@ -202,7 +202,7 @@ export default {
   async beforeRouteUpdate ({ params: { postId }, query }, from, next) {
     const [ post ] = await fetchWithProgress([
       fetchPost({ postId, context: query })
-    ])
+    ], 'post-failed-fetch')
     document.title = `Ara - ${post.title}`
     this.post = post
     this.showHidden = false

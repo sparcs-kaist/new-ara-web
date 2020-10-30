@@ -91,7 +91,9 @@ export default {
 
     const topicId = topic ? topic.id : null
 
-    const [ board ] = await fetchWithProgress([ fetchArticles({ boardId, topicId, ...query }) ])
+    const [ board ] = await fetchWithProgress(
+      [ fetchArticles({ boardId, topicId, ...query }) ], 'board-failed-fetch'
+    )
     next(vm => {
       vm.board = board
       vm.boardId = boardId
@@ -107,7 +109,9 @@ export default {
 
     const topicId = topic ? topic.id : null
 
-    const [ board ] = await fetchWithProgress([ fetchArticles({ boardId, topicId, ...query }) ])
+    const [ board ] = await fetchWithProgress(
+      [ fetchArticles({ boardId, topicId, ...query }) ], 'board-failed-fetch'
+    )
     this.board = board
     this.boardId = boardId
     document.title = `Ara - ${this.boardName}`

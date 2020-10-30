@@ -31,3 +31,17 @@ export const queryBuilder = context =>
   Object.keys(context)
     .map(key => `${key}=${context[key]}`)
     .join('&')
+
+export const getValidatorError = data => {
+  return Object.keys(data).reduce((prev, key) => {
+    const curr = data[key]
+
+    if (Array.isArray(curr)) {
+      prev.push(...curr)
+    } else {
+      prev.push(curr.toString())
+    }
+
+    return prev
+  }, []).join('\n')
+}

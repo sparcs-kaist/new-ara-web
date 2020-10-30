@@ -28,7 +28,7 @@ export default {
         this.$emit('block-deleted', this.block.id)
       } catch (err) {
         this.$store.dispatch('dialog/toast', {
-          text: this.$t('unblock-failed'),
+          text: this.$t('unblock-failed') + (err.apierr ? '\n' + err.apierr : ''),
           type: 'error'
         })
       } finally {

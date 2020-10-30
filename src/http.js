@@ -1,6 +1,7 @@
 import axios from 'axios'
 import cookie from './utils/cookie'
 import router from './router'
+import { getValidatorError } from './helper'
 
 const apiUrl = (function () {
   if (process.env.NODE_ENV === 'production') {
@@ -35,12 +36,18 @@ instance.interceptors
   .response.use(
     resp => resp,
     err => {
-      if (err.response.status === 401) {
-        router.push('/login')
-      } else if (err.response.status === 404) {
-        router.push('/404')
-      } else if (err.response.status === 418) {
-        router.push('/tos')
+      if (err.response) {
+        if (err.response.status === 401) {
+          router.push('/login')
+        } else if (err.response.status === 404) {
+          router.push('/404')
+        } else if (err.response.status === 418) {
+          router.push('/tos')
+        }
+
+        if (typeof err.response.data === 'object') {
+          err.apierr = err.message = getValidatorError(err.response.data)
+        }
       }
 
       return Promise.reject(err)
