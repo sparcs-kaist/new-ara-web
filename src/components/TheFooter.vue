@@ -22,7 +22,7 @@
         </div>
 
         <div class="footer-item">
-          <a href="https://sparcs.org">
+          <a @click="$refs.terms.openTermsPopup()">
             {{ $t('rules') }}
           </a>
         </div>
@@ -35,12 +35,21 @@
         </a>
       </div>
     </div>
+    <TermsPopup :agree-tos-at="agreeTosAt" ref="terms" :show="false"/>
   </footer>
 </template>
 
 <script>
+import TermsPopup from './TermsPopup'
 export default {
-
+  computed: {
+    agreeTosAt () {
+      return this.$store.state.auth.userProfile?.['agree_terms_of_service_at']
+    }
+  },
+  components: {
+    TermsPopup
+  }
 }
 </script>
 
@@ -48,12 +57,12 @@ export default {
 ko:
   credit: '만든 사람들'
   license: '라이센스'
-  rules: '규칙'
+  rules: '이용 약관'
   contact: '문의'
 en:
   credit: 'Credit'
   license: 'License'
-  rules: 'Rules'
+  rules: 'Terms of Service'
   contact: 'Contact'
 </i18n>
 
