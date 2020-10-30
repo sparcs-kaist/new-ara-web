@@ -269,7 +269,9 @@ en:
 }
 
 .navbar-container {
-  display: flex;
+  @media screen and (min-width: 1088px) {
+    display: flex;
+  }
   width: 100%;
 }
 
