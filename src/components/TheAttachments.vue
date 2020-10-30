@@ -16,7 +16,13 @@
         @dragleave.stop.prevent="dropzoneEnabled = false"
         @drop.stop.prevent="handleDropUpload">
 
-        <input class="dropzone__upload" type="file" ref="upload" @change="handleDialogUpload">
+        <input
+          class="dropzone__upload"
+          :accept="accepted"
+          type="file"
+          ref="upload"
+          @change="handleDialogUpload"
+        >
       </label>
 
       <span class="attachments__message"> {{dropzoneMessage}} </span>
@@ -35,6 +41,8 @@
         </div>
       </transition-group>
     </div>
+
+    <input class="dropzone__upload" type="file" accept="image/*" ref="imageUpload" @change="handleImageUpload">
   </div>
 </template>
 
@@ -63,11 +71,16 @@ export default {
     return {
       dropzoneFailedReason: null,
       dropzoneEnabled: false,
-      files: []
+      files: [],
+      pasteListener: null
     }
   },
 
   computed: {
+    accepted () {
+      return ALLOWED_EXTENSIONS.map(ext => `.${ext}`).join(',')
+    },
+
     dropzoneMessage () {
       if (this.dropzoneFailedReason) {
         return this.$t(this.dropzoneFailedReason)
@@ -101,6 +114,10 @@ export default {
 
     openUpload () {
       this.$refs.upload.click()
+    },
+
+    openImageUpload () {
+      this.$refs.imageUpload.click()
     },
 
     handleUpload (fileList) {
@@ -153,15 +170,51 @@ export default {
       this.handleUpload(files)
     },
 
+    handleImageUpload (event) {
+      const files = this.$refs.imageUpload.files
+      if (!files) return
+
+      this.handleUpload(files)
+    },
+
     deleteFile (file) {
       const index = this.files.indexOf(file)
       this.files.splice(index, 1)
 
-      if (file.blobUrl) {
+      if (file.blobUrl && file.blobUrl.startsWith('blob:')) {
         URL.revokeObjectURL(file.blobUrl)
       }
 
       this.$emit('delete', file)
+    }
+  },
+
+  mounted () {
+    this.pasteListener = event => {
+      const dataTransfer = event.clipboardData || window.clipboardData
+      if (!dataTransfer) return
+
+      const items = [...dataTransfer.items]
+      const fileItems = items
+        .filter(item => item.kind === 'file')
+
+      if (fileItems.length === 0) return
+
+      event.preventDefault()
+      event.stopPropagation()
+
+      const files = fileItems
+        .map(item => item.getAsFile())
+
+      this.handleUpload(files)
+    }
+
+    document.addEventListener('paste', this.pasteListener)
+  },
+
+  beforeDestroy () {
+    if (this.pasteListener) {
+      document.removeEventListener('paste', this.pasteListener)
     }
   },
 
@@ -179,14 +232,14 @@ export default {
   ko:
     upload: '첨부파일'
     upload-button: '가져오기'
-    dropzone-normal: '가져오기 버튼을 클릭하거나 파일을 드래그 앤 드롭해주세요.'
+    dropzone-normal: '가져오기 버튼을 클릭하거나 복사한 이미지를 본문에서 붙여넣기, 또는 파일을 드래그 앤 드롭해주세요.'
     dropzone-drop: '여기에 드롭해주세요.'
     dropzone-unallowed-extensions: '허용되지 않은 확장자입니다.'
 
   en:
     upload: 'Upload Attachments'
     upload-button: 'Import'
-    dropzone-normal: 'Please click import button or drag & drop the files.'
+    dropzone-normal: 'Please click import button, paste copied images, or drag & drop the files.'
     dropzone-drop: 'Please drop here.'
     dropzone-unallowed-extensions: 'This file type is not allowed.'
 </i18n>
@@ -228,11 +281,15 @@ export default {
     border-color: rgba(0, 0, 0, 0.7);
   }
 
-  &--failed &__content {
+  &--failed & {
     // Didn't use --theme-red as it is "theme" color, not error color
-    border-color: #ed3a3a;
-    background: #ed3a3a;
-    color: var(--grey-100);
+    &__content {
+      border-color: #ed3a3a;
+    }
+
+    &__message {
+      color: #ed3a3a;
+    }
   }
 
   &__message {
@@ -240,6 +297,7 @@ export default {
     padding-bottom: 30px;
     color: var(--grey-400);
     font-weight: 500;
+    transition: color var(--duration) var(--background-timing);
   }
 
   &__dropzone {

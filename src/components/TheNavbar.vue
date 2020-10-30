@@ -1,7 +1,7 @@
 <template>
   <div class="navbar is-transparent" aria-label="main navigation" role="navigation">
     <!-- <TheNavbarFetchProgressBar/> -->
-    <div class="container">
+    <div class="navbar-container">
       <div class="navbar-brand">
         <router-link
           :to="{ name: 'home' }"
@@ -51,19 +51,14 @@
 
             {{ board[`${$i18n.locale}_name`] }}
           </router-link>
+
+          <router-link class="navbar-item navbar-item--write"
+          :to="{ name: 'write' }">
+            <span>{{ $t('write') }}</span>
+          </router-link>
         </div>
 
         <div class="navbar-end">
-          <router-link class="navbar-item navbar-item--write"
-          :to="{ name: 'write' }">
-
-            <span class="icon">
-              <i class="material-icons">create</i>
-            </span>
-
-            <span>{{ $t('write') }}</span>
-          </router-link>
-
           <a class="navbar-item"
             @click="changeLocale"
             id="toggle-language">
@@ -259,9 +254,48 @@ en:
   }
 }
 
+@mixin containerMinWidth() {
+  @media screen and (min-width: 1088px) {
+    min-width: calc((100vw - 960px) / 2);
+  }
+
+  @media screen and (min-width: 1280px) {
+    min-width: calc((100vw - 1152px) / 2);
+  }
+
+  @media screen and (min-width: 1472px) {
+    min-width: calc((100vw - 1344px) / 2);
+  }
+}
+
+.navbar-container {
+  display: flex;
+  width: 100%;
+}
+
+.navbar-brand {
+  @include breakPoint(min) {
+    flex: 1;
+  }
+}
+
 .navbar-start {
+  justify-content: flex-end;
   flex-wrap: wrap;
   flex: 1;
+}
+
+.navbar-end {
+  padding-left: 10px;
+  @include containerMinWidth();
+
+  .navbar-item {
+    padding: 0 5px;
+
+    &:last-child {
+      padding-right: 15px;
+    }
+  }
 }
 
 .navbar-ara {
@@ -271,7 +305,7 @@ en:
 .navbar-menu {
   background: transparent !important;
   font-weight: 500;
-  width: 0;
+  flex: 1;
 
   @include breakPoint(min) {
     padding: 15px 10px;

@@ -161,6 +161,7 @@ en:
       background: transparent;
       border: none;
       outline: none;
+      padding-bottom: 30px;
     }
 
     &__author {

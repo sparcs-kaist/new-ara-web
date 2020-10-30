@@ -96,7 +96,7 @@
                     {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
                   </a>
 
-                  <template v-if="postUserId === userId">
+                  <template v-if="postAuthorId === userId">
                     <router-link class="dropdown-item"
                       :to="{
                         name: 'write',
@@ -168,9 +168,6 @@ export default {
     },
     postCreatedAt () {
       return date(this.post.created_at)
-    },
-    postUserId () {
-      return this.post.created_by && this.post.created_by.profile.user_id
     },
     nextPost () {
       return this.post.side_articles && this.post.side_articles.after

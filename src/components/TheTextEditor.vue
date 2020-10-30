@@ -150,15 +150,17 @@
 
         <button
           class="menubar__button"
-          @click="showImageDialog(commands.attachmentImage)"
+          @click="$emit('open-image-upload')"
         >
           <span class="icon">
             <i class="material-icons">image</i>
           </span>
         </button>
 
+        <!-- Enabling undoDepth will make other components get no focus -->
         <button
           class="menubar__button"
+          :class="{ /* 'is-disabled': commands.undoDepth() === 0 */ }"
           @click="commands.undo"
         >
           <span class="icon">
@@ -168,6 +170,7 @@
 
         <button
           class="menubar__button"
+          :class="{ /* 'is-disabled': commands.redoDepth() === 0 */ }"
           @click="commands.redo"
         >
         <span class="icon">
@@ -181,7 +184,6 @@
     </div>
 
     <div class="dialogs" v-if="editable">
-      <TheTextEditorImageDialog ref="imageDialog" @attach-files="attachFiles" />
       <TheTextEditorLinkDialog ref="linkDialog" />
     </div>
   </div>
@@ -213,7 +215,6 @@ import {
 import AttachmentImage from '@/editor/AttachmentImage'
 import CodeBlock from '@/editor/CodeBlock'
 import LinkBookmark from '@/editor/LinkBookmark'
-import TheTextEditorImageDialog from '@/components/TheTextEditorImageDialog'
 import TheTextEditorLinkDialog from '@/components/TheTextEditorLinkDialog'
 
 export default {
@@ -234,7 +235,8 @@ export default {
         extensions: [
           new LinkBookmark(), // Bold, Italic과 underscore inputRule이 겹침 => url 우선
           new AttachmentImage({
-            errorCallback: () => { this.imgError = true }
+            errorCallback: () => { this.imgError = true },
+            editable: this.editable
           }),
           new Blockquote(),
           new Bold(),
@@ -245,8 +247,8 @@ export default {
           new Heading({ levels: [ 1, 2, 3 ] }),
           new History(),
           new HorizontalRule(),
-          new Italic(),
           new Link(),
+          new Italic(),
           new ListItem(),
           new OrderedList(),
           new Placeholder({
@@ -272,14 +274,6 @@ export default {
       return this.editor.getHTML()
     },
 
-    showImageDialog (command) {
-      this.$refs.imageDialog.showDialog(imageUrl => {
-        if (imageUrl) {
-          command({ src: imageUrl })
-        }
-      })
-    },
-
     showLinkDialog () {
       const { commands, schema, view, selection, state: { doc } } = this.editor
 
@@ -302,10 +296,6 @@ export default {
       }, text || '')
     },
 
-    attachFiles (files) {
-      this.$emit('attach-files', files)
-    },
-
     addImageByFile (file) {
       if (file.blobUrl) {
         this.editor.commands.attachmentImage({
@@ -316,20 +306,26 @@ export default {
     },
 
     removeImageByFile (file) {
-      let imagePosition = null
+      let imagePositions = []
 
       this.editor.state.doc.descendants((node, pos) => {
-        if (imagePosition !== null) return false
-
         if (node.type.name !== 'attachmentImage') return true
         if (node.attrs['data-attachment'] === file.key) {
-          imagePosition = pos
+          imagePositions.push(pos)
           return false
         }
       })
 
-      const transaction = this.editor.state.tr.delete(imagePosition, imagePosition + 1)
-      this.editor.view.dispatch(transaction)
+      if (imagePositions.length <= 0) return
+
+      const transaction = imagePositions
+        .sort((v1, v2) => v2 - v1)
+        .reduce(
+          (transaction, imagePosition) => transaction.delete(imagePosition, imagePosition + 1),
+          this.editor.state.tr
+        )
+
+      this.editor.view.dispatch(transaction.setMeta('addToHistory', false))
     },
 
     applyImageUpload (attachmentUpdate) {
@@ -362,14 +358,22 @@ export default {
   components: {
     EditorContent,
     EditorMenuBar,
-    TheTextEditorImageDialog,
     TheTextEditorLinkDialog
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<i18n>
+ko:
+  img-invalid-title: '이미지를 불러오는데 실패했습니다. 포탈 공지 글인 경우 위 링크를 클릭해 주세요.'
+  img-invalid-subtitle: '(로그인 후 포탈 메인 페이지가 보인다면 링크를 다시 클릭해 주세요)'
 
+en:
+  img-invalid-title: 'Failed to load image. If it is a portal notice, please click the link above.'
+  img-invalid-subtitle: 'If you see the portal main page after logging in, click the link again.'
+</i18n>
+
+<style lang="scss" scoped>
 .editor {
   position: relative;
 
@@ -420,6 +424,10 @@ export default {
       &.is-active {
         background-color: var(--grey-300);
       }
+
+      &.is-disabled {
+        color: var(--grey-300);
+      }
     }
   }
 
@@ -439,16 +447,6 @@ export default {
   }
 }
 </style>
-
-<i18n>
-ko:
-  img-invalid-title: '이미지를 불러오는데 실패했습니다. 포탈 공지 글인 경우 위 링크를 클릭해 주세요.'
-  img-invalid-subtitle: '(로그인 후 포탈 메인 페이지가 보인다면 링크를 다시 클릭해 주세요)'
-
-en:
-  img-invalid-title: 'Failed to load image. If it is a portal notice, please click the link above.'
-  img-invalid-subtitle: 'If you see the portal main page after logging in, click the link again.'
-</i18n>
 
 <style lang="scss">
 .editor--editable {

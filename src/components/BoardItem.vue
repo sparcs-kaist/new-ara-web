@@ -203,7 +203,7 @@ en:
   & > * {
     display: inline-flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-end;
     margin-right: 10px;
     white-space: nowrap;
     font-size: .9rem;

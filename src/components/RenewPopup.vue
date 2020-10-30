@@ -134,6 +134,11 @@ en:
 <style lang="scss" scoped>
 @import "@/theme.scss";
 
+.modal-content {
+  border-radius: 10px;
+  background-color: var(--grey-100);
+}
+
 .popup {
   font-size: 13px;
   color: var(--text);
@@ -143,7 +148,6 @@ en:
   padding-top: 56px;
   padding-bottom: 72px;
   padding-right: 56px;
-  background-color: var(--grey-100);
   border-radius: 10px;
   box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.64);
   word-break: keep-all;

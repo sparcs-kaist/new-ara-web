@@ -12,7 +12,7 @@
 
       <div class="write__input">
         <div class="select" :class="{ 'is-placeholder': !boardId }" >
-          <select v-model="boardId">
+          <select v-model="boardId" :disabled="editMode">
             <option value="" disabled selected> {{ $t('input-board') }} </option>
             <option
               v-for="board in boardList"
@@ -33,7 +33,7 @@
 
       <div class="write__input">
         <div class="select" :class="{ 'is-placeholder': categoryNotSet }">
-          <select v-model="categoryId">
+          <select v-model="categoryId" :disabled="editMode">
             <option value="$not-set" disabled selected> {{ $t('input-category') }} </option>
             <option value="" v-if="boardId"> {{ $t('no-category') }} </option>
 
@@ -93,6 +93,7 @@
         ref="textEditor"
         :content="initialPostContent"
         @attach-files="attachFiles"
+        @open-image-upload="openImageUpload"
         editable
       />
 
@@ -145,7 +146,6 @@ export default {
   data () {
     return {
       boardId: '',
-      writeTitle: this.$t('write'),
       categoryId: '$not-set',
       title: '',
       isSexual: false,
@@ -159,7 +159,10 @@ export default {
     ...mapGetters([ 'getIdBySlug' ]),
 
     initialPostContent () {
-      return this.post ? this.post.content : null
+      if (!this.post) return null
+      if (this.post.is_hidden) return this.post.hidden_content
+
+      return this.post.content
     },
 
     boardList () {
@@ -192,18 +195,29 @@ export default {
 
     isTitleWarning () {
       return !this.title && this.emptyWarnings.includes('title')
+    },
+
+    editMode () {
+      return !!this.post
+    },
+
+    writeTitle () {
+      if (this.editMode) return this.$t('write-edit')
+      return this.$t('write')
     }
   },
 
   created () {
     if (this.post) {
       this.boardId = this.post.parent_board.id
-      this.categoryId = this.post.topic ? this.post.topic.id : '$not-set'
       this.title = this.post.title
       this.isSocial = this.post.is_content_social
       this.isSexual = this.post.is_content_sexual
       this.loaded = false
-      this.writeTitle = this.$t('write-edit')
+
+      this.$nextTick(() => {
+        this.categoryId = this.post.parent_topic ? this.post.parent_topic.id : ''
+      })
     }
     const { board } = this.$route.query
     if (board) {
@@ -263,6 +277,10 @@ export default {
           attachments: this.$refs.attachments.files
         }
       )
+    },
+
+    openImageUpload () {
+      this.$refs.attachments.openImageUpload()
     },
 
     updateAttachments (attachmentUpdate) {

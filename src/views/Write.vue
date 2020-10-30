@@ -1,5 +1,5 @@
 <template>
-  <TheLayout>
+  <TheLayout :key="postId">
     <ThePostWrite
       ref="write"
       v-if="postFetched"
@@ -139,6 +139,7 @@ export default {
       this.$router.push({ name: 'post', params: { postId: result.id } })
     }
   },
+
   async beforeRouteEnter ({ params: { postId } }, from, next) {
     // 새로운 글을 작성하는 경우
     if (!postId) {
@@ -153,6 +154,23 @@ export default {
         vm.post = post
       })
     }
+  },
+
+  async beforeRouteUpdate ({ params: { postId } }, from, next) {
+    if (!this.saved) {
+      const response = await this.$store.dispatch('dialog/confirm', this.$t('before-unload'))
+      if (!response) return
+    }
+
+    if (!postId) {
+      document.title = this.$t('document-title.write')
+      this.post = null
+    } else {
+      const [ post ] = await fetchWithProgress([ fetchPost({ postId }) ])
+      document.title = this.$t('document-title.revise')
+      this.post = post
+    }
+    next()
   },
 
   async beforeRouteLeave (to, from, next) {

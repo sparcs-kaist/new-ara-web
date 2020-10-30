@@ -117,7 +117,10 @@ en:
 .home {
   background-size: 100% 380px;
   background-repeat: no-repeat;
-  background-image: linear-gradient(to bottom, var(--theme-100), transparent);
+
+  // Warning! In safari, "transparent" is translated into rgba(0, 0, 0, 0)
+  //          and, consequently, gradient will contain a strange black color.
+  background-image: linear-gradient(to bottom, var(--theme-100), rgba(253, 240, 240, 0));
 
   &__searchbar {
     display: flex;

@@ -98,6 +98,7 @@ export default {
     justify-content: space-between;
     margin: 0.5rem 0;
     padding: 5px 1rem;
+    padding-right: 0;
     white-space: nowrap;
 
     &__index {

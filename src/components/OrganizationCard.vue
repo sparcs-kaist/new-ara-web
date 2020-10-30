@@ -4,6 +4,7 @@
     class="organization-card"
     :style="{ 'background-color': backgroundColor }">
     <img class="logo" v-if="id" :src="require(`@/assets/Logo${id}.png`)" />
+    <i class="logo logo--icon material-icons" v-else-if="icon">{{icon}}</i>
     <span class="name">{{ name }}</span>
   </router-link>
 </template>
@@ -26,6 +27,14 @@
     height: 60%;
     margin-bottom: 10px;
     object-fit: contain;
+
+    &--icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+      color: var(--theme-400);
+    }
   }
 
   .name {
@@ -41,10 +50,11 @@
 export default {
   name: 'organization-card',
   props: {
-    name: { required: true },
-    id: { required: true },
-    slug: { required: false },
-    backgroundColor: { required: false, default: '#fdf0f0' }
+    name: { type: String, required: true },
+    id: { type: String },
+    icon: { type: String },
+    slug: { type: String },
+    backgroundColor: { type: String, default: '#fdf0f0' }
   },
   computed: {
     generateHref () {
