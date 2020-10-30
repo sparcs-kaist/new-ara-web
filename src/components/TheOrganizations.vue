@@ -42,8 +42,10 @@ export default {
         { name: '생활관 자치회', id: 'GSDC', slug: 'dorm-council' },
         { name: '학생복지위원회', id: 'SWF', slug: 'welfare-cmte' },
         { name: '총학생회', id: 'SA', slug: 'undergrad-assoc' },
+        { name: '대학원총학생회', id: 'GSA', slug: 'grad-assoc' },
         { name: '새내기학생회', id: 'NSA', slug: 'freshman-council' },
         { name: '협동조합', id: 'KCOOP', slug: 'kcoop' }
+
       ]
     }
   }
