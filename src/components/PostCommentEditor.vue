@@ -110,7 +110,7 @@ export default {
         this.autosize()
       } catch (err) {
         this.$store.dispatch('dialog/toast', {
-          text: this.$t('write-failed'),
+          text: this.$t('write-failed') + (err.apierr ? '\n' + err.apierr : ''),
           type: 'error'
         })
       }

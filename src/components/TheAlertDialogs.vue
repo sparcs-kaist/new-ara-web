@@ -41,11 +41,13 @@ export default {
 <style lang="scss" scoped>
 .dialogs {
   &__toasts {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     position: fixed;
     top: 5vw;
     right: 5vw;
-    max-width: 300px;
+    max-width: 420px;
     width: 70%;
     z-index: 32;
   }

@@ -17,14 +17,14 @@ export default {
     return { notifications: {} }
   },
   async beforeRouteEnter ({ query }, from, next) {
-    const [ notifications ] = await fetchWithProgress([ fetchNotifications({ query }) ])
+    const [ notifications ] = await fetchWithProgress([ fetchNotifications({ query }) ], 'notifications-failed-fetch')
     next(vm => {
       vm.notifications = notifications
       document.title = vm.$t('document-title')
     })
   },
   async beforeRouteUpdate ({ query }, from, next) {
-    const [ notifications ] = await fetchWithProgress([ fetchNotifications({ query }) ])
+    const [ notifications ] = await fetchWithProgress([ fetchNotifications({ query }) ], 'notifications-failed-fetch')
     this.notifications = notifications
     next()
   },

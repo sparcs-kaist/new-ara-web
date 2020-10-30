@@ -14,7 +14,14 @@ export const authGuard = async (to, from, next) => {
       await store.dispatch('fetchBoardList')
       next()
     } catch (err) {
-      // @TODO: 서버장애 페이지..?
+      if (err.apierr) {
+        await store.dispatch('dialog/toast', {
+          type: 'error',
+          text: err.apierr
+        })
+      } else {
+        // @TODO: 서버장애 페이지..?
+      }
     }
     next()
   }
