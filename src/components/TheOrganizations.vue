@@ -21,7 +21,7 @@
 }
 
 .organization-dummy {
-  width: 140px;
+  width: 120px;
   height: 0 !important;
   margin: 0 0.5%;
 }
