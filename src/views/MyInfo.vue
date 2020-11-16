@@ -245,7 +245,7 @@ export default {
       this.updating = true && showUpdating
       try {
         await updateUser(this.userId, {
-          nickname: this.user.nickname,
+          nickname: this.newNickname ? this.newNickname : this.user.nickname,
           email: this.user.email,
           picture: this.user.picture,
           sexual: this.user.sexual,
@@ -257,6 +257,7 @@ export default {
             text: this.$t('success'),
             type: 'confirm'
           })
+          if (this.newNickname) this.user.nickname = this.newNickname
         })
       } catch (err) {
         this.$store.dispatch('dialog/toast', {
@@ -284,7 +285,6 @@ export default {
         this.isNicknameEditable = true
       } else {
         if (isUpdate && this.user.nickname !== this.newNickname) {
-          this.user.nickname = this.newNickname
           await this.updateSettings()
         }
 
