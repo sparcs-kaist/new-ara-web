@@ -18,8 +18,7 @@ export default new Vuex.Store({
   state: {
     boardList: [],
     recentPosts: [],
-    archivedPosts: [],
-    portalExclude: false
+    archivedPosts: []
   },
   getters: {
     hasFetchedBoardList: ({ boardList }) =>
@@ -34,9 +33,7 @@ export default new Vuex.Store({
     getNameById: ({ boardList }) => (id, locale) => {
       const board = boardList.find(board => board.id === id)
       return board ? board[`${locale}_name`] : i18n.t('all', locale)
-    },
-    getPortalExclude: ({portalExclude}) => () =>
-      portalExclude
+    }
   },
   mutations: {
     setBoardList (state, boardList) {
@@ -49,10 +46,6 @@ export default new Vuex.Store({
 
     setArchivedPosts (state, posts) {
       state.archivedPosts = posts
-    },
-
-    setPortalExclude (state, BoolExclude) {
-      state.portalExclude = BoolExclude
     }
   },
   actions: {

@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import store from '@/store'
 import SearchBar from '@/components/SearchBar.vue'
 import ThePaginator from '@/components/ThePaginator.vue'
 import TheBoardTable from '@/components/TheBoardTable.vue'
@@ -73,15 +72,10 @@ export default {
   },
   methods: {
     changeFilter () {
-      // console.log('getPortalExclude : ')
-      // console.log(store.getters.getPortalExclude())
-      // setting change(portal notice ignorance)
-      if (store.getters.getPortalExclude()) {
-        // console.log('setportalexclude...(to false)')
-        store.commit('setPortalExclude', false)
+      if (this.$route.query.portal === 'exclude') {
+        this.$router.push({ query: { ...this.$route.query, portal: '' } })
       } else {
-        // console.log('setportalexclude...(to true)')
-        store.commit('setPortalExclude', true)
+        this.$router.push({ query: { ...this.$route.query, portal: 'exclude' } })
       }
     }
   }
