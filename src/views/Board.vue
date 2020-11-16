@@ -85,10 +85,9 @@ export default {
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
     let boardId
     let boardData
-    console.log(boardSlug)
 
     // Portal-Notice filter
-    if (store.getters.getPortalExclude() && typeof boardSlug === 'undefined') {
+    if (query.portal === 'exclude') {
       boardId = '2,3,4,5,6,7,8'
       boardData = store.getters.getBoardById(null)
     } else {
@@ -113,20 +112,18 @@ export default {
 
   async beforeRouteUpdate ({ params: { boardSlug }, query }, from, next) {
     let boardId
-    let boardData
-    // console.log(boardSlug)
-
+    // let boardData
     // Portal-Notice filter
-    if (store.getters.getPortalExclude() && typeof boardSlug === 'undefined') {
+    if (query.portal === 'exclude') {
       boardId = '2,3,4,5,6,7,8'
-      boardData = query.topic
+      /* boardData = query.topic
         ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
-        : null
+        : null */
     } else {
       boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
-      boardData = query.topic
+      /* boardData = query.topic
         ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
-        : null
+        : null */
     }
     const topic = query.topic
       ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
