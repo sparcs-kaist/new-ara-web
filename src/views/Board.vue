@@ -83,8 +83,18 @@ export default {
   },
 
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
-    const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
-    const boardData = store.getters.getBoardById(boardId)
+    let boardId
+    let boardData
+    console.log(boardSlug)
+
+    // Portal-Notice filter
+    if (store.getters.getPortalExclude() && typeof boardSlug === 'undefined') {
+      boardId = '2,3,4,5,6,7,8'
+      boardData = store.getters.getBoardById(null)
+    } else {
+      boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
+      boardData = store.getters.getBoardById(boardId)
+    }
     const topic = (query.topic && boardData)
       ? boardData.topics.find(topic => topic.slug === query.topic)
       : null
@@ -102,7 +112,22 @@ export default {
   },
 
   async beforeRouteUpdate ({ params: { boardSlug }, query }, from, next) {
-    const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
+    let boardId
+    let boardData
+    // console.log(boardSlug)
+
+    // Portal-Notice filter
+    if (store.getters.getPortalExclude() && typeof boardSlug === 'undefined') {
+      boardId = '2,3,4,5,6,7,8'
+      boardData = query.topic
+        ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
+        : null
+    } else {
+      boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
+      boardData = query.topic
+        ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
+        : null
+    }
     const topic = query.topic
       ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
       : null

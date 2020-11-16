@@ -8,6 +8,13 @@
 
       <div class="board__options">
         <slot name="option" />
+        <a class="changeFilter"
+        @click="changeFilter"
+        >
+          <span class="icon">
+            <i class="material-icons">language</i>
+          </span>
+        </a>
         <SearchBar class="board__mobile-search is-flex-touch" searchable />
       </div>
     </div>
@@ -25,6 +32,7 @@
 </template>
 
 <script>
+import store from '@/store'
 import SearchBar from '@/components/SearchBar.vue'
 import ThePaginator from '@/components/ThePaginator.vue'
 import TheBoardTable from '@/components/TheBoardTable.vue'
@@ -62,6 +70,20 @@ export default {
     SearchBar,
     ThePaginator,
     TheBoardTable
+  },
+  methods: {
+    changeFilter () {
+      // console.log('getPortalExclude : ')
+      // console.log(store.getters.getPortalExclude())
+      // setting change(portal notice ignorance)
+      if (store.getters.getPortalExclude()) {
+        // console.log('setportalexclude...(to false)')
+        store.commit('setPortalExclude', false)
+      } else {
+        // console.log('setportalexclude...(to true)')
+        store.commit('setPortalExclude', true)
+      }
+    }
   }
 }
 </script>
