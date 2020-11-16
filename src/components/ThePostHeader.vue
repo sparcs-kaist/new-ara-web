@@ -108,7 +108,6 @@
                     </router-link>
 
                     <a @click="deletePost"
-                      href="#"
                       class="dropdown-item">
                       {{ $t('delete') }}
                     </a>
@@ -207,7 +206,7 @@ export default {
       if (!result) return
 
       await apiDeletePost(this.post.id)
-      this.$router.push('/')
+      this.$router.go(-1)
     }
   },
   components: {
