@@ -8,11 +8,13 @@
 
       <div class="board__options">
         <slot name="option" />
+        <span class="exclude__text">{{$t('exclude_portal')}}</span>
         <a class="changeFilter"
         @click="changeFilter"
         >
-          <span class="icon">
-            <i class="material-icons">language</i>
+          <span class="icon is-flex-touch">
+            <i class="material-icons" v-if="this.$route.query.portal === 'exclude'">toggle_on</i>
+            <i class="material-icons" v-else>toggle_off</i>
           </span>
         </a>
         <SearchBar class="board__mobile-search is-flex-touch" searchable />
@@ -85,9 +87,11 @@ export default {
 <i18n>
 ko:
   search: '{title}에서 {query} 검색'
+  exclude_portal: '포탈 공지글 제외하기'
 
 en:
   search: 'Search {query} from {title}'
+  exclude_portal: 'Exclude portal notices'
 </i18n>
 
 <style lang="scss" scoped>
