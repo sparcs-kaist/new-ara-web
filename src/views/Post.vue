@@ -148,7 +148,11 @@ export default {
     },
 
     async vote ({ id, vote }) {
-      await votePost(id, vote)
+      try {
+        await votePost(id, vote)
+      } catch (err) {
+        this.$store.dispatch('dialog/toast', this.$t('nonvotable-myself'))
+      }
       await this.refresh()
     },
 
@@ -230,6 +234,7 @@ ko:
   unblocked: '해당 유저가 차단해제되었습니다!'
   confirm-report: '정말로 신고하시겠습니까?'
   confirm-block: '정말로 차단하시겠습니까?'
+  nonvotable-myself: '본인 게시물에는 좋아요를 누를 수 없습니다!'
 
 en:
   archived: 'Successfully added to your archive!'
@@ -239,4 +244,5 @@ en:
   unblocked: 'The user has been unblocked!'
   confirm-report: 'Are you really want to report this post?'
   confirm-block: 'Are you really want to block this user?'
+  nonvotable-myself: 'You cannot vote for your post!'
 </i18n>
