@@ -148,9 +148,7 @@ export default {
   methods: {
     async vote (ballot) {
       this.isVoting = true
-      await voteComment(
-        ballot.id, ballot.vote
-      )
+      await voteComment(ballot.id, ballot.vote)
       this.$emit('vote')
       this.isVoting = false
     },
