@@ -25,7 +25,7 @@
 
           <div class="tos-section" v-for="(section, index) in sections" :key="index">
             <h2 class="tos-title">{{ section.title }}</h2>
-            <p class="tos-content">{{ section.contents }}</p>
+            <p class="tos-content" v-html = "section.contents"/>
           </div>
 
           <div class="tos-section">
@@ -174,7 +174,7 @@ ko:
 
     - title: '제 6조. 문의 및 제보'
       contents: |-
-        1. 아라에 대한 건의사항 또는 버그에 대한 사항은 구글폼을 통해 문의 및 제보할 수 있습니다. (https://forms.gle/qR6tQheLyzAoLPZeA)
+        1. 아라에 대한 건의사항 또는 버그에 대한 사항은 구글폼을 통해 문의 및 제보할 수 있습니다. (<a style="color: #00b8d4;" target="_blank" href="https://forms.gle/qR6tQheLyzAoLPZeA">https://forms.gle/qR6tQheLyzAoLPZeA</a>)
         2. 6조 1항의 구글폼이 작동하지 않거나, 기타 사항의 경우 new-ara@sparcs.org 를 통해 문의 및 제보할 수 있습니다.
 
     - title: '제 7조. 게시, 개정 및 해석'
@@ -256,7 +256,7 @@ en:
 
     - title: 'VI. Inquiries and reports'
       contents: |-
-        1. Suggestions for Ara or bug can be inquired and reported through Google forms. (https://forms.gle/qR6tQheLyzAoLPZeA)
+        1. Suggestions for Ara or bug can be inquired and reported through Google forms. (<a style="color: #00b8d4;" target="_blank" href="https://forms.gle/qR6tQheLyzAoLPZeA">https://forms.gle/qR6tQheLyzAoLPZeA</a>)
         2. If the Google Form does not work or if there is anything else to inquire, you can contact and inform us at new-ara@sparcs.org.
 
     - title: 'VII. Publish, revise, and interpret'
