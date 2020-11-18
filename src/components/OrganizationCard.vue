@@ -15,9 +15,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 140px;
-  height: 140px;
-  padding:20px;
+  width: 120px;
+  height: 120px;
+  padding: 20px 0;
   margin: 0 0.5% 15px;
   border-radius: 10px;
   box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.16);
