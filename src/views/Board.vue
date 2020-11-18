@@ -103,7 +103,7 @@ export default {
 
     // Portal-Notice filter
     if (query.portal === 'exclude') {
-      boardId = '2,3,4,5,6,7,8'
+      boardId = store.state.boardList.map(obj => String(obj.id)).filter(str => str !== '1')
       boardData = store.getters.getBoardById(null)
     } else {
       boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
@@ -130,7 +130,8 @@ export default {
     // let boardData
     // Portal-Notice filter
     if (query.portal === 'exclude') {
-      boardId = '2,3,4,5,6,7,8'
+      boardId = store.state.boardList.map(obj => String(obj.id)).filter(str => str !== '1')
+      // console.log(boardId)
       /* boardData = query.topic
         ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
         : null */

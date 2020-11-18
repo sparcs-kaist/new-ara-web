@@ -9,7 +9,8 @@ export const fetchArticles = ({boardId, query, page, pageSize, topicId, username
   const context = {}
   if (boardId) {
     if (typeof (boardId) === typeof (0)) context.parent_board = boardId
-    if (typeof (boardId) === typeof ('str')) context.parent_board__in = boardId
+    // if (typeof (boardId) === typeof ('str')) context.parent_board__in = boardId
+    if (Array.isArray(boardId)) context.parent_board__in = boardId.join(',')
   }
   if (topicId) context.parent_topic = topicId
   if (query) context.main_search__contains = query
