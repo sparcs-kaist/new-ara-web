@@ -45,7 +45,7 @@
         <template v-if="!$route.params.boardSlug">
           <div class="exclude">
             <span class="exclude__text">{{$t('exclude_portal')}}</span>
-            <a class="changeFilter"
+            <a class="exclude__change"
               @click="changeFilter"
               >
               <span class="icon is-flex-touch exclude__toggle">
@@ -224,6 +224,8 @@ export default {
 
   .exclude {
     display: flex;
+    margin: 1rem;
+    margin-top: 0;
 
     &__toggle {
       margin-left: 15px;
@@ -232,10 +234,16 @@ export default {
     &__icon {
       color: var(--grey-400);
       font-size: 2rem;
+      height: initial;
+      width: initial;
 
       &--on {
         color: var(--theme-400);
       }
+    }
+
+    &__change {
+      display: inline-flex;
     }
   }
 </style>
