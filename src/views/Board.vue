@@ -11,35 +11,50 @@
         </span>
       </template>
 
-      <template #option v-if="topics && topics.length > 0">
-        <div class="dropdown is-hoverable is-right board__filter">
+      <template #option >
+        <template v-if="topics && topics.length > 0">
+          <div class="dropdown is-hoverable is-right board__filter">
 
-          <div class="dropdown-trigger">
-            <a class="board__filter-trigger" aria-haspopup="true" aria-controls="dropdown-menu">
-              {{ $t('filter') }}
-              <i class="icon material-icons">filter_alt</i>
-            </a>
-          </div>
-
-          <div class="dropdown-menu board__filter-menu">
-            <div class="dropdown-content">
-              <div class="dropdown-item board__filter-item">
-                <router-link :to="{ query: { ...$route.query, topic: undefined } }">
-                  {{ $t('no-filter') }}
-                </router-link>
+            <div class="dropdown-trigger">
+              <a class="board__filter-trigger" aria-haspopup="true" aria-controls="dropdown-menu">
+                {{ $t('filter') }}
+                <i class="icon material-icons">filter_alt</i>
+              </a>
               </div>
 
-              <div class="dropdown-item board__filter-item"
-                v-for="topicItem in topics"
+            <div class="dropdown-menu board__filter-menu">
+              <div class="dropdown-content">
+                <div class="dropdown-item board__filter-item">
+                  <router-link :to="{ query: { ...$route.query, topic: undefined } }">
+                    {{ $t('no-filter') }}
+                  </router-link>
+                </div>
+
+                <div class="dropdown-item board__filter-item"
+                  v-for="topicItem in topics"
                 :key="topicItem.id"
-              >
-                <router-link :to="{ query: { ...$route.query, topic: topicItem.slug } }">
-                  {{ topicItem[`${$i18n.locale}_name`] }}
-                </router-link>
+                >
+                  <router-link :to="{ query: { ...$route.query, topic: topicItem.slug } }">
+                    {{ topicItem[`${$i18n.locale}_name`] }}
+                  </router-link>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </template>
+        <template v-if="$route.path === '/board'">
+          <div class="exclude">
+            <span class="exclude__text">{{$t('exclude_portal')}}</span>
+            <a class="changeFilter"
+              @click="changeFilter"
+              >
+              <span class="icon is-flex-touch">
+                <i class="material-icons" v-if="$route.query.portal === 'exclude'">toggle_on</i>
+                <i class="material-icons" v-else>toggle_off</i>
+              </span>
+            </a>
+          </div>
+        </template>
       </template>
     </TheBoard>
   </TheLayout>
@@ -83,8 +98,17 @@ export default {
   },
 
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
-    const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
-    const boardData = store.getters.getBoardById(boardId)
+    let boardId
+    let boardData
+
+    // Portal-Notice filter
+    if (query.portal === 'exclude') {
+      boardId = store.state.boardList.map(obj => String(obj.id)).filter(str => str !== '1')
+      boardData = store.getters.getBoardById(null)
+    } else {
+      boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
+      boardData = store.getters.getBoardById(boardId)
+    }
     const topic = (query.topic && boardData)
       ? boardData.topics.find(topic => topic.slug === query.topic)
       : null
@@ -102,7 +126,21 @@ export default {
   },
 
   async beforeRouteUpdate ({ params: { boardSlug }, query }, from, next) {
-    const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
+    let boardId
+    // let boardData
+    // Portal-Notice filter
+    if (query.portal === 'exclude') {
+      boardId = store.state.boardList.map(obj => String(obj.id)).filter(str => str !== '1')
+      // console.log(boardId)
+      /* boardData = query.topic
+        ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
+        : null */
+    } else {
+      boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
+      /* boardData = query.topic
+        ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
+        : null */
+    }
     const topic = query.topic
       ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
       : null
@@ -121,6 +159,15 @@ export default {
     TheBoard,
     TheLayout,
     TheSidebar
+  },
+  methods: {
+    changeFilter () {
+      if (this.$route.query.portal === 'exclude') {
+        this.$router.push({ query: { ...this.$route.query, portal: '' } })
+      } else {
+        this.$router.push({ query: { ...this.$route.query, portal: 'exclude' } })
+      }
+    }
   }
 }
 </script>
@@ -129,10 +176,12 @@ export default {
   ko:
     no-filter: '없음'
     filter: '필터'
+    exclude_portal: '포탈 공지글 제외하기'
 
   en:
     no-filter: 'No Filter'
     filter: 'Filter'
+    exclude_portal: 'Exclude portal notices'
 </i18n>
 
 <style lang="scss" scoped>
