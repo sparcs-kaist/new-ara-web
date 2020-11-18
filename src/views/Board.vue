@@ -224,6 +224,7 @@ export default {
 
   .exclude {
     display: flex;
+    align-items: center;
     margin: 1rem;
     margin-top: 0;
 
