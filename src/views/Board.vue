@@ -42,15 +42,15 @@
             </div>
           </div>
         </template>
-        <template v-if="$route.path === '/board'">
+        <template v-if="!$route.params.boardSlug">
           <div class="exclude">
             <span class="exclude__text">{{$t('exclude_portal')}}</span>
             <a class="changeFilter"
               @click="changeFilter"
               >
-              <span class="icon is-flex-touch">
-                <i class="material-icons" v-if="$route.query.portal === 'exclude'">toggle_on</i>
-                <i class="material-icons" v-else>toggle_off</i>
+              <span class="icon is-flex-touch exclude__toggle">
+                <i class="material-icons exclude__icon exclude__icon--on" v-if="$route.query.portal === 'exclude'">toggle_on</i>
+                <i class="material-icons exclude__icon" v-else>toggle_off</i>
               </span>
             </a>
           </div>
@@ -87,10 +87,12 @@ export default {
       return []
     },
     topic () { return this.topics.find(topic => topic.slug === this.topicId) },
-    boardName () { return this.$store.getters.getNameById(this.boardId, this.$i18n.locale) },
+    boardName () {
+      return this.$store.getters.getNameById(this.boardId, this.$i18n.locale)
+    },
     fromQuery () {
+      if (this.$route.query.portal === 'exclude') { return { from_view: '-portal' } }
       if (this.topicId) { return { from_view: 'topic' } }
-
       if (this.boardId) { return { from_view: 'board' } }
 
       return { from_view: 'all' }
@@ -103,7 +105,7 @@ export default {
 
     // Portal-Notice filter
     if (query.portal === 'exclude') {
-      boardId = store.state.boardList.map(obj => String(obj.id)).filter(str => str !== '1')
+      boardId = store.state.boardList.filter(board => board.slug !== 'portal-notice').map(obj => obj.id)
       boardData = store.getters.getBoardById(null)
     } else {
       boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
@@ -127,19 +129,12 @@ export default {
 
   async beforeRouteUpdate ({ params: { boardSlug }, query }, from, next) {
     let boardId
-    // let boardData
+
     // Portal-Notice filter
     if (query.portal === 'exclude') {
-      boardId = store.state.boardList.map(obj => String(obj.id)).filter(str => str !== '1')
-      // console.log(boardId)
-      /* boardData = query.topic
-        ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
-        : null */
+      boardId = store.state.boardList.filter(board => board.slug !== 'portal-notice').map(obj => obj.id)
     } else {
       boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
-      /* boardData = query.topic
-        ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
-        : null */
     }
     const topic = query.topic
       ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
@@ -163,7 +158,7 @@ export default {
   methods: {
     changeFilter () {
       if (this.$route.query.portal === 'exclude') {
-        this.$router.push({ query: { ...this.$route.query, portal: '' } })
+        this.$router.push({ query: { ...this.$route.query, portal: undefined } })
       } else {
         this.$router.push({ query: { ...this.$route.query, portal: 'exclude' } })
       }
@@ -224,6 +219,23 @@ export default {
     &__topic {
       color: var(--grey-400);
       font-size: 1rem;
+    }
+  }
+
+  .exclude {
+    display: flex;
+
+    &__toggle {
+      margin-left: 15px;
+    }
+
+    &__icon {
+      color: var(--grey-400);
+      font-size: 2rem;
+
+      &--on {
+        color: var(--theme-400);
+      }
     }
   }
 </style>
