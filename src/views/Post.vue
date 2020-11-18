@@ -88,6 +88,9 @@ export default {
         case 'all':
           return { name: 'board', query }
 
+        case '-portal':
+          return { name: 'board', query: { ...query, portal: 'exclude' } }
+
         default:
           return {
             name: 'board',
