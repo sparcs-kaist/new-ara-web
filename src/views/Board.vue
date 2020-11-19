@@ -11,35 +11,50 @@
         </span>
       </template>
 
-      <template #option v-if="topics && topics.length > 0">
-        <div class="dropdown is-hoverable is-right board__filter">
+      <template #option >
+        <template v-if="topics && topics.length > 0">
+          <div class="dropdown is-hoverable is-right board__filter">
 
-          <div class="dropdown-trigger">
-            <a class="board__filter-trigger" aria-haspopup="true" aria-controls="dropdown-menu">
-              {{ $t('filter') }}
-              <i class="icon material-icons">filter_alt</i>
-            </a>
-          </div>
-
-          <div class="dropdown-menu board__filter-menu">
-            <div class="dropdown-content">
-              <div class="dropdown-item board__filter-item">
-                <router-link :to="{ query: { ...$route.query, topic: undefined } }">
-                  {{ $t('no-filter') }}
-                </router-link>
+            <div class="dropdown-trigger">
+              <a class="board__filter-trigger" aria-haspopup="true" aria-controls="dropdown-menu">
+                {{ $t('filter') }}
+                <i class="icon material-icons">filter_alt</i>
+              </a>
               </div>
 
-              <div class="dropdown-item board__filter-item"
-                v-for="topicItem in topics"
+            <div class="dropdown-menu board__filter-menu">
+              <div class="dropdown-content">
+                <div class="dropdown-item board__filter-item">
+                  <router-link :to="{ query: { ...$route.query, topic: undefined } }">
+                    {{ $t('no-filter') }}
+                  </router-link>
+                </div>
+
+                <div class="dropdown-item board__filter-item"
+                  v-for="topicItem in topics"
                 :key="topicItem.id"
-              >
-                <router-link :to="{ query: { ...$route.query, topic: topicItem.slug } }">
-                  {{ topicItem[`${$i18n.locale}_name`] }}
-                </router-link>
+                >
+                  <router-link :to="{ query: { ...$route.query, topic: topicItem.slug } }">
+                    {{ topicItem[`${$i18n.locale}_name`] }}
+                  </router-link>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </template>
+        <template v-if="!$route.params.boardSlug">
+          <div class="exclude">
+            <span class="exclude__text">{{$t('exclude_portal')}}</span>
+            <a class="exclude__change"
+              @click="changeFilter"
+              >
+              <span class="icon is-flex-touch exclude__toggle">
+                <i class="material-icons exclude__icon exclude__icon--on" v-if="$route.query.portal === 'exclude'">toggle_on</i>
+                <i class="material-icons exclude__icon" v-else>toggle_off</i>
+              </span>
+            </a>
+          </div>
+        </template>
       </template>
     </TheBoard>
   </TheLayout>
@@ -72,10 +87,12 @@ export default {
       return []
     },
     topic () { return this.topics.find(topic => topic.slug === this.topicId) },
-    boardName () { return this.$store.getters.getNameById(this.boardId, this.$i18n.locale) },
+    boardName () {
+      return this.$store.getters.getNameById(this.boardId, this.$i18n.locale)
+    },
     fromQuery () {
+      if (this.$route.query.portal === 'exclude') { return { from_view: '-portal' } }
       if (this.topicId) { return { from_view: 'topic' } }
-
       if (this.boardId) { return { from_view: 'board' } }
 
       return { from_view: 'all' }
@@ -83,8 +100,17 @@ export default {
   },
 
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
-    const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
-    const boardData = store.getters.getBoardById(boardId)
+    let boardId
+    let boardData
+
+    // Portal-Notice filter
+    if (query.portal === 'exclude') {
+      boardId = store.state.boardList.filter(board => board.slug !== 'portal-notice').map(obj => obj.id)
+      boardData = store.getters.getBoardById(null)
+    } else {
+      boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
+      boardData = store.getters.getBoardById(boardId)
+    }
     const topic = (query.topic && boardData)
       ? boardData.topics.find(topic => topic.slug === query.topic)
       : null
@@ -102,7 +128,14 @@ export default {
   },
 
   async beforeRouteUpdate ({ params: { boardSlug }, query }, from, next) {
-    const boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
+    let boardId
+
+    // Portal-Notice filter
+    if (query.portal === 'exclude') {
+      boardId = store.state.boardList.filter(board => board.slug !== 'portal-notice').map(obj => obj.id)
+    } else {
+      boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
+    }
     const topic = query.topic
       ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
       : null
@@ -121,6 +154,15 @@ export default {
     TheBoard,
     TheLayout,
     TheSidebar
+  },
+  methods: {
+    changeFilter () {
+      if (this.$route.query.portal === 'exclude') {
+        this.$router.push({ query: { ...this.$route.query, portal: undefined } })
+      } else {
+        this.$router.push({ query: { ...this.$route.query, portal: 'exclude' } })
+      }
+    }
   }
 }
 </script>
@@ -129,10 +171,12 @@ export default {
   ko:
     no-filter: '없음'
     filter: '필터'
+    exclude_portal: '포탈 공지글 제외하기'
 
   en:
     no-filter: 'No Filter'
     filter: 'Filter'
+    exclude_portal: 'Exclude portal notices'
 </i18n>
 
 <style lang="scss" scoped>
@@ -175,6 +219,32 @@ export default {
     &__topic {
       color: var(--grey-400);
       font-size: 1rem;
+    }
+  }
+
+  .exclude {
+    display: flex;
+    align-items: center;
+    margin: 1rem;
+    margin-top: 0;
+
+    &__toggle {
+      margin-left: 15px;
+    }
+
+    &__icon {
+      color: var(--grey-400);
+      font-size: 2rem;
+      height: initial;
+      width: initial;
+
+      &--on {
+        color: var(--theme-400);
+      }
+    }
+
+    &__change {
+      display: inline-flex;
     }
   }
 </style>
