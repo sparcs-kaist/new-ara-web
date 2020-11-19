@@ -396,6 +396,9 @@ span{
 
 .my-info {
   background: var(--grey-100);
+  min-height: 100vh;
+  margin-bottom: -57px;
+  padding-bottom: 57px;
 }
 
 .tabs {
