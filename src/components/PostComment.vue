@@ -42,7 +42,7 @@
         </div>
 
         <div class="comment__content">
-          {{ content }}
+          <div v-html="content"/>
 
           <div v-if="comment.is_hidden && !showHidden">
             <button class="button" @click="showHidden = true">
