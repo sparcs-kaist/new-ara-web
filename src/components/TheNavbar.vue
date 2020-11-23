@@ -9,6 +9,12 @@
           <img src="@/assets/ServiceAra.svg" class="ara-logo"/>
         </router-link>
 
+        <router-link
+          :to="{ name: 'write' }"
+          class="navbar-item write-button">
+          <i class="material-icons write-icon">create</i>
+        </router-link>
+
         <a
           class="navbar-burger"
           role="button"
@@ -234,6 +240,18 @@ en:
 .navbar-item {
   display: flex;
 
+  .write-icon {
+    color: var(--theme-400);
+  }
+
+  .write-button {
+    margin-right: 10px;
+    &:hover {
+      color: var(--theme-500);
+      transition: color var(--duration) var(--text-timing);
+    }
+  }
+
   &--write {
     color: var(--theme-400);
     transition: color var(--duration) var(--text-timing);
@@ -279,6 +297,10 @@ en:
   @include breakPoint(min) {
     flex: 1;
   }
+  display: flex;
+  .navbar-ara {
+    flex:1;
+  }
 }
 
 .navbar-start {
@@ -298,10 +320,6 @@ en:
       padding-right: 15px;
     }
   }
-}
-
-.navbar-ara {
-  margin-right: 20px;
 }
 
 .navbar-menu {
