@@ -83,11 +83,18 @@ export default {
     margin-bottom: 0.7em;
     padding-left: 1em;
     border-left: thick solid var(--theme-300);
+    @include breakPoint(mobile) {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
   }
 
   &__more {
     font-size: 1rem;
     font-weight: 500;
+    @include breakPoint(mobile) {
+      font-size: 0.8rem;
+    }
   }
 
   .post {
@@ -101,6 +108,10 @@ export default {
     padding-right: 0;
     white-space: nowrap;
 
+    @include breakPoint(mobile) {
+      font-size: 0.75rem;
+    }
+
     &__index {
       font-weight: 500;
       margin-right: 10px;
@@ -111,6 +122,10 @@ export default {
       font-size: 0.85rem;
       text-overflow: ellipsis;
       overflow: hidden;
+      
+      @include breakPoint(mobile) {
+        font-size: 0.7rem;
+      }
     }
 
     &__title {

@@ -10,6 +10,8 @@
 </template>
 
 <style lang="scss" scoped>
+@import "@/theme.scss";
+
 .the-organizations {
   display: flex;
   flex-flow: row wrap;
@@ -24,6 +26,10 @@
   width: 120px;
   height: 0 !important;
   margin: 0 0.5%;
+  
+  @include breakPoint(mobile) {
+    width: 90px;
+  }
 }
 </style>
 
