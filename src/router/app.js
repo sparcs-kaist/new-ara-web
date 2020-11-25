@@ -8,6 +8,7 @@ import MyInfo from '@/views/MyInfo.vue'
 import Home from '@/views/Home.vue'
 import NotFound from '@/views/NotFound.vue'
 import RenewalLandingPage from '@/views/RenewalLandingPage.vue'
+import Makers from '@/views/Makers.vue'
 import { authGuard } from './auth.js'
 
 export default [
@@ -70,5 +71,11 @@ export default [
     path: '/landing',
     name: 'landing',
     component: RenewalLandingPage
+  },
+  {
+    path: '/makers',
+    name: 'makers',
+    component: Makers,
+    beforeEnter: authGuard
   }
 ]

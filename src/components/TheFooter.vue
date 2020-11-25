@@ -9,10 +9,9 @@
 
       <div class="footer-items">
         <div class="footer-item">
-          <!-- @TODO: footer에서 가는 페이지들 만들기 -->
-          <a href="https://sparcs.org">
+          <router-link to="/makers">
             {{ $t('credit') }}
-          </a>
+          </router-link>
         </div>
 
         <div class="footer-item">
