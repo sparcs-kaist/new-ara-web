@@ -34,6 +34,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/theme.scss";
   .shadow-before {
     position: relative;
     &::before {
@@ -60,7 +61,6 @@ export default {
   .makers-card-1 {
     width: 220px;
     height: 130px;
-    margin: 7.6px;
     border-radius: 10px;
     border: 1px solid var(--grey-300);
     background-color: white;
@@ -86,13 +86,21 @@ export default {
       line-height: 1.44;
       color: var(--grey-400);
     }
+
+    @include breakPoint (mobile) {
+      width: 110px;
+      height: 80px;
+      .title-1 {
+        font-size: 12px;
+        text-align: center;
+      }
+    }
   }
 
   .makers-card-2 {
-    width: 277px;
+    width: 280px;
     height: 120px;
-    margin: 9px;
-    padding: 36px;
+    padding: 0 36px;
     border-radius: 10px;
     box-shadow: 0 0 5px 0 rgba(169, 169, 169, 0.4);
     background-color: #ffffff;
@@ -123,26 +131,35 @@ export default {
         align-items: start;
 
         .img-container {
-          width: 15px;
-          height: 25px;
+          width: 13px;
+          height: 20px;
           overflow: hidden;
 
           img {
-            width: 60px;
+            width: 70px;
             max-width: initial;
             filter: invert(63%) sepia(71%) saturate(514%) hue-rotate(352deg) brightness(97%) contrast(91%);
           }
         }
 
         .subtitle-2 {
-          font-family: Raleway;
           font-size: 13px;
           font-weight: 800;
-          line-height: 1.3;
+          line-height: 1.5;
+          font-family: 'Raleway', sans-serif;
           color: #eba12a;
         }
       }
 
+      @include breakPoint (mobile) {
+        align-items: center;
+
+        .title-2 {
+          font-size: 14px;
+          text-align: center;
+
+        }
+      }
     }
 
     .subtitle-3{
@@ -152,6 +169,15 @@ export default {
       color: var(--grey-300);
     }
 
+    @include breakPoint (mobile) {
+      width: 140px;
+      flex-direction: column;
+      justify-content: center;
+      .subtitle-3{
+        margin-top: 10px;
+        text-align: center;
+      }
+    }
   }
 
 </style>
