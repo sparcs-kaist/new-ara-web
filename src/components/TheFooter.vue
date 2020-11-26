@@ -89,6 +89,14 @@ en:
     align-items: center;
     flex-direction: row;
     width: 100%;
+
+    @include breakPoint (mobile) {
+      flex-direction: column;
+      div {
+        margin-top: 12px;
+        padding-left: 0;
+      }
+    }
   }
 
   .footer-contact {
@@ -103,10 +111,6 @@ en:
 
     .footer-item {
       margin: 0 10px;
-
-      @include breakPoint (min) {
-        display: none;
-      }
     }
   }
 }
