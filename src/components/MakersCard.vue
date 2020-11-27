@@ -1,5 +1,5 @@
 <template>
-  <a>
+  <a class="wrapper">
     <div :class="'makers-card-1 shadow-before' + (active ? ' active' : '')" v-if="cardType === '1'">
       <span class="title-1">{{ title }}</span>
       <span class="subtitle-1">{{ subtitle }}</span>
@@ -55,14 +55,17 @@ export default {
   }
 
   .active{
-    box-shadow: 3px 3px 5px 0 rgba(64, 64, 64, 0.16);
+    box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.2);
+    &::before{
+      transition: initial;
+      opacity: 1;
+    }
   }
 
   .makers-card-1 {
     width: 220px;
-    height: 130px;
+    height: 80px;
     border-radius: 10px;
-    border: 1px solid var(--grey-300);
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -70,7 +73,7 @@ export default {
     justify-content: center;
 
     &::before{
-      box-shadow: 3px 3px 5px 0 rgba(64, 64, 64, 0.08);
+      box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.2);
     }
 
     .title-1 {
@@ -102,15 +105,15 @@ export default {
     height: 120px;
     padding: 0 36px;
     border-radius: 10px;
-    box-shadow: 0 0 5px 0 rgba(169, 169, 169, 0.4);
-    background-color: #ffffff;
+    box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.16);
+    background-color: white;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 
     &::before{
-      box-shadow: 0 0 20px 0 rgba(169, 169, 169, 0.4);
+      box-shadow: 0 0 20px 0 rgba(169, 169, 169, 0.32);
     }
 
     .text-container {
