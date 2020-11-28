@@ -1,23 +1,23 @@
 <template>
   <TheLayout>
+    <p class="header side">Project</p>
     <div class="the-makers makers-1 mb">
-      <p class="header">Project</p>
       <MakersCard v-for="(i, idx) in projects" :key="i.name" :title="(i.remark !== 'WIP' ? '🚀 ' : '') + i.name"
                   :subtitle="i.period" cardType="1" @click.native="projectClicked(idx)"
                   :active="selected === idx ? 'T' : ''"/>
     </div>
 
     <div class="desc-wrapper mb" v-if="projects[selected].desc">
-      <p class="header desc-side">Description</p>
-      <div class="desc desc-side">
+      <p class="header side">Description</p>
+      <div class="desc side">
         <p>
           {{projects[selected].desc}}
         </p>
       </div>
     </div>
 
+    <p class="header side">Member</p>
     <div class="the-makers makers-2">
-      <p class="header">Member</p>
       <MakersCard v-for="i in projects[selected].members" :key="i" :title="getTitle(i)" :subtitle="getSubtitle(i)"
                   cardType="2" :position="getPos(i)"/>
     </div>
@@ -53,7 +53,6 @@ export default {
   },
   data: () => {
     return {
-      // TODO: "PM:nickname:이름" or "nickname:이름" 형태로 수정 + 18번째 줄 :subtitle="getSubtitle(i)"
       projects: [
         {
           name: 'SPARCS BBS',
@@ -201,7 +200,7 @@ export default {
     }
   }
 
-  .desc-side {
+  .side {
     margin: 5px 90px;
 
     @include breakPoint(mid) {
@@ -219,8 +218,7 @@ export default {
     font-size: 20px;
     font-weight: bold;
     line-height: 1.45;
-    margin-bottom: 8px;
-    grid-column: 1/-1;
+    margin-bottom: 18px;
   }
 
   .mb {

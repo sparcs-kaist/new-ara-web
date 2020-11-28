@@ -123,7 +123,7 @@ export default {
     .text-container {
       display: flex;
       flex-direction: column;
-      align-items: start;
+      align-items: flex-start;
 
       .title-2 {
         font-size: 20px;
@@ -135,7 +135,7 @@ export default {
         margin-top: 4px;
         display: flex;
         flex-direction: row;
-        align-items: start;
+        align-items: flex-start;
 
         .img-container {
           width: 13px;
@@ -180,7 +180,7 @@ export default {
       flex-direction: column;
       justify-content: center;
       .subtitle-3 {
-        margin-top: 10px;
+        margin-top: 5px;
         text-align: center;
       }
     }
