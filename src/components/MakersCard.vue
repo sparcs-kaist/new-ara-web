@@ -1,5 +1,5 @@
 <template>
-  <a class="wrapper">
+  <a>
     <div :class="'makers-card-1 shadow-before' + (active ? ' active' : '')" v-if="cardType === '1'">
       <span class="title-1">{{ title }}</span>
       <span class="subtitle-1">{{ subtitle }}</span>
@@ -34,9 +34,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/theme.scss";
+  @import "@/theme.scss";
+
   .shadow-before {
     position: relative;
+
     &::before {
       content: '';
       display: block;
@@ -49,14 +51,16 @@ export default {
       opacity: 0;
       transition: opacity var(--duration) var(--background-timing);
     }
+
     &:hover::before {
       opacity: 1;
     }
   }
 
-  .active{
+  .active {
     box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.2);
-    &::before{
+
+    &::before {
       transition: initial;
       opacity: 1;
     }
@@ -72,7 +76,7 @@ export default {
     align-items: center;
     justify-content: center;
 
-    &::before{
+    &::before {
       box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.2);
     }
 
@@ -90,7 +94,7 @@ export default {
       color: var(--grey-400);
     }
 
-    @include breakPoint (mobile) {
+    @include breakPoint(mobile) {
       width: 110px;
       height: 80px;
       .title-1 {
@@ -112,7 +116,7 @@ export default {
     align-items: center;
     justify-content: space-between;
 
-    &::before{
+    &::before {
       box-shadow: 0 0 20px 0 rgba(169, 169, 169, 0.32);
     }
 
@@ -154,29 +158,28 @@ export default {
         }
       }
 
-      @include breakPoint (mobile) {
+      @include breakPoint(mobile) {
         align-items: center;
 
         .title-2 {
           font-size: 14px;
           text-align: center;
-
         }
       }
     }
 
-    .subtitle-3{
+    .subtitle-3 {
       font-size: 10px;
       font-weight: 500;
       line-height: 1.5;
-      color: var(--grey-300);
+      color: var(--grey-400);
     }
 
-    @include breakPoint (mobile) {
-      width: 140px;
+    @include breakPoint(mobile) {
+      width: 120px;
       flex-direction: column;
       justify-content: center;
-      .subtitle-3{
+      .subtitle-3 {
         margin-top: 10px;
         text-align: center;
       }
