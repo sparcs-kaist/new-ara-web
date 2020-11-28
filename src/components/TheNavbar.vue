@@ -11,7 +11,7 @@
 
         <router-link
           :to="{ name: 'write' }"
-          class="navbar-item write-button">
+          class="navbar-item write-button is-hidden-desktop">
           <i class="material-icons write-icon">create</i>
         </router-link>
 
