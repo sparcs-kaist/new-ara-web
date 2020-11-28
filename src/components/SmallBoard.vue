@@ -92,6 +92,7 @@ export default {
   &__more {
     font-size: 1rem;
     font-weight: 500;
+
     @include breakPoint(mobile) {
       font-size: 0.8rem;
     }
@@ -109,7 +110,8 @@ export default {
     white-space: nowrap;
 
     @include breakPoint(mobile) {
-      font-size: 0.75rem;
+      font-size: 0.8rem;
+      margin: 0.25rem 0;
     }
 
     &__index {
@@ -122,7 +124,7 @@ export default {
       font-size: 0.85rem;
       text-overflow: ellipsis;
       overflow: hidden;
-      
+
       @include breakPoint(mobile) {
         font-size: 0.7rem;
       }

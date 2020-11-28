@@ -126,7 +126,7 @@ en:
     display: flex;
     align-items: center;
     height: 300px;
-    
+
     @include breakPoint(mobile) {
       height: 150px;
     }
