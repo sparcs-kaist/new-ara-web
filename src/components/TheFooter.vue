@@ -9,10 +9,9 @@
 
       <div class="footer-items">
         <div class="footer-item">
-          <!-- @TODO: footer에서 가는 페이지들 만들기 -->
-          <a href="https://sparcs.org">
+          <router-link to="/makers">
             {{ $t('credit') }}
-          </a>
+          </router-link>
         </div>
 
         <div class="footer-item">
@@ -90,6 +89,14 @@ en:
     align-items: center;
     flex-direction: row;
     width: 100%;
+
+    @include breakPoint (mobile) {
+      flex-direction: column;
+      div {
+        margin-top: 12px;
+        padding-left: 0;
+      }
+    }
   }
 
   .footer-contact {
@@ -104,10 +111,6 @@ en:
 
     .footer-item {
       margin: 0 10px;
-
-      @include breakPoint (min) {
-        display: none;
-      }
     }
   }
 }
