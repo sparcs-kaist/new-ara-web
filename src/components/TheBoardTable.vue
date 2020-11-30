@@ -1,6 +1,6 @@
 <template>
   <div class="board-table">
-    <BoardItem v-for="post in posts" :post="post" :key="post.id" :fromQuery="fromQuery" />
+    <BoardItem class="item" v-for="post in posts" :post="post" :key="post.id" :fromQuery="fromQuery" />
   </div>
 </template>
 
@@ -20,5 +20,8 @@ export default {
 .board-table {
   font-family: var(--font);
   width: 100%;
+}
+.item {
+  border-bottom: 1px solid #eeeeee;
 }
 </style>
