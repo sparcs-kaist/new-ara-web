@@ -142,7 +142,7 @@ en:
     border-radius: 50%;
     flex: 0 0 auto;
     margin-right: 20px;
-    
+
     @include breakPoint(mobile) {
       width: 35px;
       height: 35px;
