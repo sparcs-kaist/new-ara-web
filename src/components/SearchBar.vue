@@ -51,6 +51,13 @@ export default {
     }
   }
 
+  @include breakPoint(mobile) {
+    .input {
+      height: 2.25rem;
+      font-size: .8rem;
+    }
+  }
+
   &--small .input {
     height: 2.5rem;
     font-size: .8rem;

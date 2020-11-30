@@ -126,6 +126,10 @@ en:
     }
   }
 
+  @include breakPoint(mobile) {
+    margin: 10px 0;
+  }
+
   &__body {
     display: flex;
     align-items: center;
@@ -137,8 +141,13 @@ en:
     height: 40px;
     border-radius: 50%;
     flex: 0 0 auto;
-
     margin-right: 20px;
+    
+    @include breakPoint(mobile) {
+      width: 35px;
+      height: 35px;
+      margin-right: 12px;
+    }
   }
 
   &__content {
@@ -153,11 +162,20 @@ en:
   &__author {
     font-size: .9rem;
     margin-right: 14px;
+
+    @include breakPoint(mobile) {
+      font-size: .75rem;
+      margin-right: 8px;
+    }
   }
 
   &__time {
     color: var(--grey-400);
     font-size: .8rem;
+
+    @include breakPoint(mobile) {
+      font-size: .7rem;
+    }
   }
 
   &__title-wrapper {
@@ -172,6 +190,10 @@ en:
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    @include breakPoint(mobile) {
+      font-size: .8rem;
+    }
   }
 
   &__topic {
@@ -208,6 +230,10 @@ en:
     white-space: nowrap;
     font-size: .9rem;
     font-weight: 400;
+
+    @include breakPoint(mobile) {
+      font-size: .75rem;
+    }
 
     &:not(.post-status__like) {
       width: 4.5rem;
