@@ -10,6 +10,7 @@
 </template>
 
 <style lang="scss" scoped>
+@import "@/theme.scss";
 .organization-card {
   display: flex;
   flex-direction: column;
@@ -21,6 +22,11 @@
   margin: 0 0.5% 15px;
   border-radius: 10px;
   box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.16);
+
+  @include breakPoint(mobile) {
+    width: 90px;
+    height: 90px;
+  }
 
   .logo {
     width: 90%;
@@ -42,6 +48,11 @@
     font-size: 15px;
     font-weight: 700;
     text-align: center;
+    
+    @include breakPoint(mobile) {
+      font-size: 11px;
+      font-weight: 600;
+    }
   }
 }
 </style>
