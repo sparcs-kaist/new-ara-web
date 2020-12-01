@@ -180,6 +180,7 @@ export default {
 </i18n>
 
 <style lang="scss" scoped>
+@import '@/theme.scss';
   .board {
     &__filter {
       padding: 10px 0;
@@ -228,8 +229,16 @@ export default {
     margin: 1rem;
     margin-top: 0;
 
+    @include breakPoint(mobile) {
+      font-size: 0.85rem;
+    }
+
     &__toggle {
       margin-left: 15px;
+
+      @include breakPoint(mobile) {
+        margin-left: 9px;
+      }
     }
 
     &__icon {
@@ -237,6 +246,10 @@ export default {
       font-size: 2rem;
       height: initial;
       width: initial;
+
+      @include breakPoint(mobile) {
+        font-size: 1.75rem;
+      }
 
       &--on {
         color: var(--theme-400);

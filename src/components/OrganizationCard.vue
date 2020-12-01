@@ -48,7 +48,7 @@
     font-size: 15px;
     font-weight: 700;
     text-align: center;
-    
+
     @include breakPoint(mobile) {
       font-size: 11px;
       font-weight: 600;

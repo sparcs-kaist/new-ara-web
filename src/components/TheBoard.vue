@@ -75,6 +75,7 @@ en:
 </i18n>
 
 <style lang="scss" scoped>
+@import '@/theme.scss';
 .board {
   min-width: 100%;
 
@@ -88,6 +89,10 @@ en:
     font-size: 1.5rem;
     font-weight: 700;
     margin: 0 0 1rem 0;
+
+    @include breakPoint(mobile) {
+      font-size: 1.2rem;
+    }
   }
 
   &__header {
