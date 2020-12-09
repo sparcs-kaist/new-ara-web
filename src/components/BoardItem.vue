@@ -29,7 +29,10 @@
           </div>
 
           <div class="board-item__new" v-if="post.read_status === 'N'">
-            {{ $t('new') }}
+            new
+          </div>
+          <div class="board-item__update" v-else-if="post.read_status === 'U'">
+            +
           </div>
         </div>
       </div>
@@ -102,12 +105,10 @@ export default {
 ko:
   comments: '댓글'
   views: '조회수'
-  new: 'new'
 
 en:
   comments: 'Reply'
   views: 'View'
-  new: 'new'
 </i18n>
 
 <style lang="scss" scoped>
@@ -202,10 +203,31 @@ en:
   }
 
   &__new {
+    width: 27px;
+    height: 19px;
+    margin-left: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.46;
+    letter-spacing: normal;
+    text-align: left;
     color: var(--theme-400);
-    font-size: .8rem;
-    font-weight: 500;
+  }
+
+  &__update {
+    width: 9px;
+    height: 22px;
     margin-left: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.47;
+    letter-spacing: normal;
+    text-align: left;
+    color: var(--theme-400);
   }
 
   &:first-child {
