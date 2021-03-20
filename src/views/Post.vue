@@ -175,8 +175,9 @@ export default {
     async report () {
       const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-report'))
       if (!result) return
-
-      await reportPost(this.post.id)
+      // What can be type_report? : violation_of_code, impersonation, insult, spam, others.
+      let typeReport = 0
+      await reportPost(this.post.id, typeReport)
       this.$store.dispatch('dialog/toast', this.$t('reported'))
     },
 
