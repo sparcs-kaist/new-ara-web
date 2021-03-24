@@ -1,53 +1,70 @@
 <template>
-  <router-link
-    :to="generateHref"
-    class="organization-card"
-    :style="{ 'background-color': backgroundColor }">
-    <i class="logo logo--icon material-icons" v-if="icon">{{icon}}</i>
-    <img class="logo" v-else-if="id" :src="require(`@/assets/Logo${id}.png`)" />
+  <div class="organization-card-wrap">
+    <router-link
+      :to="generateHref"
+      class="organization-card"
+      :style="{ 'background-color': backgroundColor }">
+      <i class="logo logo--icon material-icons" v-if="icon">{{icon}}</i>
+      <img class="logo" v-else-if="id" :src="require(`@/assets/Logo${id}.png`)" />
+    </router-link>
     <span class="name">{{ name }}</span>
-  </router-link>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/theme.scss";
-.organization-card {
+.organization-card-wrap{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 120px;
-  height: 120px;
-  padding: 20px 0;
-  margin: 0 0.5% 15px;
-  border-radius: 10px;
-  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.16);
 
-  @include breakPoint(mobile) {
-    width: 90px;
-    height: 90px;
-  }
+  .organization-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 93px;
+    height: 93px;
+    padding: 20px 0;
+    border-radius: 50%;
+    //border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
 
-  .logo {
-    width: 90%;
-    height: 60%;
-    margin-bottom: 10px;
-    object-fit: contain;
+    @include breakPoint(mobile) {
+      width: 80px;
+      height: 80px;
+    }
 
-    &--icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 50px;
-      color: var(--theme-400);
+    @media screen and (max-width: 480px){
+      width: 70px;
+      height: 70px;
+    }
+
+    .logo {
+      width: 90%;
+      height: 60%;
+      object-fit: contain;
+
+      &--icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        color: white;
+
+        @media screen and (max-width: 480px){
+          font-size: 30px;
+        }
+
+      }
     }
   }
-
   .name {
     color: #464646;
     font-size: 15px;
     font-weight: 700;
     text-align: center;
+    margin: 15px 0;
 
     @include breakPoint(mobile) {
       font-size: 11px;
