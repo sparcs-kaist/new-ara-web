@@ -173,7 +173,7 @@ export default {
     },
 
     async report () {
-      const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-report'))
+      const result = await this.$store.dispatch('dialog/report', this.$t('confirm-report'))
       if (!result) return
       // What can be type_report? : violation_of_code, impersonation, insult, spam, others.
       // Where can I get typeReport?
