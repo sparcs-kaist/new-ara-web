@@ -59,6 +59,17 @@ export default {
       })
     },
 
+    report ({ dispatch }, payload) {
+      if (typeof payload === 'string') { payload = { text: payload } }
+
+      return new Promise(resolve => {
+        payload.type = 'report'
+        payload.callback = resolve
+
+        dispatch('createDialog', payload)
+      })
+    },
+
     toast ({ dispatch }, payload) {
       if (typeof payload === 'string') { payload = { text: payload } }
 

@@ -8,6 +8,19 @@
       <div class="content-text">{{ dialog.text }}</div>
     </div>
 
+    <div class="alert-dialog__chips" v-if="dialog.type === 'report'">
+      <div class="alert-dialog__chip">
+        <Chip>{{ $t('hate-speech') }}</Chip>
+        <Chip>{{ $t('unauthorized-sales-articles') }}</Chip>
+        <Chip>{{ $t('spam') }}</Chip>
+      </div>
+      <div class="alert-dialog__chip">
+        <Chip>{{ $t('fake-information') }}</Chip>
+        <Chip>{{ $t('defamation') }}</Chip>
+        <Chip>{{ $t('other') }}</Chip>
+      </div>
+    </div>
+
     <div class="alert-dialog__buttons" v-if="hasButtons">
       <template v-if="dialog.type === 'confirm'">
         <button class="alert-dialog__button" @click="dismiss(false)">
@@ -16,6 +29,16 @@
 
         <button class="alert-dialog__button alert-dialog__button--accent" @click="dismiss(true)">
           {{ dialog.primary_button || $t('okay') }}
+        </button>
+      </template>
+
+      <template v-else-if="dialog.type === 'report'">
+        <button class="alert-dialog__button" @click="dismiss(false)">
+          {{ dialog.secondary_button || $t('cancel') }}
+        </button>
+
+        <button class="alert-dialog__button alert-dialog__button--accent" @click="dismiss(true)">
+          {{ dialog.primary_button || $t('report') }}
         </button>
       </template>
 
@@ -29,8 +52,11 @@
 </template>
 
 <script>
+import Chip from './Chip.vue'
+
 const icons = {
   confirm: 'check_circle_outline',
+  report: 'check_circle_outline',
   error: 'error_outline',
   warning: 'highlight_off',
   info: 'info_outline'
@@ -38,6 +64,10 @@ const icons = {
 
 export default {
   name: 'AlertDialog',
+
+  components: {
+    Chip
+  },
 
   props: {
     dialog: {
@@ -72,6 +102,13 @@ export default {
     warning: '경고'
     okay: '확인'
     cancel: '취소'
+    report: '신고하기'
+    hate-speech: '혐오 발언'
+    unauthorized-sales-articles: '허가되지 않은 판매글'
+    spam: '스팸'
+    fake-information: '거짓 정보'
+    defamation: '명예훼손'
+    other: '기타'
 
   en:
     error: 'Error'
@@ -80,6 +117,13 @@ export default {
     warning: 'Warning'
     okay: 'OK'
     cancel: 'Cancel'
+    report: 'Report'
+    hate-speech: 'Hate Speech'
+    unauthorized-sales-articles: 'Unauthorized Sales Articles'
+    spam: 'Spam'
+    fake-information: 'Fake Information'
+    defamation: 'Defamation'
+    other: 'Other'
 </i18n>
 
 <style lang="scss" scoped>
@@ -87,7 +131,7 @@ export default {
   position: fixed;
   top: 50%;
   left: 50%;
-  padding: 20px;
+  padding: 20px 55px 17px;
   width: 90%;
   max-width: 450px;
   background: var(--grey-100);
@@ -130,13 +174,22 @@ export default {
 
   &__content {
     margin-bottom: 1.5rem;
-    margin-top: 1.2rem;
+    margin-top: 1rem;
 
     .content-text {
       text-align: center;
       white-space: pre-line;
       word-wrap: break-word;
     }
+  }
+
+  &__chips {
+    margin-bottom: 20px;
+  }
+
+  &__chip {
+    display: flex;
+    justify-content: center;
   }
 
   &__buttons {
@@ -150,7 +203,7 @@ export default {
     border: none;
     border-radius: 10px;
     margin: 0 5px;
-    padding: 8px 20px;
+    padding: 8px 14px;
     transition: background .4s ease;
     box-shadow: 0 2px 6px 0 rgba(169, 169, 169, 0.16);
 
