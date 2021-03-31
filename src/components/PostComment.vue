@@ -172,7 +172,8 @@ export default {
       const result = await this.$store.dispatch('dialog/report', this.$t('confirm-report'))
       if (!result) return
 
-      await reportComment(this.comment.id)
+      let typeReport = 0
+      await reportComment(this.comment.id, typeReport)
     },
 
     editComment () {
