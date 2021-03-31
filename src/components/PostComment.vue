@@ -169,7 +169,7 @@ export default {
     },
 
     async reportComment () {
-      const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-report'))
+      const result = await this.$store.dispatch('dialog/report', this.$t('confirm-report'))
       if (!result) return
 
       let typeReport = 0
