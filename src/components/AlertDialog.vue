@@ -10,14 +10,14 @@
 
     <div class="alert-dialog__chips" v-if="dialog.type === 'report'">
       <div class="alert-dialog__chip">
-        <Chip>{{ $t('hate-speech') }}</Chip>
-        <Chip>{{ $t('unauthorized-sales-articles') }}</Chip>
-        <Chip>{{ $t('spam') }}</Chip>
+        <Chip v-on:chip-click="chipClick('hate_speech')">{{ $t('hate-speech') }}</Chip>
+        <Chip v-on:chip-click="chipClick('unauthorized_sales_articles')">{{ $t('unauthorized-sales-articles') }}</Chip>
+        <Chip v-on:chip-click="chipClick('spam')">{{ $t('spam') }}</Chip>
       </div>
       <div class="alert-dialog__chip">
-        <Chip>{{ $t('fake-information') }}</Chip>
-        <Chip>{{ $t('defamation') }}</Chip>
-        <Chip>{{ $t('other') }}</Chip>
+        <Chip v-on:chip-click="chipClick('fake_information')">{{ $t('fake-information') }}</Chip>
+        <Chip v-on:chip-click="chipClick('defamation')">{{ $t('defamation') }}</Chip>
+        <Chip v-on:chip-click="chipClick('other')">{{ $t('other') }}</Chip>
       </div>
     </div>
 
@@ -83,12 +83,25 @@ export default {
 
     hasButtons () {
       return !this.dialog.toast
+    },
+    chipSelection () {
+      return {
+        hate_speech: false,
+        unauthorized_sales_articles: false,
+        spam: false,
+        fake_information: false,
+        defamation: false,
+        other: false
+      }
     }
   },
 
   methods: {
     dismiss (value) {
-      this.$store.commit('dialog/removeDialog', { id: this.dialog.id, value })
+      this.$store.commit('dialog/removeDialog', { id: this.dialog.id, value, chip_selection: this.chipSelection })
+    },
+    chipClick (key) {
+      this.chipSelection[key] = !this.chipSelection[key]
     }
   }
 }

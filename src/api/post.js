@@ -53,8 +53,8 @@ export const voteComment = (commentId, action) =>
   http.post(`comments/${commentId}/${action}/`)
     .then(({ data }) => data)
 
-export const reportComment = (commentId, typeReport) =>
-  http.post('reports/', { parent_comment: commentId, type: typeReport })
+export const reportComment = (commentId, typeReport, reasonReport) =>
+  http.post('reports/', { parent_comment: commentId, type: typeReport, content: reasonReport })
     .then(({ data }) => data)
 
 export const deleteComment = (commentId) =>

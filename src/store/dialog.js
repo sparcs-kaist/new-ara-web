@@ -18,8 +18,13 @@ export default {
       if (index < 0) { return }
 
       const dialog = state.dialogs[index]
-
-      if (dialog.callback) { dialog.callback(payload.value) }
+      if (dialog.callback) {
+        if (dialog.type === 'report') {
+          dialog.callback({result: payload.value, selection: payload.chip_selection})
+        } else {
+          dialog.callback(payload.value)
+        }
+      }
 
       state.dialogs.splice(index, 1)
     }

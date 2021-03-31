@@ -2,7 +2,7 @@
   <div class="chip">
     <button
       class="chip__button"
-      v-on:click="isClicked = !isClicked"
+      v-on:click="click()"
       v-bind:class="{ chip__button__clicked : isClicked }">
       <slot></slot>
     </button>
@@ -14,6 +14,12 @@ export default {
   props: {
     label: { required: true, type: String },
     isClicked: { default: false, type: Boolean }
+  },
+  methods: {
+    click () {
+      this.isClicked = !this.isClicked
+      this.$emit('chip-click')
+    }
   }
 }
 </script>
