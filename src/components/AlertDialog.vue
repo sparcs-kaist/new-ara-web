@@ -10,14 +10,14 @@
 
     <div class="alert-dialog__chips" v-if="dialog.type === 'report'">
       <div class="alert-dialog__chip">
-        <Chip v-on:chip-click="chipClick('hate_speech')">{{ $t('hate-speech') }}</Chip>
-        <Chip v-on:chip-click="chipClick('unauthorized_sales_articles')">{{ $t('unauthorized-sales-articles') }}</Chip>
-        <Chip v-on:chip-click="chipClick('spam')">{{ $t('spam') }}</Chip>
+        <Chip v-bind="gPropsForChips['hate_speech']" @chip-click="chipClick">{{ $t('hate-speech') }}</Chip>
+        <Chip v-bind="gPropsForChips['unauthorized_sales_articles']" @chip-click="chipClick">{{ $t('unauthorized-sales-articles') }}</Chip>
+        <Chip v-bind="gPropsForChips['spam']" @chip-click="chipClick">{{ $t('spam') }}</Chip>
       </div>
       <div class="alert-dialog__chip">
-        <Chip v-on:chip-click="chipClick('fake_information')">{{ $t('fake-information') }}</Chip>
-        <Chip v-on:chip-click="chipClick('defamation')">{{ $t('defamation') }}</Chip>
-        <Chip v-on:chip-click="chipClick('other')">{{ $t('other') }}</Chip>
+        <Chip v-bind="gPropsForChips['fake_information']" @chip-click="chipClick">{{ $t('fake-information') }}</Chip>
+        <Chip v-bind="gPropsForChips['defamation']" @chip-click="chipClick">{{ $t('defamation') }}</Chip>
+        <Chip v-bind="gPropsForChips['other']" @chip-click="chipClick">{{ $t('other') }}</Chip>
       </div>
     </div>
 
@@ -76,6 +76,18 @@ export default {
     }
   },
 
+  data () {
+    return {
+      gPropsForChips: {
+        hate_speech: { skey: 'hate_speech', isClicked: false },
+        unauthorized_sales_articles: { skey: 'unauthorized_sales_articles', isClicked: false },
+        spam: { skey: 'spam', isClicked: false },
+        fake_information: { skey: 'fake_information', isClicked: false },
+        defamation: { skey: 'defamation', isClicked: false },
+        other: { skey: 'other', isClicked: false }
+      }
+    }
+  },
   computed: {
     iconName () {
       return icons[this.dialog.type]
@@ -100,8 +112,9 @@ export default {
     dismiss (value) {
       this.$store.commit('dialog/removeDialog', { id: this.dialog.id, value, chip_selection: this.chipSelection })
     },
-    chipClick (key) {
-      this.chipSelection[key] = !this.chipSelection[key]
+    chipClick (value, key) {
+      this.gPropsForChips[key].isClicked = value
+      this.chipSelection[key] = value
     }
   }
 }

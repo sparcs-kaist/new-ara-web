@@ -12,13 +12,15 @@
 <script>
 export default {
   props: {
-    label: { required: true, type: String },
-    isClicked: { default: false, type: Boolean }
+    // isClicked required: true로 만들고, Alert Dialog에서 binding되는 변수들을 주어주는 방식으로 변경할 예정.
+    // label: { required: true, type: String },
+    isClicked: { required: true, type: Boolean },
+    skey: { required: true, type: String }
   },
   methods: {
     click () {
-      this.isClicked = !this.isClicked
-      this.$emit('chip-click')
+      let notIsClicked = !this.isClicked
+      this.$emit('chip-click', notIsClicked, this.skey)
     }
   }
 }

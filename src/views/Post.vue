@@ -182,8 +182,10 @@ export default {
       for (var key in selection) {
         if (selection[key]) {
           reasonReport += key
+          reasonReport += ', '
         }
       }
+      reasonReport = reasonReport.slice(0, -2)
       await reportPost(this.post.id, typeReport, reasonReport)
       this.$store.dispatch('dialog/toast', this.$t('reported'))
     },
