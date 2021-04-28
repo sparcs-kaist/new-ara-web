@@ -37,7 +37,11 @@
           {{ dialog.secondary_button || $t('cancel') }}
         </button>
 
-        <button class="alert-dialog__button alert-dialog__button--accent" @click="dismiss(true)">
+        <button
+          class="alert-dialog__button alert-dialog__button--accent"
+          v-bind:class="{ 'alert-dialog__button--none' : !isChipClicked }"
+          @click="dismiss(true)"
+          disabled="!isChipClicked" >
           {{ dialog.primary_button || $t('report') }}
         </button>
       </template>
@@ -85,7 +89,8 @@ export default {
         fake_information: { skey: 'fake_information', isClicked: false },
         defamation: { skey: 'defamation', isClicked: false },
         other: { skey: 'other', isClicked: false }
-      }
+      },
+      isChipClicked: false
     }
   },
   computed: {
@@ -115,6 +120,10 @@ export default {
     chipClick (value, key) {
       this.gPropsForChips[key].isClicked = value
       this.chipSelection[key] = value
+      this.isChipClicked = false
+      for (var i = 0; i < Object.values(this.gPropsForChips).length; i++) {
+        this.isChipClicked = this.isChipClicked || Object.values(this.gPropsForChips)[i].isClicked
+      }
     }
   }
 }
@@ -244,6 +253,18 @@ export default {
       &:hover {
         color: #fff;
         background: var(--theme-400);
+      }
+    }
+
+    &--none {
+      cursor: default;
+      color: var(--grey-600);
+      background: var(--grey-300);
+      font-weight: normal;
+
+      &:hover {
+        color: var(--grey-600);
+        background: var(--grey-300);
       }
     }
   }
