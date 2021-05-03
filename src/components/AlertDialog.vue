@@ -36,14 +36,26 @@
         <button class="alert-dialog__button" @click="dismiss(false)">
           {{ dialog.secondary_button || $t('cancel') }}
         </button>
-
-        <button
-          class="alert-dialog__button alert-dialog__button--accent"
-          v-bind:class="{ 'alert-dialog__button--none' : !isChipClicked }"
-          @click="dismiss(true)"
-          disabled="!isChipClicked" >
-          {{ dialog.primary_button || $t('report') }}
-        </button>
+        <div class="dropdown is-hoverable">
+          <div class="dropdown-trigger">
+            <button
+              class="alert-dialog__button alert-dialog__button--accent"
+              aria-haspopup="true"
+              aria-controls="dropdown-menu_tooltip"
+              v-bind:class="{ 'alert-dialog__button--none' : !isChipClicked }"
+              @click="dismiss(true)"
+              disabled="!isChipClicked" >
+              {{ dialog.primary_button || $t('report') }}
+            </button>
+          </div>
+          <div v-if="!isChipClicked" class="dropdown-menu" id="dropdown-menu_tooltip" role="menu">
+            <div class="dropdown-content">
+              <div class="dropdown-item">
+                <p>{{$t('need-reason-for-report')}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </template>
 
       <template v-else>
@@ -144,6 +156,7 @@ export default {
     fake-information: '거짓 정보'
     defamation: '명예훼손'
     other: '기타'
+    need-reason-for-report: '신고 사유를 1개 이상 선택해주세요.'
 
   en:
     error: 'Error'
@@ -159,6 +172,7 @@ export default {
     fake-information: 'Fake Information'
     defamation: 'Defamation'
     other: 'Other'
+    need-reason-for-report: 'Please select reason for report at least one.'
 </i18n>
 
 <style lang="scss" scoped>
