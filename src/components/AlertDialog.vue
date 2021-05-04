@@ -48,7 +48,7 @@
               {{ dialog.primary_button || $t('report') }}
             </button>
           </div>
-          <div v-if="!isChipClicked" class="dropdown-menu" id="dropdown-menu_tooltip" role="menu">
+          <div v-show="!isChipClicked" class="dropdown-menu" id="dropdown-menu_tooltip" role="menu">
             <div class="dropdown-content">
               <div class="dropdown-item">
                 <i class="material-icons">error_outline</i>
