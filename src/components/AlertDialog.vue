@@ -36,7 +36,7 @@
         <button class="alert-dialog__button" @click="dismiss(false)">
           {{ dialog.secondary_button || $t('cancel') }}
         </button>
-        <div class="dropdown is-hoverable">
+        <div class="dropdown is-hoverable is-up">
           <div class="dropdown-trigger">
             <button
               class="alert-dialog__button alert-dialog__button--accent"
@@ -51,6 +51,7 @@
           <div v-if="!isChipClicked" class="dropdown-menu" id="dropdown-menu_tooltip" role="menu">
             <div class="dropdown-content">
               <div class="dropdown-item">
+                <i class="material-icons">error_outline</i>
                 <p>{{$t('need-reason-for-report')}}</p>
               </div>
             </div>
@@ -156,7 +157,7 @@ export default {
     fake-information: '거짓 정보'
     defamation: '명예훼손'
     other: '기타'
-    need-reason-for-report: '신고 사유를 1개 이상 선택해주세요.'
+    need-reason-for-report: '신고 사유를 1개 이상 선택해주세요'
 
   en:
     error: 'Error'
@@ -172,7 +173,7 @@ export default {
     fake-information: 'Fake Information'
     defamation: 'Defamation'
     other: 'Other'
-    need-reason-for-report: 'Please select reason for report at least one.'
+    need-reason-for-report: 'Please select reason for report at least one'
 </i18n>
 
 <style lang="scss" scoped>
@@ -235,7 +236,7 @@ export default {
   }
 
   &__chips {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
   }
 
   &__chip {
@@ -283,6 +284,35 @@ export default {
         background: var(--grey-300);
       }
     }
+  }
+}
+
+.dropdown-menu {
+  position: absolute;
+  left: -50px;
+}
+
+.dropdown-content {
+  width: 180px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  background-color: var(--grey-700);
+  padding: 5px;
+  border-radius: 0px;
+  box-shadow: none;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--background);
+  font-size: 10px;
+  padding: 0px;
+  .material-icons {
+    font-size: 0.75rem;
+    margin: 0 5px 0 0;
   }
 }
 </style>
