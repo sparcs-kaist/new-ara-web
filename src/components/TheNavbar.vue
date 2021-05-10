@@ -204,7 +204,7 @@ ko:
 en:
   language: '한국어'
   notification: 'Notifications'
-  write: 'New Post'
+  write: 'Write Post'
   all: 'All'
   my-page: 'My Page'
   logout: 'Logout'
