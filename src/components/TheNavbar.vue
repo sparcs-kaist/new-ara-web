@@ -204,10 +204,10 @@ ko:
 en:
   language: '한국어'
   notification: 'Notifications'
-  write: 'Write a New Post'
+  write: 'New Post'
   all: 'All'
-  my-page: 'my page'
-  logout: 'logout'
+  my-page: 'My Page'
+  logout: 'Logout'
 </i18n>
 
 <style lang="scss" scoped>
