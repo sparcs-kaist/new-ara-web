@@ -203,7 +203,7 @@ ko:
   attachment-failed: '첨부파일 업로드에 실패했습니다. 용량을 다시 한 번 확인해주세요.'
   create-failed: '글 작성에 실패했습니다. 다시 한 번 시도해주세요.'
   update-failed: '글 수정에 실패했습니다. 다시 한 번 시도해주세요.'
-  before-unload: "아직 게시글을 작성하지 않았습니다!\n작성하지 않고 나가시겠습니까?"
+  before-unload: "아직 게시글을 올리지 않았습니다!\n올리지 않고 나가시겠습니까?"
   document-title:
     write: 'Ara - 글쓰기'
     revise: 'Ara - 수정하기'
@@ -213,7 +213,7 @@ en:
   attachment-failed: 'Failed to upload attachments. Please double check the size of files.'
   create-failed: 'Failed to write the post. Please try again after a while.'
   update-failed: 'Failed to update the post. Please try again after a while.'
-  before-unload: "This post is not saved yet.\nAre you sure to exit?"
+  before-unload: "This post is not posted yet.\nAre you sure to exit?"
   document-title:
     write: 'Ara - Write'
     revise: 'Ara - Revise'
