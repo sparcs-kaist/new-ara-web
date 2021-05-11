@@ -105,8 +105,15 @@ en:
   }
 
   .footer-contact-mobile {
-    margin: 0px;
+    margin: 0;
     font-size: 15px;
+    line-height: 1.5;
+    white-space: nowrap;
+
+    @media screen and (max-width: 370px) {
+      font-size: 11px;
+      line-height: 1.8;
+    }
   }
 
   .footer-contact {
@@ -116,7 +123,7 @@ en:
   .logo-item {
     display: flex;
     flex-direction: row;
-    align-items: ceneter;
+    align-items: center;
     justify-content: space-between;
     @include breakPoint(mobile) {
       margin-top: 12px;
