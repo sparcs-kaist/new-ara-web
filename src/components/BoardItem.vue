@@ -156,6 +156,7 @@ en:
   &__title-wrapper {
     display: flex;
     align-items: center;
+    padding-right: 20px;
   }
 
   &__title {
@@ -165,7 +166,7 @@ en:
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin-right: 8px;
+    margin-right: 4px;
 
     @include breakPoint(mobile){
       font-size: 15px;
@@ -228,7 +229,7 @@ en:
 
   &__comment{
     font-size: 18px;
-    margin-right: 8px;
+    margin-right: 4px;
     font-weight: 500;
     color: var(--theme-400);
 

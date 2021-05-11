@@ -236,10 +236,19 @@ export default {
     }
 
     &__toggle {
-      margin-left: 15px;
+      margin-left: 12px;
+      width: fit-content;
+
+      & > i {
+        font-size: 3rem;
+      }
 
       @include breakPoint(mobile) {
         margin-left: 9px;
+
+        & > i {
+          font-size: 2.5rem;
+        }
       }
     }
 
