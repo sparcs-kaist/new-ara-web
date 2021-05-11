@@ -1,5 +1,5 @@
 <template>
-  <div class="searchbar field" :class="{ 'searchbar--small': small }">
+  <div class="searchbar field" :class="{ 'searchbar--small': small, 'searchbar--fullwidth': fullwidth }">
     <form class="control has-icons-right" @submit.prevent="search">
       <input class="input is-medium" name="query" type="text" v-model="searchText">
       <button class="icon is-small is-right" type="submit">
@@ -17,7 +17,8 @@ export default {
 
   props: {
     searchable: Boolean,
-    small: Boolean
+    small: Boolean,
+    fullwidth: Boolean
   },
 
   methods: {
@@ -61,6 +62,11 @@ export default {
   &--small .input {
     height: 2.5rem;
     font-size: .8rem;
+  }
+
+  &--fullwidth form {
+    width: 100%;
+    margin: 0 20px;
   }
 }
 </style>

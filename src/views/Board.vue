@@ -1,6 +1,6 @@
 <template>
   <TheLayout class="board">
-    <template #aside>
+    <template #aside-right>
       <TheSidebar searchable />
     </template>
 
@@ -227,8 +227,10 @@ export default {
     display: flex;
     align-items: center;
     margin: 1rem;
-    margin-top: 0;
 
+    @include breakPoint(min){
+      margin-top: 0;
+    }
     @include breakPoint(mobile) {
       font-size: 0.85rem;
     }
