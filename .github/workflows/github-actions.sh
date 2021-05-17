@@ -3,8 +3,8 @@
 
 # GITHUB_REF: refs/heads/<branch_name>, refs/tags/<tag_name>
 if [ ! -z $GITHUB_REF ]; then
-    TRIGGER_TYPE=$(echo $GITHUB_REF | cut -d '/' -f1)
-    NAME=$(echo $GITHUB_REF | cut -d '/' -f2-)
+    TRIGGER_TYPE=$(echo $GITHUB_REF | cut -d '/' -f2)
+    NAME=$(echo $GITHUB_REF | cut -d '/' -f3-)
 
     if [ $TRIGGER_TYPE = "heads" ]; then
         export PUSH=true
