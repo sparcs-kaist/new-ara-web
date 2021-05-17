@@ -137,7 +137,7 @@ en:
   }
 
   &__organizations {
-    margin-bottom: 70px;
+    margin-bottom: 50px;
 
     @include breakPoint(mobile) {
       margin-bottom: 30px;

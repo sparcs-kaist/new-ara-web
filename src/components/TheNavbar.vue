@@ -1,8 +1,10 @@
 <template>
-  <div class="navbar is-transparent" aria-label="main navigation" role="navigation">
+<div>
+  <div class="identity-bar"></div>
+  <div class="navbar" aria-label="main navigation" role="navigation">
     <!-- <TheNavbarFetchProgressBar/> -->
     <div class="navbar-container">
-      <div class="navbar-brand">
+      <div class="navbar-brand" :class="{'navbar-active': isMobileMenuActive}">
         <router-link
           :to="{ name: 'home' }"
           class="navbar-item navbar-ara">
@@ -11,7 +13,7 @@
 
         <router-link
           :to="{ name: 'write' }"
-          class="navbar-item write-button is-hidden-desktop">
+          class="navbar-item navbar-item--mobile-write is-hidden-desktop">
           <i class="material-icons write-icon">create</i>
         </router-link>
 
@@ -57,14 +59,14 @@
 
             {{ board[`${$i18n.locale}_name`] }}
           </router-link>
-
-          <router-link class="navbar-item navbar-item--write"
-          :to="{ name: 'write' }">
-            <span>{{ $t('write') }}</span>
-          </router-link>
         </div>
 
         <div class="navbar-end">
+          <router-link class="navbar-item navbar-item--write is-hidden-touch"
+          :to="{ name: 'write' }">
+            <span>{{ $t('write') }}</span>
+          </router-link>
+
           <a class="navbar-item"
             @click="changeLocale"
             id="toggle-language">
@@ -89,12 +91,6 @@
             <span class="is-hidden-desktop">
               {{ $t('notification') }}
             </span>
-          </router-link>
-
-          <router-link
-            :to="{ name: 'logout-handler' }"
-            class="navbar-item is-hidden-desktop">
-            {{ $t('logout') }}
           </router-link>
 
           <div class="navbar-item">
@@ -127,12 +123,19 @@
               </div>
             </div>
           </div>
+
+          <router-link
+            :to="{ name: 'logout-handler' }"
+            class="navbar-item is-hidden-desktop">
+            {{ $t('logout') }}
+          </router-link>
         </div>
       </div>
     </div>
 
     <TheNavbarNotifications v-if="isNotificationsOpen" />
   </div>
+</div>
 </template>
 
 <script>
@@ -201,18 +204,31 @@ ko:
 en:
   language: '한국어'
   notification: 'Notifications'
-  write: 'Write a New Post'
+  write: 'Write Post'
   all: 'All'
-  my-page: 'my page'
-  logout: 'logout'
+  my-page: 'My Page'
+  logout: 'Logout'
 </i18n>
 
 <style lang="scss" scoped>
 @import '@/theme.scss';
 
+.identity-bar {
+  background-color: var(--theme-400);
+  height: 5px;
+  width: 100%;
+}
+
+.navbar-active {
+  background-color: transparent;
+  @include breakPoint(min) {
+    background-color: var(--theme-100);
+  }
+}
+
 .logout {
-    color: var(--theme-400);
-    transition: color var(--duration) var(--text-timing);
+  color: var(--theme-400);
+  transition: color var(--duration) var(--text-timing);
 }
 
 .dropdown-content {
@@ -222,7 +238,6 @@ en:
   width: 13rem;
   float: right;
   text-align: right;
-  box-shadow: 0 2px 6px 0 rgba(169, 169, 169, 0.64);
   background-color: #ffffff;
 }
 
@@ -239,25 +254,35 @@ en:
 
 .navbar-item {
   display: flex;
+  font-size: 15px;
 
   .write-icon {
     color: var(--theme-400);
   }
 
-  .write-button {
-    margin-right: 10px;
-    &:hover {
-      color: var(--theme-500);
-      transition: color var(--duration) var(--text-timing);
-    }
+  &--mobile-write {
+    width: 24px;
+    padding: 0;
   }
 
   &--write {
     color: var(--theme-400);
-    transition: color var(--duration) var(--text-timing);
+    border: 1px solid var(--theme-400);
+    border-radius: 5px;
+    height: 30px;
+    width: 128px;
+    font-size: 14px;
+    margin-right: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
-      color: var(--theme-500);
+      color: white;
+      background-color: var(--theme-400);
+      transition: color var(--duration) var(--text-timing);
+      transition: background-color var(--duration) var(--text-timing);
     }
 
     .icon {
@@ -272,17 +297,17 @@ en:
   }
 }
 
-@mixin containerMinWidth() {
+@mixin calByContainer($property, $offset: 0px) {
   @media screen and (min-width: 1088px) {
-    min-width: calc((100vw - 960px) / 2);
+    #{$property}: calc((100vw - 960px) / 2 - #{$offset});
   }
 
   @media screen and (min-width: 1280px) {
-    min-width: calc((100vw - 1152px) / 2);
+    #{$property}: calc((100vw - 1152px) / 2 - #{$offset});
   }
 
   @media screen and (min-width: 1472px) {
-    min-width: calc((100vw - 1344px) / 2);
+    #{$property}: calc((100vw - 1344px) / 2 - #{$offset});
   }
 }
 
@@ -294,27 +319,55 @@ en:
 }
 
 .navbar-brand {
+  display: flex;
   @include breakPoint(min) {
     flex: 1;
   }
-  display: flex;
+
+  .navbar-burger {
+    width: 40px;
+    margin-left: 5px;
+    margin-right: 10px;
+    span {
+      height: 2px;
+      width: 18px;
+    }
+    &:hover{
+      background-color: transparent;
+    }
+  }
   .navbar-ara {
     flex:1;
+    padding-left: 24px;
   }
 }
 
 .navbar-start {
-  justify-content: flex-end;
+  justify-content: flex-start;
+  align-items: center;
   flex-wrap: wrap;
   flex: 1;
+
+  @include calByContainer(margin-left, 80px);
+  @include breakPoint(min) {
+    margin-left: 0;
+    padding-left: 0;
+
+    .navbar-item {
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+  }
 }
 
 .navbar-end {
+  align-items: center;
   padding-left: 10px;
-  @include containerMinWidth();
+  margin-right: 24px;
+  @include calByContainer(min-width);
 
   .navbar-item {
-    padding: 8px 5px;
+    padding: 8px 4px;
 
     &:last-child {
       padding-right: 15px;
@@ -323,18 +376,22 @@ en:
 }
 
 .navbar-menu {
-  background: transparent !important;
+  background: transparent /*!important*/;
   font-weight: 500;
   flex: 1;
 
   @include breakPoint(min) {
-    padding: 15px 10px;
+    padding: 10px 10px;
+    padding-top: 0px;
     width: inherit;
+    background-color: var(--theme-100);
+    box-shadow: 0 7px 6px 0 rgba(169, 169, 169, 0.64);
   }
 }
 
 .ara-logo {
-  height: 25px;
+  height: 27px;
+  width: 50px;
 }
 
 .user {
@@ -347,6 +404,8 @@ en:
   object-fit: cover;
 
   border-radius: 100%;
+  margin-left: 5px;
   margin-right: 10px;
 }
+
 </style>

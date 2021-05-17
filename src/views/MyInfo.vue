@@ -399,6 +399,10 @@ span{
   min-height: 100vh;
   margin-bottom: -57px;
   padding-bottom: 57px;
+  @include breakPoint(mobile) {
+    margin-bottom: -174px;
+    padding-bottom: 174px;
+  }
 }
 
 .tabs {
