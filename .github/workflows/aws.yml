@@ -73,8 +73,8 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        chmod +x ./github-actions.sh
-        . ./github-actions.sh
+        chmod +x ./.github/workflows/github-actions.sh
+        . ./.github/workflows/github-actions.sh
         docker build --cache-from $ECR/$PROJECT_NAME:$CACHE_DOCKER_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG"
