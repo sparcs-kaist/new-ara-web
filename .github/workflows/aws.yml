@@ -27,7 +27,6 @@ on:
   push:
     branches:
       - dev
-    
   release:
     types: [created]
 
@@ -74,6 +73,6 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:prod .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:prod
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:prod"
+        docker build --cache-from $ECR/$PROJECT_NAME:$CACHE_DOCKER_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG"
