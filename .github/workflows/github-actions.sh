@@ -10,14 +10,17 @@ if [ ! -z $GITHUB_REF ]; then
         if [ $NAME = "master" ]; then
             export DOCKER_TAG=prod
             export CACHE_DOCKER_TAG=prod
+            export NODE_ENV=production
         else
             # Docker tag에 /가 들어갈 수 없어서 -로 변경
             export DOCKER_TAG=$(echo $NAME | sed -e "s/\//-/g")
             export CACHE_DOCKER_TAG=dev
+            export NODE_ENV=development
         fi
     elif [ $TRIGGER_TYPE = "tags" ]; then
         export DOCKER_TAG=$NAME
         export CACHE_DOCKER_TAG=prod
+        export NODE_ENV=production
     fi
 fi
 
