@@ -36,15 +36,16 @@
         <button class="alert-dialog__button" @click="dismiss(false)">
           {{ dialog.secondary_button || $t('cancel') }}
         </button>
-        <div class="dropdown is-hoverable is-up"
-              v-bind:class="{ 'alert-dialog__button--none' : !isChipClicked }"
-              @click="dismiss(true)"
+        <div class="dropdown is-hoverable is-up">
+          <div class="dropdown-trigger"
+              @click="if(isChipClicked){dismiss(true)}"
               disabled="!isChipClicked">
-          <div class="dropdown-trigger">
             <button
               class="alert-dialog__button alert-dialog__button--accent"
               aria-haspopup="true"
-              aria-controls="dropdown-menu_tooltip">
+              aria-controls="dropdown-menu_tooltip"
+              v-bind:class="{ 'alert-dialog__button--none' : !isChipClicked }"
+              >
               {{ dialog.primary_button || $t('report') }}
             </button>
           </div>
@@ -266,7 +267,7 @@ export default {
     &--accent {
       color: var(--theme-400);
       font-weight: 500;
-
+      z-index: 50 !important;
       &:hover {
         color: #fff;
         background: var(--theme-400);
@@ -288,12 +289,13 @@ export default {
 }
 
 .dropdown-menu {
-  position: absolute;
-  left: -50px;
+  //position: absolute;
+  width: 180px;
+  left: +50%;
+  transform: translateX(-50%);
 }
 
 .dropdown-content {
-  width: 180px;
   display: flex;
   align-content: center;
   justify-content: center;
