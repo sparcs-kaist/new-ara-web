@@ -18,8 +18,13 @@ export default {
       if (index < 0) { return }
 
       const dialog = state.dialogs[index]
-
-      if (dialog.callback) { dialog.callback(payload.value) }
+      if (dialog.callback) {
+        if (dialog.type === 'report') {
+          dialog.callback({result: payload.value, selection: payload.chip_selection})
+        } else {
+          dialog.callback(payload.value)
+        }
+      }
 
       state.dialogs.splice(index, 1)
     }
@@ -53,6 +58,17 @@ export default {
 
       return new Promise(resolve => {
         payload.type = 'confirm'
+        payload.callback = resolve
+
+        dispatch('createDialog', payload)
+      })
+    },
+
+    report ({ dispatch }, payload) {
+      if (typeof payload === 'string') { payload = { text: payload } }
+
+      return new Promise(resolve => {
+        payload.type = 'report'
         payload.callback = resolve
 
         dispatch('createDialog', payload)
