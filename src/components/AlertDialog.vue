@@ -10,14 +10,8 @@
 
     <div class="alert-dialog__chips" v-if="dialog.type === 'report'">
       <div class="alert-dialog__chip">
-        <Chip v-bind="gPropsForChips['hate_speech']" @chip-click="chipClick">{{ $t('hate-speech') }}</Chip>
-        <Chip v-bind="gPropsForChips['unauthorized_sales_articles']" @chip-click="chipClick">{{ $t('unauthorized-sales-articles') }}</Chip>
-        <Chip v-bind="gPropsForChips['spam']" @chip-click="chipClick">{{ $t('spam') }}</Chip>
-      </div>
-      <div class="alert-dialog__chip">
-        <Chip v-bind="gPropsForChips['fake_information']" @chip-click="chipClick">{{ $t('fake-information') }}</Chip>
-        <Chip v-bind="gPropsForChips['defamation']" @chip-click="chipClick">{{ $t('defamation') }}</Chip>
-        <Chip v-bind="gPropsForChips['other']" @chip-click="chipClick">{{ $t('other') }}</Chip>
+        <Chip v-for="(chipvalue, name) in gPropsForChips" :key="name" v-bind="chipvalue"
+              @chip-click="chipClick">{{ $t(name) }}</Chip>
       </div>
     </div>
 
@@ -152,10 +146,10 @@ export default {
     okay: '확인'
     cancel: '취소'
     report: '신고하기'
-    hate-speech: '혐오 발언'
-    unauthorized-sales-articles: '허가되지 않은 판매글'
+    hate_speech: '혐오 발언'
+    unauthorized_sales_articles: '허가되지 않은 판매글'
     spam: '스팸'
-    fake-information: '거짓 정보'
+    fake_information: '거짓 정보'
     defamation: '명예훼손'
     other: '기타'
     need-reason-for-report: '신고 사유를 1개 이상 선택해주세요'
@@ -168,10 +162,10 @@ export default {
     okay: 'OK'
     cancel: 'Cancel'
     report: 'Report'
-    hate-speech: 'Hate Speech'
-    unauthorized-sales-articles: 'Unauthorized Sales Articles'
+    hate_speech: 'Hate Speech'
+    unauthorized_sales_articles: 'Unauthorized Sales Articles'
     spam: 'Spam'
-    fake-information: 'Fake Information'
+    fake_information: 'Fake Information'
     defamation: 'Defamation'
     other: 'Other'
     need-reason-for-report: 'Please select reason for report at least one'
@@ -238,10 +232,14 @@ export default {
 
   &__chips {
     margin-bottom: 30px;
+    //display: flex;
+    //flex-wrap: wrap;
+    //justify-content: center;
   }
 
   &__chip {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
   }
 

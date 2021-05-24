@@ -186,8 +186,12 @@ export default {
         }
       }
       reasonReport = reasonReport.slice(0, -2)
-      await reportPost(this.post.id, typeReport, reasonReport)
-      this.$store.dispatch('dialog/toast', this.$t('reported'))
+      try {
+        await reportPost(this.post.id, typeReport, reasonReport)
+        this.$store.dispatch('dialog/toast', this.$t('reported'))
+      } catch (err) {
+        this.$store.dispatch('dialog/toast', this.$t('already-reported'))
+      }
     },
 
     async block () {
@@ -248,6 +252,7 @@ ko:
   confirm-report: '게시물 신고 사유를 알려주세요.'
   confirm-block: '정말로 차단하시겠습니까?'
   nonvotable-myself: '본인 게시물에는 좋아요를 누를 수 없습니다!'
+  already-reported: '이미 신고되었습니다.'
 
 en:
   archived: 'Successfully added to your archive!'
@@ -258,4 +263,6 @@ en:
   confirm-report: 'Let me know your reason for reporting the post.'
   confirm-block: 'Are you really want to block this user?'
   nonvotable-myself: 'You cannot vote for your post!'
+  already-reported: "You've already reported this article."
+
 </i18n>
