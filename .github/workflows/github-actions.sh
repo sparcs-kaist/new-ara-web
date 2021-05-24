@@ -7,7 +7,6 @@ if [ ! -z $GITHUB_REF ]; then
     NAME=$(echo $GITHUB_REF | cut -d '/' -f3-)
 
     if [ $TRIGGER_TYPE = "heads" ]; then
-        export PUSH=true
         if [ $NAME = "master" ]; then
             export DOCKER_TAG=prod
             export CACHE_DOCKER_TAG=prod
@@ -17,16 +16,9 @@ if [ ! -z $GITHUB_REF ]; then
             export CACHE_DOCKER_TAG=dev
         fi
     elif [ $TRIGGER_TYPE = "tags" ]; then
-        export PUSH=true
         export DOCKER_TAG=$NAME
         export CACHE_DOCKER_TAG=prod
-    else # pr
-        export PUSH=false
-        export CACHE_DOCKER_TAG=dev
     fi
-else  # 직접 codebuild 실행
-    export PUSH=false
-    export CACHE_DOCKER_TAG=dev
 fi
 
-echo $TRIGGER_TYPE $CACHE_DOCKER_TAG $DOCKER_TAG $PUSH
+echo $TRIGGER_TYPE $CACHE_DOCKER_TAG $DOCKER_TAG
