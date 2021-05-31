@@ -1,6 +1,6 @@
 <template>
   <div>
-    <splide :options="primaryOptions" class="the-organizations organizations-padding">
+    <splide :options="primaryOptions" class="the-organizations organizations-padding" :key="$i18n.locale">
       <splide-slide v-for="organization in organizations" v-bind="organization" :key="organization.id" >
         <OrganizationCard
           :key="organization.id"
