@@ -23,6 +23,10 @@ export default {
     min-height: 100vh;
     padding-bottom: 54px;
     margin-bottom: -54px;
+    @include breakPoint(mobile) {
+      padding-bottom: 174px;
+      margin-bottom: -174px;
+    }
   }
 }
 </style>

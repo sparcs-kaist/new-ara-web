@@ -29,7 +29,10 @@
           </div>
 
           <div class="board-item__new" v-if="post.read_status === 'N'">
-            {{ $t('new') }}
+            new
+          </div>
+          <div class="board-item__update" v-else-if="post.read_status === 'U'">
+            +
           </div>
         </div>
       </div>
@@ -102,12 +105,10 @@ export default {
 ko:
   comments: '댓글'
   views: '조회수'
-  new: 'new'
 
 en:
   comments: 'Reply'
   views: 'View'
-  new: 'new'
 </i18n>
 
 <style lang="scss" scoped>
@@ -126,6 +127,10 @@ en:
     }
   }
 
+  @include breakPoint(mobile) {
+    margin: 10px 0;
+  }
+
   &__body {
     display: flex;
     align-items: center;
@@ -137,8 +142,13 @@ en:
     height: 40px;
     border-radius: 50%;
     flex: 0 0 auto;
-
     margin-right: 20px;
+
+    @include breakPoint(mobile) {
+      width: 35px;
+      height: 35px;
+      margin-right: 12px;
+    }
   }
 
   &__content {
@@ -153,11 +163,20 @@ en:
   &__author {
     font-size: .9rem;
     margin-right: 14px;
+
+    @include breakPoint(mobile) {
+      font-size: .75rem;
+      margin-right: 8px;
+    }
   }
 
   &__time {
     color: var(--grey-400);
     font-size: .8rem;
+
+    @include breakPoint(mobile) {
+      font-size: .7rem;
+    }
   }
 
   &__title-wrapper {
@@ -172,6 +191,10 @@ en:
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    @include breakPoint(mobile) {
+      font-size: .8rem;
+    }
   }
 
   &__topic {
@@ -180,10 +203,31 @@ en:
   }
 
   &__new {
+    width: 27px;
+    height: 19px;
+    margin-left: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.46;
+    letter-spacing: normal;
+    text-align: left;
     color: var(--theme-400);
-    font-size: .8rem;
-    font-weight: 500;
+  }
+
+  &__update {
+    width: 9px;
+    height: 22px;
     margin-left: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.47;
+    letter-spacing: normal;
+    text-align: left;
+    color: var(--theme-400);
   }
 
   &:first-child {
@@ -208,6 +252,10 @@ en:
     white-space: nowrap;
     font-size: .9rem;
     font-weight: 400;
+
+    @include breakPoint(mobile) {
+      font-size: .75rem;
+    }
 
     &:not(.post-status__like) {
       width: 4.5rem;

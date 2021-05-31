@@ -3,12 +3,12 @@
   "short_name": "Ara",
   "icons": [
     {
-      "src": "./ara-pwa-192.png",
+      "src": "./img/icons/ara-pwa-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "./ara-pwa-512.png",
+      "src": "./img/icons/ara-pwa-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

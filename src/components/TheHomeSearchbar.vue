@@ -171,6 +171,11 @@ en:
       border-radius: 10px;
       font-size: 1rem;
 
+      @include breakPoint(mobile) {
+        height: 2.8rem;
+        font-size: 0.85rem;
+      }
+
       &:active, &:focus, &:hover {
         box-shadow: 0 0 6px 0 var(--theme-300);
       }
