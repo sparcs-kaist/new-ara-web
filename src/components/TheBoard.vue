@@ -104,6 +104,7 @@ en:
 
   &__divider {
     margin-top: 0;
+    margin-bottom: 8px;
   }
 
   &__options {

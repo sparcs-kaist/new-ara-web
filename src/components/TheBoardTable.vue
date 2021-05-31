@@ -22,6 +22,9 @@ export default {
   width: 100%;
 }
 .item {
+  padding-bottom: 7px;
+  margin-top : 0px;
+  margin-bottom: 0px;
   border-bottom: 1px solid #eeeeee;
 }
 </style>

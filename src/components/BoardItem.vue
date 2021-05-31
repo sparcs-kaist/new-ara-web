@@ -117,7 +117,7 @@ en:
 .board-item {
   color: var(--text);
   display: flex;
-  margin: 20px 0;
+  margin: 8px 0;
 
   @include breakPoint(mid) {
     flex-direction: column;
