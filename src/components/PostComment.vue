@@ -169,10 +169,18 @@ export default {
     },
 
     async reportComment () {
-      const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-report'))
+      const {result, selection} = await this.$store.dispatch('dialog/report', this.$t('confirm-report'))
       if (!result) return
-
-      await reportComment(this.comment.id)
+      let typeReport = 'others'
+      let reasonReport = ''
+      for (var key in selection) {
+        if (selection[key]) {
+          reasonReport += key
+          reasonReport += ', '
+        }
+      }
+      reasonReport = reasonReport.slice(0, -2)
+      await reportComment(this.comment.id, typeReport, reasonReport)
     },
 
     editComment () {
