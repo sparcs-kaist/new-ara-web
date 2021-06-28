@@ -134,6 +134,15 @@ en:
 
   &__board {
     margin-top: 10px;
+    border-right: 1px solid var(--grey-300);
+
+    &:last-child {
+      border-right: none;
+    }
+
+    @include breakPoint(mobile) {
+      border: none;
+    }
   }
 
   &__organizations {
