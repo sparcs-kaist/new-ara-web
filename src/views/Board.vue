@@ -226,13 +226,15 @@ export default {
   .exclude {
     display: flex;
     align-items: center;
-    margin: 1rem;
+    margin: 1rem 0;
 
     @include breakPoint(min){
       margin-top: 0;
+      margin-right: 1rem;
     }
     @include breakPoint(mobile) {
       font-size: 0.85rem;
+      margin-right: 0;
     }
 
     &__toggle {

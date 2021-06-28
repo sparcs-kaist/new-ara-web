@@ -145,7 +145,7 @@ en:
   }
 
   .update-color{
-    background-color: orange !important;
+    background-color: limegreen !important;
   }
 
   &__content {
@@ -160,7 +160,7 @@ en:
   }
 
   &__title {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 500;
     flex: 0 1 auto;
     overflow: hidden;
@@ -169,7 +169,7 @@ en:
     margin-right: 4px;
 
     @include breakPoint(mobile){
-      font-size: 15px;
+      font-size: 13px;
     }
   }
 
@@ -183,7 +183,7 @@ en:
       display: inline-flex;
       margin-right: 10px;
       white-space: nowrap;
-      font-size: 12px;
+      font-size: 11px;
       align-items: center;
     }
   }
@@ -191,7 +191,7 @@ en:
   &__vote{
     display: inline-flex;
     white-space: nowrap;
-    font-size: 12px;
+    font-size: 11px;
 
     &__pos{
       color: var(--theme-400);
@@ -210,12 +210,12 @@ en:
     align-items: center;
     margin-right: 10px;
     white-space: nowrap;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 500;
 
     &__mobile{
       white-space: nowrap;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 500;
       color: unset;
       margin-left: auto;
@@ -228,13 +228,13 @@ en:
   }
 
   &__comment{
-    font-size: 18px;
+    font-size: 15px;
     margin-right: 4px;
     font-weight: 500;
     color: var(--theme-400);
 
     @include breakPoint(mobile){
-      font-size: 15px;
+      font-size: 13px;
     }
   }
 

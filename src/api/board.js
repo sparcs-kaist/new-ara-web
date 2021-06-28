@@ -15,7 +15,6 @@ export const fetchArticles = ({boardId, query, page, pageSize, topicId, username
   if (query) context.main_search__contains = query
   if (page) context.page = page
   if (pageSize) context.page_size = pageSize
-  else context.page_size = 10
   if (username) context.created_by = username
 
   return http.get(`articles/?${queryBuilder(context)}`)

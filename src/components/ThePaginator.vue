@@ -78,27 +78,22 @@ a.is-active {
   margin: 0 -0.25rem;
   padding-top: 1rem;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 13px;
 
   .page {
     margin: 0 0.5rem;
   }
 
   @include breakPoint(mobile){
-    font-size: 12px;
-
     .page {
-      margin: 0 0.3rem;
+      margin: 0 0.4rem;
     }
   }
 }
 
 .icon{
   padding-top: 4px;
-
-  @include breakPoint(mobile){
-    width: 16px;
-    height: 16px;
-  }
+  width: 16px;
+  height: 16px;
 }
 </style>
