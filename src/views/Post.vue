@@ -1,6 +1,6 @@
 <template>
   <TheLayout class="post" :key="postId">
-    <template #aside>
+    <template #aside-right>
       <TheSidebar />
     </template>
 
@@ -173,11 +173,25 @@ export default {
     },
 
     async report () {
-      const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-report'))
+      const {result, selection} = await this.$store.dispatch('dialog/report', this.$t('confirm-report'))
       if (!result) return
-
-      await reportPost(this.post.id)
-      this.$store.dispatch('dialog/toast', this.$t('reported'))
+      // What can be type_report? : violation_of_code, impersonation, insult, spam, others.
+      // Where can I get typeReport?
+      let typeReport = 'others'
+      let reasonReport = ''
+      for (var key in selection) {
+        if (selection[key]) {
+          reasonReport += key
+          reasonReport += ', '
+        }
+      }
+      reasonReport = reasonReport.slice(0, -2)
+      try {
+        await reportPost(this.post.id, typeReport, reasonReport)
+        this.$store.dispatch('dialog/toast', this.$t('reported'))
+      } catch (err) {
+        this.$store.dispatch('dialog/toast', this.$t('already-reported'))
+      }
     },
 
     async block () {
@@ -235,9 +249,10 @@ ko:
   reported: '신고되었습니다!'
   blocked: '해당 유저가 차단되었습니다!'
   unblocked: '해당 유저가 차단해제되었습니다!'
-  confirm-report: '정말로 신고하시겠습니까?'
+  confirm-report: '게시물 신고 사유를 알려주세요.'
   confirm-block: '정말로 차단하시겠습니까?'
   nonvotable-myself: '본인 게시물에는 좋아요를 누를 수 없습니다!'
+  already-reported: '이미 신고되었습니다.'
 
 en:
   archived: 'Successfully added to your archive!'
@@ -245,7 +260,9 @@ en:
   reported: 'Successfully reported!'
   blocked: 'The user has been blocked!'
   unblocked: 'The user has been unblocked!'
-  confirm-report: 'Are you really want to report this post?'
+  confirm-report: 'Let me know your reason for reporting the post.'
   confirm-block: 'Are you really want to block this user?'
   nonvotable-myself: 'You cannot vote for your post!'
+  already-reported: "You've already reported this article."
+
 </i18n>

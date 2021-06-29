@@ -28,6 +28,12 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/theme.scss';
+.facade {
+  margin-bottom: 54px;
+  @include breakPoint(mobile) {
+    margin-bottom: 174px;
+  }
+}
 .filter.is-blur {
   filter: blur(5px);
 }

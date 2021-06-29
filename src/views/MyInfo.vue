@@ -1,6 +1,6 @@
 <template>
   <TheLayout class="my-info" :isColumnLayout="false">
-    <template #aside>
+    <template #aside-right>
       <div class="column is-one-quarter">
         <div class="box profile-box">
           <a class="setting-button" @click="mobileSettings = !mobileSettings">

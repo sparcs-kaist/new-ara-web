@@ -8,7 +8,7 @@
 
       <div class="board__options">
         <slot name="option" />
-        <SearchBar class="board__mobile-search is-flex-touch" searchable />
+        <SearchBar class="board__tablet-search is-flex-touch is-hidden-mobile" searchable />
       </div>
     </div>
     <hr class="board__divider" v-if="title" />
@@ -21,6 +21,7 @@
         :currentPage="board.current">
       </ThePaginator>
     </div>
+    <SearchBar class="board__mobile-search is-hidden-tablet" searchable fullwidth />
   </div>
 </template>
 
@@ -79,9 +80,15 @@ en:
 .board {
   min-width: 100%;
 
-  &__mobile-search {
+  &__tablet-search {
     display: none;
     margin-bottom: 1rem;
+  }
+
+  &__mobile-search{
+    display: flex;
+    margin-top: 20px;
+    width: 100%;
   }
 
   &__name {
@@ -103,7 +110,8 @@ en:
   }
 
   &__divider {
-    margin-top: 0;
+    margin: 0;
+    background: #333333;
   }
 
   &__options {

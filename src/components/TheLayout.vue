@@ -63,7 +63,7 @@ export default {
       margin-left: 0;
     }
 
-    &:not(:last-child) {
+    &:not(:first-child) {
       flex: 1;
       max-width: 300px;
 

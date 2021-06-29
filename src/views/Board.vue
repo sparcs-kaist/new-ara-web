@@ -1,6 +1,6 @@
 <template>
   <TheLayout class="board">
-    <template #aside>
+    <template #aside-right>
       <TheSidebar searchable />
     </template>
 
@@ -226,18 +226,31 @@ export default {
   .exclude {
     display: flex;
     align-items: center;
-    margin: 1rem;
-    margin-top: 0;
+    margin: 1rem 0;
 
+    @include breakPoint(min){
+      margin-top: 0;
+      margin-right: 1rem;
+    }
     @include breakPoint(mobile) {
       font-size: 0.85rem;
+      margin-right: 0;
     }
 
     &__toggle {
-      margin-left: 15px;
+      margin-left: 12px;
+      width: fit-content;
+
+      & > i {
+        font-size: 3rem;
+      }
 
       @include breakPoint(mobile) {
         margin-left: 9px;
+
+        & > i {
+          font-size: 2.5rem;
+        }
       }
     }
 
