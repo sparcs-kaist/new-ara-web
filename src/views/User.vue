@@ -1,6 +1,6 @@
 <template>
   <TheLayout>
-    <template #aside>
+    <template #aside-right>
       <TheSidebar searchable />
     </template>
 

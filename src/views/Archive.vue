@@ -1,6 +1,6 @@
 <template>
   <TheLayout>
-    <template #aside>
+    <template #aside-right>
       <TheSidebar />
     </template>
     <TheBoard :board="archive" :title="$t('archive')" :from-query="{ from_view: 'scrap' }" />

@@ -1,6 +1,6 @@
 <template>
   <TheLayout class="post" :key="postId">
-    <template #aside>
+    <template #aside-right>
       <TheSidebar />
     </template>
 

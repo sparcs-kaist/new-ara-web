@@ -8,17 +8,13 @@
   class="board-item"
   :class="{'board-item--current': current}">
     <div class="board-item__body">
-      <img class="board-item__image" :src="post.created_by.profile.picture">
+      <div class="board-item__image-wrapper">
+        <img class="board-item__image" :src="post.created_by.profile.picture">
+        <div class="board-item__read-status" v-if="post.read_status === 'N'"></div>
+        <div class="board-item__read-status update-color" v-else-if="post.read_status === 'U'"></div>
+      </div>
 
       <div class="board-item__content">
-        <div class="board-item__header">
-          <span class="board-item__author">
-            {{ post.created_by.profile.nickname }}
-          </span>
-
-          <Timeago class="board-item__time" :time="post.created_at" />
-        </div>
-
         <div class="board-item__title-wrapper">
           <div class="board-item__title" :title="post.title">
             <span class="board-item__topic" v-if="post.parent_topic">
@@ -27,36 +23,32 @@
 
             {{ title }}
           </div>
+          <div class="board-item__comment" v-if="post.comment_count !== 0">
+            ({{ elideText(post.comment_count) }})
+          </div>
+        </div>
 
-          <div class="board-item__new" v-if="post.read_status === 'N'">
-            new
+        <div class="board-item__subtitle">
+          <Timeago :time="post.created_at" />
+          <div>
+            {{ $t('views') + " " + elideText(post.hit_count) }}
           </div>
-          <div class="board-item__update" v-else-if="post.read_status === 'U'">
-            +
+          <div class="board-item__vote">
+            <div class="board-item__vote__pos">+{{post.positive_vote_count}}</div>
+            <div class="board-item__vote__neg">-{{post.negative_vote_count}}</div>
           </div>
+
+          <span class="board-item__author__mobile is-hidden-tablet">
+            {{ post.created_by.profile.nickname }}
+          </span>
+
         </div>
       </div>
     </div>
 
-    <div class="post-status">
-      <LikeButton class="post-status__like" :item="post" table elide votable @vote="$emit('vote', $event)"/>
-
-      <div class="post-status__comment">
-        <span class="post-status__label">
-          {{ $t('comments') }}
-        </span>
-
-        {{ elideText(post.comment_count) }}
-      </div>
-
-      <div class="post-status__view">
-        <span class="post-status__label">
-          {{ $t('views') }}
-        </span>
-
-        {{ elideText(post.hit_count) }}
-      </div>
-    </div>
+    <span class="board-item__author is-hidden-mobile">
+      {{ post.created_by.profile.nickname }}
+    </span>
   </router-link>
 </template>
 
@@ -117,19 +109,7 @@ en:
 .board-item {
   color: var(--text);
   display: flex;
-  margin: 20px 0;
-
-  @include breakPoint(mid) {
-    flex-direction: column;
-
-    &:last-child {
-      border-bottom: 1px solid var(--grey-200);
-    }
-  }
-
-  @include breakPoint(mobile) {
-    margin: 10px 0;
-  }
+  padding: 8px 5px;
 
   &__body {
     display: flex;
@@ -137,139 +117,127 @@ en:
     flex: 1;
   }
 
+  &__image-wrapper{
+    width: 40px;
+    height: 40px;
+    position: relative;
+    margin-right: 14px;
+  }
+
   &__image {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    flex: 0 0 auto;
-    margin-right: 20px;
+    position: absolute;
+  }
 
-    @include breakPoint(mobile) {
-      width: 35px;
-      height: 35px;
-      margin-right: 12px;
-    }
+  &__read-status{
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--theme-400);
+    display: inline-block;
+    border: 1px solid white;
+    position: absolute;
+    left: auto;
+    right: 0;
+
+  }
+
+  .update-color{
+    background-color: limegreen !important;
   }
 
   &__content {
     flex: 1;
     width: 0;
-    margin-right: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  &__author {
-    font-size: .9rem;
-    margin-right: 14px;
-
-    @include breakPoint(mobile) {
-      font-size: .75rem;
-      margin-right: 8px;
-    }
-  }
-
-  &__time {
-    color: var(--grey-400);
-    font-size: .8rem;
-
-    @include breakPoint(mobile) {
-      font-size: .7rem;
-    }
   }
 
   &__title-wrapper {
     display: flex;
     align-items: center;
+    padding-right: 20px;
   }
 
   &__title {
-    font-size: 1rem;
+    font-size: 15px;
     font-weight: 500;
     flex: 0 1 auto;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    margin-right: 4px;
 
-    @include breakPoint(mobile) {
-      font-size: .8rem;
+    @include breakPoint(mobile){
+      font-size: 13px;
+    }
+  }
+
+  &__subtitle {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    & > * {
+      color: var(--grey-400);
+      display: inline-flex;
+      margin-right: 10px;
+      white-space: nowrap;
+      font-size: 11px;
+      align-items: center;
+    }
+  }
+
+  &__vote{
+    display: inline-flex;
+    white-space: nowrap;
+    font-size: 11px;
+
+    &__pos{
+      color: var(--theme-400);
+      margin-right: 6px;
+    }
+
+    &__neg{
+      color: #535cac;
+    }
+
+  }
+
+  &__author {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 10px;
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 500;
+
+    &__mobile{
+      white-space: nowrap;
+      font-size: 11px;
+      font-weight: 500;
+      color: unset;
+      margin-left: auto;
     }
   }
 
   &__topic {
-    color: var(--grey-400);
+    color: var(--theme-400);
     font-weight: 400;
   }
 
-  &__new {
-    width: 27px;
-    height: 19px;
-    margin-left: 6px;
-    font-size: 13px;
-    font-weight: bold;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.46;
-    letter-spacing: normal;
-    text-align: left;
-    color: var(--theme-400);
-  }
-
-  &__update {
-    width: 9px;
-    height: 22px;
-    margin-left: 5px;
+  &__comment{
     font-size: 15px;
-    font-weight: bold;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.47;
-    letter-spacing: normal;
-    text-align: left;
-    color: var(--theme-400);
-  }
-
-  &:first-child {
-    margin-top: 0;
-  }
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.post-status {
-  display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-
-  & > * {
-    display: inline-flex;
-    justify-content: flex-start;
-    align-items: flex-end;
-    margin-right: 10px;
-    white-space: nowrap;
-    font-size: .9rem;
-    font-weight: 400;
-
-    @include breakPoint(mobile) {
-      font-size: .75rem;
-    }
-
-    &:not(.post-status__like) {
-      width: 4.5rem;
-      overflow: hidden;
-
-      @include breakPoint(mid) {
-        width: auto;
-      }
-    }
-  }
-
-  &__label {
-    font-weight: 500;
     margin-right: 4px;
+    font-weight: 500;
+    color: var(--theme-400);
+
+    @include breakPoint(mobile){
+      font-size: 13px;
+    }
   }
+
 }
+
 </style>

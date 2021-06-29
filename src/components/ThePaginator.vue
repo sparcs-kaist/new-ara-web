@@ -3,7 +3,11 @@
     <router-link
       v-if="pageRangeMin !== 1"
       :to="routeTo(pageRangeMin - 1)">
-      &lt;
+
+      <span class="icon">
+        <i class="material-icons">navigate_before</i>
+      </span>
+
     </router-link>
     <router-link
       v-for="page in pageRange"
@@ -14,7 +18,11 @@
     <router-link
       v-if="numPages > pageRangeMin + 9"
       :to="routeTo(pageRangeMin + 10)">
-      &gt;
+
+      <span class="icon">
+        <i class="material-icons">navigate_next</i>
+      </span>
+
     </router-link>
   </div>
 </template>
@@ -69,9 +77,23 @@ a.is-active {
   justify-content: center;
   margin: 0 -0.25rem;
   padding-top: 1rem;
+  font-weight: bold;
+  font-size: 13px;
 
   .page {
-    margin: 0 0.25rem;
+    margin: 0 0.5rem;
   }
+
+  @include breakPoint(mobile){
+    .page {
+      margin: 0 0.4rem;
+    }
+  }
+}
+
+.icon{
+  padding-top: 4px;
+  width: 16px;
+  height: 16px;
 }
 </style>
