@@ -96,7 +96,7 @@
                     {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
                   </a>
 
-                  <template v-if="postAuthorId === userId">
+                  <template v-if="isMine">
                     <router-link class="dropdown-item"
                       :to="{
                         name: 'write',
@@ -196,6 +196,11 @@ export default {
     },
     isBlocked () {
       return this.post.created_by && this.post.created_by.is_blocked
+    },
+    isMine () {
+      // Check if this post is written by reader.
+      return (this.post.created_by && this.post.created_by.id) === this.userId
+      // return this.post.is_mine
     },
     ...mapGetters([ 'userId' ])
   },

@@ -22,7 +22,7 @@
             <div class="dropdown-menu" id="dropdownMenu" role="menu">
               <div class="dropdown-content">
                 <div class="dropdown-item">
-                  <template v-if="userNickname === author">
+                  <template v-if="isMine">
                     <a @click="editComment" class="dropdown-item">
                       {{ $t('edit') }}
                     </a>
@@ -142,6 +142,10 @@ export default {
       }
 
       return this.comment.content
+    },
+    isMine () {
+      return this.userNickname === this.comment.created_by.profile.nickname
+      // return this.comment.is_mine
     }
   },
 
