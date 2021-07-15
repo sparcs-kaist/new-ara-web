@@ -144,8 +144,8 @@ export default {
       return this.comment.content
     },
     isMine () {
-      return this.userNickname === this.comment.created_by.profile.nickname
-      // return this.comment.is_mine
+      // return this.userNickname === this.comment.created_by.profile.nickname
+      return this.comment.is_mine
     }
   },
 

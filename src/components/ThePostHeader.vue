@@ -199,8 +199,8 @@ export default {
     },
     isMine () {
       // Check if this post is written by reader.
-      return (this.post.created_by && this.post.created_by.id) === this.userId
-      // return this.post.is_mine
+      // return (this.post.created_by && this.post.created_by.id) === this.userId
+      return this.post.is_mine
     },
     ...mapGetters([ 'userId' ])
   },
