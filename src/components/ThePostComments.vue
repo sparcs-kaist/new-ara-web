@@ -1,6 +1,6 @@
 <template>
   <div id="comments" class="comments">
-    <div class="comments__title">{{ $t('comments') }} ({{ commentCount }})</div>
+    <div class="comments__title">{{ $t('comments') }} {{ commentCount }}</div>
 
     <div class="comments__container comments__container--empty" v-if="commentCount == 0">
       {{ $t('no-comment') }}
@@ -14,10 +14,11 @@
         @upload="$emit('upload', $event)"
         @vote="$emit('refresh')"
         @delete="$emit('refresh')"
+        class="comments__comment"
       />
     </div>
 
-    <PostCommentEditor :parentArticle="post.id" @upload="$emit('upload', $event)" />
+    <PostCommentEditor :parentArticle="post.id" @upload="$emit('upload', $event)"/>
   </div>
 </template>
 
@@ -60,10 +61,11 @@ en:
 
 <style lang="scss" scoped>
 .comments {
-  margin-top: 2rem;
+  margin-top: 1rem;
 
   &__title {
-    font-size: 1rem;
+    font-size: 1.35rem;
+    font-weight: 500;
   }
 
   &__container {
@@ -71,6 +73,14 @@ en:
 
     &--empty {
       color: rgba(0,0,0,0.3);
+    }
+  }
+
+  &__comment {
+    border-top: 1px solid #f0f0f0;
+
+    &:first-child {
+      border: none;
     }
   }
 }

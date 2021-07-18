@@ -25,7 +25,6 @@
     </div>
 
     <div class="content">
-
       <ThePostBookmark
         class="content__bookmark"
         :node="{ attrs: { title: post.title, href: post.url } }"
@@ -41,22 +40,27 @@
     <div class="post__footer">
       <LikeButton class="post__like" :item="post" votable @vote="$emit('vote', $event)" />
       <div class="post__buttons">
-        <button class="button" @click="$emit('archive')">
-          {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
+        <button class="button" @click="$emit('block')">
+          <i class="like-button__icon material-icons-outlined">
+            remove_circle_outline
+          </i>
+          {{ $t(isBlocked ? 'unblock' : 'block') }}
         </button>
 
-        <button class="button" @click="$emit('report')"> {{ $t('report') }} </button>
+        <button class="button" @click="$emit('archive')">
+          <i class="like-button__icon material-icons-outlined">
+            campaign
+          </i>
+          {{ $t('report') }}
+        </button>
 
-        <router-link :to="{
-          name: 'user', params: { username: postAuthorId }
-        }" class="post__more">
-          <img :src="userPictureUrl" class="post__author"/>
-          <span>{{ $t('more', { author: postAuthor }) }}</span>
-          <i class="material-icons">chevron_right</i>
-        </router-link>
+        <button class="button" @click="$emit('report')">
+          <i class="like-button__icon material-icons-outlined">add</i>
+          {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
+        </button>
       </div>
     </div>
-    <hr />
+    <hr class="divider"/>
   </div>
 </template>
 
@@ -92,13 +96,14 @@ export default {
         if (this.showHidden) {
           return this.post.hidden_content
         }
-
         return this.post.why_hidden
           .map(reason => reason.detail)
           .join(' ')
       }
-
       return this.post.content
+    },
+    isBlocked () {
+      return this.post.created_by && this.post.created_by.is_blocked
     }
   },
   watch: {
@@ -107,7 +112,6 @@ export default {
         if (!attachments) {
           return
         }
-
         const results = await getAttachmentUrls(attachments)
         this.attachments = results.map(({ data }) => ({
           url: data.file,
@@ -130,6 +134,8 @@ export default {
 ko:
   archive: '담아두기'
   unarchive: '담아두기 취소'
+  block: '차단하기'
+  unblock: '차단해제'
   report: '신고하기'
   attachments: '첨부파일 모아보기'
   more: '{author} 님의 게시글 더 보기'
@@ -138,6 +144,8 @@ ko:
 en:
   archive: 'Bookmark'
   unarchive: 'Delete Bookmark'
+  block: 'Block User'
+  unblock: 'Unblock User'
   report: 'Report'
   attachments: 'Attachments'
   more: 'Read more posts by {author}'
@@ -148,23 +156,14 @@ en:
 #title {
   margin-bottom: 0.25rem;
 }
-
 .post {
-  &__author {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-    object-fit: cover;
-    border-radius: 100%;
-  }
-
   &__footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
+    font-size: 0.9rem;
   }
-
   &__buttons {
     display: flex;
     align-items: center;
@@ -173,21 +172,21 @@ en:
     margin-top: 10px;
 
     & > .button {
-      margin-right: 10px;
-      font-size: .9rem;
+      margin-left: 10px;
+      padding-left: 0.8rem;
+      font-size: 0.9rem;
+      color: var(--theme-400);
+      display: flex;
+      align-items: center;
+      line-height: 0.9rem;
+      .like-button__icon {
+        margin-right: 5px;
+        font-size: 18px;
+      }
     }
   }
-
-  &__more {
-    font-size: .9rem;
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-    margin-left: 10px;
-  }
-
   &__like {
-    font-size: 0.9rem;
+    font-size: 1.0rem;
     margin-left: -6px;
     margin-top: 10px;
   }
@@ -195,16 +194,13 @@ en:
 
 .content {
   margin: 30px 0 20px 0;
-
   &__bookmark {
     margin-bottom: 30px;
   }
 }
-
 .material-icons {
   font-size: 16px;
 }
-
 .dropdown-content {
   min-width: 40%;
   max-width: 100%;
@@ -212,25 +208,27 @@ en:
   float: right;
   text-align: left;
 }
-
 .dropdown-item {
   padding: 0.375rem 0.4rem
 }
-
 .attachments {
   display: flex;
   justify-content: flex-end;
   margin-top: 10px;
   margin-bottom: 30px;
-
   &__title {
     font-size: 1rem;
     font-weight: 600;
   }
-
   &__item {
     display: flex;
     flex-direction: row;
   }
+}
+
+.divider {
+  height: 1px;
+  background-color: black;
+  margin-top: 12px 0;
 }
 </style>
