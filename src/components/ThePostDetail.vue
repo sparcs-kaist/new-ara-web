@@ -47,14 +47,14 @@
           {{ $t(isBlocked ? 'unblock' : 'block') }}
         </button>
 
-        <button class="button" @click="$emit('archive')">
+        <button class="button" @click="$emit('report')">
           <i class="like-button__icon material-icons-outlined">
             campaign
           </i>
           {{ $t('report') }}
         </button>
 
-        <button class="button" @click="$emit('report')">
+        <button class="button" @click="$emit('archive')">
           <i class="like-button__icon material-icons-outlined">add</i>
           {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
         </button>
