@@ -11,13 +11,13 @@
       @archive="archive"
       @report="report"
       @vote="vote"
-      @block="block"
     />
 
     <ThePostDetail
       :post="post"
       :showHidden="showHidden"
       @archive="archive"
+      @block="block"
       @report="report"
       @vote="vote"
       @show-hidden="showHidden = true"
