@@ -17,7 +17,17 @@ export const timeago = (dateString, localeString) => {
 
 export const date = timeString => {
   const time = new Date(timeString)
-  return `${time.getMonth() + 1}월 ${time.getDate()}일`
+
+  const year = time.getFullYear()
+  const month = time.getMonth() + 1
+  const date = time.getDate()
+  const hour = time.getHours()
+  const minute = time.getMinutes()
+
+  const padded = (n) => n.toString().padStart(2, '0')
+  const [m, d, h, min] = [month, date, hour, minute].map(padded)
+
+  return `${year}.${m}.${d} ${h}:${min}`
 }
 
 export const range = (m, n = null) => {

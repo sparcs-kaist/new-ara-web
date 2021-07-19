@@ -1,16 +1,18 @@
 <template>
   <div class="like-button" :class="{ 'like-button--enabled': votable, 'like-button--table': table }">
     <button class="like-button__item" @click="vote(true)"
-      :class="{ 'like-button__item--selected': liked }">
+      :class="{ 'like-button__item--like-selected': liked }">
 
-      <i class="like-button__icon material-icons">thumb_up</i>
+      <i class="like-button__icon material-icons" v-if="liked">thumb_up</i>
+      <i class="like-button__icon material-icons-outlined" v-else>thumb_up</i>
       {{ likedCount }}
     </button>
 
     <button class="like-button__item" @click="vote(false)"
-      :class="{ 'like-button__item--selected': disliked }">
+      :class="{ 'like-button__item--dislike-selected': disliked }">
 
-      <i class="like-button__icon material-icons">thumb_down</i>
+      <i class="like-button__icon material-icons" v-if="disliked">thumb_down</i>
+      <i class="like-button__icon material-icons-outlined" v-else>thumb_down</i>
       {{ dislikedCount }}
     </button>
   </div>
@@ -113,13 +115,17 @@ export default {
       background: transparent;
       color: var(--grey-600);
       font-size: inherit;
-      margin: 0 10px;
+      margin: 0 6px;
       flex: 1;
       white-space: nowrap;
-      transition: color var(--duration) var(--background-timing);
+      transition: all var(--duration) ease;
 
-      &--selected {
+      &--like-selected {
         color: var(--theme-400);
+      }
+
+      &--dislike-selected {
+        color: #535cac
       }
 
       &:first-child {
@@ -136,7 +142,7 @@ export default {
     }
 
     &__icon {
-      font-size: inherit;
+      font-size: 20px;
       margin-right: .3rem;
     }
   }

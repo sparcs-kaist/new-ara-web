@@ -282,11 +282,11 @@ en:
   }
 
   &__profile {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     background: var(--grey-300);
-    margin-right: 24px;
+    margin-right: 12px;
   }
 
   &__body {
@@ -326,6 +326,10 @@ en:
     @include breakPoint(min) {
       margin-left: 30px;
     }
+  }
+
+  &__vote {
+    font-size: 15px;
   }
 }
 </style>

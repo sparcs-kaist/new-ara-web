@@ -1,7 +1,10 @@
 <template>
   <div class="comment-editor">
     <label class="textarea comment-editor__input">
-      <div class="comment-editor__author"> {{ userNickname }} </div>
+      <div class="comment-editor__author">
+        <img :src="userPicture" class="comment-editor__picture"/>
+        <span class="comment-editor__name">{{ userNickname }}</span>
+      </div>
       <div class="comment-editor__content">
         <textarea
           :placeholder="$t('placeholder')"
@@ -20,7 +23,7 @@
       <button
         v-if="editComment || parentComment"
         @click="closeComment"
-        class="button is-text comment-editor__submit"
+        class="button comment-editor__submit"
         :class="{ 'is-loading': isUploading }"
         :disabled="isUploading"
       >
@@ -29,7 +32,7 @@
 
       <button
         @click="saveComment"
-        class="button is-text comment-editor__submit"
+        class="button comment-editor__submit"
         :class="{ 'is-loading': isUploading }"
         :disabled="isUploading"
       >
@@ -74,7 +77,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters([ 'userNickname' ])
+    ...mapGetters([ 'userNickname', 'userPicture' ])
   },
 
   methods: {
@@ -162,6 +165,23 @@ en:
       border: none;
       outline: none;
       padding-bottom: 30px;
+
+      &::placeholder {
+        font-size: 0.9rem;
+        font-weight: 400;
+      }
+    }
+
+    &__name {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    &__picture {
+      height: 24px;
+      width: 24px;
+      margin-right: 8px;
+      border-radius: 50%;
     }
 
     &__author {
@@ -170,6 +190,9 @@ en:
       font-weight: 500;
       white-space: nowrap;
       z-index: 1;
+
+      display: flex;
+      align-items: center;
     }
 
     &__buttons {
@@ -182,6 +205,13 @@ en:
       button {
         text-decoration: none;
       }
+    }
+
+    &__submit {
+      margin-left: 10px;
+      color: var(--theme-400);
+      font-size: 0.9rem;
+      padding: 15px;
     }
   }
 </style>
