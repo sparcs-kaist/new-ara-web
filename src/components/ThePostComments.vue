@@ -10,6 +10,7 @@
         v-for="comment in comments"
         :key="comment.id"
         :comment="comment"
+        :post="post"
         @update="$emit('update', $event)"
         @upload="$emit('upload', $event)"
         @vote="$emit('refresh')"
@@ -18,7 +19,7 @@
       />
     </div>
 
-    <PostCommentEditor :parentArticle="post.id" @upload="$emit('upload', $event)"/>
+    <PostCommentEditor :parentArticle="post.id" :post="post" @upload="$emit('upload', $event)"/>
   </div>
 </template>
 

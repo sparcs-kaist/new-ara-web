@@ -58,6 +58,7 @@ export default {
   },
 
   props: {
+    post: { required: true },
     text: {
       type: String,
       default: ''
@@ -105,7 +106,8 @@ export default {
           : (await createComment({
             parent_article: this.parentArticle,
             parent_comment: this.parentComment,
-            content: this.content
+            content: this.content,
+            is_anonymous: this.post.is_anonymous
           }))
 
         this.$emit('upload', result)
