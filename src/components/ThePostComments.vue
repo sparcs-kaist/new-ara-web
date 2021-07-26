@@ -64,15 +64,17 @@ en:
   margin-top: 1rem;
 
   &__title {
-    font-size: 1.35rem;
+    font-size: 18px;
     font-weight: 500;
   }
 
   &__container {
     margin-bottom: 1rem;
+    font-size: 0.9rem;
 
     &--empty {
       color: rgba(0,0,0,0.3);
+      margin: 12px 0;
     }
   }
 
@@ -80,6 +82,7 @@ en:
     border-top: 1px solid #f0f0f0;
 
     &:first-child {
+      margin-top: -10px;
       border: none;
     }
   }

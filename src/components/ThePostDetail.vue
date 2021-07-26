@@ -229,6 +229,6 @@ en:
 .divider {
   height: 1px;
   background-color: black;
-  margin-top: 12px 0;
+  margin: 12px 0;
 }
 </style>
