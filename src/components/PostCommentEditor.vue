@@ -85,8 +85,10 @@ export default {
     autosize () {
       this.height = 'auto'
       this.$nextTick(() => {
-        const contentHeight = this.$refs.input.scrollHeight
-        this.height = `${contentHeight}px`
+        if (this.$refs.input) {
+          const contentHeight = this.$refs.input.scrollHeight
+          this.height = `${contentHeight}px`
+        }
       })
     },
 
@@ -100,7 +102,9 @@ export default {
       try {
         const result = this.editComment
           ? (await updateComment(this.editComment, {
-            content: this.content
+            content: this.content,
+            is_anonymous: this.post.is_anonymous,
+            is_mine: true
           }))
 
           : (await createComment({
@@ -109,7 +113,7 @@ export default {
             content: this.content,
             is_anonymous: this.post.is_anonymous
           }))
-
+        // console.log('After update/create comment...')
         this.$emit('upload', result)
         this.content = ''
         this.autosize()

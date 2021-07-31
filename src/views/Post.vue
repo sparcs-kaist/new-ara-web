@@ -142,6 +142,9 @@ export default {
       const commentIndex = this.post.comments.findIndex(comment => comment.id === update.id)
       if (commentIndex < 0) return
 
+      // Code for maintain anonymous profile when user modifies his/her comment.
+      update.created_by.profile = this.post.comments[commentIndex].created_by.profile
+      // Apply
       this.$set(this.post.comments, commentIndex, update)
     },
 
