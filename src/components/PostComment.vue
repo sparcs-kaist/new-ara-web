@@ -322,6 +322,7 @@ en:
 
   &__write {
     margin-left: 15px;
+    line-height: 25px;
   }
 
   &__reply-comments {
@@ -334,6 +335,7 @@ en:
 
   &__vote {
     font-size: 15px;
+    height: 25px;
   }
 }
 </style>

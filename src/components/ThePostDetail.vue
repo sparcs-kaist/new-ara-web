@@ -40,7 +40,7 @@
     <div class="post__footer">
       <LikeButton class="post__like" :item="post" votable @vote="$emit('vote', $event)" />
       <div class="post__buttons">
-        <button class="button" @click="$emit('block')">
+        <button class="button" @click="$emit('block')" v-if="!post.is_anonymous">
           <i class="like-button__icon material-icons-outlined">
             remove_circle_outline
           </i>
@@ -229,6 +229,6 @@ en:
 .divider {
   height: 1px;
   background-color: black;
-  margin-top: 12px 0;
+  margin: 12px 0;
 }
 </style>
