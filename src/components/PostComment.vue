@@ -4,7 +4,9 @@
       <img class="comment__profile" :src="profileImage" />
       <div class="comment__body">
         <div class="comment__header">
-          <router-link :to="{ name: 'user', params: { username: authorId } }" class="comment__author">
+          <router-link
+           :is="isAnonymous ? 'span' : 'router-link'"
+           :to="{ name: 'user', params: { username: authorId } }" class="comment__author">
             {{ author }}
           </router-link>
 
@@ -146,6 +148,12 @@ export default {
     isMine () {
       // return this.userNickname === this.comment.created_by.profile.nickname
       return this.comment.is_mine
+    },
+    isAnonymous () {
+      if (this.comment.is_anonymous) {
+        return true
+      }
+      return false
     }
   },
 

@@ -1,7 +1,8 @@
 <template>
   <div class="post">
     <div class="title">
-      <router-link class="title__board" :to="{
+      <router-link
+        class="title__board" :to="{
         name: 'board',
         params: { boardSlug }
       }">
@@ -30,7 +31,8 @@
       </span>
     </div>
     <div class="metadata">
-      <router-link :to="{
+      <router-link :is="isAnonymous ? 'span' : 'router-link'"
+        :to="{
         name: 'user', params: { username: postAuthorId }
       }" class="author">
         <img :src="userPictureUrl" class="author__picture"/>
@@ -92,6 +94,9 @@ export default {
       }
 
       return this.post.title
+    },
+    isAnonymous () {
+      return this.post.is_anonymous
     },
     ...mapGetters([ 'userId' ])
   },
