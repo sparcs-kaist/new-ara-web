@@ -193,7 +193,10 @@ export default {
 
     updateComment (event) {
       this.isEditing = false
-      this.$emit('update', event)
+      this.$emit('update', {
+        ...event,
+        is_mine: true
+      })
     }
   },
 
