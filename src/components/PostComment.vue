@@ -71,6 +71,7 @@
       <PostCommentEditor
         :text="comment.content"
         :edit-comment="comment.id"
+        :post="post"
         @upload="updateComment"
         @close="isEditing = false"
       />
@@ -82,6 +83,7 @@
         is-reply-comment
         :key="replyComment.id"
         :comment="replyComment"
+        :post="post"
         @vote="$emit('vote')"
         @delete="$emit('delete')"
         @update="$emit('update', $event)"
@@ -90,6 +92,7 @@
 
       <div v-show="showReplyCommentInput">
         <PostCommentEditor
+          :post="post"
           :parent-comment="comment.id"
           ref="commentEditor"
           @upload="$emit('upload', $event)"
@@ -112,6 +115,7 @@ export default {
   name: 'PostComment',
 
   props: {
+    post: { required: true },
     comment: { required: true },
     isReplyComment: Boolean
   },

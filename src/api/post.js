@@ -8,7 +8,7 @@ export const fetchPost = ({ postId, context = {} }) =>
 export const createPost = ({ boardId, newArticle }) =>
   http.post('articles/', {
     ...newArticle,
-    is_anonymous: false,
+    is_anonymous: boardId === 9,
     parent_board: boardId
   }).then(({ data }) => data)
 
@@ -40,7 +40,6 @@ export const votePost = (postId, action) =>
 export const createComment = (newComment) =>
   http.post('comments/', {
     ...newComment,
-    is_anonymous: false,
     attachment: null
   }).then(({ data }) => data)
 
