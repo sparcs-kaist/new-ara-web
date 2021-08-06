@@ -4,7 +4,9 @@
       <img class="comment__profile" :src="profileImage" />
       <div class="comment__body">
         <div class="comment__header">
-          <router-link :to="{ name: 'user', params: { username: authorId } }" class="comment__author">
+          <router-link
+           :is="isAnonymous ? 'span' : 'router-link'"
+           :to="{ name: 'user', params: { username: authorId } }" class="comment__author">
             {{ author }}
           </router-link>
 
@@ -69,6 +71,7 @@
       <PostCommentEditor
         :text="comment.content"
         :edit-comment="comment.id"
+        :post="post"
         @upload="updateComment"
         @close="isEditing = false"
       />
@@ -80,6 +83,7 @@
         is-reply-comment
         :key="replyComment.id"
         :comment="replyComment"
+        :post="post"
         @vote="$emit('vote')"
         @delete="$emit('delete')"
         @update="$emit('update', $event)"
@@ -88,6 +92,7 @@
 
       <div v-show="showReplyCommentInput">
         <PostCommentEditor
+          :post="post"
           :parent-comment="comment.id"
           ref="commentEditor"
           @upload="$emit('upload', $event)"
@@ -110,6 +115,7 @@ export default {
   name: 'PostComment',
 
   props: {
+    post: { required: true },
     comment: { required: true },
     isReplyComment: Boolean
   },
@@ -146,6 +152,12 @@ export default {
     isMine () {
       // return this.userNickname === this.comment.created_by.profile.nickname
       return this.comment.is_mine
+    },
+    isAnonymous () {
+      if (this.comment.is_anonymous) {
+        return true
+      }
+      return false
     }
   },
 
