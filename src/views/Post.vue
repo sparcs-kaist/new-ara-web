@@ -106,7 +106,7 @@ export default {
     async addNewComment (comment) {
       if (comment.parent_comment) {
         /* Save the new recomment in local first. */
-        const rootComment = this.post.comments.find(parent => parent.id === comment.parent_comment)
+        /*const rootComment = this.post.comments.find(parent => parent.id === comment.parent_comment)
         if (rootComment.comments.length && rootComment.comments.length > 0) {
           comment.is_mine = true
           rootComment.comments = [
@@ -115,22 +115,22 @@ export default {
           ]
         } else {
           return this.refresh()
-        }
+        }*/
         /* Then fetch data from DB. */
-        // return this.refresh()
-        return
+        return this.refresh()
       }
-      if (this.post.comments.length && this.post.comments.length > 0) {
-        /* Save the new comment in local first. */
+      /* if (this.post.comments.length && this.post.comments.length > 0) {
+        // Save the new comment in local first. 
         comment.is_mine = true
         this.post.comments = [
           ...this.post.comments,
           comment
         ]
       } else {
-        /* Then fetch data from DB. */
+        // Then fetch data from DB.
         return this.refresh()
-      }
+      }*/
+      return this.refresh()
     },
 
     async updateComment (update) {
