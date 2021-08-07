@@ -2,8 +2,11 @@
   <div class="comment-editor">
     <label class="textarea comment-editor__input">
       <div class="comment-editor__author">
-        <img :src="userPicture" class="comment-editor__picture"/>
-        <span class="comment-editor__name">{{ userNickname }}</span>
+        <img :src="userPicture" class="comment-editor__picture" v-if="!isAnonymous"/>
+        <img :src="this.post.created_by.profile.picture" class="comment-editor__picture" v-else/>
+        <span class="comment-editor__name" v-if="!isAnonymous">{{ userNickname }}</span>
+        <span class="comment-editor__name author_red" v-else-if="isMine">{{$t('author')}}</span>
+        <span class="comment-editor__name" v-else>{{ getAnonymousNickname }}</span>
       </div>
       <div class="comment-editor__content">
         <textarea
@@ -78,7 +81,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters([ 'userNickname', 'userPicture' ])
+    isAnonymous () {
+      return this.post.is_anonymous
+    },
+    isMine () {
+      return this.post.is_mine
+    },
+    ...mapGetters([ 'userNickname', 'userPicture', 'getAnonymousNickname' ])
   },
 
   methods: {
@@ -144,12 +153,16 @@ ko:
   new-comment: '등록'
   close-comment: '취소'
   write-failed: '댓글 작성에 실패하였습니다'
+  author: '글쓴이'
+  anonymous: '익명'
 
 en:
   placeholder: 'Type here...'
   new-comment: 'Send'
   close-comment: 'Cancel'
   write-failed: 'Failed to write comment'
+  author: 'Author'
+  anonymous: 'Anonymous'
 </i18n>
 
 <style lang="scss" scoped>
@@ -219,5 +232,8 @@ en:
       font-size: 0.9rem;
       padding: 15px;
     }
+  }
+  .author_red{
+    color: var(--theme-400);
   }
 </style>

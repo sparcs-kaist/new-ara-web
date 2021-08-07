@@ -17,6 +17,9 @@
         @delete="$emit('refresh')"
         class="comments__comment"
       />
+      <!--TODO: getAnonymousNickname을 이렇게 실행시키지 말고 실행시켜야 함.(불필요한 v-if연산)-->
+      <div v-if="getAnonymousNickname === ''">
+      </div>
     </div>
 
     <PostCommentEditor :parentArticle="post.id" :post="post" @upload="$emit('upload', $event)"/>
@@ -24,6 +27,7 @@
 </template>
 
 <script>
+import store from '@/store'
 import PostComment from '@/components/PostComment.vue'
 import PostCommentEditor from '@/components/PostCommentEditor.vue'
 
@@ -40,6 +44,29 @@ export default {
       if (!this.post || !this.comments) return 0
 
       return this.post.comment_count
+    },
+    getAnonymousNickname () {
+      let nickname = this.$t('anonymous')
+      let outFlag = false
+      for (var commentIndex in this.post.comments) {
+        for (var commentIndex2 in this.post.comments[commentIndex].comments) {
+          if (this.post.comments[commentIndex].comments[commentIndex2].is_mine) {
+            nickname = this.post.comments[commentIndex].comments[commentIndex2].created_by.username
+            outFlag = true
+            break
+          }
+        }
+        if (this.post.comments[commentIndex].is_mine) {
+          nickname = this.post.comments[commentIndex].created_by.username
+          break
+        }
+        if (outFlag) {
+          break
+        }
+      }
+      // Save to state
+      store.commit('setAnonymousNickname', nickname)
+      return nickname
     }
   },
 
@@ -54,10 +81,12 @@ export default {
 ko:
   comments: '댓글'
   no-comment: '댓글이 없습니다.'
+  anonymous: '익명'
 
 en:
   comments: 'Comments'
   no-comment: 'No comment.'
+  anonymous: 'Anonymous'
 </i18n>
 
 <style lang="scss" scoped>
