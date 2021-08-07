@@ -161,6 +161,9 @@ export default {
       return false
     },
     isAuthor () {
+      if (!this.comment.is_anonymous) {
+        return false
+      }
       return this.post.created_by.id === this.comment.created_by.id
     }
   },

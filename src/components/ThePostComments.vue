@@ -25,7 +25,6 @@
     <PostCommentEditor :parentArticle="post.id" :post="post" @upload="$emit('upload', $event)"/>
   </div>
 </template>
-
 <script>
 import store from '@/store'
 import PostComment from '@/components/PostComment.vue'
@@ -38,11 +37,6 @@ export default {
     post: { required: true },
     comments: { required: true }
   },
-  /* watch: {
-    'comments': function () {
-      console.log(this.comments)
-    }
-  }, */
   computed: {
     commentCount () {
       if (!this.post || !this.comments) return 0
