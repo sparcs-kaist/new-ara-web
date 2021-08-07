@@ -40,20 +40,42 @@
     <div class="post__footer">
       <LikeButton class="post__like" :item="post" votable @vote="$emit('vote', $event)" />
       <div class="post__buttons">
-        <button class="button" @click="$emit('block')" v-if="!post.is_anonymous">
-          <i class="like-button__icon material-icons-outlined">
-            remove_circle_outline
-          </i>
-          {{ $t(isBlocked ? 'unblock' : 'block') }}
-        </button>
+        <template v-if="isMine">
+          <button class="button" @click="deletePost" v-if="!post.is_anonymous">
+            <i class="like-button__icon material-icons-outlined">
+              delete
+            </i>
+            {{ $t('delete') }}
+          </button>
 
-        <button class="button" @click="$emit('report')">
-          <i class="like-button__icon material-icons-outlined">
-            campaign
-          </i>
-          {{ $t('report') }}
-        </button>
+          <router-link class="button"
+            :to="{
+              name: 'write',
+              params: {
+                postId
+              }
+            }">
+            <i class="like-button__icon material-icons-outlined">
+              edit
+            </i>
+            {{ $t('edit' ) }}
+          </router-link>
+        </template>
+        <template v-else>
+          <button class="button" @click="$emit('block')" v-if="!post.is_anonymous">
+            <i class="like-button__icon material-icons-outlined">
+              remove_circle_outline
+            </i>
+            {{ $t(isBlocked ? 'unblock' : 'block') }}
+          </button>
 
+          <button class="button" @click="$emit('report')">
+            <i class="like-button__icon material-icons-outlined">
+              campaign
+            </i>
+            {{ $t('report') }}
+          </button>
+        </template>
         <button class="button" @click="$emit('archive')">
           <i class="like-button__icon material-icons-outlined">add</i>
           {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
@@ -65,10 +87,11 @@
 </template>
 
 <script>
-import { getAttachmentUrls } from '@/api'
+import { getAttachmentUrls, deletePost as apiDeletePost } from '@/api'
 import LikeButton from '@/components/LikeButton.vue'
 import TextEditor from '@/components/TheTextEditor.vue'
 import ThePostBookmark from '@/components/ThePostBookmark.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'the-post-detail',
@@ -91,6 +114,9 @@ export default {
     postAuthorId () {
       return this.post.created_by && this.post.created_by.id
     },
+    postId () {
+      return this.post && this.post.id
+    },
     content () {
       if (this.post.is_hidden) {
         if (this.showHidden) {
@@ -104,7 +130,11 @@ export default {
     },
     isBlocked () {
       return this.post.created_by && this.post.created_by.is_blocked
-    }
+    },
+    isMine () {
+      return this.post && this.post.is_mine
+    },
+    ...mapGetters([ 'userId' ])
   },
   watch: {
     'post.attachments': {
@@ -122,6 +152,15 @@ export default {
       immediate: true
     }
   },
+  methods: {
+    async deletePost () {
+      const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-delete'))
+      if (!result) return
+
+      await apiDeletePost(this.post.id)
+      this.$router.go(-1)
+    }
+  },
   components: {
     LikeButton,
     TextEditor,
@@ -137,9 +176,12 @@ ko:
   block: '차단하기'
   unblock: '차단해제'
   report: '신고하기'
+  edit: '수정'
+  delete: '삭제'
   attachments: '첨부파일 모아보기'
   more: '{author} 님의 게시글 더 보기'
   show-hidden: '숨김글 보기'
+  confirm-delete: '정말로 삭제하시겠습니까?'
 
 en:
   archive: 'Bookmark'
@@ -147,9 +189,12 @@ en:
   block: 'Block User'
   unblock: 'Unblock User'
   report: 'Report'
+  edit: 'Edit'
+  delete: 'Delete'
   attachments: 'Attachments'
   more: 'Read more posts by {author}'
   show-hidden: 'Show hidden posts'
+  confirm-delete: 'Are you really want to delete this post?'
 </i18n>
 
 <style lang="scss" scoped>
