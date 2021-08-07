@@ -139,11 +139,11 @@
           </li>
         </ul>
 
-        <SearchBar class="desktop-search is-hidden-touch" searchable small/>
+        <SearchBar class="desktop-search is-hidden-touch" searchable long/>
       </div>
       <hr class="tabs-divider">
       <!--Deleted aside-right and the contents of them have been re-located to above.-->
-      <TheBoard v-if="posts" :title="boardTitle" :board="posts" :fromQuery="fromQuery" :simplify="true"/>
+      <TheBoard v-if="posts" :title="boardTitle" :board="posts" :fromQuery="fromQuery" simplify/>
     </div>
   </TheLayout>
 </template>

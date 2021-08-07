@@ -36,7 +36,7 @@ export default {
     board: { required: true },
     title: { type: String },
     fromQuery: {},
-    simplify: false
+    simplify: { type: Boolean }
   },
   computed: {
     fromQueryWithPage () {
