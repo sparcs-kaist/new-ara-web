@@ -38,11 +38,14 @@ export default {
     post: { required: true },
     comments: { required: true }
   },
-
+  /* watch: {
+    'comments': function () {
+      console.log(this.comments)
+    }
+  }, */
   computed: {
     commentCount () {
       if (!this.post || !this.comments) return 0
-
       return this.post.comment_count
     },
     getAnonymousNickname () {
