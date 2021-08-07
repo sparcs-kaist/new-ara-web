@@ -2,61 +2,6 @@
   <TheLayout class="my-info" :isColumnLayout="false">
     <template #aside-right>
       <div class="column is-one-quarter">
-        <div class="box profile-box">
-          <a class="setting-button" @click="mobileSettings = !mobileSettings">
-            <i class="material-icons">settings</i>
-          </a>
-
-          <div
-            class="profile-container"
-            :style="{ backgroundColor: user.pictureSrc ? 'white' : 'grey' }"
-          >
-            <img
-              v-if="user.pictureSrc"
-              :src="user.pictureSrc"
-              class="profile-container__image"
-              alt="profile image"
-            />
-            <label>
-              <input
-                type="file"
-                style="display: none;"
-                @change="pictureHandler"
-              >
-              <a class="profile-container__button">
-                <i class="material-icons">camera_alt</i>
-              </a>
-            </label>
-          </div>
-
-          <div class="nickname-container">
-            <div class="row" v-if="!isNicknameEditable">
-              <h1 class="nickname">{{ user.nickname }}</h1>
-              <a style="margin-left: 0.25rem;" @click="toggleNicknameInput">
-                <i class="material-icons" style="font-size: 1.2rem;">create</i>
-              </a>
-            </div>
-            <div v-else>
-              <input class="nickname nickname__input" v-model="newNickname">
-              <div class="nickname__buttons">
-                <button
-                  class="button"
-                  @click="toggleNicknameInput(false)"
-                  style="margin-right: 0.2rem;"
-                >
-                  {{ $t('cancel') }}
-                </button>
-                <button
-                  class="button is-link"
-                  :class="{ 'is-loading': updating }"
-                  @click="toggleNicknameInput(true)">
-                  {{ $t('save') }}
-                </button>
-              </div>
-            </div>
-            <h2 class="email">{{ user.email ? user.email : $t('empty-email') }}</h2>
-          </div>
-        </div>
 
         <div class="boxes" :class="{ 'boxes--mobile-open': mobileSettings }">
           <div class="mobile-header">
@@ -118,7 +63,64 @@
     </template>
     <!--Deleted 'is-half'.-->
     <div class="column ">
-      <div class="tabs is-boxed" style="margin: 0 0 0 -1px;">
+      <div class="profile-box">
+        <button class="button setting-button" @click="mobileSettings = !mobileSettings" v-if="!isNicknameEditable">
+          {{ $t('my-info') }}
+        </button>
+
+        <div
+          class="profile-container"
+          :style="{ backgroundColor: user.pictureSrc ? 'white' : 'grey' }"
+        >
+          <img
+            v-if="user.pictureSrc"
+            :src="user.pictureSrc"
+            class="profile-container__image"
+            alt="profile image"
+          />
+          <label>
+            <input
+              type="file"
+              style="display: none;"
+              @change="pictureHandler"
+            >
+            <a class="profile-container__button">
+              <i class="material-icons">camera_alt</i>
+            </a>
+          </label>
+        </div>
+
+        <div class="nickname-container">
+          <div class="row" v-if="!isNicknameEditable">
+            <h1 class="nickname">{{ user.nickname }}</h1>
+            <a style="margin-left: 0.5rem;" @click="toggleNicknameInput">
+              <i class="material-icons">create</i>
+            </a>
+          </div>
+          <div v-else class="nickname__direction">
+            <input class="input nickname nickname__input" v-model="newNickname">
+            <div class="nickname__buttons">
+              <button
+                class="button"
+                :class="{ 'is-loading': updating }"
+                style="margin-left: 0.8rem; color: var(--theme-400)"
+                @click="toggleNicknameInput(true)">
+                {{ $t('save') }}
+              </button>
+              <button
+                class="button"
+                @click="toggleNicknameInput(false)"
+                style="margin-left: 0.8rem;"
+              >
+                {{ $t('cancel') }}
+              </button>
+            </div>
+          </div>
+          <h2 class="email">{{ user.email ? user.email : $t('empty-email') }}</h2>
+        </div>
+      </div>
+
+      <div class="tabs" style="margin: 0 0 0 -1px;">
         <ul>
           <li :class="{ 'is-active': $route.query.board !== 'recent' && $route.query.board !== 'archive' }">
             <router-link :to="{ query: { board: 'my'} }">
@@ -137,12 +139,11 @@
           </li>
         </ul>
 
-        <SearchBar class="desktop-search is-hidden-touch" searchable small />
+        <SearchBar class="desktop-search is-hidden-touch" searchable small/>
       </div>
+      <hr class="tabs-divider">
       <!--Deleted aside-right and the contents of them have been re-located to above.-->
-      <div class="board-container">
-        <TheBoard v-if="posts" :title="boardTitle" :board="posts" :fromQuery="fromQuery" />
-      </div>
+      <TheBoard v-if="posts" :title="boardTitle" :board="posts" :fromQuery="fromQuery" :simplify="true"/>
     </div>
   </TheLayout>
 </template>
@@ -351,8 +352,9 @@ ko:
   board-archive: '담아둔 글'
   blocked-list: '내가 차단한 유저 목록'
   blocked-list-empty: '차단한 유저가 없습니다.'
-  save: '저장'
+  save: '확인'
   cancel: '취소'
+  my-info: '내 정보'
   setting-change-failed: '설정 변경 중 문제가 발생했습니다.'
   unblock-failed: '차단 유저 삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
   document-title: 'Ara - 내정보'
@@ -369,8 +371,9 @@ en:
   board-archive: 'Bookmarks'
   blocked-list: 'Blocked users'
   blocked-list-empty: 'There are no blocked users.'
-  save: 'Save'
+  save: 'Confirm'
   cancel: 'Cancel'
+  my-info: 'My info'
   setting-change-failed: 'Failed while updating settings.'
   unblock-failed: 'Failed while unblocking user. Please try again after a while.'
   document-title: 'Ara - MyInfo'
@@ -405,9 +408,16 @@ span{
   }
 }
 
+.tabs-divider {
+  margin: 0;
+  background: #333333;
+}
+
 .tabs {
   height: 3rem;
   overflow: visible;
+  font-size: 18px;
+  padding-bottom: 8px;
 
   ul {
     align-items: stretch;
@@ -416,38 +426,31 @@ span{
     overflow-x: auto;
   }
 
+  li:first-child > a{
+    padding-left: 0.1rem;
+  }
+
+  li:last-child > a{
+    padding-right: 0.1rem;
+  }
+
+  @include breakPoint(mobile) {
+    font-size: 16px;
+    padding-bottom: 0;
+  }
+
   li {
     display: flex;
     align-items: stretch;
     border: none;
-    border-radius: 6px 6px 0 0;
-    transition: background var(--duration) var(--background-timing);
+    a{
+      color: var(--grey-400);
+      padding: 0.8rem;
+    }
 
     &.is-active {
-      box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.16);
-
-      &:hover {
-        background: transparent;
-      }
-
-      a:hover {
-        background: #fafafa;
-      }
-    }
-
-    &:hover {
-      background: whitesmoke;
-    }
-
-    a {
-      border: none;
-      border-radius: 6px 6px 0 0;
-      position: relative;
-      z-index: 1;
-      transition: background all var(--duration) var(--background-timing);
-
-      &:hover {
-        background: transparent;
+      a{
+        color: var(--theme-400);
       }
     }
   }
@@ -508,8 +511,11 @@ span{
 
 .profile-box {
   position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 2rem;
   @include breakPoint(mobile) {
-    display: flex;
     flex-wrap: wrap;
   }
 }
@@ -519,8 +525,9 @@ span{
   display: inline-flex;
   width: 6rem;
   height: 6rem;
-  margin-bottom: 0.5rem;
+  flex-shrink: 0;
   border-radius: 50%;
+  margin-right: 2rem;
 
   &__image {
     width: 6rem;
@@ -547,13 +554,13 @@ span{
   }
 
   @include breakPoint(mobile) {
-    width: 3rem;
-    height: 3rem;
-    margin-right: 2rem;
+    width: 4rem;
+    height: 4rem;
+    margin-right: 1rem;
 
     &__image {
-      width: 3rem;
-      height: 3rem;
+      width: 4rem;
+      height: 4rem;
     }
 
     &__button {
@@ -574,9 +581,16 @@ span{
     &__input {
       margin-left: 2px;
     }
+
+    &__direction{
+      display: flex;
+      flex-direction: column !important;
+    }
   }
 
   &__input {
+    font-size: initial;
+    font-weight: normal;
     width: 100%;
     margin-bottom: 0.3rem;
   }
@@ -588,6 +602,11 @@ span{
     justify-content: flex-end;
     margin-bottom: 0.3rem;
   }
+
+  &__direction{
+    display: flex;
+    flex-direction: row;
+  }
 }
 
 .nickname-container {
@@ -597,6 +616,11 @@ span{
     justify-content: center;
     width: 0;
     flex: 1;
+  }
+
+  .material-icons {
+    font-size: 1.3rem;
+    line-height: 1.6;
   }
 }
 
@@ -610,10 +634,7 @@ span{
   top: 8px;
   right: 10px;
   display: none;
-
-  .material-icons {
-    font-size: 1.3rem;
-  }
+  color: var(--theme-400);
 
   @include breakPoint(mobile) {
     display: inline;
@@ -653,8 +674,6 @@ span{
 }
 
 .desktop-search {
-  margin-top: -10px;
-
   &::v-deep .input {
     background: #fff;
     box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.16);

@@ -1,17 +1,17 @@
 <template>
   <div class="board">
     <div class="board__header">
-      <h1 class="board__name">
+      <h1 class="board__name" v-if="!simplify">
         {{ queryTitle }}
         <slot name="title" />
       </h1>
 
       <div class="board__options">
         <slot name="option" />
-        <SearchBar class="board__tablet-search is-flex-touch is-hidden-mobile" searchable />
+        <SearchBar class="board__tablet-search is-flex-touch is-hidden-mobile" searchable v-if="!simplify"/>
       </div>
     </div>
-    <hr class="board__divider" v-if="title" />
+    <hr class="board__divider" v-if="title && !simplify"/>
 
     <TheBoardTable :posts="board.results" :fromQuery="fromQueryWithPage" />
 
@@ -21,7 +21,7 @@
         :currentPage="board.current">
       </ThePaginator>
     </div>
-    <SearchBar class="board__mobile-search is-hidden-tablet" searchable fullwidth />
+    <SearchBar class="board__mobile-search" searchable fullwidth :class="simplify ? 'is-hidden-desktop' : 'is-hidden-tablet'"/>
   </div>
 </template>
 
@@ -35,7 +35,8 @@ export default {
   props: {
     board: { required: true },
     title: { type: String },
-    fromQuery: {}
+    fromQuery: {},
+    simplify: false
   },
   computed: {
     fromQueryWithPage () {
