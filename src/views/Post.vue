@@ -139,6 +139,9 @@ export default {
         const replyIndex = rootComment.comments.findIndex(replyComment => replyComment.id === update.id)
         if (replyIndex < 0) return
 
+        update.created_by.profile = rootComment.comments[replyIndex].created_by.profile
+        update.created_by.username = rootComment.comments[replyIndex].created_by.username
+        update.created_by.id = rootComment.comments[replyIndex].created_by.id
         this.$set(rootComment.comments, replyIndex, update)
         return
       }
