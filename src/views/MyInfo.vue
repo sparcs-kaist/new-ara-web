@@ -2,7 +2,6 @@
   <TheLayout class="my-info" :isColumnLayout="false">
     <template #aside-right>
       <div class="column is-one-quarter">
-
         <div class="boxes" :class="{ 'boxes--mobile-open': mobileSettings }">
           <div class="mobile-header">
             <a class="mobile-header__back" @click="mobileSettings = false">
@@ -12,51 +11,111 @@
           </div>
 
           <div class="box">
-            <h1 class="box__title">{{ $t('post-settings')}}</h1>
-
-            <div class="setting-container">
-              <span>{{ $t('post-settings-sexual') }}</span>
-              <label class="checkbox">
-                <input v-model="user.sexual" type="checkbox">
-              </label>
-            </div>
-
-            <div class="setting-container">
-              <span>{{ $t('post-settings-social') }}</span>
-              <label class="checkbox">
-                <input v-model="user.social" type="checkbox">
-              </label>
-            </div>
-            <div class="setting-container__button">
-              <button
-                class="button"
-                :class="{ 'is-loading': updating }"
-                @click="updateSettings">
-                {{ $t('save') }}
-              </button>
+            <div class="redbox"></div>
+            <h1 class="box__title">
+              {{ $t('ranking-title') }}
+            </h1>
+            <i18n tag="h2" path="ranking-subtitle" class="box__subtitle">
+              <template #user>{{ user.nickname }}</template>
+              <template #ranking>
+                <span class="ranking-text">{{ myRanking }}</span>
+              </template>
+            </i18n>
+            <div class="box__container">
+              <div class="ranking">
+                <div class="ranking__card">
+                  <div class="ranking__card--title">
+                    {{ $t('ranking-posts') }}
+                  </div>
+                  <div class="ranking__card--counts">
+                    {{ $t('ranking-posts-count', { count: postsCount }) }}
+                  </div>
+                </div>
+                <div class="ranking__card">
+                  <div class="ranking__card--title">
+                    {{ $t('ranking-comments') }}
+                  </div>
+                  <div class="ranking__card--counts">
+                    {{ $t('ranking-comments-count', { count: commentsCount }) }}
+                  </div>
+                </div>
+                <div class="ranking__card">
+                  <div class="ranking__card--title">
+                    {{ $t('ranking-likes') }}
+                  </div>
+                  <div class="ranking__card--counts">
+                    {{ $t('ranking-likes-count', { count: likesCount }) }}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           <div class="box">
-            <h1 class="box__title">
-              {{ $t('blocked-list') }}
-            </h1>
+            <div class="redbox"></div>
+            <h1 class="box__title">{{ $t('settings-title') }}</h1>
+            <h2 class="box__subtitle">
+              {{ $t('settings-subtitle') }}
+            </h2>
 
-            <ul v-if="blocks && blocks.results && blocks.results.length > 0">
-              <li v-for="blockedUser in blocks.results" :key="blockedUser.id">
-                <div class="block-user">
-                  <img
-                    :src="blockedUser.user.profile.picture"
-                    class="profile-image__block"
-                  />
-                  {{ blockedUser.user.profile.nickname }}
-                  <a style="margin-left: auto;" @click="deleteBlockedUser(blockedUser.id)">
-                    <i class="material-icons" style="font-size: 1.3rem;">close</i>
-                  </a>
+            <div class="box__container">
+              <div class="settings">
+                <div class="settings__container">
+                  <span class="label">{{ $t('settings-sexual') }}</span>
+                  <div @click="updateSetting('sexual')">
+                    <i class="material-icons toggle-on" v-if="user.sexual">
+                      toggle_on
+                    </i>
+                    <i class="material-icons" v-else>
+                      toggle_off
+                    </i>
+                  </div>
                 </div>
-              </li>
-            </ul>
-            <span v-else>{{ $t('blocked-list-empty') }}</span>
+                <div class="settings__container">
+                  <span class="label">{{ $t('settings-social') }}</span>
+                  <div @click="updateSetting('social')">
+                    <i class="material-icons toggle-on" v-if="user.social">
+                      toggle_on
+                    </i>
+                    <i class="material-icons" v-else>
+                      toggle_off
+                    </i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="box">
+            <div class="redbox"></div>
+            <h1 class="box__title">
+              {{ $t('blocked-title') }}
+            </h1>
+            <h2 class="box__subtitle">
+              {{ $t('blocked-subtitle', { user: user.nickname }) }}
+            </h2>
+
+            <div class="box__container">
+              <ul class="blocked" v-if="blocks && blocks.results && blocks.results.length > 0">
+                <li v-for="blockedUser in blocks.results" :key="blockedUser.id">
+                  <div class="blocked__user">
+                    <img
+                      :src="blockedUser.user.profile.picture"
+                      class="blocked__user--image"
+                    />
+                    <span class="blocked__user--nickname">
+                      {{ blockedUser.user.profile.nickname }}
+                    </span>
+                    <a class="blocked__user--remove" @click="deleteBlockedUser(blockedUser.id)">
+                      <i class="material-icons" style="font-size: 1.3rem;">close</i>
+                    </a>
+                  </div>
+                </li>
+              </ul>
+              <div v-else class="blocked-empty">
+                {{ $t('blocked-empty') }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -233,6 +292,26 @@ export default {
         default:
           return this.$t('board-my')
       }
+    },
+
+    postsCount () {
+      // @TODO: api 미완성
+      return 1
+    },
+
+    commentsCount () {
+      // @TODO: api 미완성
+      return 2
+    },
+
+    likesCount () {
+      // @TODO: api 미완성
+      return 3
+    },
+
+    myRanking () {
+      // @TODO: api 미완성
+      return '\u{1F476}아기 넙죽이'
     }
   },
 
@@ -267,6 +346,28 @@ export default {
         })
       }
       this.updating = false && showUpdating
+    },
+    async updateSetting (key) {
+      if (key !== 'sexual' && key !== 'social') return
+
+      try {
+        const { data } = await updateUser(this.userId, {
+          ...this.user,
+          [key]: !this.user[key]
+        })
+        store.commit('setUserProfile', data)
+        this.user[key] = !this.user[key]
+        // Toast
+        this.$store.dispatch('dialog/toast', {
+          text: this.$t('success'),
+          type: 'confirm'
+        })
+      } catch (err) {
+        this.$store.dispatch('dialog/toast', {
+          text: this.$t('setting-change-failed') + (err.apierr ? '\n' + err.apierr : ''),
+          type: 'error'
+        })
+      }
     },
     async pictureHandler ({ target: { files: [ file ] } }) {
       let pictureSrc
@@ -343,56 +444,67 @@ export default {
 
 <i18n>
 ko:
+  ranking-title: '나의 등급'
+  ranking-subtitle: '{user} 님의 등급은 {ranking}입니다.'
+  ranking-posts: '게시글'
+  ranking-comments: '댓글'
+  ranking-likes: '공감'
+  ranking-posts-count: '{count}개'
+  ranking-comments-count: '{count}개'
+  ranking-likes-count: '{count}회'
+  settings-title: '게시글 보기 설정'
+  settings-subtitle: '조회하실 게시글의 종류를 설정해주세요.'
+  settings-sexual: '성인글 보기'
+  settings-social: '정치글 보기'
+  blocked-title: '내가 차단한 유저 목록'
+  blocked-subtitle: '{user} 님이 차단하신 유저 목록입니다.'
+  blocked-empty: '차단한 유저가 없습니다.'
   empty-email: '이메일 주소가 없습니다.'
-  post-settings: '게시글 보기 설정'
-  post-settings-sexual: '성인글 보기 설정'
-  post-settings-social: '정치글 보기 설정'
-  board-my: '내가 쓴 글'
-  board-recent: '최근 본 글'
-  board-archive: '담아둔 글'
-  blocked-list: '내가 차단한 유저 목록'
-  blocked-list-empty: '차단한 유저가 없습니다.'
   save: '확인'
   cancel: '취소'
   my-info: '내 정보'
+  board-my: '내가 쓴 글'
+  board-recent: '최근 본 글'
+  board-archive: '담아둔 글'
+  settings: '설정'
   setting-change-failed: '설정 변경 중 문제가 발생했습니다.'
   unblock-failed: '차단 유저 삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
-  document-title: 'Ara - 내정보'
   success: '저장되었습니다.'
-  settings : '설정'
+  document-title: 'Ara - 내정보'
 
 en:
+  ranking-title: 'My Ranking'
+  ranking-subtitle: 'Your ranking is {ranking}'
+  ranking-posts: 'Posts'
+  ranking-comments: 'Comments'
+  ranking-likes: 'Likes'
+  ranking-posts-count: '{count}'
+  ranking-comments-count: '{count}'
+  ranking-likes-count: '{count}'
+  settings-title: 'Post settings'
+  settings-subtitle: 'Choose types of posts you want to view.'
+  settings-sexual: 'Sexual posts'
+  settings-social: 'Political posts'
+  blocked-title: 'Blocked users'
+  blocked-subtitle: 'Users that you blocked'
+  blocked-empty: 'There are no blocked users.'
   empty-email: 'No email address'
-  post-settings: 'Post settings'
-  post-settings-sexual: 'Show sexual posts'
-  post-settings-social: 'Show political posts'
-  board-my: 'My posts'
-  board-recent: 'Recently viewed'
-  board-archive: 'Bookmarks'
-  blocked-list: 'Blocked users'
-  blocked-list-empty: 'There are no blocked users.'
   save: 'Confirm'
   cancel: 'Cancel'
   my-info: 'My info'
+  board-my: 'My posts'
+  board-recent: 'Recently viewed'
+  board-archive: 'Bookmarks'
+  settings : 'Settings'
   setting-change-failed: 'Failed while updating settings.'
   unblock-failed: 'Failed while unblocking user. Please try again after a while.'
-  document-title: 'Ara - MyInfo'
   success: 'Saved successful.'
-  settings : 'Settings'
+  document-title: 'Ara - MyInfo'
 </i18n>
 
 <style lang="scss" scoped>
 @import "@/theme.scss";
 
-/*h1{
-  word-break:keep-all;
-}
-
-span{
-  word-break:keep-all;
-}*/
-
-//Temporary-solution. But better then the code in the comment above.
 .column {
   min-width: 300px;
 }
@@ -456,27 +568,6 @@ span{
   }
 }
 
-.box {
-  padding: 40px;
-  background: #fff;
-  box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.16);
-
-  &__title {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin-bottom: 1rem;
-  }
-
-  @include breakPoint(mobile) {
-    padding: 20px;
-
-    &__title {
-      font-size: 1rem;
-      margin-bottom: 2rem;
-    }
-  }
-}
-
 .boxes {
   @include breakPoint(mobile) {
     position: fixed;
@@ -502,6 +593,147 @@ span{
       opacity: 1;
     }
   }
+}
+
+.box {
+  padding: 5px;
+  background-color: transparent;
+  box-shadow: none;
+  .redbox {
+    background-color: var(--theme-400);
+    height: 5px;
+    width: 10%;
+  }
+  &__title {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 10px 0;
+  }
+  &__subtitle {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+  &__container {
+    background-color: white;
+    box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.16);
+    border-radius: 10px;
+    padding: 10px;
+    color: black;
+  }
+  @include breakPoint(mobile) {
+    padding: 10px;
+
+    &__title {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+.ranking {
+  display: flex;
+  flex-flow: row;
+
+  &__card {
+    flex: 1;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    background-color: white;
+    border-left: 1px solid #a9a9a9;
+    &:first-child {
+      border: none;
+    }
+
+    &--title {
+      font-size: 12px;
+      margin: 10px 0;
+    }
+    &--counts {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.ranking-text {
+  color: var(--theme-400);
+}
+
+.settings {
+  padding: 15px;
+  .material-icons {
+    color: #a9a9a9;
+    cursor: pointer;
+  }
+
+  .toggle-on {
+    color: var(--theme-400);
+  }
+
+  .label {
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  &__container {
+    padding: 8px 8px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &__button {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 1rem;
+    }
+
+    .material-icons {
+      font-size: 30px;
+    }
+  }
+}
+
+.blocked {
+  padding: 0 10px;
+  font-size: 12px;
+
+  &__user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+
+    &--image {
+      width: 2rem;
+      height: 2rem;
+      margin-right: 0.5rem;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    &--nickname {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &--remove {
+      margin-left: auto;
+      i {
+        height: 2rem;
+        line-height: 2rem;
+      }
+    }
+  }
+}
+
+.blocked-empty {
+  padding: 10px;
+  font-size: 12px;
 }
 
 .row {
