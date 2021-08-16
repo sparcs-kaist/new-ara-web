@@ -18,8 +18,6 @@
         class="comments__comment"
       />
       <!--TODO: getAnonymousNickname을 이렇게 실행시키지 말고 실행시켜야 함.(불필요한 v-if연산)-->
-      <div v-if="getAnonymousNickname === ''">
-      </div>
     </div>
 
     <PostCommentEditor :parentArticle="post.id" :post="post" @upload="$emit('upload', $event)"/>
@@ -41,32 +39,31 @@ export default {
     commentCount () {
       if (!this.post || !this.comments) return 0
       return this.post.comment_count
-    },
-    getAnonymousNickname () {
-      let nickname = this.$t('anonymous')
-      let outFlag = false
-      for (var commentIndex in this.post.comments) {
-        for (var commentIndex2 in this.post.comments[commentIndex].comments) {
-          if (this.post.comments[commentIndex].comments[commentIndex2].is_mine) {
-            nickname = this.post.comments[commentIndex].comments[commentIndex2].created_by.username
-            outFlag = true
-            break
-          }
-        }
-        if (this.post.comments[commentIndex].is_mine) {
-          nickname = this.post.comments[commentIndex].created_by.username
-          break
-        }
-        if (outFlag) {
+    }
+  },
+  beforeUpdate () {
+    // Get my anonymous nickname from post's comments
+    let nickname = this.$t('anonymous')
+    let outFlag = false
+    for (var commentIndex in this.post.comments) {
+      for (var commentIndex2 in this.post.comments[commentIndex].comments) {
+        if (this.post.comments[commentIndex].comments[commentIndex2].is_mine) {
+          nickname = this.post.comments[commentIndex].comments[commentIndex2].created_by.username
+          outFlag = true
           break
         }
       }
-      // Save to state
-      store.commit('setAnonymousNickname', nickname)
-      return nickname
+      if (this.post.comments[commentIndex].is_mine) {
+        nickname = this.post.comments[commentIndex].created_by.username
+        break
+      }
+      if (outFlag) {
+        break
+      }
     }
+    // Save to state
+    store.commit('setAnonymousNickname', nickname)
   },
-
   components: {
     PostComment,
     PostCommentEditor
