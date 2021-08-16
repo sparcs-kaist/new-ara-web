@@ -357,6 +357,6 @@ en:
   }
 }
 .author_red{
-    color: var(--theme-400);
+  color: var(--theme-400);
 }
 </style>

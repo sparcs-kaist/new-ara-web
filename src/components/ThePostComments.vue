@@ -44,25 +44,20 @@ export default {
   beforeUpdate () {
     // Get my anonymous nickname from post's comments
     let nickname = this.$t('anonymous')
-    let outFlag = false
-    for (var commentIndex in this.post.comments) {
-      for (var commentIndex2 in this.post.comments[commentIndex].comments) {
-        if (this.post.comments[commentIndex].comments[commentIndex2].is_mine) {
-          nickname = this.post.comments[commentIndex].comments[commentIndex2].created_by.username
-          outFlag = true
-          break
+    for (var comment of this.post.comments) {
+      if (comment.is_mine) {
+        nickname = comment.created_by.username
+        store.commit('setAnonymousNickname', nickname)
+        return
+      }
+      for (var replyComment in comment.comments) {
+        if (replyComment.is_mine) {
+          nickname = replyComment.created_by.username
+          store.commit('setAnonymousNickname', nickname)
+          return
         }
       }
-      if (this.post.comments[commentIndex].is_mine) {
-        nickname = this.post.comments[commentIndex].created_by.username
-        break
-      }
-      if (outFlag) {
-        break
-      }
     }
-    // Save to state
-    store.commit('setAnonymousNickname', nickname)
   },
   components: {
     PostComment,

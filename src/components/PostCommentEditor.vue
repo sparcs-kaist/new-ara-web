@@ -233,7 +233,7 @@ en:
       padding: 15px;
     }
   }
-  .author_red{
-    color: var(--theme-400);
-  }
+.author_red{
+  color: var(--theme-400);
+}
 </style>
