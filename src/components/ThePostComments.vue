@@ -58,6 +58,7 @@ export default {
         }
       }
     }
+    store.commit('setAnonymousNickname', nickname)
   },
   components: {
     PostComment,
