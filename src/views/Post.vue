@@ -106,26 +106,30 @@ export default {
     async addNewComment (comment) {
       if (comment.parent_comment) {
         /* Save the new recomment in local first. */
-        /*
-        const rootComment = this.post.comments.find(parent => parent.id === comment.parent_comment)
-        rootComment.comments = [
-          ...rootComment.comments,
-          comment
-        ]
-        */
+        /* const rootComment = this.post.comments.find(parent => parent.id === comment.parent_comment)
+        if (rootComment.comments.length && rootComment.comments.length > 0) {
+          comment.is_mine = true
+          rootComment.comments = [
+            ...rootComment.comments,
+            comment
+          ]
+        } else {
+          return this.refresh()
+        } */
         /* Then fetch data from DB. */
         return this.refresh()
       }
-
-      /* Save the new comment in local first. */
-      /*
-      this.post.comments = [
-        ...this.post.comments,
-        comment
-      ]
-      */
-
-      /* Then fetch data from DB. */
+      /* if (this.post.comments.length && this.post.comments.length > 0) {
+        // Save the new comment in local first.
+        comment.is_mine = true
+        this.post.comments = [
+          ...this.post.comments,
+          comment
+        ]
+      } else {
+        // Then fetch data from DB.
+        return this.refresh()
+      } */
       return this.refresh()
     },
 
@@ -135,6 +139,9 @@ export default {
         const replyIndex = rootComment.comments.findIndex(replyComment => replyComment.id === update.id)
         if (replyIndex < 0) return
 
+        update.created_by.profile = rootComment.comments[replyIndex].created_by.profile
+        update.created_by.username = rootComment.comments[replyIndex].created_by.username
+        update.created_by.id = rootComment.comments[replyIndex].created_by.id
         this.$set(rootComment.comments, replyIndex, update)
         return
       }
@@ -144,6 +151,8 @@ export default {
 
       // Code for maintain anonymous profile when user modifies his/her comment.
       update.created_by.profile = this.post.comments[commentIndex].created_by.profile
+      update.created_by.username = this.post.comments[commentIndex].created_by.username
+      update.created_by.id = this.post.comments[commentIndex].created_by.id
       // Apply
       this.$set(this.post.comments, commentIndex, update)
     },

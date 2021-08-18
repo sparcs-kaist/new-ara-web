@@ -6,7 +6,8 @@
         <div class="comment__header">
           <router-link
            :is="isAnonymous ? 'span' : 'router-link'"
-           :to="{ name: 'user', params: { username: authorId } }" class="comment__author">
+           :to="{ name: 'user', params: { username: authorId } }" class="comment__author"
+           :class="isAuthor ? 'author_red' : ''">
             {{ author }}
           </router-link>
 
@@ -158,6 +159,12 @@ export default {
         return true
       }
       return false
+    },
+    isAuthor () {
+      if (!this.comment.is_anonymous) {
+        return false
+      }
+      return this.post.created_by.id === this.comment.created_by.id
     }
   },
 
@@ -348,5 +355,8 @@ en:
     font-size: 15px;
     height: 25px;
   }
+}
+.author_red{
+  color: var(--theme-400);
 }
 </style>
