@@ -1,71 +1,126 @@
 <template>
   <div class="board">
-    <slot name="title"/>
-    <TheBoardTable
-      :articles="board.results"/>
-    <div class="board-navbar">
-      <div class="board-navbar-start">
-        <ThePaginator
-          :numPages="board.num_pages"
-          :currentPage="board.current"
-          :baseRouteTo="{
-            name: 'board',
-            params: { boardSlug }
-          }">
-        </ThePaginator>
-      </div>
-      <div class="board-navbar-end">
-        <slot name="tools"/>
+    <div class="board__header">
+      <h1 class="board__name">
+        {{ queryTitle }}
+        <slot name="title" />
+      </h1>
+
+      <div class="board__options">
+        <slot name="option" />
+        <SearchBar class="board__tablet-search is-flex-touch is-hidden-mobile" searchable />
       </div>
     </div>
+    <hr class="board__divider" v-if="title" />
+
+    <TheBoardTable :posts="board.results" :fromQuery="fromQueryWithPage" />
+
+    <div class="board__navbar">
+      <ThePaginator
+        :numPages="board.num_pages"
+        :currentPage="board.current">
+      </ThePaginator>
+    </div>
+    <SearchBar class="board__mobile-search is-hidden-tablet" searchable fullwidth />
   </div>
 </template>
 
 <script>
+import SearchBar from '@/components/SearchBar.vue'
 import ThePaginator from '@/components/ThePaginator.vue'
 import TheBoardTable from '@/components/TheBoardTable.vue'
 
 export default {
   name: 'the-board',
   props: {
-    board: { required: true }
+    board: { required: true },
+    title: { type: String },
+    fromQuery: {}
   },
   computed: {
-    // @TODO: $route에 대한 의존성 제거
-    boardSlug () {
-      return this.$route.params.boardSlug
+    fromQueryWithPage () {
+      const query = {
+        ...this.fromQuery
+      }
+
+      if (this.$route.query.query) {
+        query.search_query = this.$route.query.query
+      }
+
+      if (this.$route.query.page) {
+        query.from_page = this.$route.query.page
+      }
+
+      return query
+    },
+    queryTitle () {
+      if (this.$route.query.query) { return this.$t('search', { title: this.title, query: this.$route.query.query }) }
+
+      return this.title
     }
   },
-  components: { ThePaginator, TheBoardTable }
+  components: {
+    SearchBar,
+    ThePaginator,
+    TheBoardTable
+  }
 }
 </script>
 
+<i18n>
+ko:
+  search: '{title}에서 {query} 검색'
+
+en:
+  search: 'Search {query} from {title}'
+</i18n>
+
 <style lang="scss" scoped>
+@import '@/theme.scss';
 .board {
   min-width: 100%;
 
-  .board-navbar {
+  &__tablet-search {
+    display: none;
+    margin-bottom: 1rem;
+  }
+
+  &__mobile-search{
     display: flex;
-    flex-direction: row;
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  &__name {
+    flex-shrink: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+
+    @include breakPoint(mobile) {
+      font-size: 1.2rem;
+    }
+  }
+
+  &__header {
+    display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+  }
 
-    @media screen and (max-width: 700px) {
-      flex-direction: column;
-    }
+  &__divider {
+    margin: 0;
+    background: #333333;
+  }
 
-    .board-navbar-start {
+  &__options {
+    margin-left: auto;
+    padding-left: 15px;
 
-      @media screen and (max-width: 700px) {
-        margin-bottom: 1rem;
-      }
-    }
-
-    .board-navbar-end {
-      @media screen and (max-width: 700px) {
-        width: 100%;
-      }
-    }
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
   }
 }
 </style>

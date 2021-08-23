@@ -12,7 +12,7 @@ module.exports = {
       .rule('i18n')
       .resourceQuery(/blockType=i18n/)
       .use('i18n')
-      .loader('@kazupon/vue-i18n-loader')
+      .loader('@intlify/vue-i18n-loader')
       .end()
       .use('yaml')
       .loader('yaml-loader')
@@ -34,5 +34,12 @@ module.exports = {
         .end()
     }
   },
-  productionSourceMap: false
+  productionSourceMap: false,
+  devServer: {
+    proxy: {
+      '^/api': {
+        target: 'http://localhost:9000'
+      }
+    }
+  }
 }

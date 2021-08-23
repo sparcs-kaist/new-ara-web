@@ -1,182 +1,164 @@
 <template>
-  <TheLayout>
-    <div class="columns is-multiline home">
-      <div class="board today-best column is-6">
-        <h2 class="board-name"> {{ $t('today-best') }} </h2>
-        <div
-          v-for="article in dailyBests"
-          :key="article.id"
-          class="post">
-          <h3 class="post-title">
-            <router-link
-              :to="{
-                name: 'post',
-                params: { postId: article.id }
-              }">
-              {{ article.title }}
-            </router-link>
-          </h3>
-          <div class="post-time">
-            <Timeago :time="article.created_at"/>
-          </div>
-        </div>
-      </div>
-      <div class="board weekly-best column is-6">
-        <h2 class="board-name"> {{ $t('weekly-best') }} </h2>
-        <div
-          v-for="article in weeklyBests"
-          :key="article.id"
-          class="post">
-          <h3 class="post-title">
-            <router-link
-              :to="{
-                name: 'post',
-                params: { postId: article.id }
-              }">
-              {{ article.title }}
-            </router-link>
-          </h3>
-          <div class="post-time">
-            <Timeago :time="article.created_at"/>
-          </div>
-        </div>
-      </div>
-      <div
-        v-for="board in boards"
-        :key="board.id"
-        class="board column is-6">
-        <router-link
-          :to="{
-            name: 'board',
-            params: { boardSlug: board.slug }
-          }">
-          <h2 class="board-name"> {{ board[`${$i18n.locale}_name`] }} </h2>
-        </router-link>
-        <div
-          v-for="article in board.recent_articles"
-          :key="article.id"
-          class="post">
-          <h3 class="article-wrapper-big">
-            <router-link
-              :to="{
-                name: 'post',
-                params: { postId: article.id }
-              }">
-              <div class="article-wrapper">
-                <span class="article-title"> {{ article.title }}
-                </span> &nbsp
-                <span class="comment-count">
-                  ({{ article.comments_count }})
-                </span>
-              </div>
-            </router-link>
-          </h3>
-          <div class="post-time">
-            <Timeago :time="article.created_at"/>
-          </div>
-        </div>
-      </div>
+  <TheLayout class="home">
+    <div class="home__searchbar">
+      <TheHomeSearchbar />
     </div>
+
+    <div class="home__organizations">
+      <TheOrganizations />
+    </div>
+
+    <div class="columns is-multiline">
+      <SmallBoard :listitems="dailyBests" class="home__board column is-4" detail>
+        {{ $t('today-best') }}
+      </SmallBoard>
+
+      <SmallBoard :listitems="weeklyBests" class="home__board column is-4" detail>
+        {{ $t('weekly-best') }}
+      </SmallBoard>
+
+      <SmallBoard v-if="notice"
+        :listitems="notice"
+        :href="{
+          name: 'board',
+          params: {
+            boardSlug: 'ara-notice'
+          }
+        }"
+        class="home__board column is-4"
+        detail
+      >
+        {{ $t('ara-notice') }}
+      </SmallBoard>
+    </div>
+
+    <RenewPopup />
   </TheLayout>
 </template>
 
 <script>
-import { fetchHome } from '@/api'
+import { fetchArticles, fetchHome } from '@/api'
 import { fetchWithProgress } from './helper.js'
+import store from '@/store'
+
+import SmallBoard from '@/components/SmallBoard.vue'
+import TheHomeSearchbar from '@/components/TheHomeSearchbar.vue'
+import TheOrganizations from '@/components/TheOrganizations.vue'
 import TheLayout from '@/components/TheLayout.vue'
-import Timeago from '@/components/Timeago.vue'
+import RenewPopup from '@/components/RenewPopup.vue'
 
 export default {
   name: 'home',
   data () {
     return {
-      home: {}
+      home: {},
+      notice: []
     }
   },
   computed: {
-    dailyBests () { return this.home.dailyBests },
-    weeklyBests () { return this.home.weeklyBests },
-    boards () { return this.home.boards }
+    dailyBests () {
+      if (!this.home.daily_bests) {
+        return []
+      }
+
+      return this.home.daily_bests
+    },
+    weeklyBests () {
+      if (!this.home.weekly_bests) {
+        return []
+      }
+
+      return this.home.weekly_bests
+    }
   },
   async beforeRouteEnter (to, from, next) {
-    const [ home ] = await fetchWithProgress([ fetchHome() ])
-    next(vm => { vm.home = home })
+    const promises = [ fetchHome() ]
+
+    const boardId = store.getters.getIdBySlug('ara-notice')
+    if (boardId) {
+      promises.push(fetchArticles({
+        boardId,
+        pageSize: 5
+      }))
+    }
+
+    const [ home, notice ] = await fetchWithProgress(promises, 'home-failed-fetch')
+    next(vm => {
+      vm.home = home
+      vm.notice = notice?.results
+      document.title = vm.$t('document-title')
+    })
   },
-  components: { TheLayout, Timeago }
+  components: {
+    RenewPopup,
+    SmallBoard,
+    TheHomeSearchbar,
+    TheOrganizations,
+    TheLayout
+  }
 }
 </script>
 
 <i18n>
 ko:
-  today-best: '투데이 베스트'
-  weekly-best: '위클리 베스트'
+  today-best: '오늘의 인기글'
+  weekly-best: '이주의 인기글'
+  ara-notice: '뉴아라 공지'
+  document-title: 'Ara - 홈'
 en:
-  today-best: 'Today Best'
+  today-best: 'Daily Best'
   weekly-best: 'Weekly Best'
+  ara-notice: 'Ara Notice'
+  document-title: 'Ara - Home'
 </i18n>
 
 <style lang="scss" scoped>
 @import '@/theme.scss';
-.columns {
+.home {
+  background-size: 100% 380px;
+  background-repeat: no-repeat;
 
-  .column {
-    padding: 0 20px 0 0;
+  // Warning! In safari, "transparent" is translated into rgba(0, 0, 0, 0)
+  //          and, consequently, gradient will contain a strange black color.
+  background-image: linear-gradient(to bottom, var(--theme-100), rgba(253, 240, 240, 0));
 
-    @media screen and (max-width: 768px){
-      padding: 0;
+  &__searchbar {
+    display: flex;
+    align-items: center;
+    height: 300px;
+
+    @include breakPoint(mobile) {
+      height: 150px;
+    }
+  }
+
+  &__board {
+    margin-top: 10px;
+    border-right: 1px solid var(--grey-300);
+
+    &:last-child {
+      border-right: none;
     }
 
-    .home {
-  
-      .board {
-        margin-bottom: 2rem;
+    @include breakPoint(mobile) {
+      border: none;
+    }
+  }
 
-        .board-name {
-          font-size: 1.5rem;
-          font-weight: 700;
-          margin-bottom: 0.5em;
-        }
-        .post {
-          display: flex;
-          justify-content: space-between;
-          margin: 0.5rem 0;
-          .comment-count {
-            color: $theme-red;
-          }
-        }
-        .article-wrapper-big {
-          width: 300px;
-          @include breakPoint('min') {
-            max-width: 170px;
-          }
-          @include breakPoint('min-mid') {
-            max-width: 220px;
-          }
-          @include breakPoint('mid-max') {
-            max-width: 250px;
-          }
-          @include breakPoint('max') {
-            max-width: 400px;
-          }
-      
-          .article-title {
-            // width:100%;
-            text-overflow:ellipsis;
-            -o-text-overflow:ellipsis;
-            overflow:hidden;
-            white-space:nowrap;
-            word-wrap:break-word !important;
-            display: block;
-            // added for multiline
-          }
-          .article-wrapper {
-            display: flex;
-          }
-        }
-      }
+  &__organizations {
+    margin-bottom: 50px;
+
+    @include breakPoint(mobile) {
+      margin-bottom: 30px;
     }
   }
 }
 
+.columns {
+  margin: 0 -10px;
 
+  .column {
+    padding: 10px;
+  }
+}
 </style>

@@ -1,47 +1,41 @@
 <template>
   <TheLayout>
-    <TheBoard :board="adaptedArchive">
-      <div slot="title">
-        <h1 id="title">
-          {{ $t('archive') }}
-        </h1>
-      </div>
-    </TheBoard>
+    <template #aside-right>
+      <TheSidebar />
+    </template>
+    <TheBoard :board="archive" :title="$t('archive')" :from-query="{ from_view: 'scrap' }" />
   </TheLayout>
 </template>
 
 <script>
-import { fetchArchives } from '@/api'
+import { fetchArchivedPosts } from '@/api'
 import { fetchWithProgress } from './helper.js'
-import TheLayout from '@/components/TheLayout.vue'
 import TheBoard from '@/components/TheBoard.vue'
+import TheLayout from '@/components/TheLayout.vue'
+import TheSidebar from '@/components/TheSidebar.vue'
 
 export default {
   name: 'archive',
   data () {
     return { archive: {} }
   },
-  computed: {
-    adaptedArchive () {
-      const { archive } = this
-      return {
-        ...archive,
-        results: archive.results &&
-          archive.results
-            .map(({ parent_article: article }) => article)
-      }
-    }
+  async beforeRouteEnter ({ query }, from, next) {
+    const [ archive ] = await fetchWithProgress([ fetchArchivedPosts(query) ], 'archive-failed-fetch')
+    next(vm => {
+      vm.archive = archive
+      document.title = vm.$t('document-title')
+    })
   },
-  async beforeRouteEnter (to, from, next) {
-    const [ archive ] = await fetchWithProgress([fetchArchives()])
-    next(vm => { vm.archive = archive })
-  },
-  async beforeRouteUpdate (to, from, next) {
-    const [ archive ] = await fetchWithProgress([fetchArchives()])
+  async beforeRouteUpdate ({ query }, from, next) {
+    const [ archive ] = await fetchWithProgress([ fetchArchivedPosts(query) ], 'archive-failed-fetch')
     this.archive = archive
     next()
   },
-  components: { TheLayout, TheBoard }
+  components: {
+    TheBoard,
+    TheLayout,
+    TheSidebar
+  }
 }
 </script>
 
@@ -52,3 +46,12 @@ export default {
   margin-bottom: 1rem;
 }
 </style>
+
+<i18n>
+  ko:
+    document-title: 'Ara - 담아두기'
+    archive: '담아두기'
+  en:
+    document-title: 'Archive'
+    archive: 'Archive'
+</i18n>

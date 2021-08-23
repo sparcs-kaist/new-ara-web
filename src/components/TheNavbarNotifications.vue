@@ -1,6 +1,7 @@
 <template>
   <span>
-    알림
+    {{ $t('notification') }}
+
     <NavbarNotificationItem
       v-for="notification in notifications"
       :key="notification.id"
@@ -42,6 +43,14 @@ export default {
   components: { NavbarNotificationItem }
 }
 </script>
+
+<i18n>
+ko:
+  notification: '알림'
+
+en:
+  notification: 'Notification'
+</i18n>
 
 <style>
 

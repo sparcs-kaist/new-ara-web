@@ -1,277 +1,362 @@
 <template>
-  <div class="post-comment">
-    <div class="comment-metadata">
-      <img :src="authorProfilePictureUrl" class="comment-author-profile-picture"/>
-      <div class="comment-author"> {{ author }} </div>
-      <div class="comment-time"> {{ date }} </div>
-      <div class="dropdown is-right is-hoverable alignright">
-        <div class="dropdown-trigger">
-          <button class="button no-border" aria-haspopup="true" aria-controls="dropdownMenu">
-            <span class="icon">
-              <i class="material-icons">more_vert</i>
-            </span>
-          </button>
-        </div>
-        <div class="dropdown-menu no-border" id="dropdownMenu" role="menu">
-          <div class="dropdown-content">
-            <div class="dropdown-item">
-              <!-- <a v-if="userNickname === author" href="#" class="dropdown-item">
-                수정
-              </a> -->
-              <a
-                v-if="userNickname === author"
-                @click="deleteComment"
-                class="dropdown-item"
-              >
-                삭제
-              </a>
-              <a v-else href="#" class="dropdown-item">
-                신고
-              </a>
+  <div class="comment-wrapper">
+    <div class="comment" :class="{'comment--reply-comment': isReplyComment}" v-if="!isEditing">
+      <img class="comment__profile" :src="profileImage" />
+      <div class="comment__body">
+        <div class="comment__header">
+          <router-link
+           :is="isAnonymous ? 'span' : 'router-link'"
+           :to="{ name: 'user', params: { username: authorId } }" class="comment__author"
+           :class="isAuthor ? 'author_red' : ''">
+            {{ author }}
+          </router-link>
+
+          <span class="comment__time"> {{ date }} </span>
+
+          <div class="dropdown is-right is-hoverable">
+            <div class="dropdown-trigger">
+              <button class="dropdown-button" aria-haspopup="true" aria-controls="dropdownMenu">
+                <span class="icon">
+                  <i class="material-icons">more_vert</i>
+                </span>
+              </button>
+            </div>
+
+            <div class="dropdown-menu" id="dropdownMenu" role="menu">
+              <div class="dropdown-content">
+                <div class="dropdown-item">
+                  <template v-if="isMine">
+                    <a @click="editComment" class="dropdown-item">
+                      {{ $t('edit') }}
+                    </a>
+
+                    <a @click="deleteComment" class="dropdown-item">
+                      {{ $t('delete') }}
+                    </a>
+                  </template>
+
+                  <a v-else @click="reportComment" class="dropdown-item">
+                    {{ $t('report') }}
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="comment-content">{{comment.content}}</div>
-    <a class="button button-default" @click="vote(true)"
-      :class="{ 'button-selected': liked, 'is-loading': isVoting }">
-      <span class="icon">
-        <i class="material-icons">thumb_up</i>
-      </span>
-      <span>
-        {{ likedCount }}
-      </span>
-    </a>
-    <a class="button button-default" @click="vote(false)"
-      :class="{ 'button-selected': disliked, 'is-loading': isVoting }">
-      <span class="icon">
-        <i class="material-icons">thumb_down</i>
-      </span>
-      <span>
-        {{ dislikedCount }}
-      </span>
-    </a>
-    <a class="button button-default"
-      @click="toggleRecommentInput">
-      {{
-        showRecommentInput
-        ? '댓글 접기'
-        : '댓글 달기'
-      }}
-    </a>
-    <div class="post-recomments">
-      <PostRecomment
-        v-for="recomment in comment.comments"
-        :key="recomment.id"
-        :recomment="recomment"
-        @vote="$emit('vote')"
-      />
-      <div
-        v-show="showRecommentInput"
-      >
-        <div
-          class="recomment-input">
-          <div class="comment-metadata">
-            <div class="comment-author"> {{ userNickname }} </div>
-            <div class="comment-time"> {{ now }} </div>
-          </div>
-          <div class="comment-content">
-            <textarea
-              placeholder="입력..."
-              v-model="content"
-              ref="recommentTextarea"
-              class="textarea new-recomment"
-              cols="10"
-              rows="3"
-            />
+
+        <div class="comment__content">
+          <div v-html="content"/>
+
+          <div v-if="comment.is_hidden && !showHidden">
+            <button class="button" @click="showHidden = true">
+              {{ $t('show-hidden') }}
+            </button>
           </div>
         </div>
-        <button
-          @click="saveRecomment"
-          class="button button-submit"
-          :class="{ 'is-loading': isUploading }"
-          :disabled="isUploading">
-          새 대댓글
-        </button>
+
+        <div class="comment__footer">
+          <LikeButton class="comment__vote" :item="comment" @vote="vote" votable />
+          <a class="comment__write" v-if="!isReplyComment"
+            @click="toggleReplyCommentInput">
+            {{
+              showReplyCommentInput
+              ? $t('fold-reply-comment')
+              : $t('reply-comment')
+            }}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="comment comment--edit" :class="{'comment--reply-comment': isReplyComment}" v-else>
+      <PostCommentEditor
+        :text="comment.content"
+        :edit-comment="comment.id"
+        :post="post"
+        @upload="updateComment"
+        @close="isEditing = false"
+      />
+    </div>
+
+    <div class="comment__reply-comments">
+      <PostComment
+        v-for="replyComment in comment.comments"
+        is-reply-comment
+        :key="replyComment.id"
+        :comment="replyComment"
+        :post="post"
+        @vote="$emit('vote')"
+        @delete="$emit('delete')"
+        @update="$emit('update', $event)"
+        @upload="$emit('upload', $event)"
+      />
+
+      <div v-show="showReplyCommentInput">
+        <PostCommentEditor
+          :post="post"
+          :parent-comment="comment.id"
+          ref="commentEditor"
+          @upload="$emit('upload', $event)"
+          @close="showReplyCommentInput = false"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import LikeButton from '@/components/LikeButton.vue'
+import PostCommentEditor from '@/components/PostCommentEditor.vue'
+
 import { mapGetters } from 'vuex'
-import { createComment, voteComment, deleteComment } from '@/api'
-import { date } from '@/helper.js'
-import PostRecomment from '@/components/PostRecomment.vue'
+import { voteComment, deleteComment, reportComment } from '@/api'
+import { timeago } from '@/helper.js'
 
 export default {
-  name: 'post-comment',
+  name: 'PostComment',
+
   props: {
-    comment: { required: true }
+    post: { required: true },
+    comment: { required: true },
+    isReplyComment: Boolean
   },
+
   data () {
     return {
-      content: '',
-      isUploading: false,
+      isEditing: false,
       isVoting: false,
-      showRecommentInput: false
+      showReplyCommentInput: false,
+      showHidden: false
     }
   },
+
   computed: {
-    liked () { return this.comment.my_vote === true },
-    disliked () { return this.comment.my_vote === false },
-    likedCount () { return this.comment.positive_vote_count },
-    dislikedCount () { return this.comment.negative_vote_count },
     author () { return this.comment.created_by.profile.nickname },
-    authorProfilePictureUrl() { return this.comment.created_by.profile.picture },
-    date () { return date(this.comment.created_at) },
-    now () { return date(new Date()) },
-    ...mapGetters([ 'userNickname' ])
+    authorId () { return this.comment.created_by.id },
+    profileImage () { return this.comment.created_by.profile.picture },
+    date () { return timeago(this.comment.created_at, this.$i18n.locale) },
+    ...mapGetters([ 'userNickname' ]),
+
+    content () {
+      if (this.comment.is_hidden) {
+        if (this.showHidden) {
+          return this.comment.hidden_content
+        }
+
+        return this.comment.why_hidden
+          .map(v => v.detail.join('\n'))
+          .join('\n')
+      }
+
+      return this.comment.content
+    },
+    isMine () {
+      // return this.userNickname === this.comment.created_by.profile.nickname
+      return this.comment.is_mine
+    },
+    isAnonymous () {
+      if (this.comment.is_anonymous) {
+        return true
+      }
+      return false
+    },
+    isAuthor () {
+      if (!this.comment.is_anonymous) {
+        return false
+      }
+      return this.post.created_by.id === this.comment.created_by.id
+    }
   },
+
   methods: {
     async vote (ballot) {
       this.isVoting = true
-      await voteComment(this.comment.id,
-        this.comment.my_vote === ballot
-          ? 'vote_cancel'
-          : ballot ? 'vote_positive' : 'vote_negative'
-      )
+      await voteComment(ballot.id, ballot.vote)
       this.$emit('vote')
       this.isVoting = false
     },
-    toggleRecommentInput () {
-      this.showRecommentInput = !this.showRecommentInput
+
+    toggleReplyCommentInput () {
+      this.showReplyCommentInput = !this.showReplyCommentInput
       this.$nextTick(() => {
-        this.$refs.recommentTextarea.focus()
+        this.$refs.commentEditor.focus()
       })
     },
-    async saveRecomment () {
-      this.isUploading = true
-      try {
-        const result = await createComment({
-          parent_article: null,
-          parent_comment: this.comment.id,
-          content: this.content
-        })
-        this.$emit('new-recomment-uploaded', result.data)
-        this.content = ''
-      } catch (err) {
-        // @TODO: 채팅 생성에 실패했다고 알려주기
-        alert('Failed to write a recomment!')
-      } finally {
-        this.isUploading = false
-      }
-    },
+
     async deleteComment () {
+      const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-delete'))
+      if (!result) return
+
       await deleteComment(this.comment.id)
       this.$emit('delete')
+    },
+
+    async reportComment () {
+      const {result, selection} = await this.$store.dispatch('dialog/report', this.$t('confirm-report'))
+      if (!result) return
+      let typeReport = 'others'
+      let reasonReport = ''
+      for (var key in selection) {
+        if (selection[key]) {
+          reasonReport += key
+          reasonReport += ', '
+        }
+      }
+      reasonReport = reasonReport.slice(0, -2)
+      await reportComment(this.comment.id, typeReport, reasonReport)
+    },
+
+    editComment () {
+      this.isEditing = true
+    },
+
+    updateComment (event) {
+      this.isEditing = false
+      this.$emit('update', {
+        ...event,
+        is_mine: true
+      })
     }
   },
-  components: { PostRecomment }
+
+  components: {
+    LikeButton,
+    PostCommentEditor
+  }
 }
 </script>
 
+<i18n>
+ko:
+  delete: '삭제'
+  report: '신고'
+  edit: '수정'
+  fold-reply-comment: '답글접기'
+  reply-comment: '답글쓰기'
+  placeholder: '입력...'
+  new-reply-comment: '작성하기'
+  confirm-delete: '정말로 이 댓글을 삭제하시겠습니까?'
+  confirm-report: '정말로 이 댓글을 신고하시겠습니까?'
+  show-hidden: '숨김글 보기'
+en:
+  delete: 'Delete'
+  report: 'Report'
+  edit: 'Edit'
+  fold-reply-comment: 'Close reply'
+  reply-comment: 'Reply'
+  placeholder: 'Type here...'
+  new-reply-comment: 'Send'
+  confirm-delete: 'Are you really want to delete this comment?'
+  confirm-report: 'Are you really want to report this comment?'
+  show-hidden: 'Show Hidden Comment'
+</i18n>
+
 <style lang="scss" scoped>
-.material-icons {
-  font-size: 15px;
+@import "@/theme.scss";
+.dropdown {
+  margin-left: auto;
 }
 
-.post-comment {
-  margin: 1rem 0;
-}
-
-.textarea {
-  padding: 0px;
-}
-
-.recomment-input {
-  margin-top: 15px;
-  border: 1px solid rgba(0,0,0,0.3);
-  border-radius: 5px;
-  padding: 10px 15px 10px 15px;
-
-  &:hover {
-    border: 1px solid rgba(0,0,0,0.8);
-  }
-
-  .comment-content {
-    margin: 0px;
-  }
-}
-
-.comment-metadata {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+.dropdown-button {
+  display: inline-flex;
   align-items: center;
-
-  .comment-author-profile-picture {
-    width: 20px;
-    height: 20px;
-    object-fit: cover;
-    border-radius: 100%;
-    margin-right: 10px;
-  }
-
-  .comment-author {
-    display: inline-block;
-    font-weight: 700;
-    padding-right: 0.75rem;
-  }
-  .comment-time {
-    font-size: 12px;
-    display: inline-block;
-    color: #888;
-  }
-}
-
-.comment-content {
-  margin: 0.75rem 0;
-  white-space: pre-line;
-  word-break: break-all;
-}
-
-.post-recomments {
-  margin-left: 2.5rem;
-}
-
-.alignright {
-  float: right;
-}
-.no-border {
+  justify-content: center;
   border: none;
+  border-radius: 5px;
+  background: transparent;
+  width: 1.8rem;
+  height: 1.8rem;
+
+  .material-icons {
+    font-size: .9rem;
+  }
 }
+
 .dropdown-content {
   min-width: 30%;
   max-width: 50%;
   float: right;
   text-align: right;
 }
+
 .dropdown-item {
-  padding: 0.375rem 0.4rem
+  padding: 0.2rem 0.4rem;
 }
 
-.button-submit {
-  margin-top: 10px;
-  border: none;
-  background-color: #ED3A3A;
-  color: white;
-
-  &:hover {
-    color: white;
-    background-color: rgb(199, 45, 45);
+.dropdown:hover {
+  .dropdown-button {
+    background: var(--grey-300);
   }
 }
 
-.button-default {
-  color: #888888;
-  border: none;
-  font-size: 14px;
-  margin-right: 5px;
-  text-decoration: none;
+.comment {
+  display: flex;
+  margin: 24px 0;
+
+  &--edit {
+    display: block;
+  }
+
+  &__content {
+    white-space: pre-wrap;
+    word-break: break-word;
+    word-wrap: break-word;
+  }
+
+  &__profile {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--grey-300);
+    margin-right: 12px;
+  }
+
+  &__body {
+    flex: 1;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+  }
+
+  &__time {
+    color: var(--grey-600);
+    font-size: .75rem;
+    margin-left: 10px;
+    margin-right: 5px;
+  }
+
+  &__author {
+    font-size: .9rem;
+    font-weight: bold;
+  }
+
+  &__footer {
+    display: flex;
+    margin-top: 8px;
+    font-size: .9rem;
+  }
+
+  &__write {
+    margin-left: 15px;
+    line-height: 25px;
+  }
+
+  &__reply-comments {
+    margin-left: 60px;
+
+    @include breakPoint(min) {
+      margin-left: 30px;
+    }
+  }
+
+  &__vote {
+    font-size: 15px;
+    height: 25px;
+  }
 }
-.button-selected {
-  color: #ED3A3A;
+.author_red{
+  color: var(--theme-400);
 }
 </style>

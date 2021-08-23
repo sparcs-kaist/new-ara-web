@@ -1,6 +1,6 @@
 <template>
   <div class="the-notifications">
-    <h1 id="title">알림</h1>
+    <h1 id="title">{{ title }}</h1>
     <DailyNotifications
       v-for="timePassed in Object.keys(dailyNotifications)"
       :timePassed="timePassed"
@@ -23,14 +23,15 @@ import ThePaginator from '@/components/ThePaginator'
 export default {
   name: 'the-notifications',
   props: {
-    notifications: { required: true }
+    notifications: { required: true },
+    title: String
   },
   computed: {
     dailyNotifications () {
       if (!this.notifications.results) return {}
       return this.notifications.results
         .reduce((acc, notification) => {
-          const timePassed = timeago.format(notification.created_at)
+          const timePassed = timeago(notification.created_at, this.$i18n.locale)
           if (Object.keys(acc).includes(timePassed)) {
             return {
               ...acc,

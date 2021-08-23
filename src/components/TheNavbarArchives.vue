@@ -10,6 +10,10 @@ export default {
 }
 </script>
 
-<style>
+<i18n>
+ko:
+  archive: '담아둔 글'
 
-</style>
+en:
+  archive: 'Bookmarks'
+</i18n>

@@ -1,207 +1,439 @@
 <template>
-  <div>
-    <h1 id="title"> 글쓰기 </h1>
+  <div class="write">
+    <h1 class="write__title"> {{ writeTitle }} </h1>
+    <hr />
 
-    <div class="title-wrapper">
-      <i 
-        class="material-icons title-warning"
-        v-if="isTitleEmpty && !title">
+    <div class="write__row">
+      <i class="material-icons write__warning"
+        v-if="isCategoryWarning || isBoardWarning">
+
         warning
       </i>
-      <input
-        v-model="title"
-        class="input title-input"
-        :class="{ 'is-empty': isTitleEmpty }"
-        type="text"
-        :placeholder="titlePlaceholder"
-      />
+
+      <div class="write__input">
+        <div class="select" :class="{ 'is-placeholder': !boardId }" >
+          <select v-model="boardId" :disabled="editMode">
+            <option value="" disabled selected> {{ $t('input-board') }} </option>
+            <option
+              v-for="board in boardList"
+              :key="board.id"
+              :selected="boardId === board.id"
+              :value="board.id">
+              {{ board[`${$i18n.locale}_name`] }}
+            </option>
+          </select>
+        </div>
+        <p
+          class="write__help help is-danger"
+          v-if="isBoardWarning">
+
+          {{ $t('input-board-warning') }}
+        </p>
+      </div>
+
+      <div class="write__input">
+        <div class="select" :class="{ 'is-placeholder': categoryNotSet }">
+          <select v-model="categoryId" :disabled="editMode">
+            <option value="$not-set" disabled selected> {{ $t('input-category') }} </option>
+            <option value="" v-if="boardId"> {{ $t('no-category') }} </option>
+
+            <template v-if="categoryList.length">
+              <option
+                v-for="category in categoryList"
+                :key="category.id"
+                :selected="categoryId === category.id"
+                :value="category.id">
+                {{ category[`${$i18n.locale}_name`] }}
+              </option>
+            </template>
+          </select>
+        </div>
+
+        <p
+          class="write__help help is-danger"
+          v-if="isCategoryWarning">
+
+          {{ $t('input-category-warning') }}
+        </p>
+      </div>
+
+      <div class="write__input write__content-checkbox">
+        <label class="checkbox">
+          {{ $t('is-sexual') }}
+          <input type="checkbox" v-model="isSexual">
+        </label>
+
+        <label class="checkbox">
+          {{ $t('is-social') }}
+          <input type="checkbox" v-model="isSocial">
+        </label>
+      </div>
     </div>
 
-    <div class="select board-input"
-      :class="{
-        'is-placeholder': !boardId,
-      }" >
-      <i 
-        class="material-icons board-warning"
-        v-if="isBoardEmpty && !boardId">
+    <div class="write__row">
+      <i
+        class="material-icons write__warning"
+        v-if="isTitleWarning">
         warning
       </i>
-      <select v-model="boardId">
-        <option value="" disabled selected> 게시판 </option>
-        <option
-          v-for="board in boardList"
-          :key="board.id"
-          :selected="boardId === board.id"
-          :value="board.id">
-          {{ board.en_name }}
-        </option>
-      </select>
-    </div>
-    <p class="help is-danger" v-if="isBoardEmpty && !boardId">게시판을 선택해주세요</p>
 
-    <div class="content-wrapper">
+      <div class="write__input write__title-input">
+        <input
+          v-model="title"
+          type="text"
+          class="input"
+          :class="{ 'is-empty': isTitleWarning }"
+          :placeholder="$t('input-title')"
+        />
+      </div>
+    </div>
+
+    <div class="write__content">
       <TextEditor
         ref="textEditor"
-        editable="true"
         :content="initialPostContent"
+        @attach-files="attachFiles"
+        @open-image-upload="openImageUpload"
+        editable
       />
+
+      <i
+        class="material-icons write__warning"
+        v-if="emptyWarnings.includes('content')">
+        warning
+      </i>
     </div>
 
-    <div class="attachment-input">
-      <input
-        type="file"
+    <div class="write__attachment">
+      <Attachments
+        ref="attachments"
         multiple
-        @change="attachFiles"
-      />
+        @add="addAttachments"
+        @delete="deleteAttachment">
+      </Attachments>
     </div>
-    <button
-      @click="savePostByThePostWrite"
-      class="button post-publish-button"
-      :class="{ 'is-loading': saving }"
-    >
-      게시
-    </button>
+
+    <div class="write__footer">
+      <button
+        @click="savePostByThePostWrite"
+        class="button write__publish"
+        :class="{ 'is-loading': saving }"
+      >
+        {{ post ? $t('write-edit') : $t('write-publish') }}
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import TextEditor from '../components/TheTextEditor'
+import Attachments from '@/components/TheAttachments'
+import TextEditor from '@/components/TheTextEditor'
 
 export default {
   name: 'the-post-write',
-  props: [ 'post', 'saving', 'isTitleEmpty', 'isContentEmpty', 'isBoardEmpty' ],
+
+  props: {
+    post: {},
+    saving: {
+      type: Boolean
+    },
+    emptyWarnings: {
+      type: Array
+    }
+  },
+
   data () {
     return {
       boardId: '',
+      categoryId: '$not-set',
       title: '',
-      content: '',
-      attachment: null,
+      isSexual: false,
+      isSocial: false,
+      loaded: true
     }
   },
+
   computed: {
-    ...mapState([ 'boardList' ]),
+    ...mapState({ boardListAll: 'boardList' }),
     ...mapGetters([ 'getIdBySlug' ]),
-    titlePlaceholder: function() {
-      if (this.isTitleEmpty) {
-        return '제목을 입력하세요'
-      } else {
-        return '제목'
-      }
+
+    initialPostContent () {
+      if (!this.post) return null
+      if (this.post.is_hidden) return this.post.hidden_content
+
+      return this.post.content
     },
-    initialPostContent() {
-      return this.post ? this.post.content : null
+
+    boardList () {
+      return this.boardListAll.filter(v => !v.is_readonly)
+    },
+
+    board () {
+      return this.boardListAll.find(v => v.id === this.boardId)
+    },
+
+    categoryList () {
+      if (!this.board) {
+        return []
+      }
+
+      return this.board.topics
+    },
+
+    categoryNotSet () {
+      return this.categoryId === '$not-set'
+    },
+
+    isCategoryWarning () {
+      return this.categoryNotSet && this.emptyWarnings.includes('category')
+    },
+
+    isBoardWarning () {
+      return !this.boardId && this.emptyWarnings.includes('board')
+    },
+
+    isTitleWarning () {
+      return !this.title && this.emptyWarnings.includes('title')
+    },
+
+    editMode () {
+      return !!this.post
+    },
+
+    writeTitle () {
+      if (this.editMode) return this.$t('write-edit')
+      return this.$t('write')
     }
   },
+
   created () {
     if (this.post) {
       this.boardId = this.post.parent_board.id
       this.title = this.post.title
-      this.content = this.post.content
+      this.isSocial = this.post.is_content_social
+      this.isSexual = this.post.is_content_sexual
+      this.loaded = false
+
+      this.$nextTick(() => {
+        this.categoryId = this.post.parent_topic ? this.post.parent_topic.id : ''
+      })
     }
-    const { board_slug: boardSlug } = this.$route.query
-    if (boardSlug) {
+    const { board } = this.$route.query
+    if (board) {
       /* 글 수정인데 글의 parent board와 url query의 board가 다르면 url query의 board를 따른다. */
-      this.boardId = this.getIdBySlug(boardSlug)
+      this.boardId = this.getIdBySlug(board)
     }
   },
+
+  async mounted () {
+    if (this.post) {
+      await this.$refs.attachments.init(this.post.attachments)
+    }
+
+    this.loaded = true
+  },
+
   methods: {
-    attachFiles (e) {
-      this.attachments = [...e.target.files]
+    attachFiles (files) {
+      this.$refs.attachments.handleUpload(files)
     },
-    savePostByThePostWrite() {
-      const { title, boradId, attachments } = this;
-      const postContent = JSON.stringify(this.$refs.textEditor.getContent())
-      this.$emit('save-post', 
+
+    addAttachments (attachments) {
+      attachments.forEach(file => {
+        if (file.type === 'image') {
+          this.$refs.textEditor.addImageByFile(file)
+        }
+      })
+    },
+
+    deleteAttachment (file) {
+      if (file.uploaded) {
+        // TODO delete file from server
+      }
+
+      if (file.type === 'image') {
+        this.$refs.textEditor.removeImageByFile(file)
+      }
+    },
+
+    savePostByThePostWrite () {
+      if (!this.loaded) {
+        this.$store.dispatch('dialog/toast', {
+          text: this.$t('uploading'),
+          type: 'info'
+        })
+        return
+      }
+
+      const { title, boardId, categoryId, isSocial, isSexual } = this
+      this.$emit('save-post',
         {
-          title: this.title, 
-          content: postContent,
-          boardId: this.boardId,
-          attachments: this.attachments,
+          title,
+          boardId,
+          categoryId,
+          isSocial,
+          isSexual,
+          attachments: this.$refs.attachments.files
         }
       )
+    },
+
+    openImageUpload () {
+      this.$refs.attachments.openImageUpload()
+    },
+
+    updateAttachments (attachmentUpdate) {
+      this.$refs.textEditor.applyImageUpload(attachmentUpdate)
+    },
+
+    getContent () {
+      return this.$refs.textEditor.getContent()
     }
   },
-  components: { TextEditor }
+
+  watch: {
+    boardId () {
+      this.categoryId = '$not-set'
+    }
+  },
+
+  components: { Attachments, TextEditor }
 }
 </script>
 
+<i18n>
+ko:
+  write: '게시물 작성하기'
+  input-title: '제목을 입력하세요'
+  input-board: '게시판을 선택하세요'
+  input-board-warning: '게시판을 선택해주세요'
+  input-category: '말머리를 선택하세요'
+  input-category-warning: '말머리를 선택해주세요'
+  write-publish: '게시글 등록하기'
+  write-edit: '게시글 수정하기'
+  no-category: '말머리 없음'
+  uploading: '현재 업로딩 중입니다.'
+  is-sexual: '성인글'
+  is-social: '정치글'
+
+en:
+  write: 'Write a post'
+  input-title: 'Type title here'
+  input-board: 'Select Board'
+  input-board-warning: 'You should select a board'
+  input-category: 'Select Category'
+  input-category-warning: 'You should select a category'
+  no-category: 'No Category'
+  write-publish: 'Publish Post'
+  write-edit: 'Edit a post'
+  uploading: 'It is currently uploading post. Please wait for a second.'
+  is-sexual: 'Adult Post'
+  is-social: 'Politics Post'
+</i18n>
+
 <style lang="scss" scoped>
 @import '@/theme.scss';
-#title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
 
-.title-wrapper {
-  position: relative;
-}
-
-.title-wrapper .material-icons.title-warning {
-  position: absolute;
-  left: -32px;
-  top: 20.8px;
-  font-size: 20px;
-  color: red;
-}
-
-.title-input {
-  padding-left: 0;
-  padding-bottom: 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-  &.input::placeholder {
-    color: #ccc;
+.write {
+  &__title {
+    color: var(--theme-400);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
   }
-  &.is-empty::placeholder {
-    color: $theme-red;
-  }
-}
 
-.board-input {
-  margin-top: -5px;
-  margin-bottom: 1.5rem;
-  position: relative;
-  &.is-placeholder {
+  &__row {
+    position: relative;
+    margin: 0 -5px;
+  }
+
+  &__input {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    margin: 5px;
+
+    input[type="text"], select {
+      font-size: 1.1rem;
+      padding-left: 28px;
+      height: 2.7rem;
+      border-width: 1px !important;
+      border-color: var(--grey-300) !important;
+    }
+
+    input[type="text"] {
+      padding-right: 28px;
+
+      &::placeholder {
+        color: var(--grey-400);
+      }
+    }
+
     select {
-      color: #888;
+      padding-right: 4em;
     }
-    &::after {
-      border-color: #888;
-    }
-    &:hover::after {
-      border-color: #888;
+
+    .select {
+      &::after {
+        right: 28px;
+      }
     }
   }
-  select {
-    padding-left: 0;
+
+  &__title-input {
+    display: flex;
   }
-  .material-icons.board-warning {
+
+  &__content-checkbox {
+    align-items: center;
+    flex-direction: row;
+    padding-bottom: 5px;
+
+    .checkbox {
+      margin: 5px;
+    }
+  }
+
+  &__warning {
     position: absolute;
     left: -32px;
-    top: 8px;
+    top: 12px;
     font-size: 20px;
     color: red;
   }
-}
 
-.content-wrapper {
-  position: relative;
-  .material-icons.content-warning {
-    position: absolute;
-    left: -32px;
-    top: 47px;
-    font-size: 20px;
-    color: red;
+  &__help {
+    display: inline-flex;
   }
-}
 
-p.help.is-danger {
-  display: inline-block;
-}
+  &__content {
+    position: relative;
+    margin: 1.5rem 0;
 
-.attachment-input {
-  margin-bottom: 1.5rem;
+    .write__warning {
+      position: absolute;
+      left: -32px;
+      top: 20px;
+      font-size: 20px;
+      color: red;
+    }
+  }
+
+  &__attachment {
+    margin-bottom: 1.5rem;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__publish {
+    box-sizing: content-box;
+    color: var(--theme-400);
+    font-weight: 500;
+    padding: 4px 20px;
+  }
 }
 </style>

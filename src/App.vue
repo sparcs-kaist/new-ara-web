@@ -20,12 +20,13 @@ export default {
 @import '@/bulma/index.scss';
 #root-container {
   #app {
-    @media screen and (min-width: 700px) {
-      min-height: 100vh;
-      padding-bottom: 54px;
-      margin-bottom: -54px;
+    min-height: 100vh;
+    padding-bottom: 54px;
+    margin-bottom: -54px;
+    @include breakPoint(mobile) {
+      padding-bottom: 174px;
+      margin-bottom: -174px;
     }
-    // background-color: gray;
   }
 }
 </style>

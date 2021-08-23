@@ -11,44 +11,54 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
+    "@splidejs/vue-splide": "^0.3.5",
     "bulma": "^0.7.1",
+    "date-fns": "^2.15.0",
     "register-service-worker": "^1.6.2",
-    "timeago.js": "^3.0.2",
-    "tiptap": "^1.25.0",
-    "tiptap-extensions": "^1.27.0",
+    "tiptap": "^1.29.5",
+    "tiptap-extensions": "^1.32.4",
     "vue": "^2.6.10",
-    "vue-i18n": "^8.0.0",
+    "vue-i18n": "^8.16.0",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
-    "@vue/cli-service": "^3.11.0",
-    "@vue/cli-plugin-babel": "^3.11.0",
-    "@vue/cli-plugin-eslint": "^3.0.0-beta.15",
-    "@vue/cli-plugin-pwa": "^3.11.0",
-    "@vue/cli-plugin-unit-jest": "^3.0.0-beta.15",
-    "node-sass": "^4.12.0",
-    "sass-loader": "^7.3.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
     "@babel/core": "^7.5.5",
-    "vue-cli-plugin-i18n": "^0.5.0",
-    "vue-template-compiler": "^2.6.10",
-    "@kazupon/vue-i18n-loader": "^0.3.0",
+    "@babel/plugin-transform-runtime": "^7.11.5",
+    "@babel/preset-env": "^7.11.5",
+    "@intlify/vue-i18n-loader": "^1.0.0",
     "@storybook/addon-actions": "^5.1.11",
     "@storybook/addon-links": "^5.1.11",
     "@storybook/addons": "^5.1.11",
     "@storybook/vue": "^5.1.11",
+    "@vue/cli-plugin-babel": "^3.11.0",
+    "@vue/cli-plugin-eslint": "^3.0.0-beta.15",
+    "@vue/cli-plugin-pwa": "^3.11.0",
+    "@vue/cli-plugin-unit-jest": "^4.2.2",
+    "@vue/cli-service": "^4.2.2",
     "@vue/eslint-config-standard": "^3.0.0-rc.3",
     "@vue/test-utils": "^1.0.0-beta.16",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.0.1",
     "babel-loader": "^8.0.6",
     "babel-preset-vue": "^2.0.2",
+    "husky": "^4.2.5",
     "json-loader": "^0.5.7",
+    "node-sass": "^4.13.1",
+    "sass-loader": "^7.3.1",
+    "vue-cli-plugin-i18n": "^0.5.0",
+    "vue-template-compiler": "^2.6.10",
     "yaml-loader": "^0.5.0"
   },
-  "devDependencies": {},
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  }
 }

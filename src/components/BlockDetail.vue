@@ -27,7 +27,10 @@ export default {
         await deleteBlock(this.block.id)
         this.$emit('block-deleted', this.block.id)
       } catch (err) {
-        alert('Failed to cancel the block!')
+        this.$store.dispatch('dialog/toast', {
+          text: this.$t('unblock-failed') + (err.apierr ? '\n' + err.apierr : ''),
+          type: 'error'
+        })
       } finally {
         this.isDeleting = false
       }
@@ -35,6 +38,15 @@ export default {
   }
 }
 </script>
+
+<i18n>
+ko:
+  unblock-failed: '차단 해제에 실패했습니다.'
+
+en:
+  unblock-failed: 'Failed to unblock.'
+
+</i18n>
 
 <style>
 .block-col {

@@ -1,27 +1,33 @@
-import Timeago from 'timeago.js'
+import { differenceInDays, differenceInHours, differenceInMinutes, format, formatDistanceStrict } from 'date-fns'
+import { enUS, ko } from 'date-fns/locale'
 
-Timeago.register('ko_KR', (number, index) => [
-  ['방금', '곧'],
-  ['%s초 전', '%s초 후'],
-  ['1분 전', '1분 후'],
-  ['%s분 전', '%s분 후'],
-  ['1시간 전', '1시간 후'],
-  ['%s시간 전', '%s시간 후'],
-  ['1일 전', '1일 후'],
-  ['%s일 전', '%s일 후'],
-  ['1주일 전', '1주일 후'],
-  ['%s주일 전', '%s주일 후'],
-  ['1개월 전', '1개월 후'],
-  ['%s개월 전', '%s개월 후'],
-  ['1년 전', '1년 후'],
-  ['%s년 전', '%s년 후']
-][index])
+export const timeago = (dateString, localeString) => {
+  const now = new Date()
+  const date = new Date(dateString)
+  const locale = localeString === 'ko' ? ko : enUS
 
-export const timeago = Timeago(null, 'ko_KR')
+  if (differenceInDays(now, date) >= 7) { return format(date, 'PP', { locale }) }
+
+  if (differenceInHours(now, date) >= 24) { return formatDistanceStrict(date, now, { unit: 'day', locale, addSuffix: true }) }
+
+  if (differenceInMinutes(now, date) >= 60) { return formatDistanceStrict(date, now, { unit: 'hour', locale, addSuffix: true }) }
+
+  return formatDistanceStrict(date, now, { unit: 'minute', roundingMethod: 'ceil', locale, addSuffix: true })
+}
 
 export const date = timeString => {
   const time = new Date(timeString)
-  return `${time.getMonth() + 1}월 ${time.getDate()}일`
+
+  const year = time.getFullYear()
+  const month = time.getMonth() + 1
+  const date = time.getDate()
+  const hour = time.getHours()
+  const minute = time.getMinutes()
+
+  const padded = (n) => n.toString().padStart(2, '0')
+  const [m, d, h, min] = [month, date, hour, minute].map(padded)
+
+  return `${year}.${m}.${d} ${h}:${min}`
 }
 
 export const range = (m, n = null) => {
@@ -35,3 +41,17 @@ export const queryBuilder = context =>
   Object.keys(context)
     .map(key => `${key}=${context[key]}`)
     .join('&')
+
+export const getValidatorError = data => {
+  return Object.keys(data).reduce((prev, key) => {
+    const curr = data[key]
+
+    if (Array.isArray(curr)) {
+      prev.push(...curr)
+    } else {
+      prev.push(curr.toString())
+    }
+
+    return prev
+  }, []).join('\n')
+}

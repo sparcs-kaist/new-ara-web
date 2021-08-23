@@ -1,62 +1,66 @@
-// 아라 테마색
-$theme-red: #ED3A3A;
+$theme-red: #e15858;
+$theme-red-dark: rgb(204, 59, 59);
+$dark: #333333;
+$gray: #666666;
+$family-sans-serif: var(--font);
+$render-mode: auto;
+$body-rendering: auto;
 
 :root {
   // global theme variables
-  --theme-red: #ED3A3A;
+  --theme-500: rgb(204, 59, 59);
+  --theme-400: #e15858;
+  --theme-300: #f9c7c7;
+  --theme-100: #fdf0f0;
+
+  --grey-700: #333333;
+  --grey-600: #666666;
+  --grey-400: #a9a9a9;
+  --grey-300: #dbdbdb;
+  --grey-100: #fafafa;
+
+  --text: var(--grey-700);
+  --background: #ffffff;
+
   --duration: 0.5s;
   --text-timing: ease-out;
   --background-timing: ease-in-out;
 
-  // light mode variables
-  --background: white;
-  --text: #222222;
-
-
-  &, body, h1, h2, h3, h4, h5, h6, a, input, textarea, button {
-    color: var(--text);
-    background-color: var(--background);
-
-    transition: color var(--duration) var(--text-timing),
-                background-color var(--duration) var(--background-timing);
-  }
+  --font: 'Noto Sans KR', sans-serif;
 
   .navbar, .navbar-item {
     background-color: transparent;
   }
-
-  input::placeholder {
-    color: #4a4a4a;
-    transition: color var(--duration) var(--text-timing);
-  }
-
-  button:hover {
-    color: var(--text);
-    background-color: unset;
-  }
 }
 
-:root.dark {
-  // @TODO #222 is better than complete black;
-  --background: black;
-  --text: #d0d0d0;
-}
-
+$mobile-width: 768px;
 $min-desktop-width: 1088px;
 $mid-desktop-width: 1280px;
 $max-desktop-width: 1472px;
 
 @mixin breakPoint($breakpoint) {
-  @if $breakpoint == "min" {
-    @media (max-width: #{$min-desktop-width}) {
+  @if $breakpoint == "mobile" {
+    @media (max-width: #{$mobile-width - 1}) {
+      @content;
+    }
+  } @else if $breakpoint == "mobile-min" {
+    @media (min-width: #{$mobile-width}) and (max-width: #{$min-desktop-width - 1}) {
+      @content;
+    }
+  } @else if $breakpoint == "min" {
+    @media (max-width: #{$min-desktop-width - 1}) {
       @content;
     }
   } @else if $breakpoint == "min-mid" {
-    @media (min-width: #{$min-desktop-width}) and (max-width: #{$mid-desktop-width}) {
+    @media (min-width: #{$min-desktop-width}) and (max-width: #{$mid-desktop-width - 1}) {
+      @content;
+    }
+  } @else if $breakpoint == "mid" {
+    @media (max-width: #{$mid-desktop-width - 1}) {
       @content;
     }
   } @else if $breakpoint == "mid-max" {
-    @media (min-width: #{$mid-desktop-width}) and (max-width: #{$max-desktop-width}) {
+    @media (min-width: #{$mid-desktop-width}) and (max-width: #{$max-desktop-width - 1}) {
       @content;
     }
   } @else if $breakpoint == "max" {
@@ -65,6 +69,3 @@ $max-desktop-width: 1472px;
     }
   }
 }
-
-// 로고에 사용되는 Raleway EB 폰트
-@import url('https://fonts.googleapis.com/css?family=Raleway:800');

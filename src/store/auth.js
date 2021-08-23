@@ -1,4 +1,4 @@
-import { fetchMe, fetchUser, updateDarkMode } from '@/api'
+import { fetchMe as apiFetchMe, updateTos, updateDarkMode } from '@/api'
 
 const setDarkMode = (darkMode) => {
   localStorage.darkMode = darkMode
@@ -14,12 +14,12 @@ const setDarkMode = (darkMode) => {
 
 export default {
   state: {
-    token: localStorage.token,
-    userProfile: {},
+    authState: false,
+    userProfile: {}
   },
   getters: {
-    isLoggedIn ({ token }) {
-      return !!token
+    isLoggedIn ({ authState }) {
+      return authState
     },
     userId ({ userProfile: { user } }) {
       return user
@@ -36,31 +36,42 @@ export default {
     userConfig ({ userProfile: { see_sexual: sexual, see_social: social } }) {
       return { sexual, social }
     },
+    userEmail ({ userProfile: { sso_user_info: { email } } }) {
+      return email
+    },
     isDarkModeEnabled ({ userProfile }) {
       return userProfile.extra_preferences && userProfile.extra_preferences.darkMode
     }
   },
   mutations: {
-    updateToken (state, newToken) {
-      state.token = newToken
-      localStorage.token = newToken
-    },
-    deleteToken (state) {
-      state.token = ''
-      delete localStorage.token
-    },
     setUserProfile (state, userProfile) {
       const darkMode = userProfile.extra_preferences && userProfile.extra_preferences.darkMode
       setDarkMode(darkMode)
 
       state.userProfile = userProfile
+    },
+
+    setAuthState (state, authed) {
+      state.authState = authed
     }
   },
   actions: {
-    async fetchMe ({ commit, getters: { hasFetched } }) {
-      if (!hasFetched) {
-        commit('setUserProfile', await fetchMe())
+    async fetchMe ({ commit, getters }) {
+      const { hasFetched } = getters
+      try {
+        if (!hasFetched) {
+          commit('setUserProfile', await apiFetchMe())
+        }
+
+        const { userId } = getters
+        commit('setAuthState', userId !== undefined)
+      } catch (err) {
+        commit('setAuthState', false)
       }
+    },
+    async agreeTos ({ dispatch, getters: { userId } }) {
+      await updateTos(userId)
+      return dispatch('fetchMe')
     },
     async toggleDarkMode ({ commit, getters: { isDarkModeEnabled } }) {
       commit('setUserProfile', await updateDarkMode(!isDarkModeEnabled))
