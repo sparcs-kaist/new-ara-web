@@ -1,5 +1,5 @@
 <template>
-  <footer class="the-footer">
+  <footer class="the-footer" :class="{ 'login-footer': this.$route.path === '/login' }">
     <div class="footer-menu">
       <div class="footer-item logo-item">
         <a id="sparcs-logo" href="https://sparcs.org">
@@ -157,6 +157,21 @@ en:
         margin-top: 12px;
       }
     }
+  }
+}
+
+.login-footer {
+  margin-left: 30vw;
+  padding-left: 15px;
+  @include breakPoint(mobile) {
+    margin-left: 0;
+    padding-left: 24px;
+  }
+  @include breakPoint(mobile-min) {
+    margin-left: 0;
+  }
+  .footer-items {
+    margin-left: 0;
   }
 }
 </style>
