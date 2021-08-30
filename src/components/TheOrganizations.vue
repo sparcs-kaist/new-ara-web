@@ -8,7 +8,7 @@
         />
       </splide-slide>
     </splide>
-    <OrganizationCard class="is-invisible organizations-padding" id="UA" name="card-for-height"></OrganizationCard>
+    <OrganizationCard class="is-invisible organizations-padding" id="" name="portal-notice"></OrganizationCard>
   </div>
 </template>
 
@@ -53,7 +53,7 @@ export default {
     return {
       organizations: [
         { name: 'portal-notice', id: 'KAIST', backgroundColor: '#dbdbdb' },
-        { name: 'all-posts', id: 'all', icon: 'dashboard', backgroundColor: '#f9c7c7' },
+        { name: 'all-posts', id: 'all', icon: 'dashboard', backgroundColor: '#e15858' },
         { name: 'clubs-union', id: 'UA', slug: 'clubs-union' },
         { name: 'dormitory-council', id: 'GSDC', slug: 'dorm-council' },
         { name: 'welfare-committee', id: 'SWF', slug: 'welfare-cmte' },
