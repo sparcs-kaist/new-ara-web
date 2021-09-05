@@ -294,7 +294,7 @@ export default {
 
   watch: {
     boardId () {
-      this.categoryId = '$not-set'
+      this.categoryId = ''
     }
   },
 
