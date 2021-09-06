@@ -294,7 +294,11 @@ export default {
 
   watch: {
     boardId () {
-      this.categoryId = '$not-set'
+      if (this.categoryList.length) {
+        this.categoryId = '$not-set'
+      } else {
+        this.categoryId = ''
+      }
     }
   },
 
