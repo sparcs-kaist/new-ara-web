@@ -41,7 +41,7 @@
       <LikeButton class="post__like" :item="post" votable @vote="$emit('vote', $event)" />
       <div class="post__buttons">
         <template v-if="isMine">
-          <button class="button" @click="deletePost" v-if="!post.is_anonymous">
+          <button class="button" @click="deletePost">
             <i class="like-button__icon material-icons-outlined">
               delete
             </i>
