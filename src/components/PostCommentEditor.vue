@@ -6,7 +6,7 @@
         <img :src="this.post.created_by.profile.picture" class="comment-editor__picture" v-else/>
         <span class="comment-editor__name" v-if="!isAnonymous">{{ userNickname }}</span>
         <span class="comment-editor__name author_red" v-else-if="isMine">{{$t('author')}}</span>
-        <span class="comment-editor__name" v-else>{{ getAnonymousNickname }}</span>
+        <span class="comment-editor__name" v-else>{{ anonymousNickname }}</span>
       </div>
       <div class="comment-editor__content">
         <textarea
@@ -77,6 +77,11 @@ export default {
 
     editComment: {
       default: null
+    },
+
+    anonymousNickname: {
+      type: String,
+      default: ''
     }
   },
 
@@ -87,7 +92,7 @@ export default {
     isMine () {
       return this.post.is_mine
     },
-    ...mapGetters([ 'userNickname', 'userPicture', 'getAnonymousNickname' ])
+    ...mapGetters([ 'userNickname', 'userPicture' ])
   },
 
   methods: {

@@ -18,8 +18,7 @@ export default new Vuex.Store({
   state: {
     boardList: [],
     recentPosts: [],
-    archivedPosts: [],
-    userAnonymousNickname: 'Anonymous'
+    archivedPosts: []
   },
   getters: {
     hasFetchedBoardList: ({ boardList }) =>
@@ -34,9 +33,7 @@ export default new Vuex.Store({
     getNameById: ({ boardList }) => (id, locale) => {
       const board = boardList.find(board => board.id === id)
       return board ? board[`${locale}_name`] : i18n.t('all', locale)
-    },
-    getAnonymousNickname: ({ userAnonymousNickname }) =>
-      userAnonymousNickname
+    }
   },
   mutations: {
     setBoardList (state, boardList) {
@@ -47,9 +44,6 @@ export default new Vuex.Store({
       state.recentPosts = posts
     },
 
-    setAnonymousNickname (state, anonymousNickname) {
-      state.userAnonymousNickname = anonymousNickname
-    },
     setArchivedPosts (state, posts) {
       state.archivedPosts = posts
     }
