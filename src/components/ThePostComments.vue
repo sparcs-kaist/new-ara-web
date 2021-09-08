@@ -42,7 +42,6 @@ export default {
     anonymousNickname () {
       let nickname = this.$t('anonymous')
       if (this.post.is_anonymous) {
-        console.log('anonymousNickname')
         // Get my anonymous nickname from post's comments
         for (var comment of this.post.comments) {
           if (comment.is_mine) {
