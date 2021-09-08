@@ -15,12 +15,12 @@
             <h1 class="box__title">
               {{ $t('ranking-title') }}
             </h1>
-            <i18n tag="h2" path="ranking-subtitle" class="box__subtitle">
+            <!--<i18n tag="h2" path="ranking-subtitle" class="box__subtitle">
               <template #user>{{ user.nickname }}</template>
               <template #ranking>
                 <span class="ranking-text">{{ myRanking }}</span>
               </template>
-            </i18n>
+            </i18n>-->
             <div class="box__container">
               <div class="ranking">
                 <div class="ranking__card">
@@ -28,7 +28,7 @@
                     {{ $t('ranking-posts') }}
                   </div>
                   <div class="ranking__card--counts">
-                    {{ $t('ranking-posts-count', { count: postsCount }) }}
+                    {{ $t('ranking-posts-count', { count: user.num_articles }) }}
                   </div>
                 </div>
                 <div class="ranking__card">
@@ -36,7 +36,7 @@
                     {{ $t('ranking-comments') }}
                   </div>
                   <div class="ranking__card--counts">
-                    {{ $t('ranking-comments-count', { count: commentsCount }) }}
+                    {{ $t('ranking-comments-count', { count: user.num_comments }) }}
                   </div>
                 </div>
                 <div class="ranking__card">
@@ -44,7 +44,7 @@
                     {{ $t('ranking-likes') }}
                   </div>
                   <div class="ranking__card--counts">
-                    {{ $t('ranking-likes-count', { count: likesCount }) }}
+                    {{ $t('ranking-likes-count', { count: user.num_positive_votes }) }}
                   </div>
                 </div>
               </div>
@@ -250,7 +250,10 @@ export default {
         picture: null,
         pictureSrc: '',
         sexual: null,
-        social: null
+        social: null,
+        num_articles: null,
+        num_comments: null,
+        num_positive_votes: null
       },
       posts: null,
       blocks: null,
@@ -292,21 +295,6 @@ export default {
         default:
           return this.$t('board-my')
       }
-    },
-
-    postsCount () {
-      // @TODO: api 미완성
-      return 1
-    },
-
-    commentsCount () {
-      // @TODO: api 미완성
-      return 2
-    },
-
-    likesCount () {
-      // @TODO: api 미완성
-      return 3
     },
 
     myRanking () {
@@ -414,7 +402,7 @@ export default {
       fetchBlocks()
     ], 'myinfo-failed-fetch')
 
-    const { userNickname, userEmail, userPicture, userConfig } = store.getters
+    const { userNickname, userEmail, userPicture, userConfig, userActivity } = store.getters
 
     next(vm => {
       vm.user = {
@@ -422,7 +410,10 @@ export default {
         email: userEmail,
         pictureSrc: userPicture,
         sexual: userConfig.sexual,
-        social: userConfig.social
+        social: userConfig.social,
+        num_articles: userActivity.articles,
+        num_comments: userActivity.comments,
+        num_positive_votes: userActivity.positiveVotes
       }
 
       vm.posts = posts
@@ -444,11 +435,11 @@ export default {
 
 <i18n>
 ko:
-  ranking-title: '나의 등급'
+  ranking-title: '나의 활동 기록'
   ranking-subtitle: '{user} 님의 등급은 {ranking}입니다.'
   ranking-posts: '게시글'
   ranking-comments: '댓글'
-  ranking-likes: '공감'
+  ranking-likes: '받은 공감'
   ranking-posts-count: '{count}개'
   ranking-comments-count: '{count}개'
   ranking-likes-count: '{count}회'
@@ -473,7 +464,7 @@ ko:
   document-title: 'Ara - 내정보'
 
 en:
-  ranking-title: 'My Ranking'
+  ranking-title: 'My Activity'
   ranking-subtitle: 'Your ranking is {ranking}'
   ranking-posts: 'Posts'
   ranking-comments: 'Comments'
