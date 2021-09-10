@@ -36,6 +36,9 @@ export default {
     userConfig ({ userProfile: { see_sexual: sexual, see_social: social } }) {
       return { sexual, social }
     },
+    userActivity ({ userProfile: { num_articles: articles, num_comments: comments, num_positive_votes: positiveVotes } }) {
+      return { articles, comments, positiveVotes }
+    },
     userEmail ({ userProfile: { sso_user_info: { email } } }) {
       return email
     },
