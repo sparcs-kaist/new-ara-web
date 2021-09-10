@@ -33,10 +33,10 @@ on:
 
 name: Deploy to Amazon ECR newara-front
 
-env: 
+env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: newara-front
-  
+
 defaults: # do we need this?
   run:
     shell: bash
@@ -76,6 +76,6 @@ jobs:
         # be deployed to ECS.
         chmod +x ./.github/workflows/github-actions.sh
         . ./.github/workflows/github-actions.sh
-        docker build --cache-from $ECR/$PROJECT_NAME:$CACHE_DOCKER_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG .
+        docker build --cache-from $ECR/$PROJECT_NAME:$CACHE_DOCKER_TAG --build-arg NODE_ENV -t $ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG"

@@ -1,137 +1,45 @@
 <template>
   <div class="post">
     <div class="title">
-      <div class="title__title-wrapper">
-        <router-link class="title__board" :to="{
-          name: 'board',
-          params: { boardSlug }
-        }">
+      <router-link
+        class="title__board" :to="{
+        name: 'board',
+        params: { boardSlug }
+      }">
+        <i class="material-icons title__board--icon">arrow_back_ios</i>
+        <span class="title__board--name">
           {{ boardName }}
-        </router-link>
-
-        <span class="title__title">
-          <span class="title__topic" v-if="post.parent_topic">
-            [{{ post.parent_topic[`${$i18n.locale}_name`] }}]
-          </span>
-
-          {{ title }}
         </span>
-      </div>
-
-      <div class="title__buttons">
-        <component
-          class="button title__button title__button--wide"
-          :is="prevPost ? 'router-link' : 'span'"
-          :disabled="!prevPost"
-          :to="prevPost && { name: 'post', params: { postId: prevPost.id }, query: $route.query }"
-        >
-          <i class="material-icons">chevron_left</i>
-          {{ $t('previous') }}
-        </component>
-
-        <component
-          class="button title__button title__button--wide"
-          :is="nextPost ? 'router-link' : 'span'"
-          :disabled="!nextPost"
-          :to="nextPost && { name: 'post', params: { postId: nextPost.id }, query: $route.query }"
-        >
-          {{ $t('next') }}
-          <i class="material-icons">chevron_right</i>
-        </component>
-
-        <router-link
-          class="button title__button"
-          :to="context"
-        >
-          {{ $t('list') }}
-        </router-link>
-      </div>
+      </router-link>
+      <hr class="title__divider"/>
+      <span class="title__text">
+        <span class="title__topic" v-if="post.parent_topic">
+          [{{ post.parent_topic[`${$i18n.locale}_name`] }}]
+        </span>
+        {{ title }}
+        <span class="title__comments">
+          ({{ post.comment_count }})
+        </span>
+      </span>
+      <span class="title__detail">
+        <span class="title__date">
+          작성일 | {{ postCreatedAt }}
+        </span>
+        <span class="title__hit">
+          조회수 | {{ post.hit_count }}
+        </span>
+      </span>
     </div>
     <div class="metadata">
-      <img :src="userPictureUrl" class="post-author-profile-picture"/>
-      <div class="post-header">
-        <router-link :to="{
-          name: 'user', params: { username: postAuthorId }
-        }" class="post-header__author">
-          {{ postAuthor }}
-        </router-link>
-
-        <div class="post-header__time">
-          {{ postCreatedAt }}
-        </div>
-
-        <div class="post-header__status">
-          <LikeButton class="post-header__status-item" :item="post" votable @vote="$emit('vote', $event)"/>
-
-          <div class="post-header__status-item">
-            <span class="post-header__label">
-              {{ $t('comments') }}
-            </span>
-
-            {{ post.comment_count }}
-          </div>
-
-          <div class="post-header__status-item">
-            <span class="post-header__label">
-              {{ $t('views') }}
-            </span>
-
-            {{ post.hit_count }}
-          </div>
-
-          <span class="dropdown is-right is-hoverable">
-            <div class="post-header__status-item dropdown-trigger">
-              <button
-                class="post-header__dropdown-button"
-                aria-haspopup="true"
-                aria-controls="dropdownMenu">
-
-                <i class="material-icons">more_vert</i>
-              </button>
-            </div>
-            <div class="dropdown-menu" id="dropdownMenu" role="menu">
-              <div class="dropdown-content">
-                <div class="dropdown-item">
-                  <a class="dropdown-item" @click="$emit('archive')">
-                    {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
-                  </a>
-
-                  <template v-if="postAuthorId === userId">
-                    <router-link class="dropdown-item"
-                      :to="{
-                        name: 'write',
-                        params: {
-                          postId: post.id
-                        }
-                      }">
-                        {{ $t('edit') }}
-                    </router-link>
-
-                    <a @click="deletePost"
-                      class="dropdown-item">
-                      {{ $t('delete') }}
-                    </a>
-                  </template>
-                  <template v-else>
-                    <a class="dropdown-item" @click="$emit('report')">
-                      {{ $t('report') }}
-                    </a>
-
-                    <a class="dropdown-item" @click="$emit('block')">
-                      <template v-if="isBlocked">
-                        {{ $t('unblock') }}
-                      </template>
-                      <template v-else>
-                        {{ $t('block') }}
-                      </template>
-                    </a>
-                  </template>
-                </div>
-              </div>
-            </div>
-          </span>
-        </div>
-      </div>
+      <router-link :is="isAnonymous ? 'span' : 'router-link'"
+        :to="{
+        name: 'user', params: { username: postAuthorId }
+      }" class="author">
+        <img :src="userPictureUrl" class="author__picture"/>
+        <span class="author__nickname">{{ postAuthor }}</span>
+        <i class="author__icon material-icons" v-if="!isAnonymous">chevron_right</i>
+      </router-link>
+      <LikeButton class="metadata__like" :item="post" votable @vote="$emit('vote', $event)"/>
     </div>
     <hr class="divider" />
   </div>
@@ -139,7 +47,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { deletePost as apiDeletePost } from '@/api'
 import { date } from '@/helper.js'
 import LikeButton from '@/components/LikeButton.vue'
 
@@ -168,12 +75,6 @@ export default {
     postCreatedAt () {
       return date(this.post.created_at)
     },
-    nextPost () {
-      return this.post.side_articles && this.post.side_articles.after
-    },
-    prevPost () {
-      return this.post.side_articles && this.post.side_articles.before
-    },
     boardSlug () {
       return this.post.parent_board && this.post.parent_board.slug
     },
@@ -194,21 +95,12 @@ export default {
 
       return this.post.title
     },
-    isBlocked () {
-      return this.post.created_by && this.post.created_by.is_blocked
+    isAnonymous () {
+      return this.post.is_anonymous
     },
     ...mapGetters([ 'userId' ])
   },
 
-  methods: {
-    async deletePost () {
-      const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-delete'))
-      if (!result) return
-
-      await apiDeletePost(this.post.id)
-      this.$router.go(-1)
-    }
-  },
   components: {
     LikeButton
   }
@@ -256,46 +148,57 @@ en:
   font-size: 1.35rem;
   margin-bottom: 20px;
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   flex: 1;
-
-  &__title-wrapper {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-
-  &__topic {
-    margin-right: 10px;
-  }
+  font-weight: 500;
 
   &__board {
     color: var(--theme-400);
-    font-weight: 500;
-    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+
+    &--icon {
+      margin-right: -5px;
+      font-size: 1.35rem !important;
+      height: 18px;
+      width: 1.35rem;
+    }
+
+    &--name {
+      font-size: 18px;
+      line-height: 18px;
+    }
   }
 
-  &__button {
-    margin-left: 0.5rem;
+  &__text {
+    font-size: 18px;
+  }
+
+  &__divider {
+    height: 1px;
+    background-color: black;
+    margin: 10px 0;
+    width: 100%;
+  }
+
+  &__topic {
+    color: var(--theme-400)
+  }
+
+  &__comments {
+    color: var(--theme-400);
+    margin-left: 5px;
+  }
+
+  &__detail {
     font-size: .9rem;
+    margin-top: 12px;
     font-weight: 400;
-
-    &--wide {
-      padding: 0 15px;
-    }
   }
 
-  @include breakPoint(min) {
-    flex-direction: column;
-
-    &__title {
-      align-self: flex-start;
-    }
-
-    &__buttons {
-      align-self: flex-end;
-      margin-top: 20px;
-    }
+  &__date {
+    margin-right: 9px;
   }
 }
 
@@ -303,98 +206,45 @@ en:
   font-family: var(--font);
   color: var(--grey-700);
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
   position: relative;
+  font-size: 0.9rem;
 
-  .post-author-profile-picture {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    border-radius: 100%;
-    margin-right: 1rem;
-  }
-
-  .post-header {
+  .author {
     display: flex;
-    flex-direction: column;
-    flex: 1;
+    align-items: center;
 
-    &__author {
-      font-size: 15px;
-      font-weight: bold;
+    &__picture {
+      width: 24px;
+      height: 24px;
+      font-size: 24px;
+      object-fit: cover;
+      border-radius: 100%;
+      margin-right: 0.5rem;
     }
 
-    &__time {
-      color: var(--grey-600);
-      font-size: 13px;
-      font-weight: normal;
-      flex: 1;
-    }
-
-    &__status {
-      display: inline-flex;
-      align-self: flex-end;
-      justify-content: flex-end;
-      font-size: .95rem;
-      margin-top: -30px;
-    }
-
-    &__status-item {
-      font-size: 0.9rem;
-      display: inline-flex;
-      align-items: center;
-      margin: 10px;
-      white-space: nowrap;
-    }
-
-    &__label {
-      margin-right: 5px;
+    &__nickname {
+      line-height: 24px;
       font-weight: 500;
     }
 
-    &__dropdown-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border: none;
-      border-radius: 5px;
-      background: transparent;
-      width: 1.8rem;
-      height: 1.8rem;
-    }
-
-    .dropdown:hover {
-      .post-header__dropdown-button {
-        background: var(--grey-300);
-      }
+    &__icon {
+      height: 24px;
+      width: 24px;
+      font-size: 24px;
     }
   }
 
-  @include breakPoint(min) {
-    .post-header__status {
-      margin-top: 0;
-      flex-wrap: wrap;
-    }
+  &__like {
+    height: 24px;
+    font-size: 15px;
   }
 }
 
 .divider {
   margin-top: 10px;
-}
-
-.material-icons {
-  font-size: 16px;
-}
-
-.dropdown-content {
-  min-width: 40%;
-  float: right;
-  text-align: right;
-}
-
-.dropdown-item {
-  padding: 0.2rem 0.4rem
+  height: 1px;
+  background-color: #f0f0f0;
 }
 </style>

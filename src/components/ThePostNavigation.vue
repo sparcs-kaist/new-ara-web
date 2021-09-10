@@ -1,18 +1,8 @@
 <template>
-  <div class="post-navigation">
-    <hr />
-
-    <div class="post-navigation__posts" v-if="sideArticlesEnabled">
-      <BoardItem :post="post.side_articles.after" :fromQuery="$route.query" v-if="post.side_articles.after" />
-      <BoardItem class="post-navigation__post--current" :post="post" :fromQuery="$route.query" />
-      <BoardItem :post="post.side_articles.before" :fromQuery="$route.query" v-if="post.side_articles.before" />
-    </div>
-
-    <div class="post-navigation__all">
-      <router-link class="button" :to="context">
-        {{ $t('all') }}
-      </router-link>
-    </div>
+  <div class="post-navigation" v-if="sideArticlesEnabled">
+    <BoardItem :post="post.side_articles.after" :fromQuery="$route.query" v-if="post.side_articles.after" />
+    <BoardItem class="post-navigation__current" :post="post" :fromQuery="$route.query" />
+    <BoardItem :post="post.side_articles.before" :fromQuery="$route.query" v-if="post.side_articles.before" />
   </div>
 </template>
 
@@ -39,31 +29,17 @@ export default {
 }
 </script>
 
-<i18n>
-ko:
-  all: '전체보기'
-
-en:
-  all: 'All Posts'
-</i18n>
-
 <style lang="scss" scoped>
-.post-navigation__post--current {
-  background: var(--grey-100);
-}
-
 .post-navigation {
-  padding-top: 20px;
-
-  &__posts > * {
-    margin: 15px 0;
-    padding: 5px;
+  &__current {
+    background: #fbf2f1;
   }
-}
+  margin-top: 20px;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
 
-.post-navigation__all {
-  padding-top: 20px;
-  display: flex;
-  justify-content: flex-end;
+  & > * {
+    padding: 10px;
+  }
 }
 </style>

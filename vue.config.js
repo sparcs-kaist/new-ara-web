@@ -34,5 +34,12 @@ module.exports = {
         .end()
     }
   },
-  productionSourceMap: false
+  productionSourceMap: false,
+  devServer: {
+    proxy: {
+      '^/api': {
+        target: 'http://localhost:9000'
+      }
+    }
+  }
 }

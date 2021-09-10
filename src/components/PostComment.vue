@@ -4,7 +4,10 @@
       <img class="comment__profile" :src="profileImage" />
       <div class="comment__body">
         <div class="comment__header">
-          <router-link :to="{ name: 'user', params: { username: authorId } }" class="comment__author">
+          <router-link
+           :is="isAnonymous ? 'span' : 'router-link'"
+           :to="{ name: 'user', params: { username: authorId } }" class="comment__author"
+           :class="isAuthor ? 'author_red' : ''">
             {{ author }}
           </router-link>
 
@@ -22,7 +25,7 @@
             <div class="dropdown-menu" id="dropdownMenu" role="menu">
               <div class="dropdown-content">
                 <div class="dropdown-item">
-                  <template v-if="userNickname === author">
+                  <template v-if="isMine">
                     <a @click="editComment" class="dropdown-item">
                       {{ $t('edit') }}
                     </a>
@@ -69,6 +72,8 @@
       <PostCommentEditor
         :text="comment.content"
         :edit-comment="comment.id"
+        :post="post"
+        :anonymousNickname="anonymousNickname"
         @upload="updateComment"
         @close="isEditing = false"
       />
@@ -80,6 +85,8 @@
         is-reply-comment
         :key="replyComment.id"
         :comment="replyComment"
+        :post="post"
+        :anonymousNickname="anonymousNickname"
         @vote="$emit('vote')"
         @delete="$emit('delete')"
         @update="$emit('update', $event)"
@@ -88,7 +95,9 @@
 
       <div v-show="showReplyCommentInput">
         <PostCommentEditor
+          :post="post"
           :parent-comment="comment.id"
+          :anonymousNickname="anonymousNickname"
           ref="commentEditor"
           @upload="$emit('upload', $event)"
           @close="showReplyCommentInput = false"
@@ -110,7 +119,9 @@ export default {
   name: 'PostComment',
 
   props: {
+    post: { required: true },
     comment: { required: true },
+    anonymousNickname: { default: '' },
     isReplyComment: Boolean
   },
 
@@ -142,6 +153,22 @@ export default {
       }
 
       return this.comment.content
+    },
+    isMine () {
+      // return this.userNickname === this.comment.created_by.profile.nickname
+      return this.comment.is_mine
+    },
+    isAnonymous () {
+      if (this.comment.is_anonymous) {
+        return true
+      }
+      return false
+    },
+    isAuthor () {
+      if (!this.comment.is_anonymous) {
+        return false
+      }
+      return this.post.created_by.id === this.comment.created_by.id
     }
   },
 
@@ -189,7 +216,10 @@ export default {
 
     updateComment (event) {
       this.isEditing = false
-      this.$emit('update', event)
+      this.$emit('update', {
+        ...event,
+        is_mine: true
+      })
     }
   },
 
@@ -278,11 +308,11 @@ en:
   }
 
   &__profile {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     background: var(--grey-300);
-    margin-right: 24px;
+    margin-right: 12px;
   }
 
   &__body {
@@ -314,6 +344,7 @@ en:
 
   &__write {
     margin-left: 15px;
+    line-height: 25px;
   }
 
   &__reply-comments {
@@ -323,5 +354,13 @@ en:
       margin-left: 30px;
     }
   }
+
+  &__vote {
+    font-size: 15px;
+    height: 25px;
+  }
+}
+.author_red{
+  color: var(--theme-400);
 }
 </style>
