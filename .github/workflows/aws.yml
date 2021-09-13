@@ -24,6 +24,7 @@
 #    and best practices on handling the access key credentials.
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - dev
