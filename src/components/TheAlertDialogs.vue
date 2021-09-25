@@ -9,7 +9,7 @@
     </transition-group>
 
     <transition name="dialog-fade">
-      <div class="dialogs__backdrop" v-if="needBackdrop"></div>
+      <div class="dialogs__backdrop" v-if="needBackdrop" @click="dismiss(dialogs[0].id)"></div>
     </transition>
   </div>
 </template>
@@ -31,6 +31,12 @@ export default {
 
     needBackdrop () {
       return this.dialogs.length > 0
+    }
+  },
+
+  methods: {
+    dismiss (id) {
+      this.$store.commit('dialog/removeDialog', id)
     }
   },
 

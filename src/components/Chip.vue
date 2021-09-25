@@ -1,12 +1,10 @@
 <template>
-  <div class="chip">
-    <button
-      class="chip__button"
-      v-on:click="click()"
-      v-bind:class="{ chip__button__clicked : isClicked }">
-      <slot></slot>
-    </button>
-  </div>
+  <button
+    class="chip"
+    :class="{ chip__clicked : isClicked }"
+    @click="click()">
+    <slot></slot>
+  </button>
 </template>
 
 <script>
@@ -19,8 +17,7 @@ export default {
   },
   methods: {
     click () {
-      let notIsClicked = !this.isClicked
-      this.$emit('chip-click', notIsClicked, this.skey)
+      this.$emit('chip-click', !this.isClicked, this.skey)
     }
   }
 }
@@ -28,28 +25,29 @@ export default {
 
 <style lang="scss" scoped>
 .chip {
+  //float: left;
+  margin: 4px 3px;
+
+  cursor: pointer;
+  background: var(--grey-300);
+  border: none;
+  border-radius: 30px;
+  padding: 5px 9px 7px 9px;
+  transition: background .4s ease;
+
   display: flex;
-  justify-content: center;
-  float: left;
-  margin: 4px 5px 4px 5px;
+  align-items: center;
+  height: 30px;
+  font-size: 15px;
+  line-height: 30px;
 
-  &__button {
-    cursor: pointer;
-    background: var(--grey-300);
-    border: none;
-    border-radius: 30px;
-    padding: 3px 9px;
-    transition: background .4s ease;
-    font-size: 13px;
+  &:hover {
+    box-shadow: 0 2px 6px 0 rgba(51, 51, 51, 0.25);
+  }
 
-    &:hover {
-      box-shadow: 0 2px 6px 0 rgba(51, 51, 51, 0.25);
-    }
-
-    &__clicked {
-      background: var(--theme-400);
-      color: var(--background);
-    }
+  &__clicked {
+    background: var(--theme-400);
+    color: var(--background);
   }
 }
 </style>
