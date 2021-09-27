@@ -2,13 +2,10 @@
   <div class="post">
     <div class="title">
       <router-link
-        class="title__board" :to="{
-        name: 'board',
-        params: { boardSlug }
-      }">
+        class="title__board" :to="beforeBoard">
         <i class="material-icons title__board--icon">arrow_back_ios</i>
         <span class="title__board--name">
-          {{ boardName }}
+          {{ beforeBoardName }}
         </span>
       </router-link>
       <hr class="title__divider"/>
@@ -97,6 +94,23 @@ export default {
     },
     isAnonymous () {
       return this.post.is_anonymous
+    },
+    beforeBoard () {
+      if (this.$route.query.from_view === 'board') {
+        return {
+          name: 'board',
+          params: { boardSlug: this.boardSlug }
+        }
+      }
+      return {
+        name: 'archive'
+      }
+    },
+    beforeBoardName () {
+      if (this.$route.query.from_view === 'board') {
+        return this.boardName
+      }
+      return this.$t('archive')
     },
     ...mapGetters([ 'userId' ])
   },
