@@ -2,62 +2,6 @@
   <TheLayout class="my-info" :isColumnLayout="false">
     <template #aside-right>
       <div class="column is-one-quarter">
-        <div class="box profile-box">
-          <a class="setting-button" @click="mobileSettings = !mobileSettings">
-            <i class="material-icons">settings</i>
-          </a>
-
-          <div
-            class="profile-container"
-            :style="{ backgroundColor: user.pictureSrc ? 'white' : 'grey' }"
-          >
-            <img
-              v-if="user.pictureSrc"
-              :src="user.pictureSrc"
-              class="profile-container__image"
-              alt="profile image"
-            />
-            <label>
-              <input
-                type="file"
-                style="display: none;"
-                @change="pictureHandler"
-              >
-              <a class="profile-container__button">
-                <i class="material-icons">camera_alt</i>
-              </a>
-            </label>
-          </div>
-
-          <div class="nickname-container">
-            <div class="row" v-if="!isNicknameEditable">
-              <h1 class="nickname">{{ user.nickname }}</h1>
-              <a style="margin-left: 0.25rem;" @click="toggleNicknameInput">
-                <i class="material-icons" style="font-size: 1.2rem;">create</i>
-              </a>
-            </div>
-            <div v-else>
-              <input class="nickname nickname__input" v-model="newNickname">
-              <div class="nickname__buttons">
-                <button
-                  class="button"
-                  @click="toggleNicknameInput(false)"
-                  style="margin-right: 0.2rem;"
-                >
-                  {{ $t('cancel') }}
-                </button>
-                <button
-                  class="button is-link"
-                  :class="{ 'is-loading': updating }"
-                  @click="toggleNicknameInput(true)">
-                  {{ $t('save') }}
-                </button>
-              </div>
-            </div>
-            <h2 class="email">{{ user.email ? user.email : $t('empty-email') }}</h2>
-          </div>
-        </div>
-
         <div class="boxes" :class="{ 'boxes--mobile-open': mobileSettings }">
           <div class="mobile-header">
             <a class="mobile-header__back" @click="mobileSettings = false">
@@ -67,58 +11,175 @@
           </div>
 
           <div class="box">
-            <h1 class="box__title">{{ $t('post-settings')}}</h1>
-
-            <div class="setting-container">
-              <span>{{ $t('post-settings-sexual') }}</span>
-              <label class="checkbox">
-                <input v-model="user.sexual" type="checkbox">
-              </label>
-            </div>
-
-            <div class="setting-container">
-              <span>{{ $t('post-settings-social') }}</span>
-              <label class="checkbox">
-                <input v-model="user.social" type="checkbox">
-              </label>
-            </div>
-            <div class="setting-container__button">
-              <button
-                class="button"
-                :class="{ 'is-loading': updating }"
-                @click="updateSettings">
-                {{ $t('save') }}
-              </button>
+            <div class="redbox"></div>
+            <h1 class="box__title">
+              {{ $t('ranking-title') }}
+            </h1>
+            <!--<i18n tag="h2" path="ranking-subtitle" class="box__subtitle">
+              <template #user>{{ user.nickname }}</template>
+              <template #ranking>
+                <span class="ranking-text">{{ myRanking }}</span>
+              </template>
+            </i18n>-->
+            <div class="box__container">
+              <div class="ranking">
+                <div class="ranking__card">
+                  <div class="ranking__card--title">
+                    {{ $t('ranking-posts') }}
+                  </div>
+                  <div class="ranking__card--counts">
+                    {{ $t('ranking-posts-count', { count: user.num_articles }) }}
+                  </div>
+                </div>
+                <div class="ranking__card">
+                  <div class="ranking__card--title">
+                    {{ $t('ranking-comments') }}
+                  </div>
+                  <div class="ranking__card--counts">
+                    {{ $t('ranking-comments-count', { count: user.num_comments }) }}
+                  </div>
+                </div>
+                <div class="ranking__card">
+                  <div class="ranking__card--title">
+                    {{ $t('ranking-likes') }}
+                  </div>
+                  <div class="ranking__card--counts">
+                    {{ $t('ranking-likes-count', { count: user.num_positive_votes }) }}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           <div class="box">
-            <h1 class="box__title">
-              {{ $t('blocked-list') }}
-            </h1>
+            <div class="redbox"></div>
+            <h1 class="box__title">{{ $t('settings-title') }}</h1>
+            <h2 class="box__subtitle">
+              {{ $t('settings-subtitle') }}
+            </h2>
 
-            <ul v-if="blocks && blocks.results && blocks.results.length > 0">
-              <li v-for="blockedUser in blocks.results" :key="blockedUser.id">
-                <div class="block-user">
-                  <img
-                    :src="blockedUser.user.profile.picture"
-                    class="profile-image__block"
-                  />
-                  {{ blockedUser.user.profile.nickname }}
-                  <a style="margin-left: auto;" @click="deleteBlockedUser(blockedUser.id)">
-                    <i class="material-icons" style="font-size: 1.3rem;">close</i>
-                  </a>
+            <div class="box__container">
+              <div class="settings">
+                <div class="settings__container">
+                  <span class="label">{{ $t('settings-sexual') }}</span>
+                  <div @click="updateSetting('sexual')">
+                    <i class="material-icons toggle-on" v-if="user.sexual">
+                      toggle_on
+                    </i>
+                    <i class="material-icons" v-else>
+                      toggle_off
+                    </i>
+                  </div>
                 </div>
-              </li>
-            </ul>
-            <span v-else>{{ $t('blocked-list-empty') }}</span>
+                <div class="settings__container">
+                  <span class="label">{{ $t('settings-social') }}</span>
+                  <div @click="updateSetting('social')">
+                    <i class="material-icons toggle-on" v-if="user.social">
+                      toggle_on
+                    </i>
+                    <i class="material-icons" v-else>
+                      toggle_off
+                    </i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="box">
+            <div class="redbox"></div>
+            <h1 class="box__title">
+              {{ $t('blocked-title') }}
+            </h1>
+            <h2 class="box__subtitle">
+              {{ $t('blocked-subtitle', { user: user.nickname }) }}
+            </h2>
+
+            <div class="box__container">
+              <ul class="blocked" v-if="blocks && blocks.results && blocks.results.length > 0">
+                <li v-for="blockedUser in blocks.results" :key="blockedUser.id">
+                  <div class="blocked__user">
+                    <img
+                      :src="blockedUser.user.profile.picture"
+                      class="blocked__user--image"
+                    />
+                    <span class="blocked__user--nickname">
+                      {{ blockedUser.user.profile.nickname }}
+                    </span>
+                    <a class="blocked__user--remove" @click="deleteBlockedUser(blockedUser.id)">
+                      <i class="material-icons" style="font-size: 1.3rem;">close</i>
+                    </a>
+                  </div>
+                </li>
+              </ul>
+              <div v-else class="blocked-empty">
+                {{ $t('blocked-empty') }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </template>
     <!--Deleted 'is-half'.-->
     <div class="column ">
-      <div class="tabs is-boxed" style="margin: 0 0 0 -1px;">
+      <div class="profile-box">
+        <button class="button setting-button" @click="mobileSettings = !mobileSettings" v-if="!isNicknameEditable">
+          {{ $t('my-info') }}
+        </button>
+
+        <div
+          class="profile-container"
+          :style="{ backgroundColor: user.pictureSrc ? 'white' : 'grey' }"
+        >
+          <img
+            v-if="user.pictureSrc"
+            :src="user.pictureSrc"
+            class="profile-container__image"
+            alt="profile image"
+          />
+          <label>
+            <input
+              type="file"
+              style="display: none;"
+              @change="pictureHandler"
+            >
+            <a class="profile-container__button">
+              <i class="material-icons">camera_alt</i>
+            </a>
+          </label>
+        </div>
+
+        <div class="nickname-container">
+          <div class="row" v-if="!isNicknameEditable">
+            <h1 class="nickname">{{ user.nickname }}</h1>
+            <a style="margin-left: 0.5rem;" @click="toggleNicknameInput">
+              <i class="material-icons">create</i>
+            </a>
+          </div>
+          <div v-else class="nickname__direction">
+            <input class="input nickname nickname__input" v-model="newNickname">
+            <div class="nickname__buttons">
+              <button
+                class="button"
+                :class="{ 'is-loading': updating }"
+                style="margin-left: 0.8rem; color: var(--theme-400)"
+                @click="toggleNicknameInput(true)">
+                {{ $t('save') }}
+              </button>
+              <button
+                class="button"
+                @click="toggleNicknameInput(false)"
+                style="margin-left: 0.8rem;"
+              >
+                {{ $t('cancel') }}
+              </button>
+            </div>
+          </div>
+          <h2 class="email">{{ user.email ? user.email : $t('empty-email') }}</h2>
+        </div>
+      </div>
+
+      <div class="tabs" style="margin: 0 0 0 -1px;">
         <ul>
           <li :class="{ 'is-active': $route.query.board !== 'recent' && $route.query.board !== 'archive' }">
             <router-link :to="{ query: { board: 'my'} }">
@@ -137,12 +198,11 @@
           </li>
         </ul>
 
-        <SearchBar class="desktop-search is-hidden-touch" searchable small />
+        <SearchBar class="desktop-search is-hidden-touch" searchable long/>
       </div>
+      <hr class="tabs-divider">
       <!--Deleted aside-right and the contents of them have been re-located to above.-->
-      <div class="board-container">
-        <TheBoard v-if="posts" :title="boardTitle" :board="posts" :fromQuery="fromQuery" />
-      </div>
+      <TheBoard v-if="posts" :title="boardTitle" :board="posts" :fromQuery="fromQuery" simplify/>
     </div>
   </TheLayout>
 </template>
@@ -190,7 +250,10 @@ export default {
         picture: null,
         pictureSrc: '',
         sexual: null,
-        social: null
+        social: null,
+        num_articles: null,
+        num_comments: null,
+        num_positive_votes: null
       },
       posts: null,
       blocks: null,
@@ -232,6 +295,11 @@ export default {
         default:
           return this.$t('board-my')
       }
+    },
+
+    myRanking () {
+      // @TODO: api 미완성
+      return '\u{1F476}아기 넙죽이'
     }
   },
 
@@ -266,6 +334,28 @@ export default {
         })
       }
       this.updating = false && showUpdating
+    },
+    async updateSetting (key) {
+      if (key !== 'sexual' && key !== 'social') return
+
+      try {
+        const { data } = await updateUser(this.userId, {
+          ...this.user,
+          [key]: !this.user[key]
+        })
+        store.commit('setUserProfile', data)
+        this.user[key] = !this.user[key]
+        // Toast
+        this.$store.dispatch('dialog/toast', {
+          text: this.$t('success'),
+          type: 'confirm'
+        })
+      } catch (err) {
+        this.$store.dispatch('dialog/toast', {
+          text: this.$t('setting-change-failed') + (err.apierr ? '\n' + err.apierr : ''),
+          type: 'error'
+        })
+      }
     },
     async pictureHandler ({ target: { files: [ file ] } }) {
       let pictureSrc
@@ -312,7 +402,7 @@ export default {
       fetchBlocks()
     ], 'myinfo-failed-fetch')
 
-    const { userNickname, userEmail, userPicture, userConfig } = store.getters
+    const { userNickname, userEmail, userPicture, userConfig, userActivity } = store.getters
 
     next(vm => {
       vm.user = {
@@ -320,7 +410,10 @@ export default {
         email: userEmail,
         pictureSrc: userPicture,
         sexual: userConfig.sexual,
-        social: userConfig.social
+        social: userConfig.social,
+        num_articles: userActivity.articles,
+        num_comments: userActivity.comments,
+        num_positive_votes: userActivity.positiveVotes
       }
 
       vm.posts = posts
@@ -342,54 +435,67 @@ export default {
 
 <i18n>
 ko:
+  ranking-title: '나의 활동 기록'
+  ranking-subtitle: '{user} 님의 등급은 {ranking}입니다.'
+  ranking-posts: '게시글'
+  ranking-comments: '댓글'
+  ranking-likes: '받은 공감'
+  ranking-posts-count: '{count}개'
+  ranking-comments-count: '{count}개'
+  ranking-likes-count: '{count}회'
+  settings-title: '게시글 보기 설정'
+  settings-subtitle: '조회하실 게시글의 종류를 설정해주세요.'
+  settings-sexual: '성인글 보기'
+  settings-social: '정치글 보기'
+  blocked-title: '내가 차단한 유저 목록'
+  blocked-subtitle: '{user} 님이 차단하신 유저 목록입니다.'
+  blocked-empty: '차단한 유저가 없습니다.'
   empty-email: '이메일 주소가 없습니다.'
-  post-settings: '게시글 보기 설정'
-  post-settings-sexual: '성인글 보기 설정'
-  post-settings-social: '정치글 보기 설정'
+  save: '확인'
+  cancel: '취소'
+  my-info: '내 정보'
   board-my: '내가 쓴 글'
   board-recent: '최근 본 글'
   board-archive: '담아둔 글'
-  blocked-list: '내가 차단한 유저 목록'
-  blocked-list-empty: '차단한 유저가 없습니다.'
-  save: '저장'
-  cancel: '취소'
+  settings: '설정'
   setting-change-failed: '설정 변경 중 문제가 발생했습니다.'
   unblock-failed: '차단 유저 삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
-  document-title: 'Ara - 내정보'
   success: '저장되었습니다.'
-  settings : '설정'
+  document-title: 'Ara - 내정보'
 
 en:
+  ranking-title: 'My Activity'
+  ranking-subtitle: 'Your ranking is {ranking}'
+  ranking-posts: 'Posts'
+  ranking-comments: 'Comments'
+  ranking-likes: 'Likes'
+  ranking-posts-count: '{count}'
+  ranking-comments-count: '{count}'
+  ranking-likes-count: '{count}'
+  settings-title: 'Post settings'
+  settings-subtitle: 'Choose types of posts you want to view.'
+  settings-sexual: 'Sexual posts'
+  settings-social: 'Political posts'
+  blocked-title: 'Blocked users'
+  blocked-subtitle: 'Users that you blocked'
+  blocked-empty: 'There are no blocked users.'
   empty-email: 'No email address'
-  post-settings: 'Post settings'
-  post-settings-sexual: 'Show sexual posts'
-  post-settings-social: 'Show political posts'
+  save: 'Confirm'
+  cancel: 'Cancel'
+  my-info: 'My info'
   board-my: 'My posts'
   board-recent: 'Recently viewed'
   board-archive: 'Bookmarks'
-  blocked-list: 'Blocked users'
-  blocked-list-empty: 'There are no blocked users.'
-  save: 'Save'
-  cancel: 'Cancel'
+  settings : 'Settings'
   setting-change-failed: 'Failed while updating settings.'
   unblock-failed: 'Failed while unblocking user. Please try again after a while.'
-  document-title: 'Ara - MyInfo'
   success: 'Saved successful.'
-  settings : 'Settings'
+  document-title: 'Ara - MyInfo'
 </i18n>
 
 <style lang="scss" scoped>
 @import "@/theme.scss";
 
-/*h1{
-  word-break:keep-all;
-}
-
-span{
-  word-break:keep-all;
-}*/
-
-//Temporary-solution. But better then the code in the comment above.
 .column {
   min-width: 300px;
 }
@@ -405,9 +511,16 @@ span{
   }
 }
 
+.tabs-divider {
+  margin: 0;
+  background: #333333;
+}
+
 .tabs {
   height: 3rem;
   overflow: visible;
+  font-size: 18px;
+  padding-bottom: 8px;
 
   ul {
     align-items: stretch;
@@ -416,60 +529,32 @@ span{
     overflow-x: auto;
   }
 
+  li:first-child > a{
+    padding-left: 0.1rem;
+  }
+
+  li:last-child > a{
+    padding-right: 0.1rem;
+  }
+
+  @include breakPoint(mobile) {
+    font-size: 16px;
+    padding-bottom: 0;
+  }
+
   li {
     display: flex;
     align-items: stretch;
     border: none;
-    border-radius: 6px 6px 0 0;
-    transition: background var(--duration) var(--background-timing);
+    a{
+      color: var(--grey-400);
+      padding: 0.8rem;
+    }
 
     &.is-active {
-      box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.16);
-
-      &:hover {
-        background: transparent;
+      a{
+        color: var(--theme-400);
       }
-
-      a:hover {
-        background: #fafafa;
-      }
-    }
-
-    &:hover {
-      background: whitesmoke;
-    }
-
-    a {
-      border: none;
-      border-radius: 6px 6px 0 0;
-      position: relative;
-      z-index: 1;
-      transition: background all var(--duration) var(--background-timing);
-
-      &:hover {
-        background: transparent;
-      }
-    }
-  }
-}
-
-.box {
-  padding: 40px;
-  background: #fff;
-  box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.16);
-
-  &__title {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin-bottom: 1rem;
-  }
-
-  @include breakPoint(mobile) {
-    padding: 20px;
-
-    &__title {
-      font-size: 1rem;
-      margin-bottom: 2rem;
     }
   }
 }
@@ -501,6 +586,147 @@ span{
   }
 }
 
+.box {
+  padding: 5px;
+  background-color: transparent;
+  box-shadow: none;
+  .redbox {
+    background-color: var(--theme-400);
+    height: 5px;
+    width: 10%;
+  }
+  &__title {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 10px 0;
+  }
+  &__subtitle {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+  &__container {
+    background-color: white;
+    box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.16);
+    border-radius: 10px;
+    padding: 10px;
+    color: black;
+  }
+  @include breakPoint(mobile) {
+    padding: 10px;
+
+    &__title {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+.ranking {
+  display: flex;
+  flex-flow: row;
+
+  &__card {
+    flex: 1;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    background-color: white;
+    border-left: 1px solid #a9a9a9;
+    &:first-child {
+      border: none;
+    }
+
+    &--title {
+      font-size: 12px;
+      margin: 10px 0;
+    }
+    &--counts {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.ranking-text {
+  color: var(--theme-400);
+}
+
+.settings {
+  padding: 15px;
+  .material-icons {
+    color: #a9a9a9;
+    cursor: pointer;
+  }
+
+  .toggle-on {
+    color: var(--theme-400);
+  }
+
+  .label {
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  &__container {
+    padding: 8px 8px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &__button {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 1rem;
+    }
+
+    .material-icons {
+      font-size: 30px;
+    }
+  }
+}
+
+.blocked {
+  padding: 0 10px;
+  font-size: 12px;
+
+  &__user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+
+    &--image {
+      width: 2rem;
+      height: 2rem;
+      margin-right: 0.5rem;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    &--nickname {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &--remove {
+      margin-left: auto;
+      i {
+        height: 2rem;
+        line-height: 2rem;
+      }
+    }
+  }
+}
+
+.blocked-empty {
+  padding: 10px;
+  font-size: 12px;
+}
+
 .row {
   display: flex;
   align-items: center;
@@ -508,8 +734,11 @@ span{
 
 .profile-box {
   position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 2rem;
   @include breakPoint(mobile) {
-    display: flex;
     flex-wrap: wrap;
   }
 }
@@ -519,8 +748,9 @@ span{
   display: inline-flex;
   width: 6rem;
   height: 6rem;
-  margin-bottom: 0.5rem;
+  flex-shrink: 0;
   border-radius: 50%;
+  margin-right: 2rem;
 
   &__image {
     width: 6rem;
@@ -547,13 +777,13 @@ span{
   }
 
   @include breakPoint(mobile) {
-    width: 3rem;
-    height: 3rem;
-    margin-right: 2rem;
+    width: 4rem;
+    height: 4rem;
+    margin-right: 1rem;
 
     &__image {
-      width: 3rem;
-      height: 3rem;
+      width: 4rem;
+      height: 4rem;
     }
 
     &__button {
@@ -574,9 +804,16 @@ span{
     &__input {
       margin-left: 2px;
     }
+
+    &__direction{
+      display: flex;
+      flex-direction: column !important;
+    }
   }
 
   &__input {
+    font-size: initial;
+    font-weight: normal;
     width: 100%;
     margin-bottom: 0.3rem;
   }
@@ -588,6 +825,11 @@ span{
     justify-content: flex-end;
     margin-bottom: 0.3rem;
   }
+
+  &__direction{
+    display: flex;
+    flex-direction: row;
+  }
 }
 
 .nickname-container {
@@ -597,6 +839,11 @@ span{
     justify-content: center;
     width: 0;
     flex: 1;
+  }
+
+  .material-icons {
+    font-size: 1.3rem;
+    line-height: 1.6;
   }
 }
 
@@ -610,10 +857,7 @@ span{
   top: 8px;
   right: 10px;
   display: none;
-
-  .material-icons {
-    font-size: 1.3rem;
-  }
+  color: var(--theme-400);
 
   @include breakPoint(mobile) {
     display: inline;
@@ -653,8 +897,6 @@ span{
 }
 
 .desktop-search {
-  margin-top: -10px;
-
   &::v-deep .input {
     background: #fff;
     box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.16);

@@ -120,11 +120,11 @@ export default {
           members: ['PM:story:김동화', 'PM:kyeome:김태겸', 'kanon:김민수', 'apple:김영석', 'zealot:한승현', 'undead:이창원', 'mandu:황태현', 'samjo:조성원', 'suckzoo:홍석주', 'luan:이상국', 'george:조형준', 'jara:이문영']},
         {
           name: '뉴아라',
-          period: '2017~2020',
+          period: '2017~On-going',
           remark: '',
           desc: "2020년 11월 출범한 뉴아라는 '가장 정확한 정보를 가장 신속하게'라는 슬로건으로 10년간 이용되던 Arara 를 새롭게 리뉴얼한 프로젝트입니다. " +
               '뉴아라에서는 카이스트 포탈공지를 아라에서도 제공하기 시작했고, 기존 ARA의 게시물과 댓글을 모두 이전시켰음에도 빠른 속도를 유지했으며, elasticsearch를 도입해 발전된 검색기능을 선보였습니다. 또한 아라의 아이덴티티가 잘 드러나도록 홈페이지 디자인을 개선하였습니다.',
-          members: ['PM:victory:김주연', 'PM:leo:정진우', 'PM:yujingaya:김유진', 'PM:swan:지수환', 'PM:raon:김강인', 'nenw:김요한', 'fi:김도현', 'ivy:이융희', 'jessie:윤지수', 'james:문재호', 'jungnoh:노정훈', 'triangle:주예준', 'hanski:한석휘', 'doolly:김제윤', 'idev:이재현', 'busan:안재웅', 'kidevelop:함종현', 'holymolly:김태원', 'gunwoo:김건우', 'DS:stitch:이채영', 'DS:zero:임현정', 'DS:luny:김나영', 'todo:김동관', 'his:황인승', 'rongrong:이승민', 'leesia:강현우', 'seol:설윤아', 'youns:최윤서', 'appleseed:강찬규']
+          members: ['PM:jessie:윤지수', 'PM:victory:김주연', 'PM:leo:정진우', 'PM:yujingaya:김유진', 'PM:swan:지수환', 'PM:raon:김강인', 'ivy:이융희', 'jungnoh:노정훈', 'water:김윤수', 'triangle:주예준', 'hanski:한석휘', 'idev:이재현', 'DS:cheddar:최다은', 'doolly:김제윤', 'nenw:김요한', 'fi:김도현', 'james:문재호', 'busan:안재웅', 'kidevelop:함종현', 'holymolly:김태원', 'gunwoo:김건우', 'DS:stitch:이채영', 'DS:zero:임현정', 'DS:luny:김나영', 'todo:김동관', 'his:황인승', 'rongrong:이승민', 'leesia:강현우', 'seol:설윤아', 'youns:최윤서', 'appleseed:강찬규']
         }
       ],
       selected: 9,
