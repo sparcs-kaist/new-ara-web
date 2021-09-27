@@ -102,23 +102,23 @@ export default {
           params: { boardSlug: this.boardSlug }
         }
       }
-      if (this.$route.query.from_view === 'all') {
+      if (this.$route.query.from_view === 'scrap') {
         return {
-          name: 'board'
+          name: 'archive'
         }
       }
       return {
-        name: 'archive'
+        name: 'board'
       }
     },
     beforeBoardName () {
       if (this.$route.query.from_view === 'board') {
         return this.boardName
       }
-      if (this.$route.query.from_view === 'all') {
-        return this.$t('all')
+      if (this.$route.query.from_view === 'scrap') {
+        return this.$t('archive')
       }
-      return this.$t('archive')
+      return this.$t('all')
     },
     ...mapGetters([ 'userId' ])
   },
