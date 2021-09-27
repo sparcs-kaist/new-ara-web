@@ -107,10 +107,10 @@ export default {
       }
     },
     beforeBoardName () {
-      if (this.$route.query.from_view === 'scrap') {
-        return this.$t('archive')
+      if (this.$route.query.from_view === 'board') {
+        return this.boardName
       }
-      return this.boardName
+      return this.$t('archive')
     },
     ...mapGetters([ 'userId' ])
   },
