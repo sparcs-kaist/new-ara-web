@@ -1,9 +1,14 @@
 <template>
-  <div
-    class="notification-container">
+  <router-link
+  :to="{
+    name: 'post',
+    params: { postId: notification.related_article.id },
+    query: fromQuery
+  }"
+  class="notification-container">
     <h3 id="title">{{ notification.title }}</h3>
     <p id="content">{{ notification.content }}</p>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -11,6 +16,11 @@ export default {
   name: 'notification',
   props: {
     notification: { required: true }
+  },
+  computed: {
+    fromQuery () {
+      return { from_view: "all" }
+    }
   }
 }
 </script>
