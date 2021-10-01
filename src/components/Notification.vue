@@ -19,7 +19,7 @@ export default {
   },
   computed: {
     fromQuery () {
-      return { from_view: "all" }
+      return { from_view: 'all' }
     }
   }
 }
