@@ -22,8 +22,8 @@ export const authGuard = async (to, from, next) => {
       } else {
         // @TODO: 서버장애 페이지..?
       }
+      next()
     }
-    next()
   }
 }
 
