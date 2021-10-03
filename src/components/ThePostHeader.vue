@@ -102,15 +102,23 @@ export default {
           params: { boardSlug: this.boardSlug }
         }
       }
+      if (this.$route.query.from_view === 'scrap') {
+        return {
+          name: 'archive'
+        }
+      }
       return {
-        name: 'archive'
+        name: 'board'
       }
     },
     beforeBoardName () {
       if (this.$route.query.from_view === 'board') {
         return this.boardName
       }
-      return this.$t('archive')
+      if (this.$route.query.from_view === 'scrap') {
+        return this.$t('archive')
+      }
+      return this.$t('all')
     },
     ...mapGetters([ 'userId' ])
   },
@@ -136,6 +144,7 @@ ko:
   block: '사용자 차단'
   unblock: '사용자 차단해제'
   confirm-delete: '정말로 삭제하시겠습니까?'
+  all: '모아보기'
 
 en:
   archive: 'Bookmark'
@@ -151,6 +160,7 @@ en:
   block: 'Block User'
   unblock: 'Unblock User'
   confirm-delete: 'Are you really want to delete this post?'
+  all: 'All'
 </i18n>
 
 <style lang="scss" scoped>
