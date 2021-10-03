@@ -44,13 +44,13 @@ export default {
       let profileImage = this.post.created_by.profile.picture
       if (this.post.is_anonymous) {
         // Get my anonymous nickname from post's comments
-        for (var comment of this.post.comments) {
+        for (const comment of this.post.comments) {
           if (comment.is_mine) {
             nickname = comment.created_by.username
             profileImage = comment.created_by.profile.picture
             return {nickname, profileImage}
           }
-          for (var replyComment in comment.comments) {
+          for (const replyComment of comment.comments) {
             if (replyComment.is_mine) {
               nickname = replyComment.created_by.username
               profileImage = replyComment.created_by.profile.picture
