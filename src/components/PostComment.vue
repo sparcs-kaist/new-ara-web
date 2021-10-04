@@ -73,7 +73,7 @@
         :text="comment.content"
         :edit-comment="comment.id"
         :post="post"
-        :anonymousNickname="anonymousNickname"
+        :anonymousProfile="anonymousProfile"
         @upload="updateComment"
         @close="isEditing = false"
       />
@@ -86,7 +86,7 @@
         :key="replyComment.id"
         :comment="replyComment"
         :post="post"
-        :anonymousNickname="anonymousNickname"
+        :anonymousProfile="anonymousProfile"
         @vote="$emit('vote')"
         @delete="$emit('delete')"
         @update="$emit('update', $event)"
@@ -97,7 +97,7 @@
         <PostCommentEditor
           :post="post"
           :parent-comment="comment.id"
-          :anonymousNickname="anonymousNickname"
+          :anonymousProfile="anonymousProfile"
           ref="commentEditor"
           @upload="$emit('upload', $event)"
           @close="showReplyCommentInput = false"
@@ -121,7 +121,7 @@ export default {
   props: {
     post: { required: true },
     comment: { required: true },
-    anonymousNickname: { default: '' },
+    anonymousProfile: {required: true},
     isReplyComment: Boolean
   },
 

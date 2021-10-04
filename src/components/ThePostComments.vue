@@ -2,7 +2,7 @@
   <div id="comments" class="comments">
     <div class="comments__title">{{ $t('comments') }} {{ commentCount }}</div>
 
-    <div class="comments__container comments__container--empty" v-if="commentCount == 0">
+    <div class="comments__container comments__container--empty" v-if="!comments">
       {{ $t('no-comment') }}
     </div>
     <div class="comments__container" v-else>
@@ -11,7 +11,7 @@
         :key="comment.id"
         :comment="comment"
         :post="post"
-        :anonymousNickname="anonymousNickname"
+        :anonymousProfile="anonymousProfile"
         @update="$emit('update', $event)"
         @upload="$emit('upload', $event)"
         @vote="$emit('refresh')"
@@ -20,7 +20,7 @@
       />
     </div>
 
-    <PostCommentEditor :parentArticle="post.id" :post="post" :anonymousNickname="anonymousNickname" @upload="$emit('upload', $event)"/>
+    <PostCommentEditor :parentArticle="post.id" :post="post" :anonymousProfile="anonymousProfile" @upload="$emit('upload', $event)"/>
   </div>
 </template>
 <script>
@@ -39,24 +39,27 @@ export default {
       if (!this.post || !this.comments) return 0
       return this.post.comment_count
     },
-    anonymousNickname () {
+    anonymousProfile () {
       let nickname = this.$t('anonymous')
+      let profileImage = this.post.created_by.profile.picture
       if (this.post.is_anonymous) {
         // Get my anonymous nickname from post's comments
-        for (var comment of this.post.comments) {
+        for (const comment of this.post.comments) {
           if (comment.is_mine) {
             nickname = comment.created_by.username
-            return nickname
+            profileImage = comment.created_by.profile.picture
+            return {nickname, profileImage}
           }
-          for (var replyComment in comment.comments) {
+          for (const replyComment of comment.comments) {
             if (replyComment.is_mine) {
               nickname = replyComment.created_by.username
-              return nickname
+              profileImage = replyComment.created_by.profile.picture
+              return {nickname, profileImage}
             }
           }
         }
       }
-      return nickname
+      return {nickname, profileImage}
     }
   },
   components: {
