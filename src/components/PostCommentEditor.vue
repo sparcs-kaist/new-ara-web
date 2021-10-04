@@ -3,10 +3,10 @@
     <label class="textarea comment-editor__input">
       <div class="comment-editor__author">
         <img :src="userPicture" class="comment-editor__picture" v-if="!isAnonymous"/>
-        <img :src="this.post.created_by.profile.picture" class="comment-editor__picture" v-else/>
+        <img :src="this.anonymousProfile.profileImage" class="comment-editor__picture" v-else/>
         <span class="comment-editor__name" v-if="!isAnonymous">{{ userNickname }}</span>
         <span class="comment-editor__name author_red" v-else-if="isMine">{{$t('author')}}</span>
-        <span class="comment-editor__name" v-else>{{ anonymousNickname }}</span>
+        <span class="comment-editor__name" v-else>{{ anonymousProfile.nickname }}</span>
       </div>
       <div class="comment-editor__content">
         <textarea
@@ -79,9 +79,8 @@ export default {
       default: null
     },
 
-    anonymousNickname: {
-      type: String,
-      default: ''
+    anonymousProfile: {
+      default: null
     }
   },
 
