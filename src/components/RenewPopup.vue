@@ -43,12 +43,6 @@
               <i class="material-icons">chevron_right</i>
             </span>
           </router-link>
-          <a class="old-ara-link" href="https://ara.kaist.ac.kr/">
-            {{ $t("old_ara_link") }}
-            <span class="icon" style="margin-left: 10px;">
-              <i class="material-icons">chevron_right</i>
-            </span>
-          </a>
         </div>
 
         <a
