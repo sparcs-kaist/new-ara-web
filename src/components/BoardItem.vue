@@ -10,8 +10,6 @@
     <div class="board-item__body">
       <div class="board-item__image-wrapper">
         <img class="board-item__image" :src="post.created_by.profile.picture">
-        <div class="board-item__read-status" v-if="post.read_status === 'N'"></div>
-        <div class="board-item__read-status update-color" v-else-if="post.read_status === 'U'"></div>
       </div>
 
       <div class="board-item__content">
@@ -26,6 +24,7 @@
           <div class="board-item__comment" v-if="post.comment_count !== 0">
             ({{ elideText(post.comment_count) }})
           </div>
+          <div class="board-item__read-status" v-if="post.read_status === 'N' || post.read_status === 'U'"> {{post.read_status === 'N' ? 'new' : 'up'}} </div>
         </div>
 
         <div class="board-item__subtitle">
@@ -132,20 +131,16 @@ en:
   }
 
   &__read-status{
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
+    height: 15px;
+    border-radius: 8px;
     background-color: var(--theme-400);
-    display: inline-block;
+    color: white;
+    font-size: 10px;
+    padding: 0 5px;
+    line-height: 1.1;
     border: 1px solid white;
-    position: absolute;
     left: auto;
     right: 0;
-
-  }
-
-  .update-color{
-    background-color: limegreen !important;
   }
 
   &__content {
