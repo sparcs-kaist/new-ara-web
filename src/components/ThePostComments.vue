@@ -2,7 +2,7 @@
   <div id="comments" class="comments">
     <div class="comments__title">{{ $t('comments') }} {{ commentCount }}</div>
 
-    <div class="comments__container comments__container--empty" v-if="commentCount == 0">
+    <div class="comments__container comments__container--empty" v-if="!comments">
       {{ $t('no-comment') }}
     </div>
     <div class="comments__container" v-else>

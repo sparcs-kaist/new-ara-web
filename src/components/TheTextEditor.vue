@@ -449,6 +449,7 @@ en:
 </style>
 
 <style lang="scss">
+@import '@/theme.scss';
 .editor--editable {
   .editor-content {
     img.ProseMirror-selectednode {
@@ -458,6 +459,10 @@ en:
 
   .ProseMirror {
     min-height: 400px;
+
+    @include breakPoint(mobile) {
+      min-height: 160px;
+    }
   }
 
   p.is-empty:first-child::before {

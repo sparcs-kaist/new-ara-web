@@ -163,7 +163,7 @@ export default {
     cancel: 'Cancel'
     report: 'Report'
     hate_speech: 'Hate Speech'
-    unauthorized_sales_articles: 'Unauthorized Sales Articles'
+    unauthorized_sales_articles: 'Unauthorized Sales'
     spam: 'Spam'
     fake_information: 'Fake Information'
     defamation: 'Defamation'
@@ -172,6 +172,8 @@ export default {
 </i18n>
 
 <style lang="scss" scoped>
+@import "@/theme.scss";
+
 .alert-dialog {
   position: fixed;
   top: 50%;
@@ -232,9 +234,11 @@ export default {
 
   &__chips {
     margin-bottom: 30px;
-    //display: flex;
-    //flex-wrap: wrap;
-    //justify-content: center;
+    min-width: 340px;
+
+    @media (max-width: 370px) {
+      min-width: 290px;
+    }
   }
 
   &__chip {
