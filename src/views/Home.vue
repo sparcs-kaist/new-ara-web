@@ -31,8 +31,6 @@
         {{ $t('ara-notice') }}
       </SmallBoard>
     </div>
-
-    <RenewPopup />
   </TheLayout>
 </template>
 
@@ -45,7 +43,6 @@ import SmallBoard from '@/components/SmallBoard.vue'
 import TheHomeSearchbar from '@/components/TheHomeSearchbar.vue'
 import TheOrganizations from '@/components/TheOrganizations.vue'
 import TheLayout from '@/components/TheLayout.vue'
-import RenewPopup from '@/components/RenewPopup.vue'
 
 export default {
   name: 'home',
@@ -90,7 +87,6 @@ export default {
     })
   },
   components: {
-    RenewPopup,
     SmallBoard,
     TheHomeSearchbar,
     TheOrganizations,
