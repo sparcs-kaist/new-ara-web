@@ -20,10 +20,10 @@
       </span>
       <span class="title__detail">
         <span class="title__date">
-          작성일 | {{ postCreatedAt }}
+          작성일 · {{ postCreatedAt }}
         </span>
         <span class="title__hit">
-          조회수 | {{ post.hit_count }}
+          조회수 · {{ post.hit_count }}
         </span>
       </span>
     </div>
@@ -46,13 +46,13 @@
 import { mapGetters } from 'vuex'
 import { date } from '@/helper.js'
 import LikeButton from '@/components/LikeButton.vue'
+import i18n from '@/i18n'
 
 export default {
   name: 'the-post-header',
   props: {
     post: { required: true },
-    context: { type: Object },
-    showHidden: { type: Boolean }
+    context: { type: Object }
   },
   data () {
     return {
@@ -79,16 +79,7 @@ export default {
       return this.post.parent_board && this.post.parent_board[`${this.$i18n.locale}_name`]
     },
     title () {
-      if (this.post.is_hidden) {
-        if (this.showHidden) {
-          return this.post.hidden_title
-        }
-
-        return this.post.why_hidden
-          .slice(0, 1)
-          .map(reason => reason.detail)
-          .join(' ')
-      }
+      if (this.post.is_hidden) return i18n.t(this.post.why_hidden[0])
 
       return this.post.title
     },

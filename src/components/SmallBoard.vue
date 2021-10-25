@@ -16,18 +16,19 @@
     v-for="post in listitems"
     :key="post.id"
     class="board__post post">
-      <h3 class="post__title-wrapper">
-        <router-link class="post__title"
+      <h3 class="post__title-wrapper" :class="post.is_hidden ? 'has-text-grey-light' : ''">
+        <router-link :title="post.title"
+        class="post__title"
         :to="{
           name: 'post',
           params: { postId: post.id },
           query: fromQuery
         }">
-          {{ post.title }}
+          {{ title(post) }}
         </router-link>
       </h3>
 
-      <div class="post__username">
+      <div class="post__username" :class="post.is_hidden ? 'has-text-grey-light' : ''">
         {{ post.created_by.profile.nickname }}
       </div>
     </div>
@@ -35,6 +36,8 @@
 </template>
 
 <script>
+import i18n from '@/i18n'
+
 export default {
   name: 'small-board',
   props: {
@@ -56,6 +59,15 @@ export default {
 
     href: {
       type: Object
+    }
+  },
+  methods: {
+    title (post) {
+      if (post.is_hidden) {
+        return i18n.t(post.why_hidden[0])
+      }
+
+      return post.title
     }
   }
 }
@@ -165,8 +177,8 @@ export default {
     }
 
     &__title {
-      color: var(--text);
       font-size: 16px;
+      color: inherit;
       @include breakPoint(mobile) {
         font-size: 15px;
       }
@@ -175,6 +187,7 @@ export default {
     &__title-wrapper {
       text-overflow: ellipsis;
       overflow: hidden;
+      color: var(--text);
     }
   }
 

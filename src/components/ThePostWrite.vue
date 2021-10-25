@@ -160,7 +160,6 @@ export default {
 
     initialPostContent () {
       if (!this.post) return null
-      if (this.post.is_hidden) return this.post.hidden_content
 
       return this.post.content
     },

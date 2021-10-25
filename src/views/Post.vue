@@ -7,7 +7,6 @@
     <ThePostHeader
       :post="post"
       :context="context"
-      :showHidden="showHidden"
       @archive="archive"
       @report="report"
       @vote="vote"
@@ -15,12 +14,11 @@
 
     <ThePostDetail
       :post="post"
-      :showHidden="showHidden"
       @archive="archive"
       @block="block"
       @report="report"
       @vote="vote"
-      @show-hidden="showHidden = true"
+      @show-hidden="overrideHidden"
     />
 
     <ThePostComments
@@ -53,8 +51,7 @@ export default {
   },
   data () {
     return {
-      post: {},
-      showHidden: false
+      post: {}
     }
   },
   computed: {
@@ -185,6 +182,10 @@ export default {
     },
 
     async report () {
+      if (this.post.can_override_hidden === false) {
+        this.$store.dispatch('dialog/toast', this.$t('report-unavailable'))
+        return
+      }
       const {result, selection} = await this.$store.dispatch('dialog/report', this.$t('confirm-report'))
       if (!result) return
       // What can be type_report? : violation_of_code, impersonation, insult, spam, others.
@@ -221,6 +222,11 @@ export default {
       }
 
       await this.refresh()
+    },
+
+    async overrideHidden () {
+      this.post = await fetchPost({ postId: this.postId, context: {...this.$route.query, override_hidden: true} })
+      document.title = `Ara - ${this.post.title}`
     }
   },
 
@@ -228,17 +234,18 @@ export default {
     const [ post ] = await fetchWithProgress([
       fetchPost({ postId, context: query })
     ], 'post-failed-fetch')
-    document.title = `Ara - ${post.title}`
-    next(vm => { vm.post = post })
+    next(vm => {
+      vm.post = post
+      document.title = `Ara - ${post.is_hidden ? vm.$t('hidden-post') : post.title}`
+    })
   },
 
   async beforeRouteUpdate ({ params: { postId }, query }, from, next) {
     const [ post ] = await fetchWithProgress([
       fetchPost({ postId, context: query })
     ], 'post-failed-fetch')
-    document.title = `Ara - ${post.title}`
+    document.title = `Ara - ${post.is_hidden ? this.$t('hidden-post') : post.title}`
     this.post = post
-    this.showHidden = false
     next()
   },
 
@@ -265,6 +272,8 @@ ko:
   confirm-block: '정말로 차단하시겠습니까?'
   nonvotable-myself: '본인 게시물에는 좋아요를 누를 수 없습니다!'
   already-reported: '이미 신고되었습니다.'
+  hidden-post: '숨겨진 글'
+  report-unavailable: '신고가 불가능한 글입니다!'
 
 en:
   archived: 'Successfully added to your archive!'
@@ -276,5 +285,7 @@ en:
   confirm-block: 'Are you really want to block this user?'
   nonvotable-myself: 'You cannot vote for your post!'
   already-reported: "You've already reported this article."
+  hidden-post: 'Hidden post'
+  report-unavailable: 'You cannot report this post!'
 
 </i18n>
