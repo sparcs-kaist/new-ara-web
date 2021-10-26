@@ -32,15 +32,22 @@
       />
 
       <TextEditor :editable="false" :content="content" v-if="content" ref="editor" />
-      <button v-if="post.is_hidden && !showHidden" class="button" @click="$emit('show-hidden')">
-        {{ $t('show-hidden') }}
-      </button>
+      <div class="hidden-container" v-if="post.is_hidden">
+        <div class="hidden-container__frame">
+          <i class="material-icons">{{ hidden_icon }}</i>
+        </div>
+        <div v-html="hiddenReason"></div>
+        <button v-if="post.can_override_hidden" class="button hidden-container__button" @click="$emit('show-hidden')">
+          {{ $t('show-hidden') }}
+        </button>
+
+      </div>
     </div>
 
     <div class="post__footer">
       <LikeButton class="post__like" :item="post" votable @vote="$emit('vote', $event)" />
       <div class="post__buttons">
-        <template v-if="isMine">
+        <template v-if="isMine && (post.can_override_hidden !== false)">
           <button class="button" @click="deletePost">
             <i class="like-button__icon material-icons-outlined">
               delete
@@ -92,12 +99,12 @@ import LikeButton from '@/components/LikeButton.vue'
 import TextEditor from '@/components/TheTextEditor.vue'
 import ThePostBookmark from '@/components/ThePostBookmark.vue'
 import { mapGetters } from 'vuex'
+import i18n from '@/i18n'
 
 export default {
   name: 'the-post-detail',
   props: {
-    post: { required: true },
-    showHidden: { type: Boolean }
+    post: { required: true }
   },
   data () {
     return {
@@ -118,14 +125,6 @@ export default {
       return this.post && this.post.id
     },
     content () {
-      if (this.post.is_hidden) {
-        if (this.showHidden) {
-          return this.post.hidden_content
-        }
-        return this.post.why_hidden
-          .map(reason => reason.detail)
-          .join(' ')
-      }
       return this.post.content
     },
     isBlocked () {
@@ -133,6 +132,25 @@ export default {
     },
     isMine () {
       return this.post && this.post.is_mine
+    },
+    hiddenReason () {
+      let title = `<div class="has-text-weight-bold"> ${this.post.why_hidden.map(v => i18n.t(v)).join('<br>')}</div>`
+      let subtitile = this.post.can_override_hidden ? `<div>(${this.$t('hidden-notice-' + this.post.why_hidden[0])})</div>` : ''
+      return title + subtitile
+    },
+    hidden_icon () {
+      switch (this.post.why_hidden[0]) {
+        case 'ADULT_CONTENT':
+          return 'visibility_off'
+        case 'SOCIAL_CONTENT':
+          return 'visibility_off'
+        case 'REPORTED_CONTENT':
+          return 'warning'
+        case 'BLOCKED_USER_CONTENT':
+          return 'voice_over_off'
+        default:
+          return 'help_outline'
+      }
     },
     ...mapGetters([ 'userId' ])
   },
@@ -182,6 +200,9 @@ ko:
   more: '{author} 님의 게시글 더 보기'
   show-hidden: '숨김글 보기'
   confirm-delete: '정말로 삭제하시겠습니까?'
+  hidden-notice-ADULT_CONTENT: '게시물 보기 설정은 마이페이지에서 수정할 수 있습니다.'
+  hidden-notice-SOCIAL_CONTENT: '게시물 보기 설정은 마이페이지에서 수정할 수 있습니다.'
+  hidden-notice-BLOCKED_USER_CONTENT: '차단 사용자 설정은 마이페이지에서 확인할 수 있습니다.'
 
 en:
   archive: 'Bookmark'
@@ -195,6 +216,9 @@ en:
   more: 'Read more posts by {author}'
   show-hidden: 'Show hidden posts'
   confirm-delete: 'Are you really want to delete this post?'
+  hidden-notice-ADULT_CONTENT: 'You can change the setting in your MyInfo page to show this kinds of post.'
+  hidden-notice-SOCIAL_CONTENT: 'You can change the setting in your MyInfo page to show this kinds of post.'
+  hidden-notice-BLOCKED_USER_CONTENT: 'You can change blocked users in your MyInfo page.'
 </i18n>
 
 <style lang="scss" scoped>
@@ -242,6 +266,35 @@ en:
   &__bookmark {
     margin-bottom: 30px;
   }
+
+.hidden-container{
+  background: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  border-radius: 10px;
+  padding: 8px;
+
+  &__frame {
+    width: 32px;
+    height: 32px;
+    margin: 8px;
+    border-radius: 50%;
+    background-color: #a9a9a9;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__button{
+    margin: 8px 0;
+    background: white;
+  }
+
+}
+
 }
 .material-icons {
   font-size: 16px;

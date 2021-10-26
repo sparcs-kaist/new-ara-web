@@ -9,12 +9,15 @@
   :class="{'board-item--current': current}">
     <div class="board-item__body">
       <div class="board-item__image-wrapper">
-        <img class="board-item__image" :src="post.created_by.profile.picture">
+        <div class="board-item__hidden-frame" v-if="post.is_hidden">
+          <i class="material-icons">{{ hidden_icon }}</i>
+        </div>
+        <img class="board-item__image" :src="post.created_by.profile.picture" v-if="!post.is_hidden">
       </div>
 
       <div class="board-item__content">
         <div class="board-item__title-wrapper">
-          <div class="board-item__title" :title="post.title">
+          <div class="board-item__title" :title="post.title" :class="hidden_grey">
             <span class="board-item__topic" v-if="post.parent_topic">
               [{{ post.parent_topic[`${$i18n.locale}_name`] }}]
             </span>
@@ -37,7 +40,7 @@
             <div class="board-item__vote__neg">-{{post.negative_vote_count}}</div>
           </div>
 
-          <span class="board-item__author__mobile is-hidden-tablet">
+          <span class="board-item__author__mobile is-hidden-tablet" :class="hidden_grey">
             {{ post.created_by.profile.nickname }}
           </span>
 
@@ -45,7 +48,7 @@
       </div>
     </div>
 
-    <span class="board-item__author is-hidden-mobile">
+    <span class="board-item__author is-hidden-mobile" :class="hidden_grey">
       {{ post.created_by.profile.nickname }}
     </span>
   </router-link>
@@ -55,6 +58,7 @@
 import elideText from '@/utils/elideText'
 import LikeButton from '@/components/LikeButton.vue'
 import Timeago from '@/components/Timeago.vue'
+import i18n from '@/i18n'
 
 export default {
   name: 'BoardItem',
@@ -75,11 +79,25 @@ export default {
   },
   computed: {
     title () {
-      if (this.post.is_hidden) {
-        return this.post.why_hidden.map(v => v.detail).join('\n')
-      }
-
+      if (this.post.is_hidden) return i18n.t(this.post.why_hidden[0])
       return this.post.title
+    },
+    hidden_grey () {
+      return this.post.is_hidden ? 'has-text-grey-light' : ''
+    },
+    hidden_icon () {
+      switch (this.post.why_hidden[0]) {
+        case 'ADULT_CONTENT':
+          return 'visibility_off'
+        case 'SOCIAL_CONTENT':
+          return 'visibility_off'
+        case 'REPORTED_CONTENT':
+          return 'warning'
+        case 'BLOCKED_USER_CONTENT':
+          return 'voice_over_off'
+        default:
+          return 'help_outline'
+      }
     }
   },
   methods: {
@@ -128,6 +146,18 @@ en:
     height: 40px;
     border-radius: 50%;
     position: absolute;
+  }
+
+  &__hidden-frame {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: lightgray;
+    color: white;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &__read-status{

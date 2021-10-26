@@ -9,3 +9,8 @@ notifications-failed-fetch: '알림을 가져오는 중 오류가 발생했습�
 post-failed-fetch: '글을 가져오는 동안 오류가 발생했습니다!'
 user-failed-fetch: '사용자를 가져오는 동안 오류가 발생했습니다!'
 write-failed-fetch: '수정할 글을 가져오는 동안 오류가 발생했습니다!'
+ADULT_CONTENT: '성인/음란성 내용의 게시물입니다.'
+SOCIAL_CONTENT: '정치/사회성 내용의 게시물입니다.'
+REPORTED_CONTENT: '신고 누적으로 숨김된 게시물입니다.'
+BLOCKED_USER_CONTENT: '차단한 사용자의 게시물입니다.'
+ACCESS_DENIED_CONTENT: '접근 권한이 없는 게시물입니다.'

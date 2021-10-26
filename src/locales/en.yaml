@@ -9,3 +9,8 @@ notifications-failed-fetch: 'An error occurred while fetching the notifications!
 post-failed-fetch: 'An error occurred while fetching the post!'
 user-failed-fetch: 'An error occurred while fetching the user!'
 write-failed-fetch: 'An error occurred while fetching the editing post!'
+ADULT_CONTENT: 'This post has adult/obscene contents.'
+SOCIAL_CONTENT: 'This post has political/social contents.'
+REPORTED_CONTENT: 'This post was hidden due to cumulative reporting.'
+BLOCKED_USER_CONTENT: 'This post was written by blocked user.'
+ACCESS_DENIED_CONTENT: 'You do not have access to this post.'
