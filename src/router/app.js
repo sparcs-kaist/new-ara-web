@@ -19,7 +19,7 @@ export default [
     beforeEnter: authGuard
   },
   {
-    path: '/user/:username',
+    path: '/user/:username?',
     name: 'user',
     component: User,
     beforeEnter: authGuard

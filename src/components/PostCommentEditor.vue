@@ -203,6 +203,7 @@ en:
   &__picture {
     height: 24px;
     width: 24px;
+    object-fit: cover;
     margin-right: 8px;
     border-radius: 50%;
   }
