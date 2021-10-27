@@ -16,6 +16,7 @@
         @upload="$emit('upload', $event)"
         @vote="$emit('refresh')"
         @delete="$emit('refresh')"
+        @fetch-comment="$emit('fetch-comment', $event)"
         class="comments__comment"
       />
     </div>
@@ -40,26 +41,29 @@ export default {
       return this.post.comment_count
     },
     anonymousProfile () {
-      let nickname = this.$t('anonymous')
-      let profileImage = this.post.created_by.profile.picture
       if (this.post.is_anonymous) {
         // Get my anonymous nickname from post's comments
         for (const comment of this.post.comments) {
           if (comment.is_mine) {
-            nickname = comment.created_by.username
-            profileImage = comment.created_by.profile.picture
-            return {nickname, profileImage}
+            return {
+              nickname: comment.created_by.username,
+              profileImage: comment.created_by.profile.picture
+            }
           }
           for (const replyComment of comment.comments) {
             if (replyComment.is_mine) {
-              nickname = replyComment.created_by.username
-              profileImage = replyComment.created_by.profile.picture
-              return {nickname, profileImage}
+              return {
+                nickname: replyComment.created_by.username,
+                profileImage: replyComment.created_by.profile.picture
+              }
             }
           }
         }
       }
-      return {nickname, profileImage}
+      return {
+        nickname: this.$t('anonymous'),
+        profileImage: this.post.created_by?.profile.picture
+      }
     }
   },
   components: {

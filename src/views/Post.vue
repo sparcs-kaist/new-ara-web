@@ -27,6 +27,7 @@
       @upload="addNewComment"
       @update="updateComment"
       @refresh="refresh"
+      @fetch-comment="overrideHiddenComment"
     />
     <ThePostNavigation :post="post" :context="context" />
     <!-- @TODO: <TheBoard :board="board"/> -->
@@ -34,7 +35,7 @@
 </template>
 
 <script>
-import { archivePost, blockUser, fetchPost, reportPost, unarchivePost, unblockUser, votePost } from '@/api'
+import { archivePost, blockUser, fetchPost, reportPost, unarchivePost, unblockUser, votePost, fetchComment } from '@/api'
 import { fetchWithProgress } from './helper.js'
 import ThePostComments from '@/components/ThePostComments.vue'
 import ThePostDetail from '@/components/ThePostDetail.vue'
@@ -192,7 +193,7 @@ export default {
       // Where can I get typeReport?
       let typeReport = 'others'
       let reasonReport = ''
-      for (var key in selection) {
+      for (const key in selection) {
         if (selection[key]) {
           reasonReport += key
           reasonReport += ', '
@@ -225,8 +226,28 @@ export default {
     },
 
     async overrideHidden () {
-      this.post = await fetchPost({ postId: this.postId, context: {...this.$route.query, override_hidden: true} })
+      const overridenPost = await fetchPost({ postId: this.postId, context: {...this.$route.query, override_hidden: true} })
+      this.post = {...overridenPost, comments: this.post.comments}
       document.title = `Ara - ${this.post.title}`
+    },
+    async overrideHiddenComment ({ commentId }) {
+      const overriddenComment = await fetchComment({
+        commentId,
+        context: {...this.$route.query, override_hidden: true}
+      })
+
+      for (const [commentIndex, comment] of this.post.comments.entries()) {
+        if (comment.id === commentId) {
+          const newComment = {...comment, ...overriddenComment}
+          return this.$set(this.post.comments, commentIndex, newComment)
+        }
+        for (const [replyCommentIndex, replyComment] of comment.comments.entries()) {
+          if (replyComment.id === commentId) {
+            const newComment = {...replyComment, ...overriddenComment}
+            return this.$set(this.post.comments[commentIndex].comments, replyCommentIndex, newComment)
+          }
+        }
+      }
     }
   },
 
