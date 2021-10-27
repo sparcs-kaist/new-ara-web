@@ -1,7 +1,10 @@
 <template>
   <div class="comment-wrapper">
     <div class="comment" :class="{'comment--reply-comment': isReplyComment}" v-if="!isEditing">
-      <img class="comment__profile" :src="profileImage" />
+      <img class="comment__profile" alt="profile image" v-if="!isHidden" :src="profileImage"/>
+      <div class="comment__profile" v-else>
+        <i class="material-icons">{{ hidden_icon }}</i>
+      </div>
       <div class="comment__body">
         <div class="comment__header">
           <router-link
@@ -47,8 +50,8 @@
         <div class="comment__content">
           <div v-html="content"/>
 
-          <div v-if="comment.is_hidden && !showHidden">
-            <button class="button" @click="showHidden = true">
+          <div v-if="comment.is_hidden && comment.can_override_hidden">
+            <button class="button" @click="$emit('fetch-comment', { commentId: comment.id })">
               {{ $t('show-hidden') }}
             </button>
           </div>
@@ -91,6 +94,7 @@
         @delete="$emit('delete')"
         @update="$emit('update', $event)"
         @upload="$emit('upload', $event)"
+        @fetch-comment="$emit('fetch-comment', $event)"
       />
 
       <div v-show="showReplyCommentInput">
@@ -129,46 +133,49 @@ export default {
     return {
       isEditing: false,
       isVoting: false,
-      showReplyCommentInput: false,
-      showHidden: false
+      showReplyCommentInput: false
     }
   },
 
   computed: {
-    author () { return this.comment.created_by.profile.nickname },
+    author () { return this.comment.created_by?.profile.nickname },
     authorId () { return this.comment.created_by.id },
-    profileImage () { return this.comment.created_by.profile.picture },
+    profileImage () { return this.comment.created_by?.profile?.picture },
     date () { return timeago(this.comment.created_at, this.$i18n.locale) },
     ...mapGetters([ 'userNickname' ]),
 
     content () {
       if (this.comment.is_hidden) {
-        if (this.showHidden) {
-          return this.comment.hidden_content
-        }
-
-        return this.comment.why_hidden
-          .map(v => v.detail.join('\n'))
-          .join('\n')
+        return this.$t(this.comment.why_hidden[0])
       }
-
       return this.comment.content
     },
     isMine () {
-      // return this.userNickname === this.comment.created_by.profile.nickname
       return this.comment.is_mine
     },
     isAnonymous () {
-      if (this.comment.is_anonymous) {
-        return true
-      }
-      return false
+      return !!this.comment.is_anonymous
     },
     isAuthor () {
       if (!this.comment.is_anonymous) {
         return false
       }
       return this.post.created_by.id === this.comment.created_by.id
+    },
+    isHidden () {
+      return this.comment.is_hidden
+    },
+    hidden_icon () {
+      switch (this.comment.why_hidden[0]) {
+        case 'REPORTED_CONTENT':
+          return 'warning'
+        case 'BLOCKED_USER_CONTENT':
+          return 'voice_over_off'
+        case 'DELETED_CONTENT':
+          return 'delete'
+        default:
+          return 'help_outline'
+      }
     }
   },
 
@@ -200,7 +207,7 @@ export default {
       if (!result) return
       let typeReport = 'others'
       let reasonReport = ''
-      for (var key in selection) {
+      for (const key in selection) {
         if (selection[key]) {
           reasonReport += key
           reasonReport += ', '
@@ -221,6 +228,7 @@ export default {
         is_mine: true
       })
     }
+
   },
 
   components: {
@@ -241,7 +249,12 @@ ko:
   new-reply-comment: '작성하기'
   confirm-delete: '정말로 이 댓글을 삭제하시겠습니까?'
   confirm-report: '정말로 이 댓글을 신고하시겠습니까?'
-  show-hidden: '숨김글 보기'
+  show-hidden: '댓글 보기'
+  ADULT_CONTENT: '성인/음란성 내용의 댓글입니다.'
+  SOCIAL_CONTENT: '정치/사회성 내용의 댓글입니다.'
+  REPORTED_CONTENT: '신고 누적으로 숨김된 댓글입니다.'
+  BLOCKED_USER_CONTENT: '차단한 사용자의 댓글입니다.'
+  DELETED_CONTENT: '삭제된 댓글입니다.'
 en:
   delete: 'Delete'
   report: 'Report'
@@ -253,6 +266,11 @@ en:
   confirm-delete: 'Are you really want to delete this comment?'
   confirm-report: 'Are you really want to report this comment?'
   show-hidden: 'Show Hidden Comment'
+  ADULT_CONTENT: 'This comment has adult/obscene contents.'
+  SOCIAL_CONTENT: 'This comment has political/social contents.'
+  REPORTED_CONTENT: 'This comment was hidden due to cumulative reporting.'
+  BLOCKED_USER_CONTENT: 'This comment was written by blocked user.'
+  DELETED_CONTENT: 'This comment has been deleted.'
 </i18n>
 
 <style lang="scss" scoped>
@@ -305,6 +323,23 @@ en:
     white-space: pre-wrap;
     word-break: break-word;
     word-wrap: break-word;
+
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+
+    .button {
+      margin-right: 35px;
+      margin-top: -25px;
+    }
+
+    @include breakPoint(mobile) {
+      flex-flow: column;
+      .button {
+        margin: 0;
+        margin-top: 5px;
+      }
+    }
   }
 
   &__profile {
@@ -313,6 +348,22 @@ en:
     border-radius: 50%;
     background: var(--grey-300);
     margin-right: 12px;
+
+    i {
+      width: 32px;
+      height: 32px;
+      font-size: 20px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+
+      background: darkgray;
+      color: white;
+
+      padding-bottom: 2px;
+    }
   }
 
   &__body {
