@@ -333,6 +333,11 @@ en:
       margin-top: -25px;
     }
 
+    div ::v-deep img{
+      max-width: 300px;
+      max-height: 300px;
+    }
+
     @include breakPoint(mobile) {
       flex-flow: column;
       .button {
