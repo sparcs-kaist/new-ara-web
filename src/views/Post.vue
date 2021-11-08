@@ -227,7 +227,7 @@ export default {
 
     async overrideHidden () {
       const overridenPost = await fetchPost({ postId: this.postId, context: {...this.$route.query, override_hidden: true} })
-      this.post = {...overridenPost, comments: this.post.comments}
+      this.post = {...overridenPost, comments: this.post.comments, side_articles: this.post.side_articles}
       document.title = `Ara - ${this.post.title}`
     },
     async overrideHiddenComment ({ commentId }) {
