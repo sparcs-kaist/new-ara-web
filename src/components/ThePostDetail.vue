@@ -44,10 +44,10 @@
       </div>
     </div>
 
-    <div class="post__footer">
-      <LikeButton class="post__like" :item="post" votable @vote="$emit('vote', $event)" />
-      <div class="post__buttons">
-        <template v-if="isMine && (post.can_override_hidden !== false)">
+    <div class="post__footer" v-if="!post.is_hidden || !post.is_anonymous">
+      <LikeButton class="post__like" :item="post" votable @vote="$emit('vote', $event)" v-if="!post.is_hidden"/>
+      <div class="post__buttons" :class="{'post__buttons--hidden': post.is_hidden}">
+        <template v-if="isMine && (post.can_override_hidden !== false) && post.hidden_at === '0001-01-01T08:28:00+08:28'">
           <button class="button" @click="deletePost">
             <i class="like-button__icon material-icons-outlined">
               delete
@@ -76,14 +76,14 @@
             {{ $t(isBlocked ? 'unblock' : 'block') }}
           </button>
 
-          <button class="button" @click="$emit('report')">
+          <button class="button" @click="$emit('report')" v-if="!post.is_hidden">
             <i class="like-button__icon material-icons-outlined">
               campaign
             </i>
             {{ $t('report') }}
           </button>
         </template>
-        <button class="button" @click="$emit('archive')">
+        <button class="button archive-button" @click="$emit('archive')" v-if="!post.is_hidden">
           <i class="like-button__icon material-icons-outlined">add</i>
           {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
         </button>
@@ -239,6 +239,10 @@ en:
     justify-content: flex-end;
     flex-wrap: wrap;
     margin-top: 10px;
+
+    &--hidden {
+      flex: 1;
+    }
 
     & > .button {
       margin-left: 10px;
