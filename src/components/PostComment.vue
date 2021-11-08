@@ -16,7 +16,7 @@
 
           <span class="comment__time"> {{ date }} </span>
 
-          <div class="dropdown is-right is-hoverable">
+          <div class="dropdown is-right is-hoverable" v-if="comment.deleted_at === '0001-01-01T08:28:00+08:28' && !isHidden">
             <div class="dropdown-trigger">
               <button class="dropdown-button" aria-haspopup="true" aria-controls="dropdownMenu">
                 <span class="icon">
@@ -58,7 +58,7 @@
         </div>
 
         <div class="comment__footer">
-          <LikeButton class="comment__vote" :item="comment" @vote="vote" votable />
+          <LikeButton class="comment__vote" :item="comment" @vote="vote" votable v-if="!isHidden"/>
           <a class="comment__write" v-if="!isReplyComment"
             @click="toggleReplyCommentInput">
             {{
@@ -400,7 +400,6 @@ en:
   }
 
   &__write {
-    margin-left: 15px;
     line-height: 25px;
   }
 
@@ -415,6 +414,7 @@ en:
   &__vote {
     font-size: 15px;
     height: 25px;
+    margin-right: 15px;
   }
 }
 .author_red{

@@ -36,7 +36,7 @@
         <span class="author__nickname">{{ postAuthor }}</span>
         <i class="author__icon material-icons" v-if="!isAnonymous">chevron_right</i>
       </router-link>
-      <LikeButton class="metadata__like" :item="post" votable @vote="$emit('vote', $event)"/>
+      <LikeButton class="metadata__like" :item="post" votable @vote="$emit('vote', $event)" v-if="!post.is_hidden" />
     </div>
     <hr class="divider" />
   </div>
