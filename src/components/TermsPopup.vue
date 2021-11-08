@@ -381,8 +381,10 @@ en:
 
     .toggle-language{
       display: flex;
+      align-items: center;
       justify-content: center;
       font-size: 15px;
+      line-height: 24px;
       margin-left: auto;
       margin-right: 30px;
     }
