@@ -109,7 +109,7 @@ export default {
 
 <i18n>
 ko:
-  language: '한국어'
+  language: 'English'
   title: '이용 약관'
   agreed: '동의하셨습니다'
   already-agreed: '이미 동의하셨습니다.'
@@ -193,7 +193,7 @@ ko:
   tos-footer: '본 약관은 2020-09-26부터 적용됩니다.'
 
 en:
-  language: 'English'
+  language: '한국어'
   title: 'Terms of service'
   agreed: "You've agreed to the Terms of Service"
   already-agreed: "You've already agreed."
@@ -381,7 +381,6 @@ en:
 
     .toggle-language{
       display: flex;
-      align-items: center;
       justify-content: center;
       font-size: 15px;
       margin-left: auto;
