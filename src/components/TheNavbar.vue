@@ -1,16 +1,23 @@
 <template>
 <div>
   <div class="identity-bar">
-    <img src="@/assets/SparcsLogo.svg" alt="" class="logo">
-      <div class="texts">
-        <div class="title">
-          Ara (아라) : 가장 정확한 정보를 가장 신속하게.
+    <transition name="fadeHeight" mode="out-in">
+      <div class="identity-bar-noti" v-if="deferredPrompt">
+        <div class="img-container">
+          <img src="../assets/SparcsLogo.svg" alt="s"/>
         </div>
-      <div class="desc">
-        Ara 어플리케이션 설치하기 (데스크탑, 안드로이드 ,iOS)
+          <div class="texts">
+            <div class="title">
+              Ara (아라) : 가장 정확한 정보를 가장 신속하게.
+            </div>
+          <div class="desc">
+            Ara 어플리케이션 설치하기 (데스크탑, 안드로이드, iOS)
+          </div>
+        </div>
+        <button @click="installWebApp">설치</button>
+        <button @click="closeInstall">닫기</button>
       </div>
-    </div>
-    <button @click="installWebApp">설치</button>
+    </transition>
   </div>
   <div class="navbar" aria-label="main navigation" role="navigation">
     <!-- <TheNavbarFetchProgressBar/> -->
@@ -203,6 +210,10 @@ export default {
       this.deferredPrompt.prompt()
     },
 
+    async closeInstall () {
+      this.deferredPrompt = null
+    },
+
     ...mapActions(['toggleDarkMode'])
   },
 
@@ -243,52 +254,72 @@ en:
 
 .identity-bar {
   background-color: var(--theme-400);
-  height: 50px;
+  min-height: 5px;
 
-  padding: 16px;
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
-
-  img {
-    height: 25px;
-    margin-right: 20px;
-    max-width: initial;
-    filter: invert(1);
+  .fadeHeight-enter-active,
+  .fadeHeight-leave-active {
+    transition: all 0.5s;
+    max-height: 50px;
+  }
+  .fadeHeight-enter,
+  .fadeHeight-leave-to
+  {
+    opacity: 0;
+    max-height: 0;
   }
 
-  .texts{
-    flex: 1 1 0%;
-    overflow: hidden;
+  .identity-bar-noti{
+    height: 50px;
 
-    * {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      color: white;
-    }
+      display: flex;
+      padding: 0 16px;
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
 
-    .title{
-      font-size: 12px;
-      margin-bottom: 2px;
-    }
+      .img-container {
+        width: 13px;
+        height: 25px;
+        overflow: hidden;
+        margin-right: 10px;
 
-    .desc{
-      font-size: 10px;
-    }
+        img {
+          width: 90px;
+          max-width: initial;
+          filter: invert(1);
+        }
+      }
+      .texts{
+        flex: 1 1 0%;
+        overflow: hidden;
+
+        * {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          color: white;
+        }
+
+        .title{
+          font-size: 12px;
+          margin-bottom: 2px;
+        }
+
+        .desc{
+          font-size: 10px;
+        }
+      }
+
+      button {
+        background-color: transparent;
+        border: none;
+        margin-left: 20px;
+        height: 25px;
+        padding: 0px;
+        color: #bbdefb;
+        font-size: 14px;
+      }
   }
-
-  button {
-    background-color: transparent;
-    border: none;
-    margin-left: 20px;
-    height: 25px;
-    padding: 0px;
-    color: #bbdefb;
-    font-size: 14px;
-  }
-
 }
 
 .navbar-active {
