@@ -22,6 +22,17 @@ export default {
     window.addEventListener('appinstalled', () => {
       this.$store.commit('setDeferredPrompt', null)
     })
+
+    let isNotificationSupported = 'Notification' in window
+    if (isNotificationSupported) {
+      Notification.requestPermission().then(function (result) {
+        if (result === 'granted') {
+          console.log('[Notification] 허용: ', result)
+        } else {
+          alert('권한 허용을 해 주시길 바랍니다.')
+        }
+      })
+    }
   }
 }
 </script>

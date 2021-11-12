@@ -1,18 +1,20 @@
-self.addEventListener('push', function (e) {
-    console.log(e.data.json());
+self.addEventListener('push', event => {
+    console.log("Push Notification received", event);
+    const data = JSON.parse(event.data.text());
   
-    const resultData = JSON.parse(e.data.json().data.notification);
-    const notificationTitle = resultData.title;
-    const notificationOptions = {
-      body: resultData.body,
-      icon: resultData.icon,
-    };
-  
-    self.registration.showNotification(notificationTitle, notificationOptions);
+    //notification
+    event.waitUntil(
+        self.registration.showNotification(data.title, data.options)
+    )
   });
-  
-  self.addEventListener('notificationclick', function (event) {
-    const url = '/';
+
+
+// TODO
+self.addEventListener('notificationclick', event => {
+    if(event.action === 'confirm') {
+      console.log("######## Confirm was chosen");
+    } else {
+      console.log("######## Not Confirm button clicked");
+    }
     event.notification.close();
-    event.waitUntil(clients.openWindow(url));
   });
