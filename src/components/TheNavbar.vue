@@ -169,25 +169,13 @@ export default {
   data () {
     return {
       isMobileMenuActive: false,
-      isNotificationsOpen: false,
-      deferredPrompt: null
+      isNotificationsOpen: false
     }
-  },
-
-  mounted () {
-    window.addEventListener('beforeinstallprompt', e => {
-      e.preventDefault()
-      // Stash the event so it can be triggered later.
-      this.deferredPrompt = e
-    })
-    window.addEventListener('appinstalled', () => {
-      this.deferredPrompt = null
-    })
   },
 
   computed: {
     ...mapState(['boardList']),
-    ...mapGetters(['userNickname', 'userPicture']),
+    ...mapGetters(['userNickname', 'userPicture', 'deferredPrompt']),
     boardListVisible () {
       return this.boardList.filter(v => !v.is_hidden)
     },
@@ -210,7 +198,7 @@ export default {
     },
 
     async closeInstall () {
-      this.deferredPrompt = null
+      this.$store.commit('setDeferredPrompt', null)
     },
 
     ...mapActions(['toggleDarkMode'])

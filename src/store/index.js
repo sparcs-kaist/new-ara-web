@@ -18,7 +18,8 @@ export default new Vuex.Store({
   state: {
     boardList: [],
     recentPosts: [],
-    archivedPosts: []
+    archivedPosts: [],
+    deferredPrompt: null
   },
   getters: {
     hasFetchedBoardList: ({ boardList }) =>
@@ -33,6 +34,9 @@ export default new Vuex.Store({
     getNameById: ({ boardList }) => (id, locale) => {
       const board = boardList.find(board => board.id === id)
       return board ? board[`${locale}_name`] : i18n.t('all', locale)
+    },
+    deferredPrompt: ({deferredPrompt}) => {
+      return deferredPrompt
     }
   },
   mutations: {
@@ -46,6 +50,10 @@ export default new Vuex.Store({
 
     setArchivedPosts (state, posts) {
       state.archivedPosts = posts
+    },
+
+    setDeferredPrompt (state, newPrompt) {
+      state.deferredPrompt = newPrompt
     }
   },
   actions: {
