@@ -15,6 +15,7 @@
     "axios": "^0.21.4",
     "bulma": "^0.7.1",
     "date-fns": "^2.15.0",
+    "firebase": "^9.4.1",
     "register-service-worker": "^1.7.2",
     "tiptap": "^1.29.5",
     "tiptap-extensions": "^1.32.4",
