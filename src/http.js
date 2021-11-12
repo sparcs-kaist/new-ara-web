@@ -5,7 +5,7 @@ import { getValidatorError } from './helper'
 
 const apiUrl = (function () {
   if (process.env.NODE_ENV === 'production') {
-    return 'https://newara.sparcs.org'
+    return 'https://newara.dev.sparcs.org'
   } else if (process.env.NODE_ENV === 'development') {
     return 'https://newara.dev.sparcs.org'
   } else {

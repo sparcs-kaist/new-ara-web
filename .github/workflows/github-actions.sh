@@ -15,7 +15,7 @@ if [ ! -z $GITHUB_REF ]; then
             # Docker tag에 /가 들어갈 수 없어서 -로 변경
             export DOCKER_TAG=$(echo $NAME | sed -e "s/\//-/g")
             export CACHE_DOCKER_TAG=dev
-            export NODE_ENV=development
+            export NODE_ENV=production
         fi
     elif [ $TRIGGER_TYPE = "tags" ]; then
         export DOCKER_TAG=$NAME
