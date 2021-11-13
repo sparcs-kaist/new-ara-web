@@ -16,6 +16,7 @@ import { fetchPost, createPost, updatePost, uploadAttachments } from '@/api'
 import { fetchWithProgress } from './helper.js'
 import TheLayout from '@/components/TheLayout.vue'
 import ThePostWrite from '@/components/ThePostWrite.vue'
+import axios from 'axios'
 
 export default {
   name: 'write',
@@ -108,6 +109,9 @@ export default {
       let result
       try {
         if (!this.isEditing) {
+          axios.get(`https://newara.dev.sparcs.org/api/pwa/writepost?board_id=${boardId}&title=${title}`)
+            .then(({data}) => console.log(data))
+
           result = await createPost({
             newArticle,
             boardId

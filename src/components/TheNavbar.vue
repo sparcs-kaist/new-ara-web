@@ -8,7 +8,7 @@
         </div>
           <div class="texts">
             <div class="title">
-              Ara (아라) : 가장 신속하게 PUSH 알림을 받아보세요.
+              Ara (아라) : 가장 정확한 정보를 가장 신속하게.
             </div>
           <div class="desc">
             Ara 어플리케이션 설치하기 (데스크탑, 안드로이드, iOS)

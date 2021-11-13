@@ -32,7 +32,7 @@ export default {
         if (result === 'granted') {
           console.log('[Notification] 허용: ', result)
         } else {
-          alert('권한 허용을 해 주시길 바랍니다.')
+          alert('권한 허용을 해 주셔야 PUSH 알림을 받을실 수 있습니다.')
         }
       })
     }
@@ -73,10 +73,12 @@ export default {
           })
         }
       }).then(subscription => {
-        console.log('post subscription : ', subscription)
-        return axios.post('https://newara.dev.sparcs.org/api/pwa/subscribe', { subscription: subscription }, {
-          headers: { 'Content-type': 'application/json' }
-        })
+        if (subscription !== undefined) {
+          console.log('post subscription : ', subscription)
+          return axios.post('https://newara.dev.sparcs.org/api/pwa/subscribe', { subscription: subscription }, {
+            headers: { 'Content-type': 'application/json' }
+          })
+        }
       }).catch(err => {
         console.log(err)
       })

@@ -12,7 +12,7 @@ self.addEventListener('push', event => {
 // TODO
 self.addEventListener('notificationclick', event => {
     if(event.action === 'confirm') {
-      console.log("######## Confirm was chosen");
+      event.waitUntil(clients.openWindow('/'));
     } else {
       console.log("######## Not Confirm button clicked");
     }
