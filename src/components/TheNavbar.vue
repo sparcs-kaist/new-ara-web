@@ -82,9 +82,11 @@
 
           <router-link
             :to="{ name: 'notifications' }"
-            class="navbar-item">
+            class="navbar-item"
+            >
 
-            <span class="icon">
+            <span class="icon"
+              :class="{'unread-noti': isUnreadNotificationExist}">
               <i class="material-icons">notifications</i>
             </span>
 
@@ -144,6 +146,8 @@ import TheNavbarFetchProgressBar from '@/components/TheNavbarFetchProgressBar.vu
 import TheNavbarNotifications from '@/components/TheNavbarNotifications.vue'
 import TheNavbarArchives from '@/components/TheNavbarArchives.vue'
 import isIE from '@/utils/isIE.js'
+import { fetchNotifications } from '@/api'
+import { fetchWithProgress } from '@/views/helper.js'
 
 export default {
   name: 'the-navbar',
@@ -151,10 +155,20 @@ export default {
   data () {
     return {
       isMobileMenuActive: false,
-      isNotificationsOpen: false
+      isNotificationsOpen: false,
+      notifications: {},
+      isUnreadNotificationExist: false
     }
   },
-
+  async beforeMount () {
+    // Get only first page of notification.
+    const query = {...this.$route.query, page: '1'}
+    const [ notifications ] = await fetchWithProgress([ fetchNotifications({ query }) ], 'notifications-failed-fetch')
+    this.notifications = notifications.results
+    if (this.notifications.filter(noti => !noti.is_read).length > 0) {
+      this.isUnreadNotificationExist = true
+    }
+  },
   computed: {
     ...mapState(['boardList']),
     ...mapGetters(['userNickname', 'userPicture']),
@@ -256,6 +270,9 @@ en:
   display: flex;
   font-size: 15px;
 
+  .unread-noti{
+    color: var(--theme-400);
+  }
   .write-icon {
     color: var(--theme-400);
   }

@@ -20,6 +20,9 @@ export default {
   computed: {
     fromQuery () {
       return { from_view: 'all' }
+    },
+    isRead () {
+      return this.notification.is_read
     }
   }
 }
