@@ -20,5 +20,5 @@ self.addEventListener('notificationclick', event => {
   });
 
 self.addEventListener('fetch', function(event) {
-    event.respondWith(fetch(event.request));
+    console.log('[Service Worker] Fetched resource '+event.request.url);
   });
