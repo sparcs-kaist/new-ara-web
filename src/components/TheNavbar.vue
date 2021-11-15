@@ -47,7 +47,7 @@
           />
 
           <router-link
-            v-for="board in boardListVisible"
+            v-for="board in boardListVisible.filter(x => x.id != 9)"
             :key="board.id"
             :to="{
               name: 'board',

@@ -13,7 +13,7 @@
       </router-link>
     </h2>
     <div
-    v-for="post in listitems"
+    v-for="post in listitems.filter(x => x.parent_board != 9)"
     :key="post.id"
     class="board__post post">
       <h3 class="post__title-wrapper" :class="post.is_hidden ? 'has-text-grey-light' : ''">
