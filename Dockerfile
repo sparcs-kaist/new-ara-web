@@ -22,6 +22,7 @@ RUN apk del --purge .build-deps
 COPY . .
 
 ARG BACK_ENV
+RUN echo "BACK_ENV=$BACK_ENV" > .env
 RUN npm run build
 
 FROM nginx:1.19-alpine as newara-web
