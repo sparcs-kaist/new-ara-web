@@ -10,8 +10,8 @@
           <router-link
            :is="isAnonymous ? 'span' : 'router-link'"
            :to="{ name: 'user', params: { username: authorId } }" class="comment__author"
-           :class="isAuthor ? 'author_red' : ''">
-            {{ author }}
+           :class="isAuthor && canOveride ? 'author_red' : ''">
+            {{ isHidden && !canOveride ? this.$t('hidden-user') : author }}
           </router-link>
 
           <span class="comment__time"> {{ date }} </span>
@@ -50,7 +50,7 @@
         <div class="comment__content">
           <div v-html="content"/>
 
-          <div v-if="comment.is_hidden && comment.can_override_hidden">
+          <div v-if="isHidden && canOveride">
             <button class="button" @click="$emit('fetch-comment', { commentId: comment.id })">
               {{ $t('show-hidden') }}
             </button>
@@ -150,6 +150,9 @@ export default {
       }
       return this.comment.content
     },
+    canOveride () {
+      return this.comment.can_override_hidden
+    },
     isMine () {
       return this.comment.is_mine
     },
@@ -240,6 +243,7 @@ export default {
 
 <i18n>
 ko:
+  hidden-user: '가려진 사용자'
   delete: '삭제'
   report: '신고'
   edit: '수정'
@@ -256,6 +260,7 @@ ko:
   BLOCKED_USER_CONTENT: '차단한 사용자의 댓글입니다.'
   DELETED_CONTENT: '삭제된 댓글입니다.'
 en:
+  hidden-user: 'Hidden user'
   delete: 'Delete'
   report: 'Report'
   edit: 'Edit'
