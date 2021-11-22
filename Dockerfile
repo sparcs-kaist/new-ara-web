@@ -21,14 +21,14 @@ RUN apk del --purge .build-deps
 # Copy other sources
 COPY . .
 
-ARG NODE_ENV
+ARG BACK_ENV
 RUN npm run build
 
 FROM nginx:1.19-alpine as newara-web
 ARG WORKDIR
-ARG NODE_ENV
+ARG BACK_ENV
 
 WORKDIR /usr/share/nginx/newara
 
 COPY --from=build $WORKDIR/dist ./
-COPY ./nginx/nginx-$NODE_ENV.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx/nginx-$BACK_ENV.conf /etc/nginx/conf.d/default.conf
