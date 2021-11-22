@@ -138,7 +138,10 @@ export default {
   },
 
   computed: {
-    author () { return this.comment.created_by?.profile.nickname },
+    author () {
+      if (this.isAuthor) return this.$t('author')
+      return this.comment.created_by?.profile.nickname
+    },
     authorId () { return this.comment.created_by.id },
     profileImage () { return this.comment.created_by?.profile?.picture },
     date () { return timeago(this.comment.created_at, this.$i18n.locale) },
@@ -244,6 +247,7 @@ export default {
 <i18n>
 ko:
   hidden-user: '가려진 사용자'
+  author: '글쓴이'
   delete: '삭제'
   report: '신고'
   edit: '수정'
@@ -261,6 +265,7 @@ ko:
   DELETED_CONTENT: '삭제된 댓글입니다.'
 en:
   hidden-user: 'Hidden user'
+  author: 'Author'
   delete: 'Delete'
   report: 'Report'
   edit: 'Edit'
