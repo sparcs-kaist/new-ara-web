@@ -21,15 +21,15 @@ RUN apk del --purge .build-deps
 # Copy other sources
 COPY . .
 
-ARG BACK_ENV
-RUN echo "BACK_ENV=$BACK_ENV" > .env
+ARG VUE_APP_API_MODE
+RUN echo "VUE_APP_API_MODE=$VUE_APP_API_MODE" > .env
 RUN npm run build
 
 FROM nginx:1.19-alpine as newara-web
 ARG WORKDIR
-ARG BACK_ENV
+ARG VUE_APP_API_MODE
 
 WORKDIR /usr/share/nginx/newara
 
 COPY --from=build $WORKDIR/dist ./
-COPY ./nginx/nginx-$BACK_ENV.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx/nginx-$VUE_APP_API_MODE.conf /etc/nginx/conf.d/default.conf

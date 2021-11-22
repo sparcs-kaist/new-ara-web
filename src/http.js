@@ -4,7 +4,7 @@ import router from './router'
 import { getValidatorError } from './helper'
 
 const apiUrl = (function () {
-  if (process.env.BACK_ENV === 'development') {
+  if (process.env.VUE_APP_API_MODE === 'development') {
     return 'https://newara.dev.sparcs.org'
   } else if (process.env.NODE_ENV === 'production') {
     return 'https://newara.sparcs.org'
