@@ -138,7 +138,10 @@ export default {
   },
 
   computed: {
-    author () { return this.comment.created_by?.profile.nickname },
+    author () {
+      if (this.isAuthor) return this.$t('author')
+      return this.comment.created_by?.profile.nickname
+    },
     authorId () { return this.comment.created_by.id },
     profileImage () { return this.comment.created_by?.profile?.picture },
     date () { return timeago(this.comment.created_at, this.$i18n.locale) },
@@ -240,6 +243,7 @@ export default {
 
 <i18n>
 ko:
+  author: '글쓴이'
   delete: '삭제'
   report: '신고'
   edit: '수정'
@@ -256,6 +260,7 @@ ko:
   BLOCKED_USER_CONTENT: '차단한 사용자의 댓글입니다.'
   DELETED_CONTENT: '삭제된 댓글입니다.'
 en:
+  author: 'Author'
   delete: 'Delete'
   report: 'Report'
   edit: 'Edit'

@@ -64,6 +64,7 @@ export default {
       return this.post.created_by && this.post.created_by.profile.picture
     },
     postAuthor () {
+      if (this.isAnonymous) return this.$t('author')
       return this.post.created_by && this.post.created_by.profile.nickname
     },
     postAuthorId () {
@@ -122,6 +123,7 @@ export default {
 
 <i18n>
 ko:
+  author: '익명'
   archive: '담아두기'
   unarchive: '담기 취소'
   edit: '수정'
@@ -138,6 +140,7 @@ ko:
   all: '모아보기'
 
 en:
+  author: 'Anonymous'
   archive: 'Bookmark'
   unarchive: 'Delete Bookmark'
   edit: 'Edit'
