@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="identity-bar"></div>
+  <IdentityBar></IdentityBar>
   <div class="navbar" aria-label="main navigation" role="navigation">
     <!-- <TheNavbarFetchProgressBar/> -->
     <div class="navbar-container">
@@ -143,6 +143,7 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 import TheNavbarFetchProgressBar from '@/components/TheNavbarFetchProgressBar.vue'
 import TheNavbarNotifications from '@/components/TheNavbarNotifications.vue'
 import TheNavbarArchives from '@/components/TheNavbarArchives.vue'
+import IdentityBar from '@/components/IdentityBar.vue'
 import isIE from '@/utils/isIE.js'
 
 export default {
@@ -187,7 +188,8 @@ export default {
   components: {
     TheNavbarFetchProgressBar,
     TheNavbarNotifications,
-    TheNavbarArchives
+    TheNavbarArchives,
+    IdentityBar
   }
 }
 </script>
@@ -212,12 +214,6 @@ en:
 
 <style lang="scss" scoped>
 @import '@/theme.scss';
-
-.identity-bar {
-  background-color: var(--theme-400);
-  height: 5px;
-  width: 100%;
-}
 
 .navbar-active {
   background-color: transparent;
