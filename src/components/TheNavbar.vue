@@ -82,8 +82,7 @@
 
           <router-link
             :to="{ name: 'notifications' }"
-            class="navbar-item"
-            >
+            class="navbar-item">
 
             <span class="icon"
               :class="{'unread-noti': isUnreadNotificationExist}">
@@ -165,7 +164,7 @@ export default {
     const query = {...this.$route.query, page: '1'}
     const [ notifications ] = await fetchWithProgress([ fetchNotifications({ query }) ], 'notifications-failed-fetch')
     this.notifications = notifications.results
-    if (this.notifications.filter(noti => !noti.is_read).length > 0) {
+    if (this.notifications.some(noti => !noti.is_read)) {
       this.isUnreadNotificationExist = true
     }
   },
