@@ -2,10 +2,11 @@
   <router-link
   :to="{
     name: 'post',
-    params: { postId: notification.related_article.id },
+    params: { postId: notification.related_article.id, notiId: notification.id },
     query: fromQuery
   }"
-  class="notification-container">
+  class="notification-container"
+  :class="{read__notification : isRead}">
     <h3 id="title">{{ notification.title }}</h3>
     <p id="content">{{ notification.content }}</p>
   </router-link>
@@ -29,6 +30,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.read__notification {
+  color: #787878;
+}
+
 .notification-container {
   margin-bottom: 1.375rem;
 

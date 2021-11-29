@@ -39,6 +39,10 @@ export const fetchNotifications = ({ query: { page } }) => {
   return http.get(`notifications/?${queryBuilder(context)}`)
     .then(({ data }) => data)
 }
+export const readNotification = (notiId) => {
+  return http.post(`notifications/${notiId}/read/`)
+    .then(({ data }) => data)
+}
 
 export const fetchBlocks = () =>
   http.get('blocks/')
