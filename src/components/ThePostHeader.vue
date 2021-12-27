@@ -88,26 +88,30 @@ export default {
       return this.post.is_anonymous
     },
     beforeBoard () {
-      if (this.$route.query.from_view === 'board') {
-        return {
-          name: 'board',
-          params: { boardSlug: this.boardSlug }
-        }
+      const { from_view: fromView, topic_id: topicId, current } = this.$route.query
+      const name = 'board'
+      const params = { boardSlug: this.boardSlug }
+      const query = { page: current }
+      if (fromView === 'board') {
+        return { name, params, query }
       }
-      if (this.$route.query.from_view === 'scrap') {
-        return {
-          name: 'archive'
-        }
+      if (fromView === 'topic') {
+        return { name, params, query: { ...query, topic: topicId } }
       }
-      return {
-        name: 'board'
+      if (fromView === 'scrap') {
+        return { name: 'archive', query }
       }
+      if (fromView === '-portal') {
+        return { name, query: { ...query, portal: 'exclude' } }
+      }
+      return { name, query }
     },
     beforeBoardName () {
-      if (this.$route.query.from_view === 'board') {
+      const fromView = this.$route.query.from_view
+      if (fromView === 'board' || fromView === 'topic') {
         return this.boardName
       }
-      if (this.$route.query.from_view === 'scrap') {
+      if (fromView === 'scrap') {
         return this.$t('archive')
       }
       return this.$t('all')
