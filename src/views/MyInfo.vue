@@ -91,9 +91,7 @@
             <h1 class="box__title">
               {{ $t('blocked-title') }}
             </h1>
-            <h2 class="box__subtitle">
-              {{ $t('blocked-subtitle', { user: user.nickname }) }}
-            </h2>
+            <h2 class="box__subtitle" v-html="$t('blocked-subtitle', { user: user.nickname })"></h2>
 
             <div class="box__container">
               <ul class="blocked" v-if="blocks && blocks.results && blocks.results.length > 0">
@@ -384,7 +382,10 @@ export default {
 
     async deleteBlockedUser (userId) {
       try {
-        await deleteBlock(userId)
+        const { status } = await deleteBlock(userId)
+        if (status === 403) {
+          return this.$store.dispatch('dialog/toast', this.$t('block-rate-limit'))
+        }
         this.blocks = await fetchBlocks()
       } catch (err) {
         this.$store.dispatch('dialog/toast', {
@@ -448,7 +449,7 @@ ko:
   settings-sexual: '성인글 보기'
   settings-social: '정치글 보기'
   blocked-title: '내가 차단한 유저 목록'
-  blocked-subtitle: '{user} 님이 차단하신 유저 목록입니다.'
+  blocked-subtitle: '{user} 님이 차단하신 유저 목록입니다.<br />하루에 최대 10번만 변경 가능합니다.'
   blocked-empty: '차단한 유저가 없습니다.'
   empty-email: '이메일 주소가 없습니다.'
   save: '확인'
@@ -462,6 +463,7 @@ ko:
   unblock-failed: '차단 유저 삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
   success: '저장되었습니다.'
   document-title: 'Ara - 내정보'
+  block-rate-limit: '하루에 최대 10번만 차단/해제 할 수 있습니다.'
 
 en:
   ranking-title: 'My Activity'
@@ -477,7 +479,7 @@ en:
   settings-sexual: 'Sexual posts'
   settings-social: 'Political posts'
   blocked-title: 'Blocked users'
-  blocked-subtitle: 'Users that you blocked'
+  blocked-subtitle: 'Users that you blocked<br />You could change it at most 10 times a day'
   blocked-empty: 'There are no blocked users.'
   empty-email: 'No email address'
   save: 'Confirm'
@@ -491,6 +493,7 @@ en:
   unblock-failed: 'Failed while unblocking user. Please try again after a while.'
   success: 'Saved successful.'
   document-title: 'Ara - MyInfo'
+  block-rate-limit: 'You could block/unblock at most 10 times a day.'
 </i18n>
 
 <style lang="scss" scoped>

@@ -209,19 +209,23 @@ export default {
     },
 
     async block () {
-      if (!this.post.created_by.is_blocked) {
-        const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-block'))
-        if (!result) return
-
-        await blockUser(this.post.created_by.id)
-        this.post.created_by.is_blocked = true
-        this.$store.dispatch('dialog/toast', this.$t('blocked'))
-      } else {
-        await unblockUser(this.post.created_by.id)
-        this.post.created_by.is_blocked = false
-        this.$store.dispatch('dialog/toast', this.$t('unblocked'))
+      try {
+        if (!this.post.created_by.is_blocked) {
+          const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-block'))
+          if (!result) return
+          await blockUser(this.post.created_by.id)
+          this.post.created_by.is_blocked = true
+          this.$store.dispatch('dialog/toast', this.$t('blocked'))
+        } else {
+          await unblockUser(this.post.created_by.id)
+          this.post.created_by.is_blocked = false
+          this.$store.dispatch('dialog/toast', this.$t('unblocked'))
+        }
+      } catch (e) {
+        if (e.response.status === 403) {
+          this.$store.dispatch('dialog/toast', this.$t('block-rate-limit'))
+        }
       }
-
       await this.refresh()
     },
 
@@ -295,6 +299,7 @@ ko:
   already-reported: '이미 신고되었습니다.'
   hidden-post: '숨겨진 글'
   report-unavailable: '신고가 불가능한 글입니다!'
+  block-rate-limit: '하루에 최대 10번만 차단/해제 할 수 있습니다.'
 
 en:
   archived: 'Successfully added to your archive!'
@@ -308,5 +313,6 @@ en:
   already-reported: "You've already reported this article."
   hidden-post: 'Hidden post'
   report-unavailable: 'You cannot report this post!'
+  block-rate-limit: 'You could block/unblock at most 10 times a day.'
 
 </i18n>
