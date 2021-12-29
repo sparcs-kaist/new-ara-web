@@ -8,7 +8,6 @@ export const fetchPost = ({ postId, context = {} }) =>
 export const createPost = ({ boardId, newArticle }) =>
   http.post('articles/', {
     ...newArticle,
-    is_anonymous: boardId === 9,
     parent_board: boardId
   }).then(({ data }) => data)
 
