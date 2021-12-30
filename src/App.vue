@@ -12,7 +12,17 @@ import TheFooter from '@/components/TheFooter.vue'
 
 export default {
   name: 'app',
-  components: { TheFooter }
+  components: { TheFooter },
+  mounted () {
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault()
+      // Stash the event so it can be triggered later.
+      this.$store.commit('setPWAPrompt', e)
+    })
+    window.addEventListener('appinstalled', () => {
+      this.$store.commit('setPWAPrompt', null)
+    })
+  }
 }
 </script>
 
