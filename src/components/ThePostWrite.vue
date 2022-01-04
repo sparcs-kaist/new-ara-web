@@ -131,7 +131,7 @@ import Attachments from '@/components/TheAttachments'
 import TextEditor from '@/components/TheTextEditor'
 
 export default {
-  name: 'the-post-write',
+  name: 'ThePostWrite',
 
   props: {
     post: {},

@@ -141,7 +141,7 @@ import IdentityBar from '@/components/IdentityBar.vue'
 import isIE from '@/utils/isIE.js'
 
 export default {
-  name: 'the-navbar',
+  name: 'TheNavbar',
 
   data () {
     return {

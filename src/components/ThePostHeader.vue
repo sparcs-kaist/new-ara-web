@@ -49,7 +49,7 @@ import LikeButton from '@/components/LikeButton.vue'
 import i18n from '@/i18n'
 
 export default {
-  name: 'the-post-header',
+  name: 'ThePostHeader',
   props: {
     post: { required: true },
     context: { type: Object }

@@ -218,7 +218,7 @@ import LinkBookmark from '@/editor/LinkBookmark'
 import TheTextEditorLinkDialog from '@/components/TheTextEditorLinkDialog'
 
 export default {
-  name: 'the-text-editor',
+  name: 'TheTextEditor',
   props: {
     content: {
       type: String,

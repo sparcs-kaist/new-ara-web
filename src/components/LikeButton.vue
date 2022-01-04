@@ -24,6 +24,7 @@ import elideText from '@/utils/elideText'
 const elideText3 = elideText(3)
 
 export default {
+  name: 'LikeButton',
   props: {
     item: {
       required: true

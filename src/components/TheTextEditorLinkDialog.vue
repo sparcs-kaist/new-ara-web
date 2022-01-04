@@ -37,6 +37,7 @@
 import TextEditorDialog from '@/components/TextEditorDialog'
 
 export default {
+  name: 'TheTextEditorLinkDialog',
   data () {
     return {
       url: '',

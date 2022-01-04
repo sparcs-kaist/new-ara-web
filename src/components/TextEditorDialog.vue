@@ -25,6 +25,7 @@
 
 <script>
 export default {
+  name: 'TextEditorDialog',
   data () {
     return {
       shown: false,

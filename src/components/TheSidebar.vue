@@ -18,7 +18,7 @@ import SearchBar from '@/components/SearchBar.vue'
 import SmallBoard from '@/components/SmallBoard.vue'
 
 export default {
-  name: 'the-sidebar',
+  name: 'TheSidebar',
 
   data () {
     return {

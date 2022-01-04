@@ -47,7 +47,7 @@ import { Splide, SplideSlide } from '@splidejs/vue-splide'
 import '@splidejs/splide/dist/css/themes/splide-sea-green.min.css'
 
 export default {
-  name: 'the-organizations',
+  name: 'TheOrganizations',
   components: { OrganizationCard, Splide, SplideSlide },
   data: () => {
     return {

@@ -8,7 +8,7 @@
 import { timeago } from '@/helper.js'
 
 export default {
-  name: 'timeago',
+  name: 'Timeago',
   props: [ 'time' ],
   computed: {
     timeago () {

@@ -21,7 +21,7 @@ import DailyNotifications from '@/components/DailyNotifications'
 import ThePaginator from '@/components/ThePaginator'
 
 export default {
-  name: 'the-notifications',
+  name: 'TheNotifications',
   props: {
     notifications: { required: true },
     title: String

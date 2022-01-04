@@ -47,6 +47,7 @@
 <script>
 import TermsPopup from './TermsPopup'
 export default {
+  name: 'TheFooter',
   computed: {
     agreeTosAt () {
       return this.$store.state.auth.userProfile?.['agree_terms_of_service_at']

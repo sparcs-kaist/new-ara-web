@@ -31,7 +31,7 @@ import ThePaginator from '@/components/ThePaginator.vue'
 import TheBoardTable from '@/components/TheBoardTable.vue'
 
 export default {
-  name: 'the-board',
+  name: 'TheBoard',
   props: {
     board: { required: true },
     title: { type: String },

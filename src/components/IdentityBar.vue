@@ -23,7 +23,7 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  name: 'identity-bar',
+  name: 'IdentityBar',
   computed: {
     ...mapGetters(['PWAPrompt'])
   },

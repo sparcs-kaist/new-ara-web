@@ -39,7 +39,7 @@
 import i18n from '@/i18n'
 
 export default {
-  name: 'small-board',
+  name: 'SmallBoard',
   props: {
     listitems: {
       required: true

@@ -76,7 +76,7 @@
 
 <script>
 export default {
-  name: 'organization-card',
+  name: 'OrganizationCard',
   props: {
     name: { type: String, required: true },
     id: { type: String, required: true },

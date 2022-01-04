@@ -67,6 +67,7 @@ const ALLOWED_EXTENSIONS = [
 */
 
 export default {
+  name: 'TheAttachments',
   data () {
     return {
       dropzoneFailedReason: null,

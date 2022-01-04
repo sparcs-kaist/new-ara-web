@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: 'notification',
+  name: 'Notification',
   props: {
     notification: { required: true }
   },

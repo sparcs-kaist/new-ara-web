@@ -29,7 +29,7 @@ import PostComment from '@/components/PostComment.vue'
 import PostCommentEditor from '@/components/PostCommentEditor.vue'
 
 export default {
-  name: 'the-post-comments',
+  name: 'ThePostComments',
 
   props: {
     post: { required: true },
