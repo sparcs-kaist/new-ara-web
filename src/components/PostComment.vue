@@ -123,9 +123,18 @@ export default {
   name: 'PostComment',
 
   props: {
-    post: { required: true },
-    comment: { required: true },
-    anonymousProfile: {required: true},
+    post: {
+      type: Object,
+      required: true
+    },
+    comment: {
+      type: Object,
+      required: true
+    },
+    anonymousProfile: {
+      type: Object,
+      required: true
+    },
     isReplyComment: Boolean
   },
 

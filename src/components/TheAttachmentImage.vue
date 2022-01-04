@@ -8,7 +8,12 @@
 
 export default {
   name: 'TheAttachmentImage',
-  props: ['node', 'updateAttrs', 'view', 'options'],
+  props: {
+    node: Object,
+    updateAttrs: Function,
+    view: Object,
+    options: Object
+  },
   computed: {
     src () {
       return this.node.attrs.src

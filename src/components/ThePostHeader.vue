@@ -51,8 +51,11 @@ import i18n from '@/i18n'
 export default {
   name: 'ThePostHeader',
   props: {
-    post: { required: true },
-    context: { type: Object }
+    post: {
+      type: Object,
+      required: true
+    },
+    context: Object
   },
   data () {
     return {

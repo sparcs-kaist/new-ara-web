@@ -13,8 +13,11 @@ export default {
   name: 'ThePostNavigation',
 
   props: {
-    post: { required: true },
-    context: {}
+    post: {
+      type: Object,
+      required: true
+    },
+    context: Object
   },
 
   computed: {

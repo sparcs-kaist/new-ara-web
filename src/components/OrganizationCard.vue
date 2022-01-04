@@ -15,11 +15,20 @@
 export default {
   name: 'OrganizationCard',
   props: {
-    name: { type: String, required: true },
-    id: { type: String, required: true },
-    icon: { type: String },
-    slug: { type: String },
-    backgroundColor: { type: String, default: '#fdf0f0' }
+    name: {
+      type: String,
+      required: true
+    },
+    id: {
+      type: String,
+      required: true
+    },
+    backgroundColor: {
+      type: String,
+      default: '#fdf0f0'
+    },
+    icon: String,
+    slug: String
   },
   computed: {
     generateHref () {

@@ -61,27 +61,18 @@ export default {
   },
 
   props: {
-    post: { required: true },
+    post: {
+      type: Object,
+      required: true
+    },
     text: {
       type: String,
       default: ''
     },
-
-    parentArticle: {
-      default: null
-    },
-
-    parentComment: {
-      default: null
-    },
-
-    editComment: {
-      default: null
-    },
-
-    anonymousProfile: {
-      default: null
-    }
+    parentArticle: Number,
+    parentComment: Number,
+    editComment: Number,
+    anonymousProfile: Object
   },
 
   computed: {

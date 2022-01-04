@@ -27,20 +27,12 @@ export default {
   name: 'LikeButton',
   props: {
     item: {
+      type: Object,
       required: true
     },
-
-    votable: {
-      type: Boolean
-    },
-
-    elide: {
-      type: Boolean
-    },
-
-    table: {
-      type: Boolean
-    }
+    votable: Boolean,
+    elide: Boolean,
+    table: Boolean
   },
 
   computed: {

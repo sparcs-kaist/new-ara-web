@@ -32,8 +32,14 @@ export default {
   name: 'ThePostComments',
 
   props: {
-    post: { required: true },
-    comments: { required: true }
+    post: {
+      type: Object,
+      required: true
+    },
+    comments: {
+      type: Array,
+      required: true
+    }
   },
   computed: {
     commentCount () {

@@ -33,10 +33,13 @@ import TheBoardTable from '@/components/TheBoardTable.vue'
 export default {
   name: 'TheBoard',
   props: {
-    board: { required: true },
-    title: { type: String },
-    fromQuery: {},
-    simplify: { type: Boolean }
+    board: {
+      type: Object,
+      required: true
+    },
+    title: String,
+    fromQuery: Object,
+    simplify: Boolean
   },
   computed: {
     fromQueryWithPage () {

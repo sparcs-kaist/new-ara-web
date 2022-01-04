@@ -134,13 +134,9 @@ export default {
   name: 'ThePostWrite',
 
   props: {
-    post: {},
-    saving: {
-      type: Boolean
-    },
-    emptyWarnings: {
-      type: Array
-    }
+    post: Object,
+    saving: Boolean,
+    emptyWarnings: Array
   },
 
   data () {

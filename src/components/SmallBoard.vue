@@ -42,24 +42,13 @@ export default {
   name: 'SmallBoard',
   props: {
     listitems: {
+      type: Array,
       required: true
     },
-
-    fromQuery: {
-      type: Object
-    },
-
-    detail: {
-      type: Boolean
-    },
-
-    sidebar: {
-      type: Boolean
-    },
-
-    href: {
-      type: Object
-    }
+    fromQuery: Object,
+    detail: Boolean,
+    sidebar: Boolean,
+    href: Object
   },
   methods: {
     title (post) {

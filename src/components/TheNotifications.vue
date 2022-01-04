@@ -23,7 +23,10 @@ import ThePaginator from '@/components/ThePaginator'
 export default {
   name: 'TheNotifications',
   props: {
-    notifications: { required: true },
+    notifications: {
+      type: Object,
+      required: true
+    },
     title: String
   },
   computed: {

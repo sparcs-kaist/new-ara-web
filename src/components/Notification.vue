@@ -15,7 +15,10 @@
 export default {
   name: 'Notification',
   props: {
-    notification: { required: true }
+    notification: {
+      type: Object,
+      required: true
+    }
   },
   computed: {
     fromQuery () {

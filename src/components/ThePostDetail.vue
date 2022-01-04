@@ -104,7 +104,10 @@ import i18n from '@/i18n'
 export default {
   name: 'ThePostDetail',
   props: {
-    post: { required: true }
+    post: {
+      type: Object,
+      required: true
+    }
   },
   data () {
     return {

@@ -224,9 +224,7 @@ export default {
       type: String,
       default: ''
     },
-    editable: {
-      type: Boolean
-    }
+    editable: Boolean
   },
   data () {
     return {

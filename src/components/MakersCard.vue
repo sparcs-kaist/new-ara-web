@@ -24,11 +24,20 @@
 export default {
   name: 'MakersCard',
   props: {
-    title: {type: String, required: true},
-    subtitle: {type: String, required: true},
-    cardType: {type: String, required: true},
-    position: {type: String},
-    active: {type: String}
+    title: {
+      type: String,
+      required: true
+    },
+    subtitle: {
+      type: String,
+      required: true
+    },
+    cardType: {
+      type: String,
+      required: true
+    },
+    position: String,
+    active: String
   }
 }
 </script>
