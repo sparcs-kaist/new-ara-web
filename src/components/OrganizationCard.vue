@@ -11,69 +11,6 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-@import "@/theme.scss";
-.organization-card-wrap{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  .organization-card {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 93px;
-    height: 93px;
-    padding: 20px 0;
-    border-radius: 50%;
-    //border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
-
-    @include breakPoint(mobile) {
-      width: 80px;
-      height: 80px;
-    }
-
-    @media screen and (max-width: 480px){
-      width: 70px;
-      height: 70px;
-    }
-
-    .logo {
-      width: 90%;
-      height: 60%;
-      object-fit: contain;
-
-      &--icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 40px;
-        color: white;
-
-        @media screen and (max-width: 480px){
-          font-size: 30px;
-        }
-
-      }
-    }
-  }
-  .name {
-    color: #464646;
-    font-size: 15px;
-    font-weight: 700;
-    text-align: center;
-    margin: 15px 0;
-
-    @include breakPoint(mobile) {
-      font-size: 11px;
-      font-weight: 600;
-    }
-  }
-}
-</style>
-
 <script>
 export default {
   name: 'OrganizationCard',
@@ -146,3 +83,66 @@ en:
   freshman-council: 'Freshman Council'
   kcoop: 'KCOOP'
 </i18n>
+
+<style lang="scss" scoped>
+@import "@/theme.scss";
+.organization-card-wrap{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .organization-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 93px;
+    height: 93px;
+    padding: 20px 0;
+    border-radius: 50%;
+    //border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+
+    @include breakPoint(mobile) {
+      width: 80px;
+      height: 80px;
+    }
+
+    @media screen and (max-width: 480px){
+      width: 70px;
+      height: 70px;
+    }
+
+    .logo {
+      width: 90%;
+      height: 60%;
+      object-fit: contain;
+
+      &--icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        color: white;
+
+        @media screen and (max-width: 480px){
+          font-size: 30px;
+        }
+
+      }
+    }
+  }
+  .name {
+    color: #464646;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    margin: 15px 0;
+
+    @include breakPoint(mobile) {
+      font-size: 11px;
+      font-weight: 600;
+    }
+  }
+}
+</style>
