@@ -20,6 +20,7 @@
 <script>
 export default {
   name: 'NotFound',
+
   beforeRouteEnter (to, from, next) {
     next(vm => {
       document.title = vm.$t('document-title')

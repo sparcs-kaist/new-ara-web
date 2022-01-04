@@ -23,6 +23,13 @@ import TheSidebar from '@/components/TheSidebar.vue'
 
 export default {
   name: 'User',
+
+  components: {
+    TheBoard,
+    TheLayout,
+    TheSidebar
+  },
+
   data () {
     return { board: {}, user: {} }
   },
@@ -38,6 +45,7 @@ export default {
       vm.user = user
     })
   },
+
   async beforeRouteUpdate ({ params: { username }, query }, from, next) {
     const [ board, user ] = await fetchWithProgress([
       fetchArticles({ username, ...query }),
@@ -47,11 +55,6 @@ export default {
     this.board = board
     this.user = user
     next()
-  },
-  components: {
-    TheBoard,
-    TheLayout,
-    TheSidebar
   }
 }
 </script>

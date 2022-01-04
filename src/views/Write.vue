@@ -19,9 +19,16 @@ import ThePostWrite from '@/components/ThePostWrite.vue'
 
 export default {
   name: 'Write',
+
+  components: {
+    TheLayout,
+    ThePostWrite
+  },
+
   props: {
     postId: String
   },
+
   data () {
     return {
       post: null,
@@ -30,6 +37,7 @@ export default {
       emptyWarnings: []
     }
   },
+
   computed: {
     isEditing () {
       return !!this.postId
@@ -39,6 +47,61 @@ export default {
         (this.isEditing && this.post) // 기존 글을 수정하는 경우 데이터 페치를 기다림
     }
   },
+
+  async beforeRouteEnter ({ params: { postId } }, from, next) {
+    // 새로운 글을 작성하는 경우
+    if (!postId) {
+      next(vm => {
+        document.title = vm.$t('document-title.write')
+      }) // !주의: next는 한번만 호출돼야 함
+    // 기존 글을 수정하는 경우
+    } else {
+      const [ post ] = await fetchWithProgress([ fetchPost({ postId, context: {override_hidden: true} }) ], 'write-failed-fetch')
+      next(vm => {
+        document.title = vm.$t('document-title.revise')
+        vm.post = post
+      })
+    }
+  },
+
+  async beforeRouteUpdate ({ params: { postId } }, from, next) {
+    if (!this.saved) {
+      const response = await this.$store.dispatch('dialog/confirm', this.$t('before-unload'))
+      if (!response) return
+    }
+
+    if (!postId) {
+      document.title = this.$t('document-title.write')
+      this.post = null
+    } else {
+      const [ post ] = await fetchWithProgress([ fetchPost({ postId }) ], 'write-failed-fetch')
+      document.title = this.$t('document-title.revise')
+      this.post = post
+    }
+    next()
+  },
+
+  async beforeRouteLeave (to, from, next) {
+    if (!this.saved) {
+      const response = await this.$store.dispatch('dialog/confirm', this.$t('before-unload'))
+      if (response) next()
+      return
+    }
+    next()
+  },
+
+  mounted () {
+    this.beforeUnloadHandler = event => {
+      // 대부분의 경우에는 표시되지 않으나 일단 넣어둠
+      event.returnValue = this.$t('before-unload')
+    }
+    window.addEventListener('beforeunload', this.beforeUnloadHandler)
+  },
+
+  destroyed () {
+    window.removeEventListener('beforeunload', this.beforeUnloadHandler)
+  },
+
   methods: {
     async savePost (newArticle) {
       const { title, boardId, categoryId, isSexual, isSocial, attachments } = newArticle
@@ -142,60 +205,7 @@ export default {
       window.removeEventListener('beforeunload', this.beforeUnloadHandler)
       this.$router.push({ name: 'post', params: { postId: result.id } })
     }
-  },
-
-  async beforeRouteEnter ({ params: { postId } }, from, next) {
-    // 새로운 글을 작성하는 경우
-    if (!postId) {
-      next(vm => {
-        document.title = vm.$t('document-title.write')
-      }) // !주의: next는 한번만 호출돼야 함
-    // 기존 글을 수정하는 경우
-    } else {
-      const [ post ] = await fetchWithProgress([ fetchPost({ postId, context: {override_hidden: true} }) ], 'write-failed-fetch')
-      next(vm => {
-        document.title = vm.$t('document-title.revise')
-        vm.post = post
-      })
-    }
-  },
-
-  async beforeRouteUpdate ({ params: { postId } }, from, next) {
-    if (!this.saved) {
-      const response = await this.$store.dispatch('dialog/confirm', this.$t('before-unload'))
-      if (!response) return
-    }
-
-    if (!postId) {
-      document.title = this.$t('document-title.write')
-      this.post = null
-    } else {
-      const [ post ] = await fetchWithProgress([ fetchPost({ postId }) ], 'write-failed-fetch')
-      document.title = this.$t('document-title.revise')
-      this.post = post
-    }
-    next()
-  },
-
-  async beforeRouteLeave (to, from, next) {
-    if (!this.saved) {
-      const response = await this.$store.dispatch('dialog/confirm', this.$t('before-unload'))
-      if (response) next()
-      return
-    }
-    next()
-  },
-  mounted () {
-    this.beforeUnloadHandler = event => {
-      // 대부분의 경우에는 표시되지 않으나 일단 넣어둠
-      event.returnValue = this.$t('before-unload')
-    }
-    window.addEventListener('beforeunload', this.beforeUnloadHandler)
-  },
-  destroyed () {
-    window.removeEventListener('beforeunload', this.beforeUnloadHandler)
-  },
-  components: { TheLayout, ThePostWrite }
+  }
 }
 </script>
 

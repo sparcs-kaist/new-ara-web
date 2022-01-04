@@ -46,12 +46,21 @@ import TheLayout from '@/components/TheLayout.vue'
 
 export default {
   name: 'Home',
+
+  components: {
+    SmallBoard,
+    TheHomeSearchbar,
+    TheOrganizations,
+    TheLayout
+  },
+
   data () {
     return {
       home: {},
       notice: []
     }
   },
+
   computed: {
     dailyBests () {
       if (!this.home.daily_bests) {
@@ -68,6 +77,7 @@ export default {
       return this.home.weekly_bests
     }
   },
+
   async beforeRouteEnter (to, from, next) {
     const promises = [ fetchHome() ]
 
@@ -85,12 +95,6 @@ export default {
       vm.notice = notice?.results
       document.title = vm.$t('document-title')
     })
-  },
-  components: {
-    SmallBoard,
-    TheHomeSearchbar,
-    TheOrganizations,
-    TheLayout
   }
 }
 </script>

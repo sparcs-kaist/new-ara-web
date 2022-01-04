@@ -71,6 +71,12 @@ import TheSidebar from '@/components/TheSidebar.vue'
 export default {
   name: 'Board',
 
+  components: {
+    TheBoard,
+    TheLayout,
+    TheSidebar
+  },
+
   data () {
     return {
       board: {},
@@ -166,11 +172,7 @@ export default {
     document.title = `Ara - ${this.boardName}`
     next()
   },
-  components: {
-    TheBoard,
-    TheLayout,
-    TheSidebar
-  },
+
   methods: {
     changeFilter () {
       if (this.$route.query.portal === 'exclude') {

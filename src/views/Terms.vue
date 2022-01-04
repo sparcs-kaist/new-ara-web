@@ -12,18 +12,17 @@ import TheLayout from '../components/TheLayout'
 export default {
   name: 'Terms',
 
+  components: {
+    TermsPopup,
+    TheLayout
+  },
+
   beforeRouteEnter (from, to, next) {
     if (store.state.auth?.userProfile?.['agree_terms_of_service_at']) {
       next('/')
       return
     }
-
     next()
-  },
-
-  components: {
-    TermsPopup,
-    TheLayout
   }
 }
 </script>

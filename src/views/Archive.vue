@@ -16,9 +16,17 @@ import TheSidebar from '@/components/TheSidebar.vue'
 
 export default {
   name: 'Archive',
+
+  components: {
+    TheBoard,
+    TheLayout,
+    TheSidebar
+  },
+
   data () {
     return { archive: {} }
   },
+
   async beforeRouteEnter ({ query }, from, next) {
     const [ archive ] = await fetchWithProgress([ fetchArchivedPosts(query) ], 'archive-failed-fetch')
     next(vm => {
@@ -26,15 +34,11 @@ export default {
       document.title = vm.$t('document-title')
     })
   },
+
   async beforeRouteUpdate ({ query }, from, next) {
     const [ archive ] = await fetchWithProgress([ fetchArchivedPosts(query) ], 'archive-failed-fetch')
     this.archive = archive
     next()
-  },
-  components: {
-    TheBoard,
-    TheLayout,
-    TheSidebar
   }
 }
 </script>
