@@ -22,6 +22,12 @@ import ThePaginator from '@/components/ThePaginator'
 
 export default {
   name: 'TheNotifications',
+
+  components: {
+    DailyNotifications,
+    ThePaginator
+  },
+
   props: {
     notifications: {
       type: Object,
@@ -29,6 +35,7 @@ export default {
     },
     title: String
   },
+
   computed: {
     dailyNotifications () {
       if (!this.notifications.results) return {}
@@ -50,8 +57,7 @@ export default {
           }
         }, {})
     }
-  },
-  components: { DailyNotifications, ThePaginator }
+  }
 }
 </script>
 

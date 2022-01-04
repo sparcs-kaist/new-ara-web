@@ -12,15 +12,16 @@
 <script>
 export default {
   name: 'SearchBar',
-  data () {
-    return { searchText: '' }
-  },
 
   props: {
     searchable: Boolean,
     small: Boolean,
     fullwidth: Boolean,
     long: Boolean
+  },
+
+  data () {
+    return { searchText: '' }
   },
 
   methods: {

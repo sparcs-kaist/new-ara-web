@@ -20,15 +20,20 @@ import SmallBoard from '@/components/SmallBoard.vue'
 export default {
   name: 'TheSidebar',
 
+  components: {
+    SearchBar,
+    SmallBoard
+  },
+
+  props: {
+    searchable: Boolean
+  },
+
   data () {
     return {
       recent: [],
       archives: null
     }
-  },
-
-  props: {
-    searchable: Boolean
   },
 
   computed: {
@@ -46,11 +51,6 @@ export default {
   async mounted () {
     await this.$store.dispatch('fetchRecentPosts')
     await this.$store.dispatch('fetchArchivedPosts')
-  },
-
-  components: {
-    SearchBar,
-    SmallBoard
   }
 }
 </script>

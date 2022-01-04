@@ -62,21 +62,26 @@ import i18n from '@/i18n'
 
 export default {
   name: 'BoardItem',
+
+  components: {
+    LikeButton,
+    Timeago
+  },
+
   props: {
     post: {
       type: Object,
       required: true
     },
-
     fromQuery: {
       type: Object,
       default () {
         return { from_view: 'all' }
       }
     },
-
     current: Boolean
   },
+
   computed: {
     title () {
       if (this.post.is_hidden) return i18n.t(this.post.why_hidden[0])
@@ -100,12 +105,9 @@ export default {
       }
     }
   },
+
   methods: {
     elideText: elideText(2)
-  },
-  components: {
-    LikeButton,
-    Timeago
   }
 }
 </script>

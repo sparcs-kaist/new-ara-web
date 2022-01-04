@@ -31,6 +31,11 @@ import PostCommentEditor from '@/components/PostCommentEditor.vue'
 export default {
   name: 'ThePostComments',
 
+  components: {
+    PostComment,
+    PostCommentEditor
+  },
+
   props: {
     post: {
       type: Object,
@@ -41,6 +46,7 @@ export default {
       required: true
     }
   },
+
   computed: {
     commentCount () {
       if (!this.post || !this.comments) return 0
@@ -71,10 +77,6 @@ export default {
         profileImage: this.post.created_by?.profile.picture
       }
     }
-  },
-  components: {
-    PostComment,
-    PostCommentEditor
   }
 }
 </script>

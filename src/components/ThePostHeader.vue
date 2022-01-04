@@ -50,6 +50,11 @@ import i18n from '@/i18n'
 
 export default {
   name: 'ThePostHeader',
+
+  components: {
+    LikeButton
+  },
+
   props: {
     post: {
       type: Object,
@@ -57,11 +62,13 @@ export default {
     },
     context: Object
   },
+
   data () {
     return {
       attachments: null
     }
   },
+
   computed: {
     userPictureUrl () {
       return this.post.created_by && this.post.created_by.profile.picture
@@ -120,10 +127,6 @@ export default {
       return this.$t('all')
     },
     ...mapGetters([ 'userId' ])
-  },
-
-  components: {
-    LikeButton
   }
 }
 </script>

@@ -26,6 +26,7 @@
 <script>
 export default {
   name: 'TextEditorDialog',
+
   data () {
     return {
       shown: false,
@@ -44,7 +45,6 @@ export default {
       this.shown = true
       this.callback = callback
     },
-
     hideDialog (...args) {
       this.shown = false
       this.callback(...args)

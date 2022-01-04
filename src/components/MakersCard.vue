@@ -23,6 +23,7 @@
 <script>
 export default {
   name: 'MakersCard',
+
   props: {
     title: {
       type: String,

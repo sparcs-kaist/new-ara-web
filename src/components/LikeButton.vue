@@ -25,6 +25,7 @@ const elideText3 = elideText(3)
 
 export default {
   name: 'LikeButton',
+
   props: {
     item: {
       type: Object,
@@ -59,7 +60,6 @@ export default {
 
       this.$emit('vote', { id: this.item.id, vote: myVote })
     },
-
     elideText (text) {
       if (!this.elide) {
         return text

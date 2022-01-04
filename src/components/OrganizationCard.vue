@@ -14,6 +14,7 @@
 <script>
 export default {
   name: 'OrganizationCard',
+
   props: {
     name: {
       type: String,
@@ -30,6 +31,7 @@ export default {
     icon: String,
     slug: String
   },
+
   computed: {
     generateHref () {
       switch (this.id) {
@@ -49,6 +51,7 @@ export default {
       }
     }
   },
+
   methods: {
     generateOrganizationHref () {
       if (this.slug) {

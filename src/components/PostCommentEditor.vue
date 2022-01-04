@@ -52,14 +52,6 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'PostCommentEditor',
 
-  data () {
-    return {
-      content: this.text,
-      height: 'auto',
-      isUploading: false
-    }
-  },
-
   props: {
     post: {
       type: Object,
@@ -73,6 +65,14 @@ export default {
     parentComment: Number,
     editComment: Number,
     anonymousProfile: Object
+  },
+
+  data () {
+    return {
+      content: this.text,
+      height: 'auto',
+      isUploading: false
+    }
   },
 
   computed: {
@@ -95,7 +95,6 @@ export default {
         }
       })
     },
-
     async saveComment () {
       if (this.isUploading) {
         return
@@ -130,11 +129,9 @@ export default {
 
       this.isUploading = false
     },
-
     closeComment () {
       this.$emit('close')
     },
-
     focus () {
       this.$refs.input.focus()
     }

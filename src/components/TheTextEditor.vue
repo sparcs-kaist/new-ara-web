@@ -219,6 +219,13 @@ import TheTextEditorLinkDialog from '@/components/TheTextEditorLinkDialog'
 
 export default {
   name: 'TheTextEditor',
+
+  components: {
+    EditorContent,
+    EditorMenuBar,
+    TheTextEditorLinkDialog
+  },
+
   props: {
     content: {
       type: String,
@@ -226,6 +233,7 @@ export default {
     },
     editable: Boolean
   },
+
   data () {
     return {
       imgError: false,
@@ -267,11 +275,22 @@ export default {
     }
   },
 
+  watch: {
+    content (newContent) {
+      if (!this.editable) {
+        this.editor.setContent(newContent)
+      }
+    }
+  },
+
+  beforeDestroy () {
+    this.editor.destroy()
+  },
+
   methods: {
     getContent () {
       return this.editor.getHTML()
     },
-
     showLinkDialog () {
       const { commands, schema, view, selection, state: { doc } } = this.editor
 
@@ -293,7 +312,6 @@ export default {
         }
       }, text || '')
     },
-
     addImageByFile (file) {
       if (file.blobUrl) {
         this.editor.commands.attachmentImage({
@@ -302,7 +320,6 @@ export default {
         })
       }
     },
-
     removeImageByFile (file) {
       let imagePositions = []
 
@@ -325,7 +342,6 @@ export default {
 
       this.editor.view.dispatch(transaction.setMeta('addToHistory', false))
     },
-
     applyImageUpload (attachmentUpdate) {
       this.editor.state.doc.descendants(node => {
         if (node.type.name !== 'attachmentImage') return true
@@ -339,24 +355,6 @@ export default {
         }
       })
     }
-  },
-
-  watch: {
-    content (newContent) {
-      if (!this.editable) {
-        this.editor.setContent(newContent)
-      }
-    }
-  },
-
-  beforeDestroy () {
-    this.editor.destroy()
-  },
-
-  components: {
-    EditorContent,
-    EditorMenuBar,
-    TheTextEditorLinkDialog
   }
 }
 </script>

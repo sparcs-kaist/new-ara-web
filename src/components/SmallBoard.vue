@@ -40,6 +40,7 @@ import i18n from '@/i18n'
 
 export default {
   name: 'SmallBoard',
+
   props: {
     listitems: {
       type: Array,
@@ -50,6 +51,7 @@ export default {
     sidebar: Boolean,
     href: Object
   },
+
   methods: {
     title (post) {
       if (post.is_hidden) {

@@ -14,12 +14,14 @@
 <script>
 export default {
   name: 'Notification',
+
   props: {
     notification: {
       type: Object,
       required: true
     }
   },
+
   computed: {
     fromQuery () {
       return { from_view: 'all' }

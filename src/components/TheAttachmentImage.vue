@@ -8,12 +8,14 @@
 
 export default {
   name: 'TheAttachmentImage',
+
   props: {
     node: Object,
     updateAttrs: Function,
     view: Object,
     options: Object
   },
+
   computed: {
     src () {
       return this.node.attrs.src
@@ -30,6 +32,7 @@ export default {
       }
     }
   },
+
   methods: {
     imageLoadError () {
       if (this.options.errorCallback) {

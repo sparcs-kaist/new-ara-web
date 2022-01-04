@@ -14,6 +14,9 @@ import Notification from '@/components/Notification'
 
 export default {
   name: 'DailyNotifications',
+
+  components: { Notification },
+
   props: {
     timePassed: {
       type: String,
@@ -23,8 +26,7 @@ export default {
       type: Array,
       required: true
     }
-  },
-  components: { Notification }
+  }
 }
 </script>
 

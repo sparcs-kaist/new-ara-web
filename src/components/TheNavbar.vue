@@ -143,6 +143,10 @@ import isIE from '@/utils/isIE.js'
 export default {
   name: 'TheNavbar',
 
+  components: {
+    IdentityBar
+  },
+
   data () {
     return {
       isMobileMenuActive: false
@@ -160,26 +164,20 @@ export default {
     }
   },
 
-  methods: {
-    toggleMobileMenu () {
-      this.isMobileMenuActive = !this.isMobileMenuActive
-    },
-
-    changeLocale () {
-      this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en'
-    },
-
-    ...mapActions(['toggleDarkMode'])
-  },
-
   watch: {
     $route () {
       this.isMobileMenuActive = false
     }
   },
 
-  components: {
-    IdentityBar
+  methods: {
+    toggleMobileMenu () {
+      this.isMobileMenuActive = !this.isMobileMenuActive
+    },
+    changeLocale () {
+      this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en'
+    },
+    ...mapActions(['toggleDarkMode'])
   }
 }
 </script>

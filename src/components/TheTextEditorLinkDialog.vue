@@ -38,6 +38,11 @@ import TextEditorDialog from '@/components/TextEditorDialog'
 
 export default {
   name: 'TheTextEditorLinkDialog',
+
+  components: {
+    TextEditorDialog
+  },
+
   data () {
     return {
       url: '',
@@ -82,10 +87,6 @@ export default {
         this.$refs.root.hideDialog(...args)
       }
     }
-  },
-
-  components: {
-    TextEditorDialog
   }
 }
 </script>

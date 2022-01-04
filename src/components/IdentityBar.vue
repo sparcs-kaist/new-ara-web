@@ -24,9 +24,11 @@
 import { mapGetters } from 'vuex'
 export default {
   name: 'IdentityBar',
+
   computed: {
     ...mapGetters(['PWAPrompt'])
   },
+
   methods: {
     installPWA () {
       this.PWAPrompt.prompt()

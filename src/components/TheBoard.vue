@@ -32,6 +32,13 @@ import TheBoardTable from '@/components/TheBoardTable.vue'
 
 export default {
   name: 'TheBoard',
+
+  components: {
+    SearchBar,
+    ThePaginator,
+    TheBoardTable
+  },
+
   props: {
     board: {
       type: Object,
@@ -41,6 +48,7 @@ export default {
     fromQuery: Object,
     simplify: Boolean
   },
+
   computed: {
     fromQueryWithPage () {
       const query = {
@@ -62,11 +70,6 @@ export default {
 
       return this.title
     }
-  },
-  components: {
-    SearchBar,
-    ThePaginator,
-    TheBoardTable
   }
 }
 </script>
