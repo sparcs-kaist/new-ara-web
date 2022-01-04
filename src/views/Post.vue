@@ -48,7 +48,10 @@ import TheSidebar from '@/components/TheSidebar.vue'
 export default {
   name: 'Post',
   props: {
-    postId: { required: true }
+    postId: {
+      type: String,
+      required: true
+    }
   },
   data () {
     return {

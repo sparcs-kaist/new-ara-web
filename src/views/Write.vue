@@ -19,7 +19,9 @@ import ThePostWrite from '@/components/ThePostWrite.vue'
 
 export default {
   name: 'Write',
-  props: [ 'postId' ],
+  props: {
+    postId: String
+  },
   data () {
     return {
       post: null,
