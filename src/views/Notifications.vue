@@ -36,9 +36,6 @@ export default {
 }
 </script>
 
-<style>
-</style>
-
 <i18n>
   ko:
     document-title: 'Ara - 알림'

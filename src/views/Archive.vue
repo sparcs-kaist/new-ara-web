@@ -43,6 +43,16 @@ export default {
 }
 </script>
 
+<i18n>
+ko:
+  document-title: 'Ara - 담아두기'
+  archive: '담아두기'
+en:
+  document-title: 'Archive'
+  archive: 'Archive'
+</i18n>
+
+
 <style>
 #title {
   font-size: 1.5rem;
@@ -50,12 +60,3 @@ export default {
   margin-bottom: 1rem;
 }
 </style>
-
-<i18n>
-  ko:
-    document-title: 'Ara - 담아두기'
-    archive: '담아두기'
-  en:
-    document-title: 'Archive'
-    archive: 'Archive'
-</i18n>

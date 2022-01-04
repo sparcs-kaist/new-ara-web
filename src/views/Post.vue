@@ -50,12 +50,12 @@ export default {
 
   components: {
     TheBoard,
-      TheLayout,
-      ThePostComments,
-      ThePostDetail,
-      ThePostHeader,
-      ThePostNavigation,
-      TheSidebar
+    TheLayout,
+    ThePostComments,
+    ThePostDetail,
+    ThePostHeader,
+    ThePostNavigation,
+    TheSidebar
   },
 
   props: {
