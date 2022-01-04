@@ -69,7 +69,7 @@ import TheLayout from '@/components/TheLayout.vue'
 import TheSidebar from '@/components/TheSidebar.vue'
 
 export default {
-  name: 'board',
+  name: 'Board',
 
   data () {
     return {

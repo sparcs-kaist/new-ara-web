@@ -12,7 +12,7 @@ import TheLayout from '@/components/TheLayout.vue'
 import TheNotifications from '@/components/TheNotifications.vue'
 
 export default {
-  name: 'notifications',
+  name: 'Notifications',
   data () {
     return { notifications: {} }
   },

@@ -45,7 +45,7 @@ import TheOrganizations from '@/components/TheOrganizations.vue'
 import TheLayout from '@/components/TheLayout.vue'
 
 export default {
-  name: 'home',
+  name: 'Home',
   data () {
     return {
       home: {},

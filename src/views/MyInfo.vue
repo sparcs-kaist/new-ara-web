@@ -239,7 +239,7 @@ const fetchByQuery = query => {
 }
 
 export default {
-  name: 'my-info',
+  name: 'MyInfo',
   data () {
     return {
       user: {

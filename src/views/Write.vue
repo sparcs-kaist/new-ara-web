@@ -18,7 +18,7 @@ import TheLayout from '@/components/TheLayout.vue'
 import ThePostWrite from '@/components/ThePostWrite.vue'
 
 export default {
-  name: 'write',
+  name: 'Write',
   props: [ 'postId' ],
   data () {
     return {

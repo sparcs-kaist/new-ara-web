@@ -46,7 +46,7 @@ import TheLayout from '@/components/TheLayout.vue'
 import TheSidebar from '@/components/TheSidebar.vue'
 
 export default {
-  name: 'post',
+  name: 'Post',
   props: {
     postId: { required: true }
   },

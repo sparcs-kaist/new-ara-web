@@ -22,7 +22,7 @@ import TheLayout from '@/components/TheLayout.vue'
 import TheSidebar from '@/components/TheSidebar.vue'
 
 export default {
-  name: 'user',
+  name: 'User',
   data () {
     return { board: {}, user: {} }
   },

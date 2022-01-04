@@ -46,7 +46,7 @@
 import { apiUrl } from '@/http.js'
 
 export default {
-  name: 'facade',
+  name: 'Facade',
   computed: {
     loginUrl () {
       return `${apiUrl}/api/users/sso_login/?next=${location.protocol}//${location.host}/login-handler`

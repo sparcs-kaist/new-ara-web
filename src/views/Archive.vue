@@ -15,7 +15,7 @@ import TheLayout from '@/components/TheLayout.vue'
 import TheSidebar from '@/components/TheSidebar.vue'
 
 export default {
-  name: 'archive',
+  name: 'Archive',
   data () {
     return { archive: {} }
   },
