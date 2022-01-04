@@ -2,7 +2,6 @@
 <div>
   <IdentityBar></IdentityBar>
   <div class="navbar" aria-label="main navigation" role="navigation">
-    <!-- <TheNavbarFetchProgressBar/> -->
     <div class="navbar-container">
       <div class="navbar-brand" :class="{'navbar-active': isMobileMenuActive}">
         <router-link
@@ -42,9 +41,9 @@
             {{ $t('all') }}
           </router-link>
 
-          <TheNavbarArchives
-            class="navbar-item"
-          />
+          <router-link :to="{ name: 'archive' }" class="navbar-item">
+            {{ $t('archive') }}
+          </router-link>
 
           <router-link
             v-for="board in boardListVisible"
@@ -132,17 +131,12 @@
         </div>
       </div>
     </div>
-
-    <TheNavbarNotifications v-if="isNotificationsOpen" />
   </div>
 </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
-import TheNavbarFetchProgressBar from '@/components/TheNavbarFetchProgressBar.vue'
-import TheNavbarNotifications from '@/components/TheNavbarNotifications.vue'
-import TheNavbarArchives from '@/components/TheNavbarArchives.vue'
 import IdentityBar from '@/components/IdentityBar.vue'
 import isIE from '@/utils/isIE.js'
 
@@ -151,8 +145,7 @@ export default {
 
   data () {
     return {
-      isMobileMenuActive: false,
-      isNotificationsOpen: false
+      isMobileMenuActive: false
     }
   },
 
@@ -186,9 +179,6 @@ export default {
   },
 
   components: {
-    TheNavbarFetchProgressBar,
-    TheNavbarNotifications,
-    TheNavbarArchives,
     IdentityBar
   }
 }
@@ -196,6 +186,7 @@ export default {
 
 <i18n>
 ko:
+  archive: '담아둔 글'
   language: 'English'
   notification: '알림'
   write: '게시글 작성하기'
@@ -204,6 +195,7 @@ ko:
   logout: '로그아웃'
 
 en:
+  archive: 'Bookmarks'
   language: '한국어'
   notification: 'Notifications'
   write: 'Write Post'
