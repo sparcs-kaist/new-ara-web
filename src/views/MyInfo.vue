@@ -486,7 +486,7 @@ en:
   cancel: 'Cancel'
   my-info: 'My info'
   board-my: 'My posts'
-  board-recent: 'Recently viewed'
+  board-recent: 'History'
   board-archive: 'Bookmarks'
   settings : 'Settings'
   setting-change-failed: 'Failed while updating settings.'
