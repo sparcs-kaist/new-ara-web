@@ -12,19 +12,22 @@ import BoardItem from '@/components/BoardItem.vue'
 export default {
   name: 'ThePostNavigation',
 
+  components: {
+    BoardItem
+  },
+
   props: {
-    post: { required: true },
-    context: {}
+    post: {
+      type: Object,
+      required: true
+    },
+    context: Object
   },
 
   computed: {
     sideArticlesEnabled () {
       return this.post.side_articles && (this.post.side_articles.before || this.post.side_articles.after)
     }
-  },
-
-  components: {
-    BoardItem
   }
 }
 </script>

@@ -11,12 +11,15 @@ import { urlParser } from '../utils/urlParser'
 
 export default {
   name: 'ThePostBookmark',
-  props: [ 'node' ],
+
+  props: {
+    node: Object
+  },
+
   computed: {
     href () {
       return this.node.attrs.href
     },
-
     title () {
       const rawTitle = this.node.attrs.title
       if (!rawTitle || rawTitle.replace(' ', '').length === 0) return 'URL'

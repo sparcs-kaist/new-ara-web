@@ -31,7 +31,7 @@
 import { range } from '@/helper.js'
 
 export default {
-  name: 'the-paginator',
+  name: 'ThePaginator',
 
   props: {
     numPages: Number,

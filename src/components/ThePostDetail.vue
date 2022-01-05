@@ -102,15 +102,27 @@ import { mapGetters } from 'vuex'
 import i18n from '@/i18n'
 
 export default {
-  name: 'the-post-detail',
-  props: {
-    post: { required: true }
+  name: 'ThePostDetail',
+
+  components: {
+    LikeButton,
+    TextEditor,
+    ThePostBookmark
   },
+
+  props: {
+    post: {
+      type: Object,
+      required: true
+    }
+  },
+
   data () {
     return {
       attachments: null
     }
   },
+
   computed: {
     userPictureUrl () {
       return this.post.created_by && this.post.created_by.profile.picture
@@ -154,6 +166,7 @@ export default {
     },
     ...mapGetters([ 'userId' ])
   },
+
   watch: {
     'post.attachments': {
       async handler (attachments) {
@@ -170,6 +183,7 @@ export default {
       immediate: true
     }
   },
+
   methods: {
     async deletePost () {
       const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-delete'))
@@ -178,11 +192,6 @@ export default {
       await apiDeletePost(this.post.id)
       this.$router.go(-1)
     }
-  },
-  components: {
-    LikeButton,
-    TextEditor,
-    ThePostBookmark
   }
 }
 </script>

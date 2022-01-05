@@ -47,9 +47,15 @@ import { Splide, SplideSlide } from '@splidejs/vue-splide'
 import '@splidejs/splide/dist/css/themes/splide-sea-green.min.css'
 
 export default {
-  name: 'the-organizations',
-  components: { OrganizationCard, Splide, SplideSlide },
-  data: () => {
+  name: 'TheOrganizations',
+
+  components: {
+    OrganizationCard,
+    Splide,
+    SplideSlide
+  },
+
+  data () {
     return {
       organizations: [
         { name: 'portal-notice', id: 'KAIST', backgroundColor: '#dbdbdb' },
@@ -78,6 +84,7 @@ export default {
       }
     }
   },
+
   created () {
     for (let i of [[1470, 8], [1280, 7], [1000, 6], [767, 5], [590, 4], [480, 4], [435, 3]]) {
       this.primaryOptions.breakpoints[i[0].toString()] = {

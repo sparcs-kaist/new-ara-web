@@ -13,10 +13,15 @@
 
 <script>
 export default {
-  name: 'notification',
+  name: 'Notification',
+
   props: {
-    notification: { required: true }
+    notification: {
+      type: Object,
+      required: true
+    }
   },
+
   computed: {
     fromQuery () {
       return { from_view: 'all' }

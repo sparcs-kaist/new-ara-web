@@ -47,13 +47,16 @@
 <script>
 import TermsPopup from './TermsPopup'
 export default {
+  name: 'TheFooter',
+
+  components: {
+    TermsPopup
+  },
+
   computed: {
     agreeTosAt () {
       return this.$store.state.auth.userProfile?.['agree_terms_of_service_at']
     }
-  },
-  components: {
-    TermsPopup
   }
 }
 </script>

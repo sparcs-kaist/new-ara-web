@@ -21,11 +21,21 @@ import DailyNotifications from '@/components/DailyNotifications'
 import ThePaginator from '@/components/ThePaginator'
 
 export default {
-  name: 'the-notifications',
+  name: 'TheNotifications',
+
+  components: {
+    DailyNotifications,
+    ThePaginator
+  },
+
   props: {
-    notifications: { required: true },
+    notifications: {
+      type: Object,
+      required: true
+    },
     title: String
   },
+
   computed: {
     dailyNotifications () {
       if (!this.notifications.results) return {}
@@ -47,8 +57,7 @@ export default {
           }
         }, {})
     }
-  },
-  components: { DailyNotifications, ThePaginator }
+  }
 }
 </script>
 

@@ -13,12 +13,20 @@
 import Notification from '@/components/Notification'
 
 export default {
-  name: 'daily-notifications',
+  name: 'DailyNotifications',
+
+  components: { Notification },
+
   props: {
-    timePassed: { required: true },
-    notifications: { required: true }
-  },
-  components: { Notification }
+    timePassed: {
+      type: String,
+      required: true
+    },
+    notifications: {
+      type: Array,
+      required: true
+    }
+  }
 }
 </script>
 

@@ -53,8 +53,9 @@
 <script>
 export default {
   name: 'TermsPopup',
+
   props: {
-    agreeTosAt: {},
+    agreeTosAt: String,
     show: {
       type: Boolean,
       default: true
@@ -80,26 +81,21 @@ export default {
         this.disagree()
       }
     },
-
     async agree () {
       await this.$store.dispatch('agreeTos')
       await this.$store.dispatch('dialog/alert', this.$t('agreed'))
       this.exitTermsPopup()
       this.$router.push('/')
     },
-
     disagree () {
       window.location = 'about:blank'
     },
-
     exitTermsPopup () {
       this.termsPopup = false
     },
-
     openTermsPopup () {
       this.termsPopup = true
     },
-
     changeLocale () {
       this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en'
     }

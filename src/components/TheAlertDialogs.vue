@@ -20,15 +20,15 @@ import AlertDialog from '@/components/AlertDialog.vue'
 export default {
   name: 'TheAlertDialogs',
 
+  components: { AlertDialog },
+
   computed: {
     dialogs () {
       return this.$store.state.dialog.dialogs.filter(dialog => !dialog.toast)
     },
-
     toasts () {
       return this.$store.state.dialog.dialogs.filter(dialog => dialog.toast)
     },
-
     needBackdrop () {
       return this.dialogs.length > 0
     }
@@ -38,9 +38,7 @@ export default {
     dismiss (id) {
       this.$store.commit('dialog/removeDialog', id)
     }
-  },
-
-  components: { AlertDialog }
+  }
 }
 </script>
 
