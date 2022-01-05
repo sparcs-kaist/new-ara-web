@@ -80,6 +80,30 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'RenewalLandingPage',
+
+  data () {
+    return {
+      helpPopup: false
+    }
+  },
+
+  computed: {
+    sections () {
+      return this.$i18n.messages[this.$i18n.locale]['sections']
+    }
+  },
+
+  methods: {
+    changeLocale () {
+      this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en'
+    }
+  }
+}
+</script>
+
 <i18n>
 ko:
     title: 'KAIST 공식 커뮤니티 ARA가 리뉴얼되었습니다.'
@@ -154,30 +178,6 @@ en:
     new-ara-link: 'Link'
     old-ara-link: 'Go to Old ARA.'
 </i18n>
-
-<script>
-export default {
-  name: 'RenewalLandingPage',
-
-  data () {
-    return {
-      helpPopup: false
-    }
-  },
-
-  computed: {
-    sections () {
-      return this.$i18n.messages[this.$i18n.locale]['sections']
-    }
-  },
-
-  methods: {
-    changeLocale () {
-      this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en'
-    }
-  }
-}
-</script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>

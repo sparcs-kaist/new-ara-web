@@ -12,7 +12,12 @@ import TheLayout from '@/components/TheLayout.vue'
 import TheNotifications from '@/components/TheNotifications.vue'
 
 export default {
-  name: 'notifications',
+  name: 'Notifications',
+
+  components: {
+    TheLayout,
+    TheNotifications
+  },
   data () {
     return { notifications: {} }
   },
@@ -27,13 +32,9 @@ export default {
     const [ notifications ] = await fetchWithProgress([ fetchNotifications({ query }) ], 'notifications-failed-fetch')
     this.notifications = notifications
     next()
-  },
-  components: { TheLayout, TheNotifications }
+  }
 }
 </script>
-
-<style>
-</style>
 
 <i18n>
   ko:

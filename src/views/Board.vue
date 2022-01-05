@@ -69,7 +69,13 @@ import TheLayout from '@/components/TheLayout.vue'
 import TheSidebar from '@/components/TheSidebar.vue'
 
 export default {
-  name: 'board',
+  name: 'Board',
+
+  components: {
+    TheBoard,
+    TheLayout,
+    TheSidebar
+  },
 
   data () {
     return {
@@ -166,11 +172,7 @@ export default {
     document.title = `Ara - ${this.boardName}`
     next()
   },
-  components: {
-    TheBoard,
-    TheLayout,
-    TheSidebar
-  },
+
   methods: {
     changeFilter () {
       if (this.$route.query.portal === 'exclude') {
