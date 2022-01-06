@@ -101,11 +101,11 @@ export default {
       isChipClicked: false
     }
   },
+
   computed: {
     iconName () {
       return icons[this.dialog.type]
     },
-
     hasButtons () {
       return !this.dialog.toast
     },

@@ -24,7 +24,13 @@ import TheAlertDialogs from '@/components/TheAlertDialogs.vue'
 import TheNavbar from '@/components/TheNavbar.vue'
 
 export default {
-  components: { TheAlertDialogs, TheNavbar },
+  name: 'TheLayout',
+
+  components: {
+    TheAlertDialogs,
+    TheNavbar
+  },
+
   props: {
     isColumnLayout: {
       type: Boolean,

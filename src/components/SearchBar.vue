@@ -11,15 +11,17 @@
 
 <script>
 export default {
-  data () {
-    return { searchText: '' }
-  },
+  name: 'SearchBar',
 
   props: {
     searchable: Boolean,
     small: Boolean,
     fullwidth: Boolean,
     long: Boolean
+  },
+
+  data () {
+    return { searchText: '' }
   },
 
   methods: {

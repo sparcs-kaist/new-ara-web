@@ -93,6 +93,8 @@ const keywords = [
 ]
 
 export default {
+  name: 'TheHomeSearchbar',
+
   data () {
     return {
       query: '',

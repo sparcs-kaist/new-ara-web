@@ -8,8 +8,12 @@
 import { timeago } from '@/helper.js'
 
 export default {
-  name: 'timeago',
-  props: [ 'time' ],
+  name: 'Timeago',
+
+  props: {
+    time: String
+  },
+
   computed: {
     timeago () {
       return timeago(this.time, this.$i18n.locale)

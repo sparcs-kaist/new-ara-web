@@ -19,7 +19,8 @@
 
 <script>
 export default {
-  name: 'not-found',
+  name: 'NotFound',
+
   beforeRouteEnter (to, from, next) {
     next(vm => {
       document.title = vm.$t('document-title')

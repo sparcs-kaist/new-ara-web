@@ -39,28 +39,19 @@
 import i18n from '@/i18n'
 
 export default {
-  name: 'small-board',
+  name: 'SmallBoard',
+
   props: {
     listitems: {
+      type: Array,
       required: true
     },
-
-    fromQuery: {
-      type: Object
-    },
-
-    detail: {
-      type: Boolean
-    },
-
-    sidebar: {
-      type: Boolean
-    },
-
-    href: {
-      type: Object
-    }
+    fromQuery: Object,
+    detail: Boolean,
+    sidebar: Boolean,
+    href: Object
   },
+
   methods: {
     title (post) {
       if (post.is_hidden) {

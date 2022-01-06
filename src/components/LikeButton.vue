@@ -24,22 +24,16 @@ import elideText from '@/utils/elideText'
 const elideText3 = elideText(3)
 
 export default {
+  name: 'LikeButton',
+
   props: {
     item: {
+      type: Object,
       required: true
     },
-
-    votable: {
-      type: Boolean
-    },
-
-    elide: {
-      type: Boolean
-    },
-
-    table: {
-      type: Boolean
-    }
+    votable: Boolean,
+    elide: Boolean,
+    table: Boolean
   },
 
   computed: {
@@ -66,7 +60,6 @@ export default {
 
       this.$emit('vote', { id: this.item.id, vote: myVote })
     },
-
     elideText (text) {
       if (!this.elide) {
         return text

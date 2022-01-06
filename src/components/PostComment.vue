@@ -122,10 +122,24 @@ import { timeago } from '@/helper.js'
 export default {
   name: 'PostComment',
 
+  components: {
+    LikeButton,
+    PostCommentEditor
+  },
+
   props: {
-    post: { required: true },
-    comment: { required: true },
-    anonymousProfile: {required: true},
+    post: {
+      type: Object,
+      required: true
+    },
+    comment: {
+      type: Object,
+      required: true
+    },
+    anonymousProfile: {
+      type: Object,
+      required: true
+    },
     isReplyComment: Boolean
   },
 
@@ -146,7 +160,6 @@ export default {
     profileImage () { return this.comment.created_by?.profile?.picture },
     date () { return timeago(this.comment.created_at, this.$i18n.locale) },
     ...mapGetters([ 'userNickname' ]),
-
     content () {
       if (this.comment.is_hidden) {
         return this.$t(this.comment.why_hidden[0])
@@ -192,14 +205,12 @@ export default {
       this.$emit('vote')
       this.isVoting = false
     },
-
     toggleReplyCommentInput () {
       this.showReplyCommentInput = !this.showReplyCommentInput
       this.$nextTick(() => {
         this.$refs.commentEditor.focus()
       })
     },
-
     async deleteComment () {
       const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-delete'))
       if (!result) return
@@ -207,7 +218,6 @@ export default {
       await deleteComment(this.comment.id)
       this.$emit('delete')
     },
-
     async reportComment () {
       const {result, selection} = await this.$store.dispatch('dialog/report', this.$t('confirm-report'))
       if (!result) return
@@ -222,11 +232,9 @@ export default {
       reasonReport = reasonReport.slice(0, -2)
       await reportComment(this.comment.id, typeReport, reasonReport)
     },
-
     editComment () {
       this.isEditing = true
     },
-
     updateComment (event) {
       this.isEditing = false
       this.$emit('update', {
@@ -234,12 +242,6 @@ export default {
         is_mine: true
       })
     }
-
-  },
-
-  components: {
-    LikeButton,
-    PostCommentEditor
   }
 }
 </script>

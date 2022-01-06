@@ -46,15 +46,31 @@ import TheLayout from '@/components/TheLayout.vue'
 import TheSidebar from '@/components/TheSidebar.vue'
 
 export default {
-  name: 'post',
-  props: {
-    postId: { required: true }
+  name: 'Post',
+
+  components: {
+    TheBoard,
+    TheLayout,
+    ThePostComments,
+    ThePostDetail,
+    ThePostHeader,
+    ThePostNavigation,
+    TheSidebar
   },
+
+  props: {
+    postId: {
+      type: String,
+      required: true
+    }
+  },
+
   data () {
     return {
       post: {}
     }
   },
+
   computed: {
     /* eslint-disable camelcase */
     context () {
@@ -100,6 +116,26 @@ export default {
       }
     }
   },
+
+  async beforeRouteEnter ({ params: { postId }, query }, from, next) {
+    const [ post ] = await fetchWithProgress([
+      fetchPost({ postId, context: query })
+    ], 'post-failed-fetch')
+    next(vm => {
+      vm.post = post
+      document.title = `Ara - ${post.is_hidden ? vm.$t('hidden-post') : post.title}`
+    })
+  },
+
+  async beforeRouteUpdate ({ params: { postId }, query }, from, next) {
+    const [ post ] = await fetchWithProgress([
+      fetchPost({ postId, context: query })
+    ], 'post-failed-fetch')
+    document.title = `Ara - ${post.is_hidden ? this.$t('hidden-post') : post.title}`
+    this.post = post
+    next()
+  },
+
   methods: {
     async addNewComment (comment) {
       if (comment.parent_comment) {
@@ -253,35 +289,6 @@ export default {
         }
       }
     }
-  },
-
-  async beforeRouteEnter ({ params: { postId }, query }, from, next) {
-    const [ post ] = await fetchWithProgress([
-      fetchPost({ postId, context: query })
-    ], 'post-failed-fetch')
-    next(vm => {
-      vm.post = post
-      document.title = `Ara - ${post.is_hidden ? vm.$t('hidden-post') : post.title}`
-    })
-  },
-
-  async beforeRouteUpdate ({ params: { postId }, query }, from, next) {
-    const [ post ] = await fetchWithProgress([
-      fetchPost({ postId, context: query })
-    ], 'post-failed-fetch')
-    document.title = `Ara - ${post.is_hidden ? this.$t('hidden-post') : post.title}`
-    this.post = post
-    next()
-  },
-
-  components: {
-    TheBoard,
-    TheLayout,
-    ThePostComments,
-    ThePostDetail,
-    ThePostHeader,
-    ThePostNavigation,
-    TheSidebar
   }
 }
 </script>

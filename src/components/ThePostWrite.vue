@@ -131,16 +131,17 @@ import Attachments from '@/components/TheAttachments'
 import TextEditor from '@/components/TheTextEditor'
 
 export default {
-  name: 'the-post-write',
+  name: 'ThePostWrite',
+
+  components: {
+    Attachments,
+    TextEditor
+  },
 
   props: {
-    post: {},
-    saving: {
-      type: Boolean
-    },
-    emptyWarnings: {
-      type: Array
-    }
+    post: Object,
+    saving: Boolean,
+    emptyWarnings: Array
   },
 
   data () {
@@ -157,52 +158,51 @@ export default {
   computed: {
     ...mapState({ boardListAll: 'boardList' }),
     ...mapGetters([ 'getIdBySlug' ]),
-
     initialPostContent () {
       if (!this.post) return null
 
       return this.post.content
     },
-
     boardList () {
       return this.boardListAll.filter(v => !v.is_readonly)
     },
-
     board () {
       return this.boardListAll.find(v => v.id === this.boardId)
     },
-
     categoryList () {
       if (!this.board) {
         return []
       }
-
       return this.board.topics
     },
-
     categoryNotSet () {
       return this.categoryId === '$not-set'
     },
-
     isCategoryWarning () {
       return this.categoryNotSet && this.emptyWarnings.includes('category')
     },
-
     isBoardWarning () {
       return !this.boardId && this.emptyWarnings.includes('board')
     },
-
     isTitleWarning () {
       return !this.title && this.emptyWarnings.includes('title')
     },
-
     editMode () {
       return !!this.post
     },
-
     writeTitle () {
       if (this.editMode) return this.$t('write-edit')
       return this.$t('write')
+    }
+  },
+
+  watch: {
+    boardId () {
+      if (this.categoryList.length) {
+        this.categoryId = '$not-set'
+      } else {
+        this.categoryId = ''
+      }
     }
   },
 
@@ -237,7 +237,6 @@ export default {
     attachFiles (files) {
       this.$refs.attachments.handleUpload(files)
     },
-
     addAttachments (attachments) {
       attachments.forEach(file => {
         if (file.type === 'image') {
@@ -245,7 +244,6 @@ export default {
         }
       })
     },
-
     deleteAttachment (file) {
       if (file.uploaded) {
         // TODO delete file from server
@@ -255,7 +253,6 @@ export default {
         this.$refs.textEditor.removeImageByFile(file)
       }
     },
-
     savePostByThePostWrite () {
       if (!this.loaded) {
         this.$store.dispatch('dialog/toast', {
@@ -277,31 +274,16 @@ export default {
         }
       )
     },
-
     openImageUpload () {
       this.$refs.attachments.openImageUpload()
     },
-
     updateAttachments (attachmentUpdate) {
       this.$refs.textEditor.applyImageUpload(attachmentUpdate)
     },
-
     getContent () {
       return this.$refs.textEditor.getContent()
     }
-  },
-
-  watch: {
-    boardId () {
-      if (this.categoryList.length) {
-        this.categoryId = '$not-set'
-      } else {
-        this.categoryId = ''
-      }
-    }
-  },
-
-  components: { Attachments, TextEditor }
+  }
 }
 </script>
 

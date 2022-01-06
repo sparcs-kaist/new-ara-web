@@ -239,7 +239,14 @@ const fetchByQuery = query => {
 }
 
 export default {
-  name: 'my-info',
+  name: 'MyInfo',
+
+  components: {
+    SearchBar,
+    TheLayout,
+    TheBoard
+  },
+
   data () {
     return {
       user: {
@@ -299,6 +306,40 @@ export default {
       // @TODO: api 미완성
       return '\u{1F476}아기 넙죽이'
     }
+  },
+
+  async beforeRouteEnter ({ query }, from, next) {
+    const [ , posts, blocks ] = await fetchWithProgress([
+      store.dispatch('fetchMe'),
+      fetchByQuery(query),
+      fetchBlocks()
+    ], 'myinfo-failed-fetch')
+
+    const { userNickname, userEmail, userPicture, userConfig, userActivity } = store.getters
+
+    next(vm => {
+      vm.user = {
+        nickname: userNickname,
+        email: userEmail,
+        pictureSrc: userPicture,
+        sexual: userConfig.sexual,
+        social: userConfig.social,
+        num_articles: userActivity.articles,
+        num_comments: userActivity.comments,
+        num_positive_votes: userActivity.positiveVotes
+      }
+
+      vm.posts = posts
+      vm.blocks = blocks
+
+      document.title = vm.$t('document-title')
+    })
+  },
+
+  async beforeRouteUpdate ({ query }, from, next) {
+    const [ posts ] = await fetchWithProgress([ fetchByQuery(query) ], 'myinfo-failed-fetch')
+    this.posts = posts
+    next()
   },
 
   methods: {
@@ -394,43 +435,7 @@ export default {
         })
       }
     }
-  },
-
-  async beforeRouteEnter ({ query }, from, next) {
-    const [ , posts, blocks ] = await fetchWithProgress([
-      store.dispatch('fetchMe'),
-      fetchByQuery(query),
-      fetchBlocks()
-    ], 'myinfo-failed-fetch')
-
-    const { userNickname, userEmail, userPicture, userConfig, userActivity } = store.getters
-
-    next(vm => {
-      vm.user = {
-        nickname: userNickname,
-        email: userEmail,
-        pictureSrc: userPicture,
-        sexual: userConfig.sexual,
-        social: userConfig.social,
-        num_articles: userActivity.articles,
-        num_comments: userActivity.comments,
-        num_positive_votes: userActivity.positiveVotes
-      }
-
-      vm.posts = posts
-      vm.blocks = blocks
-
-      document.title = vm.$t('document-title')
-    })
-  },
-
-  async beforeRouteUpdate ({ query }, from, next) {
-    const [ posts ] = await fetchWithProgress([ fetchByQuery(query) ], 'myinfo-failed-fetch')
-    this.posts = posts
-    next()
-  },
-
-  components: { SearchBar, TheLayout, TheBoard }
+  }
 }
 </script>
 
@@ -486,7 +491,7 @@ en:
   cancel: 'Cancel'
   my-info: 'My info'
   board-my: 'My posts'
-  board-recent: 'Recently viewed'
+  board-recent: 'History'
   board-archive: 'Bookmarks'
   settings : 'Settings'
   setting-change-failed: 'Failed while updating settings.'

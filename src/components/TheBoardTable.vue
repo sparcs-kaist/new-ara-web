@@ -12,9 +12,14 @@ import BoardItem from '@/components/BoardItem.vue'
 
 export default {
   name: 'TheBoardTable',
-  props: [ 'posts', 'fromQuery' ],
+
   components: {
     BoardItem
+  },
+
+  props: {
+    posts: Array,
+    fromQuery: Object
   }
 }
 </script>

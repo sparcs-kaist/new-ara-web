@@ -49,16 +49,26 @@ import LikeButton from '@/components/LikeButton.vue'
 import i18n from '@/i18n'
 
 export default {
-  name: 'the-post-header',
-  props: {
-    post: { required: true },
-    context: { type: Object }
+  name: 'ThePostHeader',
+
+  components: {
+    LikeButton
   },
+
+  props: {
+    post: {
+      type: Object,
+      required: true
+    },
+    context: Object
+  },
+
   data () {
     return {
       attachments: null
     }
   },
+
   computed: {
     userPictureUrl () {
       return this.post.created_by && this.post.created_by.profile.picture
@@ -117,10 +127,6 @@ export default {
       return this.$t('all')
     },
     ...mapGetters([ 'userId' ])
-  },
-
-  components: {
-    LikeButton
   }
 }
 </script>
