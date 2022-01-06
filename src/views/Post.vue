@@ -1,5 +1,5 @@
 <template>
-  <TheLayout class="post" :key="postId">
+  <TheLayout :key="postId" class="post">
     <template #aside-right>
       <TheSidebar />
     </template>
@@ -60,7 +60,7 @@ export default {
 
   props: {
     postId: {
-      type: String,
+      type: Number,
       required: true
     }
   },

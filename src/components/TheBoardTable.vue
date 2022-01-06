@@ -1,8 +1,12 @@
 <template>
   <div class="board-table">
-    <div v-for="post in posts" :key="post.id" >
-      <BoardItem :post="post" :key="post.id" :fromQuery="fromQuery" />
-      <hr style="margin: 0"/>
+    <div v-for="post in posts" :key="post.id">
+      <BoardItem
+        :post="post"
+        :key="post.id"
+        :from-query="fromQuery"
+      />
+      <hr style="margin: 0">
     </div>
   </div>
 </template>

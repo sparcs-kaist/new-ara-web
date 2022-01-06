@@ -3,7 +3,11 @@
     <template #aside-right>
       <TheSidebar />
     </template>
-    <TheBoard :board="archive" :title="$t('archive')" :from-query="{ from_view: 'scrap' }" />
+    <TheBoard
+      :board="archive"
+      :title="$t('archive')"
+      :from-query="{ from_view: 'scrap' }"
+    />
   </TheLayout>
 </template>
 
@@ -51,7 +55,6 @@ en:
   document-title: 'Archive'
   archive: 'Archive'
 </i18n>
-
 
 <style>
 #title {

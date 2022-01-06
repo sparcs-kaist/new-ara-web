@@ -1,44 +1,67 @@
 <template>
   <div class="comment-wrapper">
-    <div class="comment" :class="{'comment--reply-comment': isReplyComment}" v-if="!isEditing">
-      <img class="comment__profile" alt="profile image" v-if="!isHidden" :src="profileImage"/>
-      <div class="comment__profile" v-else>
+    <div
+      v-if="!isEditing"
+      :class="{'comment--reply-comment': isReplyComment}"
+      class="comment"
+    >
+      <img
+        v-if="!isHidden"
+        :src="profileImage"
+        class="comment__profile"
+        alt="profile image"
+      >
+      <div v-else class="comment__profile">
         <i class="material-icons">{{ hidden_icon }}</i>
       </div>
       <div class="comment__body">
         <div class="comment__header">
           <router-link
-           :is="isAnonymous ? 'span' : 'router-link'"
-           :to="{ name: 'user', params: { username: authorId } }" class="comment__author"
-           :class="isAuthor && canOveride ? 'author_red' : ''">
+            :is="isAnonymous ? 'span' : 'router-link'"
+            :to="{ name: 'user', params: { username: authorId } }"
+            :class="isAuthor && canOveride ? 'author_red' : ''"
+            class="comment__author"
+          >
             {{ isHidden && !canOveride ? this.$t('hidden-user') : author }}
           </router-link>
 
           <span class="comment__time"> {{ date }} </span>
 
-          <div class="dropdown is-right is-hoverable" v-if="comment.deleted_at === '0001-01-01T08:28:00+08:28' && !isHidden">
+          <div v-if="comment.deleted_at === '0001-01-01T08:28:00+08:28' && !isHidden" class="dropdown is-right is-hoverable">
             <div class="dropdown-trigger">
-              <button class="dropdown-button" aria-haspopup="true" aria-controls="dropdownMenu">
+              <button
+                class="dropdown-button"
+                aria-haspopup="true"
+                aria-controls="dropdownMenu"
+              >
                 <span class="icon">
                   <i class="material-icons">more_vert</i>
                 </span>
               </button>
             </div>
 
-            <div class="dropdown-menu" id="dropdownMenu" role="menu">
+            <div
+              id="dropdownMenu"
+              role="menu"
+              class="dropdown-menu"
+            >
               <div class="dropdown-content">
                 <div class="dropdown-item">
                   <template v-if="isMine">
-                    <a @click="editComment" class="dropdown-item">
+                    <a class="dropdown-item" @click="editComment">
                       {{ $t('edit') }}
                     </a>
 
-                    <a @click="deleteComment" class="dropdown-item">
+                    <a class="dropdown-item" @click="deleteComment">
                       {{ $t('delete') }}
                     </a>
                   </template>
 
-                  <a v-else @click="reportComment" class="dropdown-item">
+                  <a
+                    v-else
+                    class="dropdown-item"
+                    @click="reportComment"
+                  >
                     {{ $t('report') }}
                   </a>
                 </div>
@@ -58,25 +81,34 @@
         </div>
 
         <div class="comment__footer">
-          <LikeButton class="comment__vote" :item="comment" @vote="vote" votable v-if="!isHidden"/>
-          <a class="comment__write" v-if="!isReplyComment"
-            @click="toggleReplyCommentInput">
-            {{
-              showReplyCommentInput
-              ? $t('fold-reply-comment')
-              : $t('reply-comment')
-            }}
+          <LikeButton
+            v-if="!isHidden"
+            :item="comment"
+            class="comment__vote"
+            votable
+            @vote="vote"
+          />
+          <a
+            v-if="!isReplyComment"
+            class="comment__write"
+            @click="toggleReplyCommentInput"
+          >
+            {{ showReplyCommentInput ? $t('fold-reply-comment') : $t('reply-comment') }}
           </a>
         </div>
       </div>
     </div>
 
-    <div class="comment comment--edit" :class="{'comment--reply-comment': isReplyComment}" v-else>
+    <div
+      v-else
+      :class="{'comment--reply-comment': isReplyComment}"
+      class="comment comment--edit"
+    >
       <PostCommentEditor
         :text="comment.content"
         :edit-comment="comment.id"
         :post="post"
-        :anonymousProfile="anonymousProfile"
+        :anonymous-profile="anonymousProfile"
         @upload="updateComment"
         @close="isEditing = false"
       />
@@ -85,11 +117,11 @@
     <div class="comment__reply-comments">
       <PostComment
         v-for="replyComment in comment.comments"
-        is-reply-comment
         :key="replyComment.id"
         :comment="replyComment"
         :post="post"
-        :anonymousProfile="anonymousProfile"
+        :anonymous-profile="anonymousProfile"
+        is-reply-comment
         @vote="$emit('vote')"
         @delete="$emit('delete')"
         @update="$emit('update', $event)"
@@ -99,10 +131,10 @@
 
       <div v-show="showReplyCommentInput">
         <PostCommentEditor
+          ref="commentEditor"
           :post="post"
           :parent-comment="comment.id"
-          :anonymousProfile="anonymousProfile"
-          ref="commentEditor"
+          :anonymous-profile="anonymousProfile"
           @upload="$emit('upload', $event)"
           @close="showReplyCommentInput = false"
         />

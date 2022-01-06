@@ -1,12 +1,12 @@
 <template>
   <div class="text-editor-dialog">
     <transition name="dialog-fade">
-      <div class="text-editor-dialog__inner" v-if="shown">
-        <div class="text-editor-dialog__backdrop" @click="hideDialog()"></div>
+      <div v-if="shown" class="text-editor-dialog__inner">
+        <div class="text-editor-dialog__backdrop" @click="hideDialog()"/>
         <section class="dialog">
           <header class="dialog__header">
             <h2 class="dialog__title">
-              <slot name="title"></slot>
+              <slot name="title"/>
             </h2>
 
             <a class="dialog__close" @click="hideDialog()">
@@ -15,7 +15,7 @@
           </header>
 
           <div class="dialog__content">
-            <slot></slot>
+            <slot/>
           </div>
         </section>
       </div>

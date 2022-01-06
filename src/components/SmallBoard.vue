@@ -1,11 +1,18 @@
 <template>
-  <div class="board" :class="{ 'board--sidebar': sidebar }">
-    <div class="red-box"></div>
+  <div
+    :class="{ 'board--sidebar': sidebar }"
+    class="board"
+  >
+    <div class="red-box"/>
     <h2 class="board__name">
       <span>
-        <slot></slot>
+        <slot/>
       </span>
-      <router-link class="board__more" :to="href" v-if="href" >
+      <router-link
+        v-if="href"
+        :to="href"
+        class="board__more"
+      >
         <span class="more-text">{{ $t('more') }}</span>
         <i class="material-icons chevron_right">
           chevron_right
@@ -13,22 +20,25 @@
       </router-link>
     </h2>
     <div
-    v-for="post in listitems"
-    :key="post.id"
-    class="board__post post">
-      <h3 class="post__title-wrapper" :class="post.is_hidden ? 'has-text-grey-light' : ''">
-        <router-link :title="post.title"
-        class="post__title"
-        :to="{
-          name: 'post',
-          params: { postId: post.id },
-          query: fromQuery
-        }">
+      v-for="post in listitems"
+      :key="post.id"
+      class="board__post post"
+    >
+      <h3 :class="post.is_hidden ? 'has-text-grey-light' : ''" class="post__title-wrapper">
+        <router-link
+          :title="post.title"
+          :to="{
+            name: 'post',
+            params: { postId: post.id },
+            query: fromQuery
+          }"
+          class="post__title"
+        >
           {{ title(post) }}
         </router-link>
       </h3>
 
-      <div class="post__username" :class="post.is_hidden ? 'has-text-grey-light' : ''">
+      <div :class="post.is_hidden ? 'has-text-grey-light' : ''" class="post__username">
         {{ post.created_by.profile.nickname }}
       </div>
     </div>

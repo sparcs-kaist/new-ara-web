@@ -6,23 +6,23 @@
     </button>
     <div class="title">
       <img class="title__logo" src="@/assets/ServiceAra.svg">
-      <div class="title__description" v-html="$t('main')"></div>
+      <div class="title__description" v-html="$t('main')" />
     </div>
     <div class="banners">
       <div class="banner login">
-        <div class="banner__identity-bar"></div>
+        <div class="banner__identity-bar" />
         <h1 class="banner__title">
           {{ $t('login-title') }}
         </h1>
-        <h2 class="banner__subtitle" v-html="$t('login-subtitle')"></h2>
+        <h2 class="banner__subtitle" v-html="$t('login-subtitle')" />
         <a :href="loginUrl" class="button banner__button login__link">
           <i class="material-icons">login</i>
           {{ $t('login') }}
         </a>
       </div>
       <div class="banner">
-        <div class="banner__identity-bar"></div>
-        <h1 class="banner__title" v-html="$t('signup-title')"></h1>
+        <div class="banner__identity-bar" />
+        <h1 class="banner__title" v-html="$t('signup-title')" />
         <h2 class="banner__subtitle">
           {{ $t('signup-subtitle') }}
         </h2>

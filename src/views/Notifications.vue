@@ -1,7 +1,6 @@
 <template>
   <TheLayout>
-    <TheNotifications :notifications="notifications" :title="$t('title')">
-    </TheNotifications>
+    <TheNotifications :notifications="notifications" :title="$t('title')" />
   </TheLayout>
 </template>
 

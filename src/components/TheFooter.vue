@@ -1,9 +1,9 @@
 <template>
-  <footer class="the-footer" :class="{ 'login-footer': this.$route.path === '/login' }">
+  <footer :class="{ 'login-footer': this.$route.path === '/login' }" class="the-footer">
     <div class="footer-menu">
       <div class="footer-item logo-item">
         <a id="sparcs-logo" href="https://sparcs.org">
-          <img src="@/assets/SparcsLogo.svg" alt="SPARCS"/>
+          <img src="@/assets/SparcsLogo.svg" alt="SPARCS">
         </a>
         <div class="footer-contact-mobile is-hidden-tablet">
           {{ $t('contact') }}:
@@ -40,7 +40,11 @@
         </a>
       </div>
     </div>
-    <TermsPopup :agree-tos-at="agreeTosAt" ref="terms" :show="false"/>
+    <TermsPopup
+      ref="terms"
+      :agree-tos-at="agreeTosAt"
+      :show="false"
+    />
   </footer>
 </template>
 

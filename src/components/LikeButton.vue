@@ -1,18 +1,22 @@
 <template>
-  <div class="like-button" :class="{ 'like-button--enabled': votable, 'like-button--table': table }">
-    <button class="like-button__item" @click="vote(true)"
-      :class="{ 'like-button__item--like-selected': liked }">
-
-      <i class="like-button__icon material-icons" v-if="liked">thumb_up</i>
-      <i class="like-button__icon material-icons-outlined" v-else>thumb_up</i>
+  <div :class="{ 'like-button--enabled': votable, 'like-button--table': table }" class="like-button">
+    <button
+      :class="{ 'like-button__item--like-selected': liked }"
+      class="like-button__item"
+      @click="vote(true)"
+    >
+      <i v-if="liked" class="like-button__icon material-icons">thumb_up</i>
+      <i v-else class="like-button__icon material-icons-outlined">thumb_up</i>
       {{ likedCount }}
     </button>
 
-    <button class="like-button__item" @click="vote(false)"
-      :class="{ 'like-button__item--dislike-selected': disliked }">
-
-      <i class="like-button__icon material-icons" v-if="disliked">thumb_down</i>
-      <i class="like-button__icon material-icons-outlined" v-else>thumb_down</i>
+    <button
+      :class="{ 'like-button__item--dislike-selected': disliked }"
+      class="like-button__item"
+      @click="vote(false)"
+    >
+      <i v-if="disliked" class="like-button__icon material-icons">thumb_down</i>
+      <i v-else class="like-button__icon material-icons-outlined">thumb_down</i>
       {{ dislikedCount }}
     </button>
   </div>

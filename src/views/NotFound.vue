@@ -7,12 +7,12 @@
       <div class="not-found-text">
         {{ $t('page-not-found') }}
       </div>
-        <router-link
-          :to="{ name: 'home' }">
-          <div class="not-found-go-to-home">
-            {{ $t('go-home') }}
-          </div>
-        </router-link>
+      <router-link
+        :to="{ name: 'home' }">
+        <div class="not-found-go-to-home">
+          {{ $t('go-home') }}
+        </div>
+      </router-link>
     </div>
   </div>
 </template>

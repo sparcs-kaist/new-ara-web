@@ -1,21 +1,25 @@
 <template>
-  <TextEditorDialog class="link-dialog" ref="root">
+  <TextEditorDialog ref="root" class="link-dialog">
     <span slot="title">
       {{ $t('link-attach') }}
     </span>
 
     <div class="link-dialog__section">
       <input
-        class="input" type="text" v-model="url"
         :class="{ 'is-empty': url.length === 0 }"
         :placeholder="$t('link-url')"
-        />
+        v-model="url"
+        class="input"
+        type="text"
+      >
 
       <input
-        class="input" type="text" v-model="title"
         :class="{ 'is-empty': title.length === 0 }"
         :placeholder="$t('link-title')"
-        />
+        v-model="title"
+        class="input"
+        type="text"
+      >
     </div>
 
     <div class="link-dialog__buttons">

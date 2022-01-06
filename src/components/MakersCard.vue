@@ -1,5 +1,9 @@
 <template>
-  <div v-if="isProject" :class="{ active }" class="project shadow-before">
+  <div
+    v-if="isProject"
+    :class="{ active }"
+    class="project shadow-before"
+  >
     <span class="project__title">{{ title }}</span>
     <span class="project__subtitle">{{ subtitle }}</span>
     <span v-if="launched" class="project__launched">
@@ -11,7 +15,7 @@
       <span class="member__title">{{ title }}</span>
       <div class="sub-container">
         <div class="img-container">
-          <img src="../assets/SparcsLogo.svg" alt="Sparcs Logo"/>
+          <img src="../assets/SparcsLogo.svg" alt="Sparcs Logo">
         </div>
         <span class="member__subtitle">{{ subtitle }}</span>
       </div>
