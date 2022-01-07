@@ -85,6 +85,7 @@
             class="navbar-item">
 
             <span class="icon"
+              data-badge=" "
               :class="{'unread-noti': isUnreadNotificationExist}">
               <i class="material-icons">notifications</i>
             </span>
@@ -270,8 +271,26 @@ en:
   font-size: 15px;
 
   .unread-noti{
-    color: var(--theme-400);
+    &[data-badge] {
+      content: attr(data-badge);
+      position: relative;
+      &::after {
+        content: attr(data-badge);
+        position: absolute;
+        background: red;
+        border-radius: 50%;
+        display: block;
+        padding: 0.3em;
+        color: black;
+        font-size: 15px;
+        max-height: 20px;
+        max-width: auto;
+        right: 2px;
+        top: 0px;
+      }
+    }
   }
+
   .write-icon {
     color: var(--theme-400);
   }
