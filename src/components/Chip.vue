@@ -1,9 +1,9 @@
 <template>
   <button
-    class="chip"
     :class="{ chip__clicked : isClicked }"
+    class="chip"
     @click="click()">
-    <slot></slot>
+    <slot />
   </button>
 </template>
 

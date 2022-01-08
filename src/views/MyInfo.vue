@@ -1,8 +1,8 @@
 <template>
-  <TheLayout class="my-info" :isColumnLayout="false">
+  <TheLayout :is-column-layout="false" class="my-info">
     <template #aside-right>
       <div class="column is-one-quarter">
-        <div class="boxes" :class="{ 'boxes--mobile-open': mobileSettings }">
+        <div :class="{ 'boxes--mobile-open': mobileSettings }" class="boxes">
           <div class="mobile-header">
             <a class="mobile-header__back" @click="mobileSettings = false">
               <i class="material-icons">chevron_left</i>
@@ -11,7 +11,7 @@
           </div>
 
           <div class="box">
-            <div class="redbox"></div>
+            <div class="redbox"/>
             <h1 class="box__title">
               {{ $t('ranking-title') }}
             </h1>
@@ -52,7 +52,7 @@
           </div>
 
           <div class="box">
-            <div class="redbox"></div>
+            <div class="redbox"/>
             <h1 class="box__title">{{ $t('settings-title') }}</h1>
             <h2 class="box__subtitle">
               {{ $t('settings-subtitle') }}
@@ -63,10 +63,10 @@
                 <div class="settings__container">
                   <span class="label">{{ $t('settings-sexual') }}</span>
                   <div @click="updateSetting('sexual')">
-                    <i class="material-icons toggle-on" v-if="user.sexual">
+                    <i v-if="user.sexual" class="material-icons toggle-on">
                       toggle_on
                     </i>
-                    <i class="material-icons" v-else>
+                    <i v-else class="material-icons">
                       toggle_off
                     </i>
                   </div>
@@ -74,10 +74,10 @@
                 <div class="settings__container">
                   <span class="label">{{ $t('settings-social') }}</span>
                   <div @click="updateSetting('social')">
-                    <i class="material-icons toggle-on" v-if="user.social">
+                    <i v-if="user.social" class="material-icons toggle-on" >
                       toggle_on
                     </i>
-                    <i class="material-icons" v-else>
+                    <i v-else class="material-icons">
                       toggle_off
                     </i>
                   </div>
@@ -87,20 +87,20 @@
           </div>
 
           <div class="box">
-            <div class="redbox"></div>
+            <div class="redbox"/>
             <h1 class="box__title">
               {{ $t('blocked-title') }}
             </h1>
-            <h2 class="box__subtitle" v-html="$t('blocked-subtitle', { user: user.nickname })"></h2>
+            <h2 class="box__subtitle" v-html="$t('blocked-subtitle', { user: user.nickname })"/>
 
             <div class="box__container">
-              <ul class="blocked" v-if="blocks && blocks.results && blocks.results.length > 0">
+              <ul v-if="blocks && blocks.results && blocks.results.length > 0" class="blocked">
                 <li v-for="blockedUser in blocks.results" :key="blockedUser.id">
                   <div class="blocked__user">
                     <img
                       :src="blockedUser.user.profile.picture"
                       class="blocked__user--image"
-                    />
+                    >
                     <span class="blocked__user--nickname">
                       {{ blockedUser.user.profile.nickname }}
                     </span>
@@ -121,20 +121,24 @@
     <!--Deleted 'is-half'.-->
     <div class="column ">
       <div class="profile-box">
-        <button class="button setting-button" @click="mobileSettings = !mobileSettings" v-if="!isNicknameEditable">
+        <button
+          v-if="!isNicknameEditable"
+          class="button setting-button"
+          @click="mobileSettings = !mobileSettings"
+        >
           {{ $t('my-info') }}
         </button>
 
         <div
-          class="profile-container"
           :style="{ backgroundColor: user.pictureSrc ? 'white' : 'grey' }"
+          class="profile-container"
         >
           <img
             v-if="user.pictureSrc"
             :src="user.pictureSrc"
             class="profile-container__image"
             alt="profile image"
-          />
+          >
           <label>
             <input
               type="file"
@@ -148,26 +152,26 @@
         </div>
 
         <div class="nickname-container">
-          <div class="row" v-if="!isNicknameEditable">
+          <div v-if="!isNicknameEditable" class="row">
             <h1 class="nickname">{{ user.nickname }}</h1>
             <a style="margin-left: 0.5rem;" @click="toggleNicknameInput">
               <i class="material-icons">create</i>
             </a>
           </div>
           <div v-else class="nickname__direction">
-            <input class="input nickname nickname__input" v-model="newNickname">
+            <input v-model="newNickname" class="input nickname nickname__input">
             <div class="nickname__buttons">
               <button
-                class="button"
                 :class="{ 'is-loading': updating }"
+                class="button"
                 style="margin-left: 0.8rem; color: var(--theme-400)"
                 @click="toggleNicknameInput(true)">
                 {{ $t('save') }}
               </button>
               <button
                 class="button"
-                @click="toggleNicknameInput(false)"
                 style="margin-left: 0.8rem;"
+                @click="toggleNicknameInput(false)"
               >
                 {{ $t('cancel') }}
               </button>
@@ -196,11 +200,21 @@
           </li>
         </ul>
 
-        <SearchBar class="desktop-search is-hidden-touch" searchable long/>
+        <SearchBar
+          class="desktop-search is-hidden-touch"
+          searchable
+          long
+        />
       </div>
       <hr class="tabs-divider">
       <!--Deleted aside-right and the contents of them have been re-located to above.-->
-      <TheBoard v-if="posts" :title="boardTitle" :board="posts" :fromQuery="fromQuery" simplify/>
+      <TheBoard
+        v-if="posts"
+        :title="boardTitle"
+        :board="posts"
+        :from-query="fromQuery"
+        simplify
+      />
     </div>
   </TheLayout>
 </template>

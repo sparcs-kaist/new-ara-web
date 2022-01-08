@@ -1,16 +1,15 @@
 <template>
   <div class="post">
     <div class="title">
-      <router-link
-        class="title__board" :to="beforeBoard">
+      <router-link :to="beforeBoard" class="title__board">
         <i class="material-icons title__board--icon">arrow_back_ios</i>
         <span class="title__board--name">
           {{ beforeBoardName }}
         </span>
       </router-link>
-      <hr class="title__divider"/>
+      <hr class="title__divider">
       <span class="title__text">
-        <span class="title__topic" v-if="post.parent_topic">
+        <span v-if="post.parent_topic" class="title__topic">
           [{{ post.parent_topic[`${$i18n.locale}_name`] }}]
         </span>
         {{ title }}
@@ -28,17 +27,27 @@
       </span>
     </div>
     <div class="metadata">
-      <router-link :is="isAnonymous ? 'span' : 'router-link'"
+      <router-link
+        :is="isAnonymous ? 'span' : 'router-link'"
         :to="{
-        name: 'user', params: { username: postAuthorId }
-      }" class="author">
-        <img :src="userPictureUrl" class="author__picture"/>
+          name: 'user',
+          params: { username: postAuthorId }
+        }"
+        class="author"
+      >
+        <img :src="userPictureUrl" class="author__picture">
         <span class="author__nickname">{{ postAuthor }}</span>
-        <i class="author__icon material-icons" v-if="!isAnonymous">chevron_right</i>
+        <i v-if="!isAnonymous" class="author__icon material-icons">chevron_right</i>
       </router-link>
-      <LikeButton class="metadata__like" :item="post" votable @vote="$emit('vote', $event)" v-if="!post.is_hidden" />
+      <LikeButton
+        v-if="!post.is_hidden"
+        :item="post"
+        class="metadata__like"
+        votable
+        @vote="$emit('vote', $event)"
+      />
     </div>
-    <hr class="divider" />
+    <hr class="divider">
   </div>
 </template>
 

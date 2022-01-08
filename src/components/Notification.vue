@@ -1,11 +1,12 @@
 <template>
   <router-link
-  :to="{
-    name: 'post',
-    params: { postId: notification.related_article.id },
-    query: fromQuery
-  }"
-  class="notification-container">
+    :to="{
+      name: 'post',
+      params: { postId: notification.related_article.id },
+      query: fromQuery
+    }"
+    class="notification-container"
+  >
     <h3 id="title">{{ notification.title }}</h3>
     <p id="content">{{ notification.content }}</p>
   </router-link>

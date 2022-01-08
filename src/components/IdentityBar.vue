@@ -1,20 +1,20 @@
 <template>
   <div class="identity-bar">
     <transition name="fadeHeight" mode="out-in">
-      <div class="identity-bar-noti" v-if="PWAPrompt">
+      <div v-if="PWAPrompt" class="identity-bar-noti">
         <div class="img-container">
-          <img src="../assets/SparcsLogo.svg" alt="s" />
+          <img src="../assets/SparcsLogo.svg" alt="s">
         </div>
         <div class="texts">
           <div class="title">
-            {{$t("title")}}
+            {{ $t("title") }}
           </div>
           <div class="desc">
-            {{$t("subtitle")}}
+            {{ $t("subtitle") }}
           </div>
         </div>
-        <button @click="installPWA">{{$t("install")}}</button>
-        <button @click="closeInstall">{{$t("close")}}</button>
+        <button @click="installPWA">{{ $t("install") }}</button>
+        <button @click="closeInstall">{{ $t("close") }}</button>
       </div>
     </transition>
   </div>

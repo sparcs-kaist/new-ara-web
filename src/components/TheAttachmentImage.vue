@@ -1,6 +1,11 @@
 <template>
   <div>
-    <img :src="src" :alt="alt" :title="title" @error="imageLoadError"/>
+    <img
+      :src="src"
+      :alt="alt"
+      :title="title"
+      @error="imageLoadError"
+    >
   </div>
 </template>
 

@@ -3,15 +3,15 @@
     <h1 id="title">{{ title }}</h1>
     <DailyNotifications
       v-for="timePassed in Object.keys(dailyNotifications)"
-      :timePassed="timePassed"
+      :time-passed="timePassed"
       :notifications="dailyNotifications[timePassed]"
-      :key="timePassed">
-    </DailyNotifications>
+      :key="timePassed"
+    />
     <ThePaginator
-      :numPages="notifications.num_pages"
-      :currentPage="notifications.current"
-      :baseRouteTo="{ name: 'notifications' }">
-    </ThePaginator>
+      :num-pages="notifications.num_pages"
+      :current-page="notifications.current"
+      :base-route-to="{ name: 'notifications' }"
+    />
   </div>
 </template>
 

@@ -1,18 +1,21 @@
 <template>
-  <div class="editor" :class="{'editor--editable': this.editable, 'editor--focused': this.editor.focused}">
-    <blockquote v-if="imgError && !this.editable">
-      <p><strong>{{$t('img-invalid-title')}}</strong></p>
-      <p>{{$t('img-invalid-subtitle')}}</p>
+  <div
+    :class="{
+      'editor--editable': editable,
+      'editor--focused': editor.focused
+    }"
+    class="editor"
+  >
+    <blockquote v-if="imgError && !editable">
+      <p><strong>{{ $t('img-invalid-title') }}</strong></p>
+      <p>{{ $t('img-invalid-subtitle') }}</p>
     </blockquote>
 
-    <EditorMenuBar :editor="editor" v-show="this.editable">
-      <div
-        class="editor-menu-bar"
-        slot-scope="{ commands, isActive }"
-      >
+    <EditorMenuBar v-show="editable" :editor="editor">
+      <div slot-scope="{ commands, isActive }" class="editor-menu-bar">
         <button
-          class="menubar__button"
           :class="{ 'is-active': isActive.bold() }"
+          class="menubar__button"
           @click="commands.bold"
         >
           <span class="icon">
@@ -21,8 +24,8 @@
         </button>
 
         <button
-          class="menubar__button"
           :class="{ 'is-active': isActive.italic() }"
+          class="menubar__button"
           @click="commands.italic"
         >
           <span class="icon">
@@ -31,8 +34,8 @@
         </button>
 
         <button
-          class="menubar__button"
           :class="{ 'is-active': isActive.strike() }"
+          class="menubar__button"
           @click="commands.strike"
         >
           <span class="icon">
@@ -41,8 +44,8 @@
         </button>
 
         <button
-          class="menubar__button"
           :class="{ 'is-active': isActive.underline() }"
+          class="menubar__button"
           @click="commands.underline"
         >
           <span class="icon">
@@ -50,27 +53,21 @@
           </span>
         </button>
 
-        <button
-          class="menubar__button"
-          @click="showLinkDialog()"
-        >
+        <button class="menubar__button" @click="showLinkDialog()">
           <span class="icon">
             <i class="material-icons">link</i>
           </span>
         </button>
 
-        <button
-          class="menubar__button"
-          @click="commands.horizontal_rule"
-        >
+        <button class="menubar__button" @click="commands.horizontal_rule">
           <span class="icon">
             <i class="material-icons">horizontal_rule</i>
           </span>
         </button>
 
         <button
-          class="menubar__button"
           :class="{ 'is-active': isActive.code() }"
+          class="menubar__button"
           @click="commands.code"
         >
           <span class="icon">
@@ -79,8 +76,8 @@
         </button>
 
         <button
-          class="menubar__button"
           :class="{ 'is-active': isActive.heading({ level: 1 })}"
+          class="menubar__button"
           @click="commands.heading({ level: 1 })"
         >
           <span class="icon">
@@ -89,8 +86,8 @@
         </button>
 
         <button
-          class="menubar__button"
           :class="{ 'is-active': isActive.heading({ level: 2 })}"
+          class="menubar__button"
           @click="commands.heading({ level: 2 })"
         >
           <span class="icon">
@@ -99,8 +96,8 @@
         </button>
 
         <button
-          class="menubar__button"
           :class="{ 'is-active': isActive.heading({ level: 3 })}"
+          class="menubar__button"
           @click="commands.heading({ level: 3 })"
         >
           <span class="icon">
@@ -109,8 +106,8 @@
         </button>
 
         <button
-          class="menubar__button"
           :class="{ 'is-active': isActive.bullet_list() }"
+          class="menubar__button"
           @click="commands.bullet_list"
         >
           <span class="icon">
@@ -119,8 +116,8 @@
         </button>
 
         <button
-          class="menubar__button"
           :class="{ 'is-active': isActive.ordered_list() }"
+          class="menubar__button"
           @click="commands.ordered_list"
         >
           <span class="icon">
@@ -129,8 +126,8 @@
         </button>
 
         <button
-          class="menubar__button"
           :class="{ 'is-active': isActive.blockquote() }"
+          class="menubar__button"
           @click="commands.blockquote"
         >
           <span class="icon">
@@ -139,8 +136,8 @@
         </button>
 
         <button
-          class="menubar__button"
           :class="{ 'is-active': isActive.code_block() }"
+          class="menubar__button"
           @click="commands.code_block"
         >
           <span class="icon">
@@ -159,8 +156,8 @@
 
         <!-- Enabling undoDepth will make other components get no focus -->
         <button
-          class="menubar__button"
           :class="{ /* 'is-disabled': commands.undoDepth() === 0 */ }"
+          class="menubar__button"
           @click="commands.undo"
         >
           <span class="icon">
@@ -169,21 +166,22 @@
         </button>
 
         <button
-          class="menubar__button"
           :class="{ /* 'is-disabled': commands.redoDepth() === 0 */ }"
+          class="menubar__button"
           @click="commands.redo"
         >
-        <span class="icon">
-          <i class="material-icons">redo</i>
-        </span>
+          <span class="icon">
+            <i class="material-icons">redo</i>
+          </span>
         </button>
       </div>
     </EditorMenuBar>
+
     <div class="content">
       <EditorContent :editor="editor" class="editor-content" />
     </div>
 
-    <div class="dialogs" v-if="editable">
+    <div v-if="editable" class="dialogs">
       <TheTextEditorLinkDialog ref="linkDialog" />
     </div>
   </div>

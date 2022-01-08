@@ -1,33 +1,44 @@
 <template>
   <router-link
-  :to="{
+    :to="{
       name: 'post',
       params: { postId: post.id },
       query: fromQuery
-  }"
-  class="board-item"
-  :class="{'board-item--current': current}">
+    }"
+    :class="{'board-item--current': current}"
+    class="board-item"
+  >
     <div class="board-item__body">
       <div class="board-item__image-wrapper">
-        <div class="board-item__hidden-frame" v-if="post.is_hidden">
+        <div v-if="post.is_hidden" class="board-item__hidden-frame">
           <i class="material-icons">{{ hidden_icon }}</i>
         </div>
-        <img class="board-item__image" :src="post.created_by.profile.picture" v-if="!post.is_hidden">
+        <img
+          v-if="!post.is_hidden"
+          :src="post.created_by.profile.picture"
+          class="board-item__image"
+        >
       </div>
 
       <div class="board-item__content">
         <div class="board-item__title-wrapper">
-          <div class="board-item__title" :title="post.title" :class="hidden_grey">
-            <span class="board-item__topic" v-if="post.parent_topic">
+          <div
+            :title="post.title"
+            :class="hidden_grey"
+            class="board-item__title"
+          >
+            <span v-if="post.parent_topic" class="board-item__topic">
               [{{ post.parent_topic[`${$i18n.locale}_name`] }}]
             </span>
 
             {{ title }}
           </div>
-          <div class="board-item__comment" v-if="post.comment_count !== 0">
+          <div v-if="post.comment_count !== 0" class="board-item__comment">
             ({{ elideText(post.comment_count) }})
           </div>
-          <div class="board-item__read-status" v-if="post.read_status === 'N' || post.read_status === 'U'"> {{post.read_status === 'N' ? 'new' : 'up'}} </div>
+          <div v-if="post.read_status === 'N' || post.read_status === 'U'" class="board-item__read-status" >
+            {{ post.read_status === 'N' ? 'new' : 'up' }}
+          </div>
         </div>
 
         <div class="board-item__subtitle">
@@ -36,11 +47,11 @@
             {{ $t('views') + " " + elideText(post.hit_count) }}
           </div>
           <div class="board-item__vote">
-            <div class="board-item__vote__pos">+{{post.positive_vote_count}}</div>
-            <div class="board-item__vote__neg">-{{post.negative_vote_count}}</div>
+            <div class="board-item__vote__pos">+{{ post.positive_vote_count }}</div>
+            <div class="board-item__vote__neg">-{{ post.negative_vote_count }}</div>
           </div>
 
-          <span class="board-item__author__mobile is-hidden-tablet" :class="hidden_grey">
+          <span :class="hidden_grey" class="board-item__author__mobile is-hidden-tablet">
             {{ post.created_by.profile.nickname }}
           </span>
 
@@ -48,7 +59,7 @@
       </div>
     </div>
 
-    <span class="board-item__author is-hidden-mobile" :class="hidden_grey">
+    <span :class="hidden_grey" class="board-item__author is-hidden-mobile">
       {{ post.created_by.profile.nickname }}
     </span>
   </router-link>

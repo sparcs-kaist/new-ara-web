@@ -11,8 +11,10 @@
 import TheFooter from '@/components/TheFooter.vue'
 
 export default {
-  name: 'app',
+  name: 'App',
+
   components: { TheFooter },
+
   mounted () {
     window.addEventListener('beforeinstallprompt', e => {
       e.preventDefault()

@@ -1,9 +1,13 @@
 <template>
   <div class="post">
-    <div class="attachments" v-if="attachments && attachments.length > 0">
+    <div v-if="attachments && attachments.length > 0" class="attachments">
       <div class="dropdown is-hoverable is-right">
         <div class="dropdown-trigger">
-          <a class="attachments__title" aria-haspopup="true" aria-controls="dropdown-menu">
+          <a
+            class="attachments__title"
+            aria-haspopup="true"
+            aria-controls="dropdown-menu"
+          >
             <span>
               {{ $t('attachments') }} {{ attachments.length }}
             </span>
@@ -11,12 +15,19 @@
         </div>
         <div class="dropdown-menu">
           <div class="dropdown-content">
-            <div class="attachments__item dropdown-item"
+            <div
               v-for="{id, file, url} in attachments"
               :key="id"
+              class="attachments__item dropdown-item"
             >
               <div>
-                <a :href="url" target="_blank" rel="noopener">{{ file }}</a>
+                <a
+                  :href="url"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {{ file }}
+                </a>
               </div>
             </div>
           </div>
@@ -26,27 +37,42 @@
 
     <div class="content">
       <ThePostBookmark
-        class="content__bookmark"
-        :node="{ attrs: { title: post.title, href: post.url } }"
         v-if="post.url"
+        :node="{ attrs: { title: post.title, href: post.url } }"
+        class="content__bookmark"
       />
 
-      <TextEditor :editable="false" :content="content" v-if="content" ref="editor" />
-      <div class="hidden-container" v-if="post.is_hidden">
+      <TextEditor
+        v-if="content"
+        ref="editor"
+        :editable="false"
+        :content="content"
+      />
+
+      <div v-if="post.is_hidden" class="hidden-container">
         <div class="hidden-container__frame">
           <i class="material-icons">{{ hidden_icon }}</i>
         </div>
-        <div v-html="hiddenReason"></div>
-        <button v-if="post.can_override_hidden" class="button hidden-container__button" @click="$emit('show-hidden')">
+        <div v-html="hiddenReason" />
+        <button
+          v-if="post.can_override_hidden"
+          class="button hidden-container__button"
+          @click="$emit('show-hidden')"
+        >
           {{ $t('show-hidden') }}
         </button>
-
       </div>
     </div>
 
-    <div class="post__footer" v-if="!post.is_hidden || !post.is_anonymous">
-      <LikeButton class="post__like" :item="post" votable @vote="$emit('vote', $event)" v-if="!post.is_hidden"/>
-      <div class="post__buttons" :class="{'post__buttons--hidden': post.is_hidden}">
+    <div v-if="!post.is_hidden || !post.is_anonymous" class="post__footer">
+      <LikeButton
+        v-if="!post.is_hidden"
+        :item="post"
+        class="post__like"
+        votable
+        @vote="$emit('vote', $event)"
+      />
+      <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons">
         <template v-if="isMine && (post.can_override_hidden !== false) && post.hidden_at === '0001-01-01T08:28:00+08:28'">
           <button class="button" @click="deletePost">
             <i class="like-button__icon material-icons-outlined">
@@ -55,13 +81,15 @@
             {{ $t('delete') }}
           </button>
 
-          <router-link class="button"
+          <router-link
             :to="{
               name: 'write',
               params: {
                 postId
               }
-            }">
+            }"
+            class="button"
+          >
             <i class="like-button__icon material-icons-outlined">
               edit
             </i>
@@ -69,27 +97,39 @@
           </router-link>
         </template>
         <template v-else>
-          <button class="button" @click="$emit('block')" v-if="!post.is_anonymous">
+          <button
+            v-if="!post.is_anonymous"
+            class="button"
+            @click="$emit('block')"
+          >
             <i class="like-button__icon material-icons-outlined">
               remove_circle_outline
             </i>
             {{ $t(isBlocked ? 'unblock' : 'block') }}
           </button>
 
-          <button class="button" @click="$emit('report')" v-if="!post.is_hidden">
+          <button
+            v-if="!post.is_hidden"
+            class="button"
+            @click="$emit('report')"
+          >
             <i class="like-button__icon material-icons-outlined">
               campaign
             </i>
             {{ $t('report') }}
           </button>
         </template>
-        <button class="button archive-button" @click="$emit('archive')" v-if="!post.is_hidden">
+        <button
+          v-if="!post.is_hidden"
+          class="button archive-button"
+          @click="$emit('archive')"
+        >
           <i class="like-button__icon material-icons-outlined">add</i>
           {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
         </button>
       </div>
     </div>
-    <hr class="divider"/>
+    <hr class="divider">
   </div>
 </template>
 

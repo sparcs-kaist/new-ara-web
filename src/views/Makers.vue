@@ -7,10 +7,10 @@
         :key="project.name"
         :title="projectName(project)"
         :subtitle="project.period"
-        @click.native="projectClicked(projectIndex)"
         :active="selected === projectIndex"
         :launched="project.launched"
         is-project
+        @click.native="projectClicked(projectIndex)"
       />
     </div>
 
@@ -211,10 +211,12 @@ const projects = [
 
 export default {
   name: 'Makers',
+
   components: {
     MakersCard,
     TheLayout
   },
+
   data () {
     return {
       projects,
@@ -222,6 +224,11 @@ export default {
       selected: 9
     }
   },
+
+  beforeCreate () {
+    document.body.style.background = '#fafafa'
+  },
+
   methods: {
     projectName ({ launched, name }) {
       return launched ? `🚀 ${name}` : name
@@ -244,9 +251,6 @@ export default {
     projectClicked (projectIndex) {
       this.selected = projectIndex
     }
-  },
-  beforeCreate () {
-    document.body.style.background = '#fafafa'
   }
 }
 </script>

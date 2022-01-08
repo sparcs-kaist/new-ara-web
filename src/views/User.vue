@@ -4,7 +4,11 @@
       <TheSidebar searchable />
     </template>
 
-    <TheBoard :board="board" :title="user.nickname" :from-query="{ from_view: 'user', created_by: user.user }">
+    <TheBoard
+      :board="board"
+      :title="user.nickname"
+      :from-query="{ from_view: 'user', created_by: user.user }"
+    >
       <template #title>
         <div class="title-description">
           사용자

@@ -1,12 +1,23 @@
 <template>
   <aside class="sidebar column is-hidden-touch">
-    <SearchBar class="sidebar__search" :searchable="searchable" />
+    <SearchBar
+      :searchable="searchable"
+      class="sidebar__search"
+    />
 
-    <SmallBoard :listitems="recentPosts" :fromQuery="{ from_view: 'recent' }" sidebar>
+    <SmallBoard
+      :listitems="recentPosts"
+      :from-query="{ from_view: 'recent' }"
+      sidebar
+    >
       {{ $t('recent') }}
     </SmallBoard>
 
-    <SmallBoard :listitems="archiveList" :fromQuery="{ from_view: 'scrap' }" sidebar>
+    <SmallBoard
+      :listitems="archiveList"
+      :from-query="{ from_view: 'scrap' }"
+      sidebar
+    >
       {{ $t('archive') }}
     </SmallBoard>
   </aside>

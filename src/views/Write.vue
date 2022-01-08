@@ -1,8 +1,8 @@
 <template>
   <TheLayout :key="postId">
     <ThePostWrite
-      ref="write"
       v-if="postFetched"
+      ref="write"
       :post="post"
       :saving="saving"
       :empty-warnings="emptyWarnings"

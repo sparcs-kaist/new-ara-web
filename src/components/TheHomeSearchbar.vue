@@ -20,9 +20,18 @@
       </i18n>
     </h2>
 
-    <form class="searchbar__search field" action="board" @submit.prevent="search">
+    <form
+      class="searchbar__search field"
+      action="board"
+      @submit.prevent="search"
+    >
       <p class="control has-icons-left">
-        <input class="input is-large" type="text" v-model="query" name="query">
+        <input
+          v-model="query"
+          class="input is-large"
+          type="text"
+          name="query"
+        >
         <button class="icon is-small is-left" type="submit">
           <i class="material-icons">search</i>
         </button>
@@ -35,16 +44,16 @@
       </span>
 
       <div class="keywords__list">
-        <router-link :to="{
+        <router-link
+          v-for="keyword in keywords"
+          :key="keyword.key"
+          :to="{
             name: 'board',
             query: {
               query: keyword[`${$i18n.locale}_name`]
             }
           }"
-          class="keywords__keyword"
-          v-for="keyword in keywords"
-          :key="keyword.key">
-
+          class="keywords__keyword">
           {{ keyword[`${$i18n.locale}_name`] }}
         </router-link>
       </div>

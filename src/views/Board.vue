@@ -4,8 +4,12 @@
       <TheSidebar searchable />
     </template>
 
-    <TheBoard :board="board" :title="boardName" :from-query="fromQuery">
-      <template #title v-if="topic">
+    <TheBoard
+      :board="board"
+      :title="boardName"
+      :from-query="fromQuery"
+    >
+      <template v-if="topic" #title>
         <span class="board__topic">
           {{ `#${topic[`${$i18n.locale}_name`]}` }}
         </span>
@@ -16,11 +20,15 @@
           <div class="dropdown is-hoverable is-right board__filter">
 
             <div class="dropdown-trigger">
-              <a class="board__filter-trigger" aria-haspopup="true" aria-controls="dropdown-menu">
+              <a
+                class="board__filter-trigger"
+                aria-haspopup="true"
+                aria-controls="dropdown-menu"
+              >
                 {{ $t('filter') }}
                 <i class="icon material-icons">filter_alt</i>
               </a>
-              </div>
+            </div>
 
             <div class="dropdown-menu board__filter-menu">
               <div class="dropdown-content">
@@ -30,9 +38,10 @@
                   </router-link>
                 </div>
 
-                <div class="dropdown-item board__filter-item"
+                <div
                   v-for="topicItem in topics"
-                :key="topicItem.id"
+                  :key="topicItem.id"
+                  class="dropdown-item board__filter-item"
                 >
                   <router-link :to="{ query: { ...$route.query, topic: topicItem.slug } }">
                     {{ topicItem[`${$i18n.locale}_name`] }}
@@ -44,13 +53,11 @@
         </template>
         <template v-if="!$route.params.boardSlug">
           <div class="exclude">
-            <span class="exclude__text">{{$t('exclude_portal')}}</span>
-            <a class="exclude__change"
-              @click="changeFilter"
-              >
+            <span class="exclude__text">{{ $t('exclude_portal') }}</span>
+            <a class="exclude__change" @click="changeFilter">
               <span class="icon is-flex-touch exclude__toggle">
-                <i class="material-icons exclude__icon exclude__icon--on" v-if="$route.query.portal === 'exclude'">toggle_on</i>
-                <i class="material-icons exclude__icon" v-else>toggle_off</i>
+                <i v-if="$route.query.portal === 'exclude'" class="material-icons exclude__icon exclude__icon--on">toggle_on</i>
+                <i v-else class="material-icons exclude__icon">toggle_off</i>
               </span>
             </a>
           </div>

@@ -2,10 +2,15 @@
   <div class="organization-card-wrap">
     <router-link
       :to="generateHref"
+      :style="{ 'background-color': backgroundColor }"
       class="organization-card"
-      :style="{ 'background-color': backgroundColor }">
-      <i class="logo logo--icon material-icons" v-if="icon">{{icon}}</i>
-      <img class="logo" v-else-if="id" :src="require(`@/assets/Logo${id}.png`)" />
+    >
+      <i v-if="icon" class="logo logo--icon material-icons">{{ icon }}</i>
+      <img
+        v-else-if="id"
+        :src="require(`@/assets/Logo${id}.png`)"
+        class="logo"
+      >
     </router-link>
     <span class="name">{{ $t(name) }}</span>
   </div>

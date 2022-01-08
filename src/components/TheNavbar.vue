@@ -1,138 +1,152 @@
 <template>
-<div>
-  <IdentityBar></IdentityBar>
-  <div class="navbar" aria-label="main navigation" role="navigation">
-    <div class="navbar-container">
-      <div class="navbar-brand" :class="{'navbar-active': isMobileMenuActive}">
-        <router-link
-          :to="{ name: 'home' }"
-          class="navbar-item navbar-ara">
-          <img src="@/assets/ServiceAra.svg" class="ara-logo"/>
-        </router-link>
-
-        <router-link
-          :to="{ name: 'write' }"
-          class="navbar-item navbar-item--mobile-write is-hidden-desktop">
-          <i class="material-icons write-icon">create</i>
-        </router-link>
-
-        <a
-          class="navbar-burger"
-          role="button"
-          aria-label="menu"
-          aria-expanded="false"
-          :class="{ 'is-active': isMobileMenuActive }"
-          @click="toggleMobileMenu">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-
-      <div
-        class="navbar-menu"
-        :class="{ 'is-active': isMobileMenuActive }">
-
-        <div class="navbar-start">
+  <div>
+    <IdentityBar />
+    <div
+      class="navbar"
+      aria-label="main navigation"
+      role="navigation"
+    >
+      <div class="navbar-container">
+        <div :class="{ 'navbar-active': isMobileMenuActive }" class="navbar-brand">
           <router-link
-            :to="{ name: 'board'}"
-            class="navbar-item">
-
-            {{ $t('all') }}
-          </router-link>
-
-          <router-link :to="{ name: 'archive' }" class="navbar-item">
-            {{ $t('archive') }}
+            :to="{ name: 'home' }"
+            class="navbar-item navbar-ara">
+            <img src="@/assets/ServiceAra.svg" class="ara-logo">
           </router-link>
 
           <router-link
-            v-for="board in boardListVisible"
-            :key="board.id"
-            :to="{
-              name: 'board',
-              params: {
-                boardSlug: board.slug
-              }
-            }"
-            class="navbar-item">
-
-            {{ board[`${$i18n.locale}_name`] }}
+            :to="{ name: 'write' }"
+            class="navbar-item navbar-item--mobile-write is-hidden-desktop">
+            <i class="material-icons write-icon">create</i>
           </router-link>
+
+          <a
+            :class="{ 'is-active': isMobileMenuActive }"
+            class="navbar-burger"
+            role="button"
+            aria-label="menu"
+            aria-expanded="false"
+            @click="toggleMobileMenu">
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+          </a>
         </div>
 
-        <div class="navbar-end">
-          <router-link class="navbar-item navbar-item--write is-hidden-touch"
-          :to="{ name: 'write' }">
-            <span>{{ $t('write') }}</span>
-          </router-link>
+        <div
+          :class="{ 'is-active': isMobileMenuActive }"
+          class="navbar-menu"
+        >
+          <div class="navbar-start">
+            <router-link
+              :to="{ name: 'board'}"
+              class="navbar-item"
+            >
+              {{ $t('all') }}
+            </router-link>
 
-          <a class="navbar-item"
-            @click="changeLocale"
-            id="toggle-language">
+            <router-link :to="{ name: 'archive' }" class="navbar-item">
+              {{ $t('archive') }}
+            </router-link>
 
-            <span class="icon">
-              <i class="material-icons">language</i>
-            </span>
+            <router-link
+              v-for="board in boardListVisible"
+              :key="board.id"
+              :to="{
+                name: 'board',
+                params: {
+                  boardSlug: board.slug
+                }
+              }"
+              class="navbar-item"
+            >
+              {{ board[`${$i18n.locale}_name`] }}
+            </router-link>
+          </div>
 
-            <span class="is-hidden-desktop">
-              {{ $t('language') }}
-            </span>
-          </a>
+          <div class="navbar-end">
+            <router-link
+              :to="{ name: 'write' }"
+              class="navbar-item navbar-item--write is-hidden-touch"
+            >
+              <span>{{ $t('write') }}</span>
+            </router-link>
 
-          <router-link
-            :to="{ name: 'notifications' }"
-            class="navbar-item">
+            <a
+              id="toggle-language"
+              class="navbar-item"
+              @click="changeLocale"
+            >
+              <span class="icon">
+                <i class="material-icons">language</i>
+              </span>
 
-            <span class="icon">
-              <i class="material-icons">notifications</i>
-            </span>
+              <span class="is-hidden-desktop">
+                {{ $t('language') }}
+              </span>
+            </a>
 
-            <span class="is-hidden-desktop">
-              {{ $t('notification') }}
-            </span>
-          </router-link>
+            <router-link
+              :to="{ name: 'notifications' }"
+              class="navbar-item"
+            >
+              <span class="icon">
+                <i class="material-icons">notifications</i>
+              </span>
 
-          <div class="navbar-item">
-            <div class="dropdown is-right is-hoverable">
-              <router-link
-                :to="isMobileMenuActive ? { name: 'my-info' } : $route.fullPath"
-                class="user">
+              <span class="is-hidden-desktop">
+                {{ $t('notification') }}
+              </span>
+            </router-link>
 
-                <img :src="userPicture" class="picture-url"/>
-                <span class="username">
-                  {{ userNickname }}
-                </span>
-              </router-link>
+            <div class="navbar-item">
+              <div class="dropdown is-right is-hoverable">
+                <router-link
+                  :to="isMobileMenuActive ? { name: 'my-info' } : $route.fullPath"
+                  class="user"
+                >
+                  <img :src="userPicture" class="picture-url">
+                  <span class="username">
+                    {{ userNickname }}
+                  </span>
+                </router-link>
 
-              <div class="dropdown-menu is-hidden-touch" id="dropdownMenu" role="menu">
-                <div class="dropdown-content">
-                  <div class="dropdown-item">
-                    <router-link
-                      :to="{ name: 'my-info' }"
-                      class="navbar-item user">
-                      {{ $t('my-page') }}
-                    </router-link>
-                    <router-link
-                      :to="{ name: 'logout-handler' }"
-                      class="navbar-item user logout">
-                      {{ $t('logout') }}
-                    </router-link>
+                <div
+                  id="dropdownMenu"
+                  class="dropdown-menu is-hidden-touch"
+                  role="menu"
+                >
+                  <div class="dropdown-content">
+                    <div class="dropdown-item">
+                      <router-link
+                        :to="{ name: 'my-info' }"
+                        class="navbar-item user"
+                      >
+                        {{ $t('my-page') }}
+                      </router-link>
+                      <router-link
+                        :to="{ name: 'logout-handler' }"
+                        class="navbar-item user logout"
+                      >
+                        {{ $t('logout') }}
+                      </router-link>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <router-link
-            :to="{ name: 'logout-handler' }"
-            class="navbar-item is-hidden-desktop">
-            {{ $t('logout') }}
-          </router-link>
+            <router-link
+              :to="{ name: 'logout-handler' }"
+              class="navbar-item is-hidden-desktop"
+            >
+              {{ $t('logout') }}
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>

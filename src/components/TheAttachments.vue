@@ -1,8 +1,11 @@
 <template>
-  <div class="attachments" :class="{
-    'attachments--failed': dropzoneFailedReason,
-    'attachments--enabled': dropzoneEnabled
-  }">
+  <div
+    :class="{
+      'attachments--failed': dropzoneFailedReason,
+      'attachments--enabled': dropzoneEnabled
+    }"
+    class="attachments"
+  >
     <div class="attachments__header">
       <h2 class="attachments__title"> {{ $t('upload') }} </h2>
       <button class="attachments__upload button" @click="openUpload">
@@ -11,29 +14,40 @@
     </div>
 
     <div class="attachments__content">
-      <label class="attachments__dropzone dropzone"
+      <label
+        class="attachments__dropzone dropzone"
         @dragover.stop.prevent="dropzoneEnabled = true"
         @dragleave.stop.prevent="dropzoneEnabled = false"
-        @drop.stop.prevent="handleDropUpload">
-
+        @drop.stop.prevent="handleDropUpload"
+      >
         <input
-          class="dropzone__upload"
-          :accept="accepted"
-          type="file"
           ref="upload"
+          :accept="accepted"
+          class="dropzone__upload"
+          type="file"
           @change="handleDialogUpload"
         >
       </label>
 
-      <span class="attachments__message"> {{dropzoneMessage}} </span>
+      <span class="attachments__message">{{ dropzoneMessage }}</span>
 
-      <transition-group class="attachments__filelist" name="filelist-fade" tag="div">
-        <div class="attachments__file file" v-for="file in files" :key="file.key">
-          <img class="file__thumbnail" v-if="file.type === 'image'" :src="file.blobUrl">
-
+      <transition-group
+        class="attachments__filelist"
+        name="filelist-fade"
+        tag="div"
+      >
+        <div
+          v-for="file in files"
+          :key="file.key"
+          class="attachments__file file"
+        >
+          <img
+            v-if="file.type === 'image'"
+            :src="file.blobUrl"
+            class="file__thumbnail"
+          >
           <div class="file__details">
-            {{file.name}}
-
+            {{ file.name }}
             <button class="file__delete" @click.prevent="deleteFile(file)">
               <i class="material-icons">delete_outline</i>
             </button>
@@ -42,7 +56,13 @@
       </transition-group>
     </div>
 
-    <input class="dropzone__upload" type="file" accept="image/*" ref="imageUpload" @change="handleImageUpload">
+    <input
+      ref="imageUpload"
+      class="dropzone__upload"
+      type="file"
+      accept="image/*"
+      @change="handleImageUpload"
+    >
   </div>
 </template>
 

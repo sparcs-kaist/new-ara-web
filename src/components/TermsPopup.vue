@@ -1,23 +1,27 @@
 <template>
-  <div class="modal" :class="{ 'is-active': termsPopup }">
+  <div :class="{ 'is-active': termsPopup }" class="modal">
     <div class="modal-background"/>
     <div class="modal-content">
-      <a v-if="agreeTosAt" class="close delete is-medium" role="button" @click="exitTermsPopup"/>
+      <a
+        v-if="agreeTosAt"
+        class="close delete is-medium"
+        role="button"
+        @click="exitTermsPopup"
+      />
 
       <div class="popup">
         <div class="title">
-          <img src="@/assets/ServiceAra.svg" class="Services-Ara"/>
+          <img src="@/assets/ServiceAra.svg" class="Services-Ara">
           <h1>{{ $t("title") }}</h1>
-          <a class="toggle-language"
-             @click="changeLocale"
-             id="toggle-language">
-
+          <a
+            id="toggle-language"
+            class="toggle-language"
+            @click="changeLocale"
+          >
             <span class="icon">
               <i class="material-icons">language</i>
             </span>
-            <span>
-              {{$t('language')}}
-            </span>
+            <span>{{ $t('language') }}</span>
           </a>
         </div>
 
@@ -26,7 +30,11 @@
             {{ $t('tos-header') }}
           </div>
 
-          <div class="tos-section" v-for="(section, index) in sections" :key="index">
+          <div
+            v-for="(section, index) in sections"
+            :key="index"
+            class="tos-section"
+          >
             <h2 class="tos-title">{{ section.title }}</h2>
             <p class="tos-content" v-html = "section.contents"/>
           </div>
@@ -37,10 +45,18 @@
         </div>
 
         <div class="button-container">
-          <button class="button" v-if="!agreeTosAt" @click="askAgain">
+          <button
+            v-if="!agreeTosAt"
+            class="button"
+            @click="askAgain"
+          >
             {{ $t('disagree') }}
           </button>
-          <button class="button right-button" v-if="!agreeTosAt" @click="agree">
+          <button
+            v-if="!agreeTosAt"
+            class="button right-button"
+            @click="agree"
+          >
             {{ $t('agree') }}
           </button>
           <p v-if="agreeTosAt">{{ $t("already-agreed") }}</p>

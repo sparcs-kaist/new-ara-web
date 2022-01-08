@@ -9,15 +9,24 @@
     </div>
 
     <div class="columns is-multiline">
-      <SmallBoard :listitems="dailyBests" class="home__board column is-4" detail>
+      <SmallBoard
+        :listitems="dailyBests"
+        class="home__board column is-4"
+        detail
+      >
         {{ $t('today-best') }}
       </SmallBoard>
 
-      <SmallBoard :listitems="weeklyBests" class="home__board column is-4" detail>
+      <SmallBoard
+        :listitems="weeklyBests"
+        class="home__board column is-4"
+        detail
+      >
         {{ $t('weekly-best') }}
       </SmallBoard>
 
-      <SmallBoard v-if="notice"
+      <SmallBoard
+        v-if="notice"
         :listitems="notice"
         :href="{
           name: 'board',

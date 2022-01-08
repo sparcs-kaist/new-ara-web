@@ -2,26 +2,31 @@
   <div id="comments" class="comments">
     <div class="comments__title">{{ $t('comments') }} {{ commentCount }}</div>
 
-    <div class="comments__container comments__container--empty" v-if="!comments">
+    <div v-if="!comments" class="comments__container comments__container--empty">
       {{ $t('no-comment') }}
     </div>
-    <div class="comments__container" v-else>
+    <div v-else class="comments__container">
       <PostComment
         v-for="comment in comments"
         :key="comment.id"
         :comment="comment"
         :post="post"
-        :anonymousProfile="anonymousProfile"
+        :anonymous-profile="anonymousProfile"
+        class="comments__comment"
         @update="$emit('update', $event)"
         @upload="$emit('upload', $event)"
         @vote="$emit('refresh')"
         @delete="$emit('refresh')"
         @fetch-comment="$emit('fetch-comment', $event)"
-        class="comments__comment"
       />
     </div>
 
-    <PostCommentEditor :parentArticle="post.id" :post="post" :anonymousProfile="anonymousProfile" @upload="$emit('upload', $event)"/>
+    <PostCommentEditor
+      :parent-article="post.id"
+      :post="post"
+      :anonymous-profile="anonymousProfile"
+      @upload="$emit('upload', $event)"
+    />
   </div>
 </template>
 <script>

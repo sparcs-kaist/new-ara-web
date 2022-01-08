@@ -2,27 +2,30 @@
   <div class="pages">
     <router-link
       v-if="pageRangeMin !== 1"
-      :to="routeTo(pageRangeMin - 1)">
-
+      :to="routeTo(pageRangeMin - 1)"
+    >
       <span class="icon">
         <i class="material-icons">navigate_before</i>
       </span>
-
     </router-link>
+
     <router-link
       v-for="page in pageRange"
       :key="page"
       :to="routeTo(page)"
+      :class="{ 'is-active': page === currentPage }"
       class="page"
-      :class="{ 'is-active': page === currentPage }">{{ page }}</router-link>
+    >
+      {{ page }}
+    </router-link>
+
     <router-link
       v-if="numPages > pageRangeMin + 9"
-      :to="routeTo(pageRangeMin + 10)">
-
+      :to="routeTo(pageRangeMin + 10)"
+    >
       <span class="icon">
         <i class="material-icons">navigate_next</i>
       </span>
-
     </router-link>
   </div>
 </template>

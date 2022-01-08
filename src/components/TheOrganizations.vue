@@ -1,14 +1,26 @@
 <template>
   <div>
-    <splide :options="primaryOptions" class="the-organizations organizations-padding" :key="$i18n.locale">
-      <splide-slide v-for="organization in organizations" v-bind="organization" :key="organization.id" >
+    <splide
+      :options="primaryOptions"
+      :key="$i18n.locale"
+      class="the-organizations organizations-padding"
+    >
+      <splide-slide
+        v-for="organization in organizations"
+        v-bind="organization"
+        :key="organization.id"
+      >
         <OrganizationCard
           :key="organization.id"
           v-bind="organization"
         />
       </splide-slide>
     </splide>
-    <OrganizationCard class="is-invisible organizations-padding" id="" name="portal-notice"></OrganizationCard>
+    <OrganizationCard
+      id=""
+      class="is-invisible organizations-padding"
+      name="portal-notice"
+    />
   </div>
 </template>
 

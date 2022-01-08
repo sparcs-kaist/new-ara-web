@@ -1,15 +1,31 @@
 <template>
   <div class="dialogs">
     <transition-group tag="div" name="dialog-fade">
-      <AlertDialog v-for="dialog in dialogs" :dialog="dialog" :key="dialog.id" />
+      <AlertDialog
+        v-for="dialog in dialogs"
+        :dialog="dialog"
+        :key="dialog.id"
+      />
     </transition-group>
 
-    <transition-group class="dialogs__toasts" tag="div" name="toast-fade">
-      <AlertDialog v-for="dialog in toasts" :dialog="dialog" :key="dialog.id" />
+    <transition-group
+      class="dialogs__toasts"
+      tag="div"
+      name="toast-fade"
+    >
+      <AlertDialog
+        v-for="dialog in toasts"
+        :dialog="dialog"
+        :key="dialog.id"
+      />
     </transition-group>
 
     <transition name="dialog-fade">
-      <div class="dialogs__backdrop" v-if="needBackdrop" @click="dismiss(dialogs[0].id)"></div>
+      <div
+        v-if="needBackdrop"
+        class="dialogs__backdrop"
+        @click="dismiss(dialogs[0].id)"
+      />
     </transition>
   </div>
 </template>
