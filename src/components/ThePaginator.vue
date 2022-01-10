@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { range } from '@/helper.js'
+import { range } from '@/helper'
 
 export default {
   name: 'ThePaginator',

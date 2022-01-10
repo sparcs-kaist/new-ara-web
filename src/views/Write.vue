@@ -13,7 +13,7 @@
 
 <script>
 import { fetchPost, createPost, updatePost, uploadAttachments } from '@/api'
-import { fetchWithProgress } from './helper.js'
+import { fetchWithProgress } from '@/views/helper'
 import TheLayout from '@/components/TheLayout.vue'
 import ThePostWrite from '@/components/ThePostWrite.vue'
 

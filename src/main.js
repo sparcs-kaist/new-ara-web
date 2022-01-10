@@ -1,10 +1,10 @@
 import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import http from './http.js'
-import i18n from './i18n'
-import './registerServiceWorker'
+import App from '@/App.vue'
+import router from '@/router'
+import store from '@/store'
+import http from '@/http'
+import i18n from '@/i18n'
+import '@/registerServiceWorker'
 
 Vue.prototype.$http = http
 

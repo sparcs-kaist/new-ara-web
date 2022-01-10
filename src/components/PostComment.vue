@@ -149,7 +149,7 @@ import PostCommentEditor from '@/components/PostCommentEditor.vue'
 
 import { mapGetters } from 'vuex'
 import { voteComment, deleteComment, reportComment } from '@/api'
-import { timeago } from '@/helper.js'
+import { timeago } from '@/helper'
 
 export default {
   name: 'PostComment',

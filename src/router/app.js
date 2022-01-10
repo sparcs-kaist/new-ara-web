@@ -9,7 +9,7 @@ import Home from '@/views/Home.vue'
 import NotFound from '@/views/NotFound.vue'
 import RenewalLandingPage from '@/views/RenewalLandingPage.vue'
 import Makers from '@/views/Makers.vue'
-import { authGuard } from './auth.js'
+import { authGuard } from '@/router/auth'
 
 export default [
   {

@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { apiUrl } from '@/http.js'
+import { apiUrl } from '@/http'
 
 export default {
   name: 'Facade',

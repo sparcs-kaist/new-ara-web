@@ -35,8 +35,17 @@
 </template>
 
 <script>
-import { archivePost, blockUser, fetchPost, reportPost, unarchivePost, unblockUser, votePost, fetchComment } from '@/api'
-import { fetchWithProgress } from './helper.js'
+import {
+  archivePost,
+  blockUser,
+  fetchPost,
+  reportPost,
+  unarchivePost,
+  unblockUser,
+  votePost,
+  fetchComment
+} from '@/api'
+import { fetchWithProgress } from '@/views/helper'
 import ThePostComments from '@/components/ThePostComments.vue'
 import ThePostDetail from '@/components/ThePostDetail.vue'
 import ThePostHeader from '@/components/ThePostHeader.vue'
