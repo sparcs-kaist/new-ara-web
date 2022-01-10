@@ -60,7 +60,7 @@ export default {
 
   props: {
     postId: {
-      type: Number,
+      type: [String, Number],
       required: true
     }
   },

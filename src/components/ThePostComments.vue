@@ -46,10 +46,7 @@ export default {
       type: Object,
       required: true
     },
-    comments: {
-      type: Array,
-      required: true
-    }
+    comments: Array
   },
 
   computed: {
