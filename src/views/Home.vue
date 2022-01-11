@@ -9,15 +9,24 @@
     </div>
 
     <div class="columns is-multiline">
-      <SmallBoard :listitems="dailyBests" class="home__board column is-4" detail>
+      <SmallBoard
+        :listitems="dailyBests"
+        class="home__board column is-4"
+        detail
+      >
         {{ $t('today-best') }}
       </SmallBoard>
 
-      <SmallBoard :listitems="weeklyBests" class="home__board column is-4" detail>
+      <SmallBoard
+        :listitems="weeklyBests"
+        class="home__board column is-4"
+        detail
+      >
         {{ $t('weekly-best') }}
       </SmallBoard>
 
-      <SmallBoard v-if="notice"
+      <SmallBoard
+        v-if="notice"
         :listitems="notice"
         :href="{
           name: 'board',
@@ -45,13 +54,22 @@ import TheOrganizations from '@/components/TheOrganizations.vue'
 import TheLayout from '@/components/TheLayout.vue'
 
 export default {
-  name: 'home',
+  name: 'Home',
+
+  components: {
+    SmallBoard,
+    TheHomeSearchbar,
+    TheOrganizations,
+    TheLayout
+  },
+
   data () {
     return {
       home: {},
       notice: []
     }
   },
+
   computed: {
     dailyBests () {
       if (!this.home.daily_bests) {
@@ -68,6 +86,7 @@ export default {
       return this.home.weekly_bests
     }
   },
+
   async beforeRouteEnter (to, from, next) {
     const promises = [ fetchHome() ]
 
@@ -85,12 +104,6 @@ export default {
       vm.notice = notice?.results
       document.title = vm.$t('document-title')
     })
-  },
-  components: {
-    SmallBoard,
-    TheHomeSearchbar,
-    TheOrganizations,
-    TheLayout
   }
 }
 </script>

@@ -3,8 +3,8 @@
     <TheNavbar />
     <TheAlertDialogs />
     <div class="container">
-      <div class="columns" :class="{ 'default-columns': isColumnLayout }">
-        <slot name="aside"></slot>
+      <div :class="{ 'default-columns': isColumnLayout }" class="columns">
+        <slot name="aside"/>
         <template v-if="isColumnLayout">
           <div class="column">
             <slot />
@@ -13,7 +13,7 @@
         <template v-else>
           <slot />
         </template>
-        <slot name="aside-right"></slot>
+        <slot name="aside-right"/>
       </div>
     </div>
   </div>
@@ -24,7 +24,13 @@ import TheAlertDialogs from '@/components/TheAlertDialogs.vue'
 import TheNavbar from '@/components/TheNavbar.vue'
 
 export default {
-  components: { TheAlertDialogs, TheNavbar },
+  name: 'TheLayout',
+
+  components: {
+    TheAlertDialogs,
+    TheNavbar
+  },
+
   props: {
     isColumnLayout: {
       type: Boolean,

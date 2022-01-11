@@ -1,16 +1,15 @@
 <template>
   <div class="post">
     <div class="title">
-      <router-link
-        class="title__board" :to="beforeBoard">
+      <router-link :to="beforeBoard" class="title__board">
         <i class="material-icons title__board--icon">arrow_back_ios</i>
         <span class="title__board--name">
           {{ beforeBoardName }}
         </span>
       </router-link>
-      <hr class="title__divider"/>
+      <hr class="title__divider">
       <span class="title__text">
-        <span class="title__topic" v-if="post.parent_topic">
+        <span v-if="post.parent_topic" class="title__topic">
           [{{ post.parent_topic[`${$i18n.locale}_name`] }}]
         </span>
         {{ title }}
@@ -28,17 +27,27 @@
       </span>
     </div>
     <div class="metadata">
-      <router-link :is="isAnonymous ? 'span' : 'router-link'"
+      <router-link
+        :is="isAnonymous ? 'span' : 'router-link'"
         :to="{
-        name: 'user', params: { username: postAuthorId }
-      }" class="author">
-        <img :src="userPictureUrl" class="author__picture"/>
+          name: 'user',
+          params: { username: postAuthorId }
+        }"
+        class="author"
+      >
+        <img :src="userPictureUrl" class="author__picture">
         <span class="author__nickname">{{ postAuthor }}</span>
-        <i class="author__icon material-icons" v-if="!isAnonymous">chevron_right</i>
+        <i v-if="!isAnonymous" class="author__icon material-icons">chevron_right</i>
       </router-link>
-      <LikeButton class="metadata__like" :item="post" votable @vote="$emit('vote', $event)"/>
+      <LikeButton
+        v-if="!post.is_hidden"
+        :item="post"
+        class="metadata__like"
+        votable
+        @vote="$emit('vote', $event)"
+      />
     </div>
-    <hr class="divider" />
+    <hr class="divider">
   </div>
 </template>
 
@@ -49,21 +58,32 @@ import LikeButton from '@/components/LikeButton.vue'
 import i18n from '@/i18n'
 
 export default {
-  name: 'the-post-header',
-  props: {
-    post: { required: true },
-    context: { type: Object }
+  name: 'ThePostHeader',
+
+  components: {
+    LikeButton
   },
+
+  props: {
+    post: {
+      type: Object,
+      required: true
+    },
+    context: Object
+  },
+
   data () {
     return {
       attachments: null
     }
   },
+
   computed: {
     userPictureUrl () {
       return this.post.created_by && this.post.created_by.profile.picture
     },
     postAuthor () {
+      if (this.isAnonymous) return this.$t('author')
       return this.post.created_by && this.post.created_by.profile.nickname
     },
     postAuthorId () {
@@ -87,41 +107,42 @@ export default {
       return this.post.is_anonymous
     },
     beforeBoard () {
-      if (this.$route.query.from_view === 'board') {
-        return {
-          name: 'board',
-          params: { boardSlug: this.boardSlug }
-        }
+      const { from_view: fromView, topic_id: topicId, current } = this.$route.query
+      const name = 'board'
+      const params = { boardSlug: this.boardSlug }
+      const query = { page: current }
+      if (fromView === 'board') {
+        return { name, params, query }
       }
-      if (this.$route.query.from_view === 'scrap') {
-        return {
-          name: 'archive'
-        }
+      if (fromView === 'topic') {
+        return { name, params, query: { ...query, topic: topicId } }
       }
-      return {
-        name: 'board'
+      if (fromView === 'scrap') {
+        return { name: 'archive', query }
       }
+      if (fromView === '-portal') {
+        return { name, query: { ...query, portal: 'exclude' } }
+      }
+      return { name, query }
     },
     beforeBoardName () {
-      if (this.$route.query.from_view === 'board') {
+      const fromView = this.$route.query.from_view
+      if (fromView === 'board' || fromView === 'topic') {
         return this.boardName
       }
-      if (this.$route.query.from_view === 'scrap') {
+      if (fromView === 'scrap') {
         return this.$t('archive')
       }
       return this.$t('all')
     },
     ...mapGetters([ 'userId' ])
-  },
-
-  components: {
-    LikeButton
   }
 }
 </script>
 
 <i18n>
 ko:
+  author: '익명'
   archive: '담아두기'
   unarchive: '담기 취소'
   edit: '수정'
@@ -138,6 +159,7 @@ ko:
   all: '모아보기'
 
 en:
+  author: 'Anonymous'
   archive: 'Bookmark'
   unarchive: 'Delete Bookmark'
   edit: 'Edit'

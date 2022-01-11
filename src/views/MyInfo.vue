@@ -1,8 +1,8 @@
 <template>
-  <TheLayout class="my-info" :isColumnLayout="false">
+  <TheLayout :is-column-layout="false" class="my-info">
     <template #aside-right>
       <div class="column is-one-quarter">
-        <div class="boxes" :class="{ 'boxes--mobile-open': mobileSettings }">
+        <div :class="{ 'boxes--mobile-open': mobileSettings }" class="boxes">
           <div class="mobile-header">
             <a class="mobile-header__back" @click="mobileSettings = false">
               <i class="material-icons">chevron_left</i>
@@ -11,7 +11,7 @@
           </div>
 
           <div class="box">
-            <div class="redbox"></div>
+            <div class="redbox"/>
             <h1 class="box__title">
               {{ $t('ranking-title') }}
             </h1>
@@ -52,7 +52,7 @@
           </div>
 
           <div class="box">
-            <div class="redbox"></div>
+            <div class="redbox"/>
             <h1 class="box__title">{{ $t('settings-title') }}</h1>
             <h2 class="box__subtitle">
               {{ $t('settings-subtitle') }}
@@ -63,10 +63,10 @@
                 <div class="settings__container">
                   <span class="label">{{ $t('settings-sexual') }}</span>
                   <div @click="updateSetting('sexual')">
-                    <i class="material-icons toggle-on" v-if="user.sexual">
+                    <i v-if="user.sexual" class="material-icons toggle-on">
                       toggle_on
                     </i>
-                    <i class="material-icons" v-else>
+                    <i v-else class="material-icons">
                       toggle_off
                     </i>
                   </div>
@@ -74,10 +74,10 @@
                 <div class="settings__container">
                   <span class="label">{{ $t('settings-social') }}</span>
                   <div @click="updateSetting('social')">
-                    <i class="material-icons toggle-on" v-if="user.social">
+                    <i v-if="user.social" class="material-icons toggle-on" >
                       toggle_on
                     </i>
-                    <i class="material-icons" v-else>
+                    <i v-else class="material-icons">
                       toggle_off
                     </i>
                   </div>
@@ -87,22 +87,20 @@
           </div>
 
           <div class="box">
-            <div class="redbox"></div>
+            <div class="redbox"/>
             <h1 class="box__title">
               {{ $t('blocked-title') }}
             </h1>
-            <h2 class="box__subtitle">
-              {{ $t('blocked-subtitle', { user: user.nickname }) }}
-            </h2>
+            <h2 class="box__subtitle" v-html="$t('blocked-subtitle', { user: user.nickname })"/>
 
             <div class="box__container">
-              <ul class="blocked" v-if="blocks && blocks.results && blocks.results.length > 0">
+              <ul v-if="blocks && blocks.results && blocks.results.length > 0" class="blocked">
                 <li v-for="blockedUser in blocks.results" :key="blockedUser.id">
                   <div class="blocked__user">
                     <img
                       :src="blockedUser.user.profile.picture"
                       class="blocked__user--image"
-                    />
+                    >
                     <span class="blocked__user--nickname">
                       {{ blockedUser.user.profile.nickname }}
                     </span>
@@ -123,20 +121,24 @@
     <!--Deleted 'is-half'.-->
     <div class="column ">
       <div class="profile-box">
-        <button class="button setting-button" @click="mobileSettings = !mobileSettings" v-if="!isNicknameEditable">
+        <button
+          v-if="!isNicknameEditable"
+          class="button setting-button"
+          @click="mobileSettings = !mobileSettings"
+        >
           {{ $t('my-info') }}
         </button>
 
         <div
-          class="profile-container"
           :style="{ backgroundColor: user.pictureSrc ? 'white' : 'grey' }"
+          class="profile-container"
         >
           <img
             v-if="user.pictureSrc"
             :src="user.pictureSrc"
             class="profile-container__image"
             alt="profile image"
-          />
+          >
           <label>
             <input
               type="file"
@@ -150,26 +152,26 @@
         </div>
 
         <div class="nickname-container">
-          <div class="row" v-if="!isNicknameEditable">
+          <div v-if="!isNicknameEditable" class="row">
             <h1 class="nickname">{{ user.nickname }}</h1>
             <a style="margin-left: 0.5rem;" @click="toggleNicknameInput">
               <i class="material-icons">create</i>
             </a>
           </div>
           <div v-else class="nickname__direction">
-            <input class="input nickname nickname__input" v-model="newNickname">
+            <input v-model="newNickname" class="input nickname nickname__input">
             <div class="nickname__buttons">
               <button
-                class="button"
                 :class="{ 'is-loading': updating }"
+                class="button"
                 style="margin-left: 0.8rem; color: var(--theme-400)"
                 @click="toggleNicknameInput(true)">
                 {{ $t('save') }}
               </button>
               <button
                 class="button"
-                @click="toggleNicknameInput(false)"
                 style="margin-left: 0.8rem;"
+                @click="toggleNicknameInput(false)"
               >
                 {{ $t('cancel') }}
               </button>
@@ -198,11 +200,21 @@
           </li>
         </ul>
 
-        <SearchBar class="desktop-search is-hidden-touch" searchable long/>
+        <SearchBar
+          class="desktop-search is-hidden-touch"
+          searchable
+          long
+        />
       </div>
       <hr class="tabs-divider">
       <!--Deleted aside-right and the contents of them have been re-located to above.-->
-      <TheBoard v-if="posts" :title="boardTitle" :board="posts" :fromQuery="fromQuery" simplify/>
+      <TheBoard
+        v-if="posts"
+        :title="boardTitle"
+        :board="posts"
+        :from-query="fromQuery"
+        simplify
+      />
     </div>
   </TheLayout>
 </template>
@@ -241,7 +253,14 @@ const fetchByQuery = query => {
 }
 
 export default {
-  name: 'my-info',
+  name: 'MyInfo',
+
+  components: {
+    SearchBar,
+    TheLayout,
+    TheBoard
+  },
+
   data () {
     return {
       user: {
@@ -301,6 +320,40 @@ export default {
       // @TODO: api 미완성
       return '\u{1F476}아기 넙죽이'
     }
+  },
+
+  async beforeRouteEnter ({ query }, from, next) {
+    const [ , posts, blocks ] = await fetchWithProgress([
+      store.dispatch('fetchMe'),
+      fetchByQuery(query),
+      fetchBlocks()
+    ], 'myinfo-failed-fetch')
+
+    const { userNickname, userEmail, userPicture, userConfig, userActivity } = store.getters
+
+    next(vm => {
+      vm.user = {
+        nickname: userNickname,
+        email: userEmail,
+        pictureSrc: userPicture,
+        sexual: userConfig.sexual,
+        social: userConfig.social,
+        num_articles: userActivity.articles,
+        num_comments: userActivity.comments,
+        num_positive_votes: userActivity.positiveVotes
+      }
+
+      vm.posts = posts
+      vm.blocks = blocks
+
+      document.title = vm.$t('document-title')
+    })
+  },
+
+  async beforeRouteUpdate ({ query }, from, next) {
+    const [ posts ] = await fetchWithProgress([ fetchByQuery(query) ], 'myinfo-failed-fetch')
+    this.posts = posts
+    next()
   },
 
   methods: {
@@ -384,7 +437,10 @@ export default {
 
     async deleteBlockedUser (userId) {
       try {
-        await deleteBlock(userId)
+        const { status } = await deleteBlock(userId)
+        if (status === 403) {
+          return this.$store.dispatch('dialog/toast', this.$t('block-rate-limit'))
+        }
         this.blocks = await fetchBlocks()
       } catch (err) {
         this.$store.dispatch('dialog/toast', {
@@ -393,43 +449,7 @@ export default {
         })
       }
     }
-  },
-
-  async beforeRouteEnter ({ query }, from, next) {
-    const [ , posts, blocks ] = await fetchWithProgress([
-      store.dispatch('fetchMe'),
-      fetchByQuery(query),
-      fetchBlocks()
-    ], 'myinfo-failed-fetch')
-
-    const { userNickname, userEmail, userPicture, userConfig, userActivity } = store.getters
-
-    next(vm => {
-      vm.user = {
-        nickname: userNickname,
-        email: userEmail,
-        pictureSrc: userPicture,
-        sexual: userConfig.sexual,
-        social: userConfig.social,
-        num_articles: userActivity.articles,
-        num_comments: userActivity.comments,
-        num_positive_votes: userActivity.positiveVotes
-      }
-
-      vm.posts = posts
-      vm.blocks = blocks
-
-      document.title = vm.$t('document-title')
-    })
-  },
-
-  async beforeRouteUpdate ({ query }, from, next) {
-    const [ posts ] = await fetchWithProgress([ fetchByQuery(query) ], 'myinfo-failed-fetch')
-    this.posts = posts
-    next()
-  },
-
-  components: { SearchBar, TheLayout, TheBoard }
+  }
 }
 </script>
 
@@ -448,7 +468,7 @@ ko:
   settings-sexual: '성인글 보기'
   settings-social: '정치글 보기'
   blocked-title: '내가 차단한 유저 목록'
-  blocked-subtitle: '{user} 님이 차단하신 유저 목록입니다.'
+  blocked-subtitle: '{user} 님이 차단하신 유저 목록입니다.<br />하루에 최대 10번만 변경 가능합니다.'
   blocked-empty: '차단한 유저가 없습니다.'
   empty-email: '이메일 주소가 없습니다.'
   save: '확인'
@@ -462,6 +482,7 @@ ko:
   unblock-failed: '차단 유저 삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
   success: '저장되었습니다.'
   document-title: 'Ara - 내정보'
+  block-rate-limit: '하루에 최대 10번만 차단/해제 할 수 있습니다.'
 
 en:
   ranking-title: 'My Activity'
@@ -477,20 +498,21 @@ en:
   settings-sexual: 'Sexual posts'
   settings-social: 'Political posts'
   blocked-title: 'Blocked users'
-  blocked-subtitle: 'Users that you blocked'
+  blocked-subtitle: 'Users that you blocked<br />You could change it at most 10 times a day'
   blocked-empty: 'There are no blocked users.'
   empty-email: 'No email address'
   save: 'Confirm'
   cancel: 'Cancel'
   my-info: 'My info'
   board-my: 'My posts'
-  board-recent: 'Recently viewed'
+  board-recent: 'History'
   board-archive: 'Bookmarks'
   settings : 'Settings'
   setting-change-failed: 'Failed while updating settings.'
   unblock-failed: 'Failed while unblocking user. Please try again after a while.'
   success: 'Saved successful.'
   document-title: 'Ara - MyInfo'
+  block-rate-limit: 'You could block/unblock at most 10 times a day.'
 </i18n>
 
 <style lang="scss" scoped>

@@ -1,10 +1,10 @@
 <template>
   <div class="parent">
     <div class="landing">
-
-      <a class="landing__lang"
-        @click="changeLocale"
+      <a
         id="toggle-language"
+        class="landing__lang"
+        @click="changeLocale"
       >
         <span class="icon">
           <i class="material-icons">language</i>
@@ -26,14 +26,22 @@
             </p>
           </div>
 
-          <div class="landing-section" v-for="(section, key) in sections" :key="key">
+          <div
+            v-for="(section, key) in sections"
+            :key="key"
+            class="landing-section"
+          >
             <h4 class="landing-section__title"> {{ section.title }} </h4>
 
-            <div class="landing-section__contents" v-for="(content, i) in section.contents" :key="i">
+            <div
+              v-for="(content, i) in section.contents"
+              :key="i"
+              class="landing-section__contents"
+            >
               <span class="check red">✓</span>
               <i18n :path="`sections.${key}.contents.${i}.text`">
                 <template v-if="content.link" #link>
-                  <a class="landing-section__link" :href="content.link">
+                  <a :href="content.link" class="landing-section__link">
                     {{ content['link-text'] }}
                   </a>
                 </template>
@@ -42,8 +50,8 @@
           </div>
 
           <div class="landing-section landing-section--relaxed">
-              <p>{{ $t('more-info') }}</p>
-              <p>{{ $t('start-with') }}</p>
+            <p>{{ $t('more-info') }}</p>
+            <p>{{ $t('start-with') }}</p>
           </div>
 
           <div class="landing__buttons">
@@ -79,6 +87,30 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'RenewalLandingPage',
+
+  data () {
+    return {
+      helpPopup: false
+    }
+  },
+
+  computed: {
+    sections () {
+      return this.$i18n.messages[this.$i18n.locale]['sections']
+    }
+  },
+
+  methods: {
+    changeLocale () {
+      this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en'
+    }
+  }
+}
+</script>
 
 <i18n>
 ko:
@@ -154,30 +186,6 @@ en:
     new-ara-link: 'Link'
     old-ara-link: 'Go to Old ARA.'
 </i18n>
-
-<script>
-export default {
-  name: 'RenewalLandingPage',
-
-  data () {
-    return {
-      helpPopup: false
-    }
-  },
-
-  computed: {
-    sections () {
-      return this.$i18n.messages[this.$i18n.locale]['sections']
-    }
-  },
-
-  methods: {
-    changeLocale () {
-      this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en'
-    }
-  }
-}
-</script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>

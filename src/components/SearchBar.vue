@@ -1,7 +1,19 @@
 <template>
-  <div class="searchbar field" :class="{ 'searchbar--small': small, 'searchbar--fullwidth': fullwidth, 'searchbar--long' : long }">
+  <div
+    :class="{
+      'searchbar--small': small,
+      'searchbar--fullwidth': fullwidth,
+      'searchbar--long': long
+    }"
+    class="searchbar field"
+  >
     <form class="control has-icons-right" @submit.prevent="search">
-      <input class="input is-medium" name="query" type="text" v-model="searchText">
+      <input
+        v-model="searchText"
+        class="input is-medium"
+        name="query"
+        type="text"
+      >
       <button class="icon is-small is-right" type="submit">
         <i class="material-icons">search</i>
       </button>
@@ -11,15 +23,17 @@
 
 <script>
 export default {
-  data () {
-    return { searchText: '' }
-  },
+  name: 'SearchBar',
 
   props: {
     searchable: Boolean,
     small: Boolean,
     fullwidth: Boolean,
     long: Boolean
+  },
+
+  data () {
+    return { searchText: '' }
   },
 
   methods: {

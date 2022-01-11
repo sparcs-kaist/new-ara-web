@@ -2,20 +2,28 @@
   <div class="comment-editor">
     <label class="textarea comment-editor__input">
       <div class="comment-editor__author">
-        <img :src="userPicture" class="comment-editor__picture" v-if="!isAnonymous"/>
-        <img :src="this.anonymousProfile.profileImage" class="comment-editor__picture" v-else/>
-        <span class="comment-editor__name" v-if="!isAnonymous">{{ userNickname }}</span>
-        <span class="comment-editor__name author_red" v-else-if="isMine">{{$t('author')}}</span>
-        <span class="comment-editor__name" v-else>{{ anonymousProfile.nickname }}</span>
+        <img
+          v-if="!isAnonymous"
+          :src="userPicture"
+          class="comment-editor__picture"
+        >
+        <img
+          v-else
+          :src="anonymousProfile.profileImage"
+          class="comment-editor__picture"
+        >
+        <span v-if="!isAnonymous" class="comment-editor__name">{{ userNickname }}</span>
+        <span v-else-if="isMine" class="comment-editor__name author_red">{{ $t('author') }}</span>
+        <span v-else class="comment-editor__name">{{ anonymousProfile.nickname }}</span>
       </div>
       <div class="comment-editor__content">
         <textarea
-          :placeholder="$t('placeholder')"
-          v-model="content"
           ref="input"
+          :placeholder="$t('placeholder')"
+          :style="{ height }"
+          v-model="content"
           class="comment-editor__editor"
           rows="1"
-          :style="{ height }"
           @keydown.shift.enter.prevent="saveComment"
           @input="autosize"
         />
@@ -25,19 +33,19 @@
     <div class="comment-editor__buttons">
       <button
         v-if="editComment || parentComment"
-        @click="closeComment"
-        class="button comment-editor__submit"
         :class="{ 'is-loading': isUploading }"
         :disabled="isUploading"
+        class="button comment-editor__submit"
+        @click="closeComment"
       >
         {{ $t('close-comment') }}
       </button>
 
       <button
-        @click="saveComment"
-        class="button comment-editor__submit"
         :class="{ 'is-loading': isUploading }"
         :disabled="isUploading"
+        class="button comment-editor__submit"
+        @click="saveComment"
       >
         {{ $t('new-comment') }}
       </button>
@@ -52,35 +60,26 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'PostCommentEditor',
 
+  props: {
+    post: {
+      type: Object,
+      required: true
+    },
+    text: {
+      type: String,
+      default: ''
+    },
+    parentArticle: Number,
+    parentComment: Number,
+    editComment: Number,
+    anonymousProfile: Object
+  },
+
   data () {
     return {
       content: this.text,
       height: 'auto',
       isUploading: false
-    }
-  },
-
-  props: {
-    post: { required: true },
-    text: {
-      type: String,
-      default: ''
-    },
-
-    parentArticle: {
-      default: null
-    },
-
-    parentComment: {
-      default: null
-    },
-
-    editComment: {
-      default: null
-    },
-
-    anonymousProfile: {
-      default: null
     }
   },
 
@@ -104,7 +103,6 @@ export default {
         }
       })
     },
-
     async saveComment () {
       if (this.isUploading) {
         return
@@ -139,11 +137,9 @@ export default {
 
       this.isUploading = false
     },
-
     closeComment () {
       this.$emit('close')
     },
-
     focus () {
       this.$refs.input.focus()
     }

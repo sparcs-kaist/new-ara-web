@@ -39,7 +39,7 @@ export const fetchNotifications = ({ query: { page } }) => {
   return http.get(`notifications/?${queryBuilder(context)}`)
     .then(({ data }) => data)
 }
-export const readNotification = (notiId) => 
+export const readNotification = (notiId) =>
   http.post(`notifications/${notiId}/read/`)
     .then(({ data }) => data)
 
@@ -49,7 +49,6 @@ export const fetchBlocks = () =>
 
 export const deleteBlock = (blockId) =>
   http.delete(`blocks/${blockId}/`)
-    .then(({ data }) => data)
 
 export const updateDarkMode = (userId, darkMode) =>
   http.patch(`user_profiles/${userId}/`, { extra_preferences: { darkMode } })

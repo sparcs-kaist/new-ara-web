@@ -1,7 +1,16 @@
 <template>
-  <a class="bookmark-box" :href="href" target="_blank">
-    <p class="box-title">{{title}}  <i class="material-icons icon">navigate_next</i> </p>
-    <p class="box-info">{{href.length > 50 ? href.substring(0, 50) + "..." : href}}</p>
+  <a
+    :href="href"
+    class="bookmark-box"
+    target="_blank"
+  >
+    <p class="box-title">
+      {{ title }}
+      <i class="material-icons icon">navigate_next</i>
+    </p>
+    <p class="box-info">
+      {{ href.length > 50 ? href.substring(0, 50) + "..." : href }}
+    </p>
   </a>
 </template>
 
@@ -11,12 +20,15 @@ import { urlParser } from '../utils/urlParser'
 
 export default {
   name: 'ThePostBookmark',
-  props: [ 'node' ],
+
+  props: {
+    node: Object
+  },
+
   computed: {
     href () {
       return this.node.attrs.href
     },
-
     title () {
       const rawTitle = this.node.attrs.title
       if (!rawTitle || rawTitle.replace(' ', '').length === 0) return 'URL'

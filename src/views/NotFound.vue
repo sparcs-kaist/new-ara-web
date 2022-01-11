@@ -7,19 +7,20 @@
       <div class="not-found-text">
         {{ $t('page-not-found') }}
       </div>
-        <router-link
-          :to="{ name: 'home' }">
-          <div class="not-found-go-to-home">
-            {{ $t('go-home') }}
-          </div>
-        </router-link>
+      <router-link
+        :to="{ name: 'home' }">
+        <div class="not-found-go-to-home">
+          {{ $t('go-home') }}
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'not-found',
+  name: 'NotFound',
+
   beforeRouteEnter (to, from, next) {
     next(vm => {
       document.title = vm.$t('document-title')

@@ -2,14 +2,104 @@
   <div class="organization-card-wrap">
     <router-link
       :to="generateHref"
+      :style="{ 'background-color': backgroundColor }"
       class="organization-card"
-      :style="{ 'background-color': backgroundColor }">
-      <i class="logo logo--icon material-icons" v-if="icon">{{icon}}</i>
-      <img class="logo" v-else-if="id" :src="require(`@/assets/Logo${id}.png`)" />
+    >
+      <i v-if="icon" class="logo logo--icon material-icons">{{ icon }}</i>
+      <img
+        v-else-if="id"
+        :src="require(`@/assets/Logo${id}.png`)"
+        class="logo"
+      >
     </router-link>
     <span class="name">{{ $t(name) }}</span>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'OrganizationCard',
+
+  props: {
+    name: {
+      type: String,
+      required: true
+    },
+    id: {
+      type: String,
+      required: true
+    },
+    backgroundColor: {
+      type: String,
+      default: '#fdf0f0'
+    },
+    icon: String,
+    slug: String
+  },
+
+  computed: {
+    generateHref () {
+      switch (this.id) {
+        case 'KAIST':
+          return {
+            name: 'board',
+            params: {
+              boardSlug: 'portal-notice'
+            }
+          }
+        case 'all':
+          return {
+            name: 'board'
+          }
+        default:
+          return this.generateOrganizationHref()
+      }
+    }
+  },
+
+  methods: {
+    generateOrganizationHref () {
+      if (this.slug) {
+        return {
+          name: 'board',
+          params: {
+            boardSlug: 'organization-notice'
+          },
+          query: {
+            topic: this.slug
+          }
+        }
+      }
+
+      return ''
+    }
+  }
+}
+</script>
+
+<i18n>
+ko:
+  portal-notice: '포탈공지'
+  all-posts: '전체 게시물'
+  clubs-union: '동아리연합회'
+  dormitory-council: '생활관 자치회'
+  welfare-committee: '학생복지위원회'
+  undergraduate-association: '총학생회'
+  graduate-association: '대학원 총학생회'
+  freshman-council: '새내기학생회'
+  kcoop: '협동조합'
+
+en:
+  portal-notice: 'Portal Notice'
+  all-posts: 'All Posts'
+  clubs-union: 'Clubs Union'
+  dormitory-council: 'Dormitory Council'
+  welfare-committee: 'Welfare Committee'
+  undergraduate-association: 'Undergraduate Association'
+  graduate-association: 'Graduate Association'
+  freshman-council: 'Freshman Council'
+  kcoop: 'KCOOP'
+</i18n>
 
 <style lang="scss" scoped>
 @import "@/theme.scss";
@@ -73,76 +163,3 @@
   }
 }
 </style>
-
-<script>
-export default {
-  name: 'organization-card',
-  props: {
-    name: { type: String, required: true },
-    id: { type: String, required: true },
-    icon: { type: String },
-    slug: { type: String },
-    backgroundColor: { type: String, default: '#fdf0f0' }
-  },
-  computed: {
-    generateHref () {
-      switch (this.id) {
-        case 'KAIST':
-          return {
-            name: 'board',
-            params: {
-              boardSlug: 'portal-notice'
-            }
-          }
-        case 'all':
-          return {
-            name: 'board'
-          }
-        default:
-          return this.generateOrganizationHref()
-      }
-    }
-  },
-  methods: {
-    generateOrganizationHref () {
-      if (this.slug) {
-        return {
-          name: 'board',
-          params: {
-            boardSlug: 'organization-notice'
-          },
-          query: {
-            topic: this.slug
-          }
-        }
-      }
-
-      return ''
-    }
-  }
-}
-</script>
-
-<i18n>
-ko:
-  portal-notice: '포탈공지'
-  all-posts: '전체 게시물'
-  clubs-union: '동아리연합회'
-  dormitory-council: '생활관 자치회'
-  welfare-committee: '학생복지위원회'
-  undergraduate-association: '총학생회'
-  graduate-association: '대학원 총학생회'
-  freshman-council: '새내기학생회'
-  kcoop: '협동조합'
-
-en:
-  portal-notice: 'Portal Notice'
-  all-posts: 'All Posts'
-  clubs-union: 'Clubs Union'
-  dormitory-council: 'Dormitory Council'
-  welfare-committee: 'Welfare Committee'
-  undergraduate-association: 'Undergraduate Association'
-  graduate-association: 'Graduate Association'
-  freshman-council: 'Freshman Council'
-  kcoop: 'KCOOP'
-</i18n>

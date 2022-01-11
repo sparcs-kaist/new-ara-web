@@ -1,41 +1,49 @@
 <template>
   <div class="write">
     <h1 class="write__title"> {{ writeTitle }} </h1>
-    <hr />
+    <hr>
 
     <div class="write__row">
-      <i class="material-icons write__warning"
-        v-if="isCategoryWarning || isBoardWarning">
-
+      <i v-if="isCategoryWarning || isBoardWarning" class="material-icons write__warning" >
         warning
       </i>
 
       <div class="write__input">
-        <div class="select" :class="{ 'is-placeholder': !boardId }" >
+        <div :class="{ 'is-placeholder': !boardId }" class="select">
           <select v-model="boardId" :disabled="editMode">
-            <option value="" disabled selected> {{ $t('input-board') }} </option>
+            <option
+              value=""
+              disabled
+              selected
+            >
+              {{ $t('input-board') }}
+            </option>
             <option
               v-for="board in boardList"
               :key="board.id"
               :selected="boardId === board.id"
-              :value="board.id">
+              :value="board.id"
+            >
               {{ board[`${$i18n.locale}_name`] }}
             </option>
           </select>
         </div>
-        <p
-          class="write__help help is-danger"
-          v-if="isBoardWarning">
-
+        <p v-if="isBoardWarning" class="write__help help is-danger">
           {{ $t('input-board-warning') }}
         </p>
       </div>
 
       <div class="write__input">
-        <div class="select" :class="{ 'is-placeholder': categoryNotSet }">
+        <div :class="{ 'is-placeholder': categoryNotSet }" class="select">
           <select v-model="categoryId" :disabled="editMode">
-            <option value="$not-set" disabled selected> {{ $t('input-category') }} </option>
-            <option value="" v-if="boardId"> {{ $t('no-category') }} </option>
+            <option
+              value="$not-set"
+              disabled
+              selected
+            >
+              {{ $t('input-category') }}
+            </option>
+            <option v-if="boardId" value="">{{ $t('no-category') }}</option>
 
             <template v-if="categoryList.length">
               <option
@@ -49,10 +57,7 @@
           </select>
         </div>
 
-        <p
-          class="write__help help is-danger"
-          v-if="isCategoryWarning">
-
+        <p v-if="isCategoryWarning" class="write__help help is-danger">
           {{ $t('input-category-warning') }}
         </p>
       </div>
@@ -60,31 +65,29 @@
       <div class="write__input write__content-checkbox">
         <label class="checkbox">
           {{ $t('is-sexual') }}
-          <input type="checkbox" v-model="isSexual">
+          <input v-model="isSexual" type="checkbox">
         </label>
 
         <label class="checkbox">
           {{ $t('is-social') }}
-          <input type="checkbox" v-model="isSocial">
+          <input v-model="isSocial" type="checkbox">
         </label>
       </div>
     </div>
 
     <div class="write__row">
-      <i
-        class="material-icons write__warning"
-        v-if="isTitleWarning">
+      <i v-if="isTitleWarning" class="material-icons write__warning">
         warning
       </i>
 
       <div class="write__input write__title-input">
         <input
           v-model="title"
-          type="text"
-          class="input"
           :class="{ 'is-empty': isTitleWarning }"
           :placeholder="$t('input-title')"
-        />
+          type="text"
+          class="input"
+        >
       </div>
     </div>
 
@@ -92,14 +95,11 @@
       <TextEditor
         ref="textEditor"
         :content="initialPostContent"
+        editable
         @attach-files="attachFiles"
         @open-image-upload="openImageUpload"
-        editable
       />
-
-      <i
-        class="material-icons write__warning"
-        v-if="emptyWarnings.includes('content')">
+      <i v-if="emptyWarnings.includes('content')" class="material-icons write__warning">
         warning
       </i>
     </div>
@@ -109,15 +109,15 @@
         ref="attachments"
         multiple
         @add="addAttachments"
-        @delete="deleteAttachment">
-      </Attachments>
+        @delete="deleteAttachment"
+      />
     </div>
 
     <div class="write__footer">
       <button
-        @click="savePostByThePostWrite"
-        class="button write__publish"
         :class="{ 'is-loading': saving }"
+        class="button write__publish"
+        @click="savePostByThePostWrite"
       >
         {{ post ? $t('write-edit') : $t('write-publish') }}
       </button>
@@ -131,16 +131,17 @@ import Attachments from '@/components/TheAttachments'
 import TextEditor from '@/components/TheTextEditor'
 
 export default {
-  name: 'the-post-write',
+  name: 'ThePostWrite',
+
+  components: {
+    Attachments,
+    TextEditor
+  },
 
   props: {
-    post: {},
-    saving: {
-      type: Boolean
-    },
-    emptyWarnings: {
-      type: Array
-    }
+    post: Object,
+    saving: Boolean,
+    emptyWarnings: Array
   },
 
   data () {
@@ -157,52 +158,51 @@ export default {
   computed: {
     ...mapState({ boardListAll: 'boardList' }),
     ...mapGetters([ 'getIdBySlug' ]),
-
     initialPostContent () {
       if (!this.post) return null
 
       return this.post.content
     },
-
     boardList () {
       return this.boardListAll.filter(v => !v.is_readonly)
     },
-
     board () {
       return this.boardListAll.find(v => v.id === this.boardId)
     },
-
     categoryList () {
       if (!this.board) {
         return []
       }
-
       return this.board.topics
     },
-
     categoryNotSet () {
       return this.categoryId === '$not-set'
     },
-
     isCategoryWarning () {
       return this.categoryNotSet && this.emptyWarnings.includes('category')
     },
-
     isBoardWarning () {
       return !this.boardId && this.emptyWarnings.includes('board')
     },
-
     isTitleWarning () {
       return !this.title && this.emptyWarnings.includes('title')
     },
-
     editMode () {
       return !!this.post
     },
-
     writeTitle () {
       if (this.editMode) return this.$t('write-edit')
       return this.$t('write')
+    }
+  },
+
+  watch: {
+    boardId () {
+      if (this.categoryList.length) {
+        this.categoryId = '$not-set'
+      } else {
+        this.categoryId = ''
+      }
     }
   },
 
@@ -237,7 +237,6 @@ export default {
     attachFiles (files) {
       this.$refs.attachments.handleUpload(files)
     },
-
     addAttachments (attachments) {
       attachments.forEach(file => {
         if (file.type === 'image') {
@@ -245,7 +244,6 @@ export default {
         }
       })
     },
-
     deleteAttachment (file) {
       if (file.uploaded) {
         // TODO delete file from server
@@ -255,7 +253,6 @@ export default {
         this.$refs.textEditor.removeImageByFile(file)
       }
     },
-
     savePostByThePostWrite () {
       if (!this.loaded) {
         this.$store.dispatch('dialog/toast', {
@@ -277,31 +274,16 @@ export default {
         }
       )
     },
-
     openImageUpload () {
       this.$refs.attachments.openImageUpload()
     },
-
     updateAttachments (attachmentUpdate) {
       this.$refs.textEditor.applyImageUpload(attachmentUpdate)
     },
-
     getContent () {
       return this.$refs.textEditor.getContent()
     }
-  },
-
-  watch: {
-    boardId () {
-      if (this.categoryList.length) {
-        this.categoryId = '$not-set'
-      } else {
-        this.categoryId = ''
-      }
-    }
-  },
-
-  components: { Attachments, TextEditor }
+  }
 }
 </script>
 

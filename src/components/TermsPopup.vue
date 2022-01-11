@@ -1,20 +1,27 @@
 <template>
-  <div class="modal" :class="{ 'is-active': termsPopup }">
+  <div :class="{ 'is-active': termsPopup }" class="modal">
     <div class="modal-background"/>
     <div class="modal-content">
-      <a v-if="agreeTosAt" class="close delete is-medium" role="button" @click="exitTermsPopup"/>
+      <a
+        v-if="agreeTosAt"
+        class="close delete is-medium"
+        role="button"
+        @click="exitTermsPopup"
+      />
 
       <div class="popup">
         <div class="title">
-          <img src="@/assets/ServiceAra.svg" class="Services-Ara"/>
+          <img src="@/assets/ServiceAra.svg" class="Services-Ara">
           <h1>{{ $t("title") }}</h1>
-          <a class="toggle-language"
-             @click="changeLocale"
-             id="toggle-language">
-
+          <a
+            id="toggle-language"
+            class="toggle-language"
+            @click="changeLocale"
+          >
             <span class="icon">
               <i class="material-icons">language</i>
             </span>
+            <span>{{ $t('language') }}</span>
           </a>
         </div>
 
@@ -23,7 +30,11 @@
             {{ $t('tos-header') }}
           </div>
 
-          <div class="tos-section" v-for="(section, index) in sections" :key="index">
+          <div
+            v-for="(section, index) in sections"
+            :key="index"
+            class="tos-section"
+          >
             <h2 class="tos-title">{{ section.title }}</h2>
             <p class="tos-content" v-html = "section.contents"/>
           </div>
@@ -34,10 +45,18 @@
         </div>
 
         <div class="button-container">
-          <button class="button" v-if="!agreeTosAt" @click="askAgain">
+          <button
+            v-if="!agreeTosAt"
+            class="button"
+            @click="askAgain"
+          >
             {{ $t('disagree') }}
           </button>
-          <button class="button right-button" v-if="!agreeTosAt" @click="agree">
+          <button
+            v-if="!agreeTosAt"
+            class="button right-button"
+            @click="agree"
+          >
             {{ $t('agree') }}
           </button>
           <p v-if="agreeTosAt">{{ $t("already-agreed") }}</p>
@@ -50,8 +69,9 @@
 <script>
 export default {
   name: 'TermsPopup',
+
   props: {
-    agreeTosAt: {},
+    agreeTosAt: String,
     show: {
       type: Boolean,
       default: true
@@ -77,26 +97,21 @@ export default {
         this.disagree()
       }
     },
-
     async agree () {
       await this.$store.dispatch('agreeTos')
       await this.$store.dispatch('dialog/alert', this.$t('agreed'))
       this.exitTermsPopup()
       this.$router.push('/')
     },
-
     disagree () {
       window.location = 'about:blank'
     },
-
     exitTermsPopup () {
       this.termsPopup = false
     },
-
     openTermsPopup () {
       this.termsPopup = true
     },
-
     changeLocale () {
       this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en'
     }
@@ -106,6 +121,7 @@ export default {
 
 <i18n>
 ko:
+  language: 'English'
   title: '이용 약관'
   agreed: '동의하셨습니다'
   already-agreed: '이미 동의하셨습니다.'
@@ -174,7 +190,7 @@ ko:
 
     - title: '제 6조. 문의 및 제보'
       contents: |-
-        1. 아라에 대한 건의사항 또는 버그에 대한 사항은 구글폼을 통해 문의 및 제보할 수 있습니다. (<a style="color: #00b8d4;" target="_blank" href="https://forms.gle/qR6tQheLyzAoLPZeA">https://forms.gle/qR6tQheLyzAoLPZeA</a>)
+        1. 아라에 대한 건의사항 또는 버그에 대한 사항은 구글폼을 통해 문의 및 제보할 수 있습니다. (<a style="color: #00b8d4;" target="_blank" href="https://sparcs.page.link/newara-feedback">https://sparcs.page.link/newara-feedback</a>)
         2. 6조 1항의 구글폼이 작동하지 않거나, 기타 사항의 경우 new-ara@sparcs.org 를 통해 문의 및 제보할 수 있습니다.
 
     - title: '제 7조. 게시, 개정 및 해석'
@@ -189,6 +205,7 @@ ko:
   tos-footer: '본 약관은 2020-09-26부터 적용됩니다.'
 
 en:
+  language: '한국어'
   title: 'Terms of service'
   agreed: "You've agreed to the Terms of Service"
   already-agreed: "You've already agreed."
@@ -256,7 +273,7 @@ en:
 
     - title: 'VI. Inquiries and reports'
       contents: |-
-        1. Suggestions for Ara or bug can be inquired and reported through Google forms. (<a style="color: #00b8d4;" target="_blank" href="https://forms.gle/qR6tQheLyzAoLPZeA">https://forms.gle/qR6tQheLyzAoLPZeA</a>)
+        1. Suggestions for Ara or bug can be inquired and reported through Google forms. (<a style="color: #00b8d4;" target="_blank" href="https://sparcs.page.link/newara-feedback">https://sparcs.page.link/newara-feedback</a>)
         2. If the Google Form does not work or if there is anything else to inquire, you can contact and inform us at new-ara@sparcs.org.
 
     - title: 'VII. Publish, revise, and interpret'
@@ -375,6 +392,11 @@ en:
     }
 
     .toggle-language{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      line-height: 24px;
       margin-left: auto;
       margin-right: 30px;
     }

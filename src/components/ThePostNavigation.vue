@@ -1,8 +1,20 @@
 <template>
-  <div class="post-navigation" v-if="sideArticlesEnabled">
-    <BoardItem :post="post.side_articles.after" :fromQuery="$route.query" v-if="post.side_articles.after" />
-    <BoardItem class="post-navigation__current" :post="post" :fromQuery="$route.query" />
-    <BoardItem :post="post.side_articles.before" :fromQuery="$route.query" v-if="post.side_articles.before" />
+  <div v-if="sideArticlesEnabled" class="post-navigation" >
+    <BoardItem
+      v-if="post.side_articles.after"
+      :post="post.side_articles.after"
+      :from-query="$route.query"
+    />
+    <BoardItem
+      :post="post"
+      :from-query="$route.query"
+      class="post-navigation__current"
+    />
+    <BoardItem
+      v-if="post.side_articles.before"
+      :post="post.side_articles.before"
+      :from-query="$route.query"
+    />
   </div>
 </template>
 
@@ -12,19 +24,22 @@ import BoardItem from '@/components/BoardItem.vue'
 export default {
   name: 'ThePostNavigation',
 
+  components: {
+    BoardItem
+  },
+
   props: {
-    post: { required: true },
-    context: {}
+    post: {
+      type: Object,
+      required: true
+    },
+    context: Object
   },
 
   computed: {
     sideArticlesEnabled () {
       return this.post.side_articles && (this.post.side_articles.before || this.post.side_articles.after)
     }
-  },
-
-  components: {
-    BoardItem
   }
 }
 </script>

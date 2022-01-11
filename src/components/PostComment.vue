@@ -1,44 +1,67 @@
 <template>
   <div class="comment-wrapper">
-    <div class="comment" :class="{'comment--reply-comment': isReplyComment}" v-if="!isEditing">
-      <img class="comment__profile" alt="profile image" v-if="!isHidden" :src="profileImage"/>
-      <div class="comment__profile" v-else>
+    <div
+      v-if="!isEditing"
+      :class="{'comment--reply-comment': isReplyComment}"
+      class="comment"
+    >
+      <img
+        v-if="!isHidden"
+        :src="profileImage"
+        class="comment__profile"
+        alt="profile image"
+      >
+      <div v-else class="comment__profile">
         <i class="material-icons">{{ hidden_icon }}</i>
       </div>
       <div class="comment__body">
         <div class="comment__header">
           <router-link
-           :is="isAnonymous ? 'span' : 'router-link'"
-           :to="{ name: 'user', params: { username: authorId } }" class="comment__author"
-           :class="isAuthor ? 'author_red' : ''">
-            {{ author }}
+            :is="isAnonymous ? 'span' : 'router-link'"
+            :to="{ name: 'user', params: { username: authorId } }"
+            :class="isAuthor && canOveride ? 'author_red' : ''"
+            class="comment__author"
+          >
+            {{ isHidden && !canOveride ? this.$t('hidden-user') : author }}
           </router-link>
 
           <span class="comment__time"> {{ date }} </span>
 
-          <div class="dropdown is-right is-hoverable">
+          <div v-if="comment.deleted_at === '0001-01-01T08:28:00+08:28' && !isHidden" class="dropdown is-right is-hoverable">
             <div class="dropdown-trigger">
-              <button class="dropdown-button" aria-haspopup="true" aria-controls="dropdownMenu">
+              <button
+                class="dropdown-button"
+                aria-haspopup="true"
+                aria-controls="dropdownMenu"
+              >
                 <span class="icon">
                   <i class="material-icons">more_vert</i>
                 </span>
               </button>
             </div>
 
-            <div class="dropdown-menu" id="dropdownMenu" role="menu">
+            <div
+              id="dropdownMenu"
+              role="menu"
+              class="dropdown-menu"
+            >
               <div class="dropdown-content">
                 <div class="dropdown-item">
                   <template v-if="isMine">
-                    <a @click="editComment" class="dropdown-item">
+                    <a class="dropdown-item" @click="editComment">
                       {{ $t('edit') }}
                     </a>
 
-                    <a @click="deleteComment" class="dropdown-item">
+                    <a class="dropdown-item" @click="deleteComment">
                       {{ $t('delete') }}
                     </a>
                   </template>
 
-                  <a v-else @click="reportComment" class="dropdown-item">
+                  <a
+                    v-else
+                    class="dropdown-item"
+                    @click="reportComment"
+                  >
                     {{ $t('report') }}
                   </a>
                 </div>
@@ -50,7 +73,7 @@
         <div class="comment__content">
           <div v-html="content"/>
 
-          <div v-if="comment.is_hidden && comment.can_override_hidden">
+          <div v-if="isHidden && canOveride">
             <button class="button" @click="$emit('fetch-comment', { commentId: comment.id })">
               {{ $t('show-hidden') }}
             </button>
@@ -58,25 +81,34 @@
         </div>
 
         <div class="comment__footer">
-          <LikeButton class="comment__vote" :item="comment" @vote="vote" votable />
-          <a class="comment__write" v-if="!isReplyComment"
-            @click="toggleReplyCommentInput">
-            {{
-              showReplyCommentInput
-              ? $t('fold-reply-comment')
-              : $t('reply-comment')
-            }}
+          <LikeButton
+            v-if="!isHidden"
+            :item="comment"
+            class="comment__vote"
+            votable
+            @vote="vote"
+          />
+          <a
+            v-if="!isReplyComment"
+            class="comment__write"
+            @click="toggleReplyCommentInput"
+          >
+            {{ showReplyCommentInput ? $t('fold-reply-comment') : $t('reply-comment') }}
           </a>
         </div>
       </div>
     </div>
 
-    <div class="comment comment--edit" :class="{'comment--reply-comment': isReplyComment}" v-else>
+    <div
+      v-else
+      :class="{'comment--reply-comment': isReplyComment}"
+      class="comment comment--edit"
+    >
       <PostCommentEditor
         :text="comment.content"
         :edit-comment="comment.id"
         :post="post"
-        :anonymousProfile="anonymousProfile"
+        :anonymous-profile="anonymousProfile"
         @upload="updateComment"
         @close="isEditing = false"
       />
@@ -85,11 +117,11 @@
     <div class="comment__reply-comments">
       <PostComment
         v-for="replyComment in comment.comments"
-        is-reply-comment
         :key="replyComment.id"
         :comment="replyComment"
         :post="post"
-        :anonymousProfile="anonymousProfile"
+        :anonymous-profile="anonymousProfile"
+        is-reply-comment
         @vote="$emit('vote')"
         @delete="$emit('delete')"
         @update="$emit('update', $event)"
@@ -99,10 +131,10 @@
 
       <div v-show="showReplyCommentInput">
         <PostCommentEditor
+          ref="commentEditor"
           :post="post"
           :parent-comment="comment.id"
-          :anonymousProfile="anonymousProfile"
-          ref="commentEditor"
+          :anonymous-profile="anonymousProfile"
           @upload="$emit('upload', $event)"
           @close="showReplyCommentInput = false"
         />
@@ -122,10 +154,24 @@ import { timeago } from '@/helper.js'
 export default {
   name: 'PostComment',
 
+  components: {
+    LikeButton,
+    PostCommentEditor
+  },
+
   props: {
-    post: { required: true },
-    comment: { required: true },
-    anonymousProfile: {required: true},
+    post: {
+      type: Object,
+      required: true
+    },
+    comment: {
+      type: Object,
+      required: true
+    },
+    anonymousProfile: {
+      type: Object,
+      required: true
+    },
     isReplyComment: Boolean
   },
 
@@ -138,17 +184,22 @@ export default {
   },
 
   computed: {
-    author () { return this.comment.created_by?.profile.nickname },
+    author () {
+      if (this.isAuthor) return this.$t('author')
+      return this.comment.created_by?.profile.nickname
+    },
     authorId () { return this.comment.created_by.id },
     profileImage () { return this.comment.created_by?.profile?.picture },
     date () { return timeago(this.comment.created_at, this.$i18n.locale) },
     ...mapGetters([ 'userNickname' ]),
-
     content () {
       if (this.comment.is_hidden) {
         return this.$t(this.comment.why_hidden[0])
       }
       return this.comment.content
+    },
+    canOveride () {
+      return this.comment.can_override_hidden
     },
     isMine () {
       return this.comment.is_mine
@@ -186,14 +237,12 @@ export default {
       this.$emit('vote')
       this.isVoting = false
     },
-
     toggleReplyCommentInput () {
       this.showReplyCommentInput = !this.showReplyCommentInput
       this.$nextTick(() => {
         this.$refs.commentEditor.focus()
       })
     },
-
     async deleteComment () {
       const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-delete'))
       if (!result) return
@@ -201,7 +250,6 @@ export default {
       await deleteComment(this.comment.id)
       this.$emit('delete')
     },
-
     async reportComment () {
       const {result, selection} = await this.$store.dispatch('dialog/report', this.$t('confirm-report'))
       if (!result) return
@@ -216,11 +264,9 @@ export default {
       reasonReport = reasonReport.slice(0, -2)
       await reportComment(this.comment.id, typeReport, reasonReport)
     },
-
     editComment () {
       this.isEditing = true
     },
-
     updateComment (event) {
       this.isEditing = false
       this.$emit('update', {
@@ -228,18 +274,14 @@ export default {
         is_mine: true
       })
     }
-
-  },
-
-  components: {
-    LikeButton,
-    PostCommentEditor
   }
 }
 </script>
 
 <i18n>
 ko:
+  hidden-user: '가려진 사용자'
+  author: '글쓴이'
   delete: '삭제'
   report: '신고'
   edit: '수정'
@@ -256,6 +298,8 @@ ko:
   BLOCKED_USER_CONTENT: '차단한 사용자의 댓글입니다.'
   DELETED_CONTENT: '삭제된 댓글입니다.'
 en:
+  hidden-user: 'Hidden user'
+  author: 'Author'
   delete: 'Delete'
   report: 'Report'
   edit: 'Edit'
@@ -333,6 +377,11 @@ en:
       margin-top: -25px;
     }
 
+    div ::v-deep img{
+      max-width: 300px;
+      max-height: 300px;
+    }
+
     @include breakPoint(mobile) {
       flex-flow: column;
       .button {
@@ -395,7 +444,6 @@ en:
   }
 
   &__write {
-    margin-left: 15px;
     line-height: 25px;
   }
 
@@ -410,6 +458,7 @@ en:
   &__vote {
     font-size: 15px;
     height: 25px;
+    margin-right: 15px;
   }
 }
 .author_red{

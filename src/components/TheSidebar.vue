@@ -1,12 +1,23 @@
 <template>
   <aside class="sidebar column is-hidden-touch">
-    <SearchBar class="sidebar__search" :searchable="searchable" />
+    <SearchBar
+      :searchable="searchable"
+      class="sidebar__search"
+    />
 
-    <SmallBoard :listitems="recentPosts" :fromQuery="{ from_view: 'recent' }" sidebar>
+    <SmallBoard
+      :listitems="recentPosts"
+      :from-query="{ from_view: 'recent' }"
+      sidebar
+    >
       {{ $t('recent') }}
     </SmallBoard>
 
-    <SmallBoard :listitems="archiveList" :fromQuery="{ from_view: 'scrap' }" sidebar>
+    <SmallBoard
+      :listitems="archiveList"
+      :from-query="{ from_view: 'scrap' }"
+      sidebar
+    >
       {{ $t('archive') }}
     </SmallBoard>
   </aside>
@@ -18,17 +29,22 @@ import SearchBar from '@/components/SearchBar.vue'
 import SmallBoard from '@/components/SmallBoard.vue'
 
 export default {
-  name: 'the-sidebar',
+  name: 'TheSidebar',
+
+  components: {
+    SearchBar,
+    SmallBoard
+  },
+
+  props: {
+    searchable: Boolean
+  },
 
   data () {
     return {
       recent: [],
       archives: null
     }
-  },
-
-  props: {
-    searchable: Boolean
   },
 
   computed: {
@@ -46,11 +62,6 @@ export default {
   async mounted () {
     await this.$store.dispatch('fetchRecentPosts')
     await this.$store.dispatch('fetchArchivedPosts')
-  },
-
-  components: {
-    SearchBar,
-    SmallBoard
   }
 }
 </script>

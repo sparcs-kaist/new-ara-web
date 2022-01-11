@@ -1,5 +1,5 @@
 <template>
-  <div class="alert-dialog" :class="{ 'alert-dialog--toast': dialog.toast }">
+  <div :class="{ 'alert-dialog--toast': dialog.toast }" class="alert-dialog">
     <div class="alert-dialog__icon">
       <i class="material-icons">{{ iconName }}</i>
     </div>
@@ -8,14 +8,20 @@
       <div class="content-text">{{ dialog.text }}</div>
     </div>
 
-    <div class="alert-dialog__chips" v-if="dialog.type === 'report'">
+    <div v-if="dialog.type === 'report'" class="alert-dialog__chips">
       <div class="alert-dialog__chip">
-        <Chip v-for="(chipvalue, name) in gPropsForChips" :key="name" v-bind="chipvalue"
-              @chip-click="chipClick">{{ $t(name) }}</Chip>
+        <Chip
+          v-for="(chipvalue, name) in gPropsForChips"
+          :key="name"
+          v-bind="chipvalue"
+          @chip-click="chipClick"
+        >
+          {{ $t(name) }}
+        </Chip>
       </div>
     </div>
 
-    <div class="alert-dialog__buttons" v-if="hasButtons">
+    <div v-if="hasButtons" class="alert-dialog__buttons">
       <template v-if="dialog.type === 'confirm'">
         <button class="alert-dialog__button" @click="dismiss(false)">
           {{ dialog.secondary_button || $t('cancel') }}
@@ -31,23 +37,30 @@
           {{ dialog.secondary_button || $t('cancel') }}
         </button>
         <div class="dropdown is-hoverable is-up">
-          <div class="dropdown-trigger"
-              @click="if(isChipClicked){dismiss(true)}"
-              disabled="!isChipClicked">
+          <div
+            class="dropdown-trigger"
+            disabled="!isChipClicked"
+            @click="isChipClicked ? dismiss(true) : {}"
+          >
             <button
+              :class="{ 'alert-dialog__button--none' : !isChipClicked }"
               class="alert-dialog__button alert-dialog__button--accent"
               aria-haspopup="true"
               aria-controls="dropdown-menu_tooltip"
-              v-bind:class="{ 'alert-dialog__button--none' : !isChipClicked }"
-              >
+            >
               {{ dialog.primary_button || $t('report') }}
             </button>
           </div>
-          <div v-show="!isChipClicked" class="dropdown-menu" id="dropdown-menu_tooltip" role="menu">
+          <div
+            v-show="!isChipClicked"
+            id="dropdown-menu_tooltip"
+            class="dropdown-menu"
+            role="menu"
+          >
             <div class="dropdown-content">
               <div class="dropdown-item">
                 <i class="material-icons">error_outline</i>
-                <p>{{$t('need-reason-for-report')}}</p>
+                <p>{{ $t('need-reason-for-report') }}</p>
               </div>
             </div>
           </div>
@@ -101,11 +114,11 @@ export default {
       isChipClicked: false
     }
   },
+
   computed: {
     iconName () {
       return icons[this.dialog.type]
     },
-
     hasButtons () {
       return !this.dialog.toast
     },
