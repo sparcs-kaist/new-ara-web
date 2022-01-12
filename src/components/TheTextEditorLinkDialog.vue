@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import TextEditorDialog from '@/components/TextEditorDialog'
+import TextEditorDialog from '@/components/TextEditorDialog.vue'
 
 export default {
   name: 'TheTextEditorLinkDialog',

@@ -53,7 +53,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { date } from '@/helper.js'
+import { date } from '@/helper'
 import LikeButton from '@/components/LikeButton.vue'
 import i18n from '@/i18n'
 

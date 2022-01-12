@@ -16,7 +16,7 @@
 
 <script>
 
-import { urlParser } from '../utils/urlParser'
+import { urlParser } from '@/utils/urlParser'
 
 export default {
   name: 'ThePostBookmark',

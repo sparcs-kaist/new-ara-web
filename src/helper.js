@@ -1,4 +1,10 @@
-import { differenceInDays, differenceInHours, differenceInMinutes, format, formatDistanceStrict } from 'date-fns'
+import {
+  differenceInDays,
+  differenceInHours,
+  differenceInMinutes,
+  format,
+  formatDistanceStrict
+} from 'date-fns'
 import { enUS, ko } from 'date-fns/locale'
 
 export const timeago = (dateString, localeString) => {
