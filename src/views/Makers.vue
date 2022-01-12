@@ -38,7 +38,7 @@
 
 <script>
 import TheLayout from '@/components/TheLayout.vue'
-import MakersCard from '../components/MakersCard'
+import MakersCard from '@/components/MakersCard.vue'
 
 const abbr = {
   'SO': 'SysOp',

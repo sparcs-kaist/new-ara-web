@@ -1,5 +1,5 @@
 import { Node } from 'tiptap'
-import ThePostBookmark from '../components/ThePostBookmark'
+import ThePostBookmark from '@/components/ThePostBookmark.vue'
 
 export default class LinkBookmark extends Node {
   get schema () {

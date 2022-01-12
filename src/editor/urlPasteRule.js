@@ -1,6 +1,6 @@
 import { Plugin } from 'prosemirror-state'
 import { Slice, Fragment } from 'prosemirror-model'
-import { urlParser } from '../utils/urlParser'
+import { urlParser } from '@/utils/urlParser'
 
 export function urlPasteRule (type, getAttrs) {
   const handler = fragment => {

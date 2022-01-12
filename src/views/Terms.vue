@@ -6,8 +6,8 @@
 
 <script>
 import store from '@/store'
-import TermsPopup from '../components/TermsPopup'
-import TheLayout from '../components/TheLayout'
+import TermsPopup from '@/components/TermsPopup.vue'
+import TheLayout from '@/components/TheLayout.vue'
 
 export default {
   name: 'Terms',
