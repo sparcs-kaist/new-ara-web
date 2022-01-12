@@ -213,7 +213,7 @@ import {
 import AttachmentImage from '@/editor/AttachmentImage'
 import CodeBlock from '@/editor/CodeBlock'
 import LinkBookmark from '@/editor/LinkBookmark'
-import TheTextEditorLinkDialog from '@/components/TheTextEditorLinkDialog'
+import TheTextEditorLinkDialog from '@/components/TheTextEditorLinkDialog.vue'
 
 export default {
   name: 'TheTextEditor',

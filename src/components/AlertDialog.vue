@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import Chip from './Chip.vue'
+import Chip from '@/components/Chip.vue'
 
 const icons = {
   confirm: 'check_circle_outline',

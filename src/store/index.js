@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import i18n from '@/i18n.js'
+import i18n from '@/i18n'
 import {
   fetchArchivedPosts as apiFetchArchivedPosts,
   fetchBoardList,
   fetchRecentViewedPosts
 } from '@/api'
 
-import auth from './auth.js'
-import dialog from './dialog.js'
-import fetch from './fetch.js'
+import auth from '@/store/auth'
+import dialog from '@/store/dialog'
+import fetch from '@/store/fetch'
 
 Vue.use(Vuex)
 

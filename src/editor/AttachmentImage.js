@@ -1,5 +1,5 @@
 import { Node } from 'tiptap'
-import TheAttachmentImage from '../components/TheAttachmentImage'
+import TheAttachmentImage from '@/components/TheAttachmentImage.vue'
 
 /**
  * Matches following attributes in Markdown-typed image: [, alt, src, title]

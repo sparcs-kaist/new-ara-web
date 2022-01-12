@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import TermsPopup from './TermsPopup'
+import TermsPopup from '@/components/TermsPopup.vue'
 export default {
   name: 'TheFooter',
 

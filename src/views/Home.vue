@@ -45,9 +45,8 @@
 
 <script>
 import { fetchArticles, fetchHome } from '@/api'
-import { fetchWithProgress } from './helper.js'
+import { fetchWithProgress } from '@/views/helper'
 import store from '@/store'
-
 import SmallBoard from '@/components/SmallBoard.vue'
 import TheHomeSearchbar from '@/components/TheHomeSearchbar.vue'
 import TheOrganizations from '@/components/TheOrganizations.vue'

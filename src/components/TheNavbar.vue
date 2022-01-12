@@ -152,7 +152,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import IdentityBar from '@/components/IdentityBar.vue'
-import isIE from '@/utils/isIE.js'
+import isIE from '@/utils/isIE'
 
 export default {
   name: 'TheNavbar',
