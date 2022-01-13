@@ -152,9 +152,9 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import IdentityBar from '@/components/IdentityBar.vue'
-import isIE from '@/utils/isIE.js'
+import isIE from '@/utils/isIE'
 import { fetchNotifications } from '@/api'
-import { fetchWithProgress } from '@/views/helper.js'
+import { fetchWithProgress } from '@/views/helper'
 
 export default {
   name: 'TheNavbar',
@@ -186,7 +186,7 @@ export default {
       this.isMobileMenuActive = false
     }
   },
-  
+
   async beforeMount () {
     // Get only first page of notification.
     const query = {...this.$route.query, page: '1'}
