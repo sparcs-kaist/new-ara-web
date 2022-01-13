@@ -42,7 +42,7 @@
         </div>
 
         <div class="board-item__subtitle">
-          <Timeago :time="post.created_at" />
+          <span>{{ timeago }}</span>
           <div>
             {{ $t('views') + " " + elideText(post.hit_count) }}
           </div>
@@ -68,15 +68,14 @@
 <script>
 import elideText from '@/utils/elideText'
 import LikeButton from '@/components/LikeButton.vue'
-import Timeago from '@/components/Timeago.vue'
 import i18n from '@/i18n'
+import { timeago } from '@/helper.js'
 
 export default {
   name: 'BoardItem',
 
   components: {
-    LikeButton,
-    Timeago
+    LikeButton
   },
 
   props: {
@@ -114,6 +113,9 @@ export default {
         default:
           return 'help_outline'
       }
+    },
+    timeago () {
+      return timeago(this.post.created_at, this.$i18n.locale)
     }
   },
 

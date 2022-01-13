@@ -1,12 +1,18 @@
 <template>
   <div class="the-notifications">
     <h1 id="title">{{ title }}</h1>
-    <DailyNotifications
+    <div
       v-for="timePassed in Object.keys(dailyNotifications)"
-      :time-passed="timePassed"
-      :notifications="dailyNotifications[timePassed]"
       :key="timePassed"
-    />
+      class="daily-notifications"
+    >
+      <h1 id="title">{{ timePassed }}</h1>
+      <Notification
+        v-for="notification in dailyNotifications[timePassed]"
+        :key="notification.id"
+        :notification="notification"
+      />
+    </div>
     <ThePaginator
       :num-pages="notifications.num_pages"
       :current-page="notifications.current"
@@ -17,14 +23,14 @@
 
 <script>
 import { timeago } from '@/helper.js'
-import DailyNotifications from '@/components/DailyNotifications'
+import Notification from '@/components/Notification'
 import ThePaginator from '@/components/ThePaginator'
 
 export default {
   name: 'TheNotifications',
 
   components: {
-    DailyNotifications,
+    Notification,
     ThePaginator
   },
 
@@ -68,6 +74,16 @@ export default {
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
+  }
+}
+.daily-notifications {
+  margin-bottom: 1.375rem;
+
+  #title {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
   }
 }
 </style>

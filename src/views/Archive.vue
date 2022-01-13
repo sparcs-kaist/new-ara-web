@@ -13,7 +13,7 @@
 
 <script>
 import { fetchArchivedPosts } from '@/api'
-import { fetchWithProgress } from './helper.js'
+import { fetchWithProgress } from '@/views/helper'
 import TheBoard from '@/components/TheBoard.vue'
 import TheLayout from '@/components/TheLayout.vue'
 import TheSidebar from '@/components/TheSidebar.vue'

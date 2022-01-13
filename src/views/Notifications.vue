@@ -6,7 +6,7 @@
 
 <script>
 import { fetchNotifications } from '@/api'
-import { fetchWithProgress } from './helper.js'
+import { fetchWithProgress } from '@/views/helper'
 import TheLayout from '@/components/TheLayout.vue'
 import TheNotifications from '@/components/TheNotifications.vue'
 

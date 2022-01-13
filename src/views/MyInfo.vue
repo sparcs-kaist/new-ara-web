@@ -230,7 +230,7 @@ import {
   deleteBlock
 } from '@/api'
 import { mapGetters, mapState } from 'vuex'
-import { fetchWithProgress } from './helper'
+import { fetchWithProgress } from '@/views/helper'
 import SearchBar from '@/components/SearchBar.vue'
 import TheBoard from '@/components/TheBoard.vue'
 import TheLayout from '@/components/TheLayout.vue'
