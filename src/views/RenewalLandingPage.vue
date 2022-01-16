@@ -89,6 +89,7 @@
 </template>
 
 <script>
+import { changeLocale } from '@/i18n'
 export default {
   name: 'RenewalLandingPage',
 
@@ -105,9 +106,7 @@ export default {
   },
 
   methods: {
-    changeLocale () {
-      this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en'
-    }
+    changeLocale
   }
 }
 </script>

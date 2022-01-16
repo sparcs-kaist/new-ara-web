@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import { changeLocale } from '@/i18n'
 export default {
   name: 'TermsPopup',
 
@@ -112,9 +113,7 @@ export default {
     openTermsPopup () {
       this.termsPopup = true
     },
-    changeLocale () {
-      this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en'
-    }
+    changeLocale
   }
 }
 </script>
