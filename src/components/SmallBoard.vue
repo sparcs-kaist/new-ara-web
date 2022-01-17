@@ -75,11 +75,11 @@ export default {
 </script>
 
 <i18n>
-  ko:
-    more: '더보기'
+ko:
+  more: '더보기'
 
-  en:
-    more: 'More'
+en:
+  more: 'More'
 </i18n>
 
 <style lang="scss" scoped>

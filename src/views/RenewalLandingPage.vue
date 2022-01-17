@@ -113,77 +113,77 @@ export default {
 
 <i18n>
 ko:
-    title: 'KAIST 공식 커뮤니티 ARA가 리뉴얼되었습니다.'
-    from-oct: '10월 31일부로, 리뉴얼된 아라와 함께할 수 있습니다.'
-    notice: 'KAIST 학내 모든 정보에 대하여, '
-    highlight: '가장 정확한 정보를 가장 신속하게'
-    let-access: ' 접근할 수 있도록 합니다.'
-    sections:
-      please:
-        title: '부탁사항'
-        contents:
-          - text: '기존 ARA 회원분들도 New-ARA에서 새로 가입을 진행해주셔야 합니다.'
-          - text: 'New-ARA에 대한 각종 피드백은 {link}로 보내주세요.'
-            link-text: '피드백 링크'
-            link: 'https://forms.gle/Gb3jJbdpjFRsThAY6'
+  title: 'KAIST 공식 커뮤니티 ARA가 리뉴얼되었습니다.'
+  from-oct: '10월 31일부로, 리뉴얼된 아라와 함께할 수 있습니다.'
+  notice: 'KAIST 학내 모든 정보에 대하여, '
+  highlight: '가장 정확한 정보를 가장 신속하게'
+  let-access: ' 접근할 수 있도록 합니다.'
+  sections:
+    please:
+      title: '부탁사항'
+      contents:
+        - text: '기존 ARA 회원분들도 New-ARA에서 새로 가입을 진행해주셔야 합니다.'
+        - text: 'New-ARA에 대한 각종 피드백은 {link}로 보내주세요.'
+          link-text: '피드백 링크'
+          link: 'https://forms.gle/Gb3jJbdpjFRsThAY6'
 
-          - text: '교내 식당, 카페 등 입주업체 분들은 {link}에서 회원등록을 부탁드릴게요.'
-            link-text: '입주업체 등록 링크'
-            link: 'https://bit.ly/newara-comp-signup'
+        - text: '교내 식당, 카페 등 입주업체 분들은 {link}에서 회원등록을 부탁드릴게요.'
+          link-text: '입주업체 등록 링크'
+          link: 'https://bit.ly/newara-comp-signup'
 
-          - text: '교내 학생단체 공용계정을 만들고 싶은 분들은 {link}에서 회원등록을 부탁드릴게요.'
-            link-text: '학생단체 등록 링크'
-            link: 'https://bit.ly/newara-org-signup'
+        - text: '교내 학생단체 공용계정을 만들고 싶은 분들은 {link}에서 회원등록을 부탁드릴게요.'
+          link-text: '학생단체 등록 링크'
+          link: 'https://bit.ly/newara-org-signup'
 
-      aware:
-        title: '유의사항'
-        contents:
-          - text: '베타기간 동안에는 기존 ARA와 new ARA가 함께 운영되며, 새로운 글은 new ARA에만 남길 수 있습니다.'
-          - text: '베타기간이 끝나면, 기존 ARA 사이트는 내릴 예정입니다.'
+    aware:
+      title: '유의사항'
+      contents:
+        - text: '베타기간 동안에는 기존 ARA와 new ARA가 함께 운영되며, 새로운 글은 new ARA에만 남길 수 있습니다.'
+        - text: '베타기간이 끝나면, 기존 ARA 사이트는 내릴 예정입니다.'
 
-    more-info: '보다 자세한 내용은 아래 New ARA 이용가이드에서 확인하실 수 있습니다.'
-    start-with: '지금 새로운 ARA와 함께하세요.'
-    new-ara: 'New ARA'
-    new-ara-guide-name: '이용 가이드 바로가기'
-    new-ara-guide-exp: '변화된 아라에 대한 가이드를 제공합니다.'
-    new-ara-link: '바로가기'
-    old-ara-link: '기존 ARA 바로가기'
+  more-info: '보다 자세한 내용은 아래 New ARA 이용가이드에서 확인하실 수 있습니다.'
+  start-with: '지금 새로운 ARA와 함께하세요.'
+  new-ara: 'New ARA'
+  new-ara-guide-name: '이용 가이드 바로가기'
+  new-ara-guide-exp: '변화된 아라에 대한 가이드를 제공합니다.'
+  new-ara-link: '바로가기'
+  old-ara-link: '기존 ARA 바로가기'
 en:
-    title: 'The official KAIST community, ARA, has been renewed.'
-    from-oct: 'From Oct 31th, you can be with the renewed ARA,'
-    notice: 'ARA is designed to provide'
-    highlight: 'the fastest delivery of the most accurate information.'
-    let-access: ' '
-    sections:
-      please:
-        title: 'Requests'
-        contents:
-          - text: 'The users of old ARA also have to sign up for New-ARA.'
-          - text: 'Please give us feedbacks for New-ARA {link}.'
-            link-text: 'here (Feedback Link)'
-            link: 'https://forms.gle/Gb3jJbdpjFRsThAY6'
+  title: 'The official KAIST community, ARA, has been renewed.'
+  from-oct: 'From Oct 31th, you can be with the renewed ARA,'
+  notice: 'ARA is designed to provide'
+  highlight: 'the fastest delivery of the most accurate information.'
+  let-access: ' '
+  sections:
+    please:
+      title: 'Requests'
+      contents:
+        - text: 'The users of old ARA also have to sign up for New-ARA.'
+        - text: 'Please give us feedbacks for New-ARA {link}.'
+          link-text: 'here (Feedback Link)'
+          link: 'https://forms.gle/Gb3jJbdpjFRsThAY6'
 
-          - text: 'On-campus companies like resaurants or caffes should sign up {link}.'
-            link-text: 'here (On-campus Companies Signup)'
-            link: 'https://bit.ly/newara-comp-signup'
+        - text: 'On-campus companies like resaurants or caffes should sign up {link}.'
+          link-text: 'here (On-campus Companies Signup)'
+          link: 'https://bit.ly/newara-comp-signup'
 
-          - text: 'Student Organizations who want to make a shared account should sign up {link}.'
-            link-text: 'here (Student Organizations Signup)'
-            link: 'https://bit.ly/newara-org-signup'
+        - text: 'Student Organizations who want to make a shared account should sign up {link}.'
+          link-text: 'here (Student Organizations Signup)'
+          link: 'https://bit.ly/newara-org-signup'
 
-      aware:
-        title: 'Note'
-        contents:
-          - text: 'During the beta period, both old ARA and new ARA will be supported, however, new posts can only be uploaded on new ARA.'
-          - text: 'After the beta test, we will shut down old ARA.'
+    aware:
+      title: 'Note'
+      contents:
+        - text: 'During the beta period, both old ARA and new ARA will be supported, however, new posts can only be uploaded on new ARA.'
+        - text: 'After the beta test, we will shut down old ARA.'
 
-    more-info: 'For more information, please check in below New ARA Guide.'
-    start-with: 'Now, you are more than welcomed to new ARA!'
-    new-ara: 'New ARA'
-    new-ara-guide-name: 'guide'
-    new-ara-guide-exp: 'We introduce the changed ARA.'
-    new-ara-link: 'Link'
-    old-ara-link: 'Go to Old ARA.'
+  more-info: 'For more information, please check in below New ARA Guide.'
+  start-with: 'Now, you are more than welcomed to new ARA!'
+  new-ara: 'New ARA'
+  new-ara-guide-name: 'guide'
+  new-ara-guide-exp: 'We introduce the changed ARA.'
+  new-ara-link: 'Link'
+  old-ara-link: 'Go to Old ARA.'
 </i18n>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
