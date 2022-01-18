@@ -193,109 +193,109 @@ export default {
 </script>
 
 <i18n>
-  ko:
-    no-filter: '없음'
-    filter: '필터'
-    exclude_portal: '포탈 공지글 제외하기'
+ko:
+  no-filter: '없음'
+  filter: '필터'
+  exclude_portal: '포탈 공지글 제외하기'
 
-  en:
-    no-filter: 'No Filter'
-    filter: 'Filter'
-    exclude_portal: 'Exclude portal notices'
+en:
+  no-filter: 'No Filter'
+  filter: 'Filter'
+  exclude_portal: 'Exclude portal notices'
 </i18n>
 
 <style lang="scss" scoped>
 @import '@/theme.scss';
-  .board {
-    &__filter {
-      padding: 10px 0;
-      padding-right: 10px;
-    }
+.board {
+  &__filter {
+    padding: 10px 0;
+    padding-right: 10px;
+  }
 
-    &__filter-trigger {
-      display: inline-flex;
-      font-weight: 500;
+  &__filter-trigger {
+    display: inline-flex;
+    font-weight: 500;
 
-      .icon {
-        margin-left: 10px;
-      }
-    }
-
-    &__filter-menu {
-      min-width: 6rem;
-    }
-
-    &__filter-item {
-      display: flex;
-      border-radius: 5px;
-      margin: 0 5px;
-      padding-top: 0;
-      padding-bottom: 0;
-
-      &:hover {
-        background: var(--theme-100);
-      }
-
-      & > a {
-        padding: 0.375rem 0;
-        flex: 1;
-      }
-    }
-
-    &__topic {
-      color: var(--grey-400);
-      font-size: 1rem;
+    .icon {
+      margin-left: 10px;
     }
   }
 
-  .exclude {
+  &__filter-menu {
+    min-width: 6rem;
+  }
+
+  &__filter-item {
     display: flex;
-    align-items: center;
-    margin: 1rem 0;
+    border-radius: 5px;
+    margin: 0 5px;
+    padding-top: 0;
+    padding-bottom: 0;
 
-    @include breakPoint(min){
-      margin-top: 0;
-      margin-right: 1rem;
+    &:hover {
+      background: var(--theme-100);
     }
+
+    & > a {
+      padding: 0.375rem 0;
+      flex: 1;
+    }
+  }
+
+  &__topic {
+    color: var(--grey-400);
+    font-size: 1rem;
+  }
+}
+
+.exclude {
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+
+  @include breakPoint(min){
+    margin-top: 0;
+    margin-right: 1rem;
+  }
+  @include breakPoint(mobile) {
+    font-size: 0.85rem;
+    margin-right: 0;
+  }
+
+  &__toggle {
+    margin-left: 12px;
+    width: fit-content;
+
+    & > i {
+      font-size: 3rem;
+    }
+
     @include breakPoint(mobile) {
-      font-size: 0.85rem;
-      margin-right: 0;
-    }
-
-    &__toggle {
-      margin-left: 12px;
-      width: fit-content;
+      margin-left: 9px;
 
       & > i {
-        font-size: 3rem;
+        font-size: 2.5rem;
       }
-
-      @include breakPoint(mobile) {
-        margin-left: 9px;
-
-        & > i {
-          font-size: 2.5rem;
-        }
-      }
-    }
-
-    &__icon {
-      color: var(--grey-400);
-      font-size: 2rem;
-      height: initial;
-      width: initial;
-
-      @include breakPoint(mobile) {
-        font-size: 1.75rem;
-      }
-
-      &--on {
-        color: var(--theme-400);
-      }
-    }
-
-    &__change {
-      display: inline-flex;
     }
   }
+
+  &__icon {
+    color: var(--grey-400);
+    font-size: 2rem;
+    height: initial;
+    width: initial;
+
+    @include breakPoint(mobile) {
+      font-size: 1.75rem;
+    }
+
+    &--on {
+      color: var(--theme-400);
+    }
+  }
+
+  &__change {
+    display: inline-flex;
+  }
+}
 </style>

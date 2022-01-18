@@ -243,19 +243,19 @@ export default {
 </script>
 
 <i18n>
-  ko:
-    upload: '첨부파일'
-    upload-button: '가져오기'
-    dropzone-normal: '가져오기 버튼을 클릭하거나 복사한 이미지를 본문에서 붙여넣기, 또는 파일을 드래그 앤 드롭해주세요.'
-    dropzone-drop: '여기에 드롭해주세요.'
-    dropzone-unallowed-extensions: '허용되지 않은 확장자입니다.'
+ko:
+  upload: '첨부파일'
+  upload-button: '가져오기'
+  dropzone-normal: '가져오기 버튼을 클릭하거나 복사한 이미지를 본문에서 붙여넣기, 또는 파일을 드래그 앤 드롭해주세요.'
+  dropzone-drop: '여기에 드롭해주세요.'
+  dropzone-unallowed-extensions: '허용되지 않은 확장자입니다.'
 
-  en:
-    upload: 'Upload Attachments'
-    upload-button: 'Import'
-    dropzone-normal: 'Please click import button, paste copied images, or drag & drop the files.'
-    dropzone-drop: 'Please drop here.'
-    dropzone-unallowed-extensions: 'This file type is not allowed.'
+en:
+  upload: 'Upload Attachments'
+  upload-button: 'Import'
+  dropzone-normal: 'Please click import button, paste copied images, or drag & drop the files.'
+  dropzone-drop: 'Please drop here.'
+  dropzone-unallowed-extensions: 'This file type is not allowed.'
 </i18n>
 
 <style lang="scss" scoped>
