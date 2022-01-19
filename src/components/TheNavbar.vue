@@ -90,7 +90,10 @@
               :to="{ name: 'notifications' }"
               class="navbar-item"
             >
-              <span class="icon">
+              <span
+                :class="{'unread-noti': isUnreadNotificationExist}"
+                data-badge=" "
+                class="icon">
                 <i class="material-icons">notifications</i>
               </span>
 
