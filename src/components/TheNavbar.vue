@@ -158,6 +158,7 @@ import IdentityBar from '@/components/IdentityBar.vue'
 import isIE from '@/utils/isIE'
 import { fetchNotifications } from '@/api'
 import { fetchWithProgress } from '@/views/helper'
+import { changeLocale } from '@/i18n'
 
 export default {
   name: 'TheNavbar',
@@ -204,9 +205,7 @@ export default {
     toggleMobileMenu () {
       this.isMobileMenuActive = !this.isMobileMenuActive
     },
-    changeLocale () {
-      this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en'
-    },
+    changeLocale,
     ...mapActions(['toggleDarkMode'])
   }
 }

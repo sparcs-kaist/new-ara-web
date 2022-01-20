@@ -36,10 +36,10 @@ export default {
 </script>
 
 <i18n>
-  ko:
-    document-title: 'Ara - 알림'
-    title: '알림'
-  en:
-    document-title: 'Ara - Notifications'
-    title: 'Notifications'
+ko:
+  document-title: 'Ara - 알림'
+  title: '알림'
+en:
+  document-title: 'Ara - Notifications'
+  title: 'Notifications'
 </i18n>

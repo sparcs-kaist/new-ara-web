@@ -30,14 +30,14 @@ export default {
 </script>
 
 <i18n>
-  ko:
-    document-title: 'Ara - 페이지 없음'
-    page-not-found: '페이지를 찾을 수 없습니다.'
-    go-home: '홈으로'
-  en:
-    document-title: 'Ara - Not Found'
-    page-not-found: 'Page Not Found'
-    go-home: 'Go Home'
+ko:
+  document-title: 'Ara - 페이지 없음'
+  page-not-found: '페이지를 찾을 수 없습니다.'
+  go-home: '홈으로'
+en:
+  document-title: 'Ara - Not Found'
+  page-not-found: 'Page Not Found'
+  go-home: 'Go Home'
 </i18n>
 
 <style lang="scss">

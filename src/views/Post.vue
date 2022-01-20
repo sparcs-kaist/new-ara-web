@@ -330,5 +330,4 @@ en:
   hidden-post: 'Hidden post'
   report-unavailable: 'You cannot report this post!'
   block-rate-limit: 'You could block/unblock at most 10 times a day.'
-
 </i18n>

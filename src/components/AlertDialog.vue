@@ -10,14 +10,15 @@
 
     <div v-if="dialog.type === 'report'" class="alert-dialog__chips">
       <div class="alert-dialog__chip">
-        <Chip
-          v-for="(chipvalue, name) in gPropsForChips"
-          :key="name"
-          v-bind="chipvalue"
-          @chip-click="chipClick"
+        <button
+          v-for="chip in Object.keys(chips)"
+          :key="chip"
+          :class="{ chip__clicked : chips[chip] }"
+          class="chip"
+          @click="chipClick(chip)"
         >
-          {{ $t(name) }}
-        </Chip>
+          {{ $t(chip) }}
+        </button>
       </div>
     </div>
 
@@ -40,7 +41,7 @@
           <div
             class="dropdown-trigger"
             disabled="!isChipClicked"
-            @click="isChipClicked ? dismiss(true) : {}"
+            @click="() => { if (isChipClicked) { dismiss(true) } }"
           >
             <button
               :class="{ 'alert-dialog__button--none' : !isChipClicked }"
@@ -77,8 +78,6 @@
 </template>
 
 <script>
-import Chip from '@/components/Chip.vue'
-
 const icons = {
   confirm: 'check_circle_outline',
   report: 'check_circle_outline',
@@ -90,10 +89,6 @@ const icons = {
 export default {
   name: 'AlertDialog',
 
-  components: {
-    Chip
-  },
-
   props: {
     dialog: {
       type: Object,
@@ -103,27 +98,7 @@ export default {
 
   data () {
     return {
-      gPropsForChips: {
-        hate_speech: { skey: 'hate_speech', isClicked: false },
-        unauthorized_sales_articles: { skey: 'unauthorized_sales_articles', isClicked: false },
-        spam: { skey: 'spam', isClicked: false },
-        fake_information: { skey: 'fake_information', isClicked: false },
-        defamation: { skey: 'defamation', isClicked: false },
-        other: { skey: 'other', isClicked: false }
-      },
-      isChipClicked: false
-    }
-  },
-
-  computed: {
-    iconName () {
-      return icons[this.dialog.type]
-    },
-    hasButtons () {
-      return !this.dialog.toast
-    },
-    chipSelection () {
-      return {
+      chips: {
         hate_speech: false,
         unauthorized_sales_articles: false,
         spam: false,
@@ -134,54 +109,65 @@ export default {
     }
   },
 
+  computed: {
+    isChipClicked () {
+      return Object.values(this.chips).some(isClicked => isClicked)
+    },
+    iconName () {
+      return icons[this.dialog.type]
+    },
+    hasButtons () {
+      return !this.dialog.toast
+    }
+  },
+
   methods: {
     dismiss (value) {
-      this.$store.commit('dialog/removeDialog', { id: this.dialog.id, value, chip_selection: this.chipSelection })
+      this.$store.commit('dialog/removeDialog', {
+        id: this.dialog.id,
+        value,
+        chip_selection: this.chips
+      })
     },
-    chipClick (value, key) {
-      this.gPropsForChips[key].isClicked = value
-      this.chipSelection[key] = value
-      this.isChipClicked = false
-      for (var i = 0; i < Object.values(this.gPropsForChips).length; i++) {
-        this.isChipClicked = this.isChipClicked || Object.values(this.gPropsForChips)[i].isClicked
-      }
+    chipClick (chip) {
+      this.chips[chip] = !this.chips[chip]
     }
   }
 }
 </script>
 
 <i18n>
-  ko:
-    error: '오류'
-    confirm: '확인'
-    info: '정보'
-    warning: '경고'
-    okay: '확인'
-    cancel: '취소'
-    report: '신고하기'
-    hate_speech: '혐오 발언'
-    unauthorized_sales_articles: '허가되지 않은 판매글'
-    spam: '스팸'
-    fake_information: '거짓 정보'
-    defamation: '명예훼손'
-    other: '기타'
-    need-reason-for-report: '신고 사유를 1개 이상 선택해주세요'
+ko:
+  error: '오류'
+  confirm: '확인'
+  info: '정보'
+  warning: '경고'
+  okay: '확인'
+  cancel: '취소'
+  report: '신고하기'
+  hate_speech: '혐오 발언'
+  unauthorized_sales_articles: '허가되지 않은 판매글'
+  spam: '스팸'
+  fake_information: '거짓 정보'
+  defamation: '명예훼손'
+  other: '기타'
+  need-reason-for-report: '신고 사유를 1개 이상 선택해주세요'
 
-  en:
-    error: 'Error'
-    confirm: 'Confirm'
-    info: 'Information'
-    warning: 'Warning'
-    okay: 'OK'
-    cancel: 'Cancel'
-    report: 'Report'
-    hate_speech: 'Hate Speech'
-    unauthorized_sales_articles: 'Unauthorized Sales'
-    spam: 'Spam'
-    fake_information: 'Fake Information'
-    defamation: 'Defamation'
-    other: 'Other'
-    need-reason-for-report: 'Please select reason for report at least one'
+en:
+  error: 'Error'
+  confirm: 'Confirm'
+  info: 'Information'
+  warning: 'Warning'
+  okay: 'OK'
+  cancel: 'Cancel'
+  report: 'Report'
+  hate_speech: 'Hate Speech'
+  unauthorized_sales_articles: 'Unauthorized Sales'
+  spam: 'Spam'
+  fake_information: 'Fake Information'
+  defamation: 'Defamation'
+  other: 'Other'
+  need-reason-for-report: 'Please select reason for report at least one'
 </i18n>
 
 <style lang="scss" scoped>
@@ -330,6 +316,33 @@ export default {
   .material-icons {
     font-size: 0.75rem;
     margin: 0 5px 0 0;
+  }
+}
+
+.chip {
+  //float: left;
+  margin: 4px 3px;
+
+  cursor: pointer;
+  background: var(--grey-300);
+  border: none;
+  border-radius: 30px;
+  padding: 5px 9px 7px 9px;
+  transition: background .4s ease;
+
+  display: flex;
+  align-items: center;
+  height: 30px;
+  font-size: 15px;
+  line-height: 30px;
+
+  &:hover {
+    box-shadow: 0 2px 6px 0 rgba(51, 51, 51, 0.25);
+  }
+
+  &__clicked {
+    background: var(--theme-400);
+    color: var(--background);
   }
 }
 </style>

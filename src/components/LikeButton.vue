@@ -76,71 +76,71 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@/theme.scss";
+@import "@/theme.scss";
 
-  .like-button {
-    display: inline-flex;
-    outline: none;
+.like-button {
+  display: inline-flex;
+  outline: none;
 
-    &--enabled &__item {
-      cursor: pointer;
+  &--enabled &__item {
+    cursor: pointer;
 
-      &:hover {
-        color: var(--grey-700);
-      }
-
-      &--selected:hover {
-        color: var(--theme-500);
-      }
+    &:hover {
+      color: var(--grey-700);
     }
 
-    &--table &__item {
-      justify-content: flex-start;
-      min-width: 4.5rem;
-      margin: 0 5px;
-
-      @include breakPoint(mid) {
-        min-width: initial;
-      }
-    }
-
-    &__item {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border: none;
-      background: transparent;
-      color: var(--grey-600);
-      font-size: inherit;
-      margin: 0 6px;
-      flex: 1;
-      white-space: nowrap;
-      transition: all var(--duration) ease;
-
-      &--like-selected {
-        color: var(--theme-400);
-      }
-
-      &--dislike-selected {
-        color: #535cac
-      }
-
-      &:first-child {
-        margin-left: 0;
-      }
-
-      &:last-child {
-        margin-right: 0;
-      }
-
-      &:hover {
-        color: var(--grey-600);
-      }
-    }
-
-    &__icon {
-      font-size: 20px;
-      margin-right: .3rem;
+    &--selected:hover {
+      color: var(--theme-500);
     }
   }
+
+  &--table &__item {
+    justify-content: flex-start;
+    min-width: 4.5rem;
+    margin: 0 5px;
+
+    @include breakPoint(mid) {
+      min-width: initial;
+    }
+  }
+
+  &__item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    color: var(--grey-600);
+    font-size: inherit;
+    margin: 0 6px;
+    flex: 1;
+    white-space: nowrap;
+    transition: all var(--duration) ease;
+
+    &--like-selected {
+      color: var(--theme-400);
+    }
+
+    &--dislike-selected {
+      color: #535cac
+    }
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:hover {
+      color: var(--grey-600);
+    }
+  }
+
+  &__icon {
+    font-size: 20px;
+    margin-right: .3rem;
+  }
+}
 </style>

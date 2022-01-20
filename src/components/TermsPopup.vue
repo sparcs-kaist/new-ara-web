@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import { changeLocale } from '@/i18n'
 export default {
   name: 'TermsPopup',
 
@@ -112,9 +113,7 @@ export default {
     openTermsPopup () {
       this.termsPopup = true
     },
-    changeLocale () {
-      this.$root.$i18n.locale = this.$root.$i18n.locale === 'en' ? 'ko' : 'en'
-    }
+    changeLocale
   }
 }
 </script>
@@ -290,148 +289,148 @@ en:
 </i18n>
 
 <style lang="scss" scoped>
-  @import "@/theme.scss";
+@import "@/theme.scss";
 
-  .modal-content {
-    width: 1168px;
-    margin: 0 20px;
-    @media screen and (max-height: 750px){
-      max-height: calc(100vh - 40px);
-    }
-
+.modal-content {
+  width: 1168px;
+  margin: 0 20px;
+  @media screen and (max-height: 750px){
+    max-height: calc(100vh - 40px);
   }
 
-  .modal {
-    z-index: 30;
+}
+
+.modal {
+  z-index: 30;
+}
+
+.container {
+  background-color: var(--grey-100);
+  padding: 28px;
+  width: auto;
+  overflow-y: auto;
+  max-height: calc(100vh - 494px);
+
+  @media screen and (max-height: 750px){
+    max-height: calc(100vh - 280px);
+  }
+}
+
+.tos-section {
+  margin-bottom: 20px;
+}
+
+.tos-title {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.tos-content {
+  margin-left: 10px;
+  white-space: pre-wrap;
+}
+
+.popup {
+  font-size: 13px;
+  color: var(--text);
+  font-family: var(--font);
+  padding: 56px 56px;
+  @media screen and (max-width: 400px) {
+    padding-left: 18px;
+    padding-right: 18px;
   }
 
-  .container {
-    background-color: var(--grey-100);
-    padding: 28px;
-    width: auto;
-    overflow-y: auto;
-    max-height: calc(100vh - 494px);
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.64);
+  word-break: keep-all;
+  line-height: 1.92;
+}
 
-    @media screen and (max-height: 750px){
-      max-height: calc(100vh - 280px);
-    }
-  }
+.button-container {
+  height: auto;
+  width: 100%;
+  margin-top: 18px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 
-  .tos-section {
-    margin-bottom: 20px;
-  }
-
-  .tos-title {
-    margin-bottom: 10px;
-    font-weight: 600;
-  }
-
-  .tos-content {
-    margin-left: 10px;
-    white-space: pre-wrap;
-  }
-
-  .popup {
-    font-size: 13px;
-    color: var(--text);
+  .button {
+    font-size: 15px;
     font-family: var(--font);
-    padding: 56px 56px;
-    @media screen and (max-width: 400px) {
-      padding-left: 18px;
-      padding-right: 18px;
-    }
+    font-weight: bold;
+    padding: 0 20px;
+  }
 
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 15px 0 rgba(169, 169, 169, 0.64);
+  .right-button {
+    color: var(--theme-400);
+    margin-left: 12px;
+  }
+}
+
+.Services-Ara {
+  width: 49.8px;
+  height: 27px;
+  object-fit: contain;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 18px;
+
+  h1 {
     word-break: keep-all;
-    line-height: 1.92;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    margin-left: 9.2px;
+
+    line-height: 1.5;
+    color: var(--theme-400);
   }
 
-  .button-container {
-    height: auto;
-    width: 100%;
-    margin-top: 18px;
+  .toggle-language{
     display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-
-    .button {
-      font-size: 15px;
-      font-family: var(--font);
-      font-weight: bold;
-      padding: 0 20px;
-    }
-
-    .right-button {
-      color: var(--theme-400);
-      margin-left: 12px;
-    }
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    line-height: 24px;
+    margin-left: auto;
+    margin-right: 30px;
   }
+}
 
-  .Services-Ara {
-    width: 49.8px;
-    height: 27px;
-    object-fit: contain;
-  }
+.close {
+  position: absolute;
+  right: 24px;
+  top: 24px;
+}
 
-  .title {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 18px;
+.scrollbar::-webkit-scrollbar {
+  background-color:#fff;
+  width:16px
+}
 
-    h1 {
-      word-break: keep-all;
-      font-weight: bold;
-      font-size: 18px;
-      text-align: center;
-      margin-left: 9.2px;
+/* background of the scrollbar except button or resizer */
+.scrollbar::-webkit-scrollbar-track {
+  background-color:#fff
+}
+.scrollbar::-webkit-scrollbar-track:hover {
+  background-color:#f4f4f4
+}
 
-      line-height: 1.5;
-      color: var(--theme-400);
-    }
+/* scrollbar itself */
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color:#babac0;
+  border-radius:16px;
+  border:5px solid #fff
+}
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color:#a0a0a5;
+  border:4px solid #f4f4f4
+}
 
-    .toggle-language{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      line-height: 24px;
-      margin-left: auto;
-      margin-right: 30px;
-    }
-  }
-
-  .close {
-    position: absolute;
-    right: 24px;
-    top: 24px;
-  }
-
-  .scrollbar::-webkit-scrollbar {
-    background-color:#fff;
-    width:16px
-  }
-
-  /* background of the scrollbar except button or resizer */
-  .scrollbar::-webkit-scrollbar-track {
-    background-color:#fff
-  }
-  .scrollbar::-webkit-scrollbar-track:hover {
-    background-color:#f4f4f4
-  }
-
-  /* scrollbar itself */
-  .scrollbar::-webkit-scrollbar-thumb {
-    background-color:#babac0;
-    border-radius:16px;
-    border:5px solid #fff
-  }
-  .scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color:#a0a0a5;
-    border:4px solid #f4f4f4
-  }
-
-  /* set button(top and bottom of the scrollbar) */
-  .scrollbar::-webkit-scrollbar-button {display:none}
+/* set button(top and bottom of the scrollbar) */
+.scrollbar::-webkit-scrollbar-button {display:none}
 </style>
