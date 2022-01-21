@@ -90,7 +90,10 @@
               :to="{ name: 'notifications' }"
               class="navbar-item"
             >
-              <span class="icon">
+              <span
+                :class="{'unread-noti': isUnreadNotificationExist}"
+                data-badge=" "
+                class="icon">
                 <i class="material-icons">notifications</i>
               </span>
 
@@ -153,6 +156,8 @@
 import { mapState, mapGetters, mapActions } from 'vuex'
 import IdentityBar from '@/components/IdentityBar.vue'
 import isIE from '@/utils/isIE'
+import { fetchNotifications } from '@/api'
+import { fetchWithProgress } from '@/views/helper'
 import { changeLocale } from '@/i18n'
 
 export default {
@@ -164,10 +169,11 @@ export default {
 
   data () {
     return {
-      isMobileMenuActive: false
+      isMobileMenuActive: false,
+      notifications: {},
+      isUnreadNotificationExist: false
     }
   },
-
   computed: {
     ...mapState(['boardList']),
     ...mapGetters(['userNickname', 'userPicture']),
@@ -182,6 +188,16 @@ export default {
   watch: {
     $route () {
       this.isMobileMenuActive = false
+    }
+  },
+
+  async beforeMount () {
+    // Get only first page of notification.
+    const query = {...this.$route.query, page: '1'}
+    const [ notifications ] = await fetchWithProgress([ fetchNotifications({ query }) ], 'notifications-failed-fetch')
+    this.notifications = notifications.results
+    if (this.notifications.some(noti => !noti.is_read)) {
+      this.isUnreadNotificationExist = true
     }
   },
 
@@ -254,6 +270,27 @@ en:
 .navbar-item {
   display: flex;
   font-size: 15px;
+
+  .unread-noti{
+    &[data-badge] {
+      content: attr(data-badge);
+      position: relative;
+      &::after {
+        content: attr(data-badge);
+        position: absolute;
+        background: red;
+        border-radius: 50%;
+        display: block;
+        padding: 0.3em;
+        color: black;
+        font-size: 15px;
+        max-height: 20px;
+        max-width: auto;
+        right: 2px;
+        top: 0px;
+      }
+    }
+  }
 
   .write-icon {
     color: var(--theme-400);

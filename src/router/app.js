@@ -9,7 +9,8 @@ import Home from '@/views/Home.vue'
 import NotFound from '@/views/NotFound.vue'
 import RenewalLandingPage from '@/views/RenewalLandingPage.vue'
 import Makers from '@/views/Makers.vue'
-import { authGuard } from '@/router/auth'
+import { authGuard } from './auth.js'
+import { readNotification } from '@/api/user.js'
 
 export default [
   {
@@ -35,7 +36,12 @@ export default [
     name: 'post',
     component: Post,
     props: true,
-    beforeEnter: authGuard
+    beforeEnter: async (to, from, next) => {
+      if (from.name === 'notifications') {
+        await readNotification(to.params.notiId)
+      }
+      await authGuard(to, from, next)
+    }
   },
   {
     path: '/write/:postId?',

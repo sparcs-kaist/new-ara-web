@@ -22,9 +22,9 @@
 </template>
 
 <script>
-import { timeago } from '@/helper.js'
-import Notification from '@/components/Notification'
-import ThePaginator from '@/components/ThePaginator'
+import { timeago } from '@/helper'
+import Notification from '@/components/Notification.vue'
+import ThePaginator from '@/components/ThePaginator.vue'
 
 export default {
   name: 'TheNotifications',
