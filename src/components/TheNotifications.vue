@@ -1,14 +1,9 @@
 <template>
   <div class="the-notifications">
     <h1 id="title">{{ title }}</h1>
-    <div
-      v-for="timePassed in Object.keys(dailyNotifications)"
-      :key="timePassed"
-      class="daily-notifications"
-    >
-      <h1 id="title">{{ timePassed }}</h1>
+    <div>
       <Notification
-        v-for="notification in dailyNotifications[timePassed]"
+        v-for="notification in notifications.results"
         :key="notification.id"
         :notification="notification"
       />
@@ -22,7 +17,6 @@
 </template>
 
 <script>
-import { timeago } from '@/helper'
 import Notification from '@/components/Notification.vue'
 import ThePaginator from '@/components/ThePaginator.vue'
 
@@ -40,50 +34,20 @@ export default {
       required: true
     },
     title: String
-  },
-
-  computed: {
-    dailyNotifications () {
-      if (!this.notifications.results) return {}
-      return this.notifications.results
-        .reduce((acc, notification) => {
-          const timePassed = timeago(notification.created_at, this.$i18n.locale)
-          if (Object.keys(acc).includes(timePassed)) {
-            return {
-              ...acc,
-              [timePassed]: [
-                ...acc[timePassed],
-                notification
-              ]
-            }
-          }
-          return {
-            ...acc,
-            [timePassed]: [notification]
-          }
-        }, {})
-    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "@/theme.scss";
+
 .the-notifications {
   #title {
     display: block;
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
-  }
-}
-.daily-notifications {
-  margin-bottom: 1.375rem;
-
-  #title {
-    display: block;
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 1.25rem;
+    color: var(--theme-400);
   }
 }
 </style>
