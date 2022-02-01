@@ -3,8 +3,8 @@
     <transition-group tag="div" name="dialog-fade">
       <AlertDialog
         v-for="dialog in dialogs"
-        :dialog="dialog"
         :key="dialog.id"
+        :dialog="dialog"
       />
     </transition-group>
 
@@ -15,8 +15,8 @@
     >
       <AlertDialog
         v-for="dialog in toasts"
-        :dialog="dialog"
         :key="dialog.id"
+        :dialog="dialog"
       />
     </transition-group>
 

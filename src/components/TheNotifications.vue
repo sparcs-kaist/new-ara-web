@@ -1,6 +1,8 @@
 <template>
   <div class="the-notifications">
-    <h1 id="title">{{ title }}</h1>
+    <h1 id="title">
+      {{ title }}
+    </h1>
     <div>
       <Notification
         v-for="notification in notifications.results"

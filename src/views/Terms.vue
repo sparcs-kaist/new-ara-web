@@ -1,6 +1,6 @@
 <template>
   <TheLayout>
-    <TermsPopup/>
+    <TermsPopup />
   </TheLayout>
 </template>
 
@@ -18,7 +18,7 @@ export default {
   },
 
   beforeRouteEnter (from, to, next) {
-    if (store.state.auth?.userProfile?.['agree_terms_of_service_at']) {
+    if (store.state.auth?.userProfile?.agree_terms_of_service_at) {
       next('/')
       return
     }

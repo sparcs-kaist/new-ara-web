@@ -186,8 +186,8 @@ export default {
       return this.post && this.post.is_mine
     },
     hiddenReason () {
-      let title = `<div class="has-text-weight-bold"> ${this.post.why_hidden.map(v => i18n.t(v)).join('<br>')}</div>`
-      let subtitile = this.post.can_override_hidden ? `<div>(${this.$t('hidden-notice-' + this.post.why_hidden[0])})</div>` : ''
+      const title = `<div class="has-text-weight-bold"> ${this.post.why_hidden.map(v => i18n.t(v)).join('<br>')}</div>`
+      const subtitile = this.post.can_override_hidden ? `<div>(${this.$t('hidden-notice-' + this.post.why_hidden[0])})</div>` : ''
       return title + subtitile
     },
     hidden_icon () {

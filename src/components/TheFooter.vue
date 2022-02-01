@@ -59,7 +59,7 @@ export default {
 
   computed: {
     agreeTosAt () {
-      return this.$store.state.auth.userProfile?.['agree_terms_of_service_at']
+      return this.$store.state.auth.userProfile?.agree_terms_of_service_at
     }
   }
 }

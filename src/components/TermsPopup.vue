@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'is-active': termsPopup }" class="modal">
-    <div class="modal-background"/>
+    <div class="modal-background" />
     <div class="modal-content">
       <a
         v-if="agreeTosAt"
@@ -35,8 +35,10 @@
             :key="index"
             class="tos-section"
           >
-            <h2 class="tos-title">{{ section.title }}</h2>
-            <p class="tos-content" v-html = "section.contents"/>
+            <h2 class="tos-title">
+              {{ section.title }}
+            </h2>
+            <p class="tos-content" v-html="section.contents" />
           </div>
 
           <div class="tos-section">
@@ -59,7 +61,9 @@
           >
             {{ $t('agree') }}
           </button>
-          <p v-if="agreeTosAt">{{ $t("already-agreed") }}</p>
+          <p v-if="agreeTosAt">
+            {{ $t("already-agreed") }}
+          </p>
         </div>
       </div>
     </div>

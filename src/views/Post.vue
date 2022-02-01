@@ -50,7 +50,6 @@ import ThePostComments from '@/components/ThePostComments.vue'
 import ThePostDetail from '@/components/ThePostDetail.vue'
 import ThePostHeader from '@/components/ThePostHeader.vue'
 import ThePostNavigation from '@/components/ThePostNavigation.vue'
-import TheBoard from '@/components/TheBoard.vue'
 import TheLayout from '@/components/TheLayout.vue'
 import TheSidebar from '@/components/TheSidebar.vue'
 
@@ -58,7 +57,6 @@ export default {
   name: 'Post',
 
   components: {
-    TheBoard,
     TheLayout,
     ThePostComments,
     ThePostDetail,
@@ -232,11 +230,11 @@ export default {
         this.$store.dispatch('dialog/toast', this.$t('report-unavailable'))
         return
       }
-      const {result, selection} = await this.$store.dispatch('dialog/report', this.$t('confirm-report'))
+      const { result, selection } = await this.$store.dispatch('dialog/report', this.$t('confirm-report'))
       if (!result) return
       // What can be type_report? : violation_of_code, impersonation, insult, spam, others.
       // Where can I get typeReport?
-      let typeReport = 'others'
+      const typeReport = 'others'
       let reasonReport = ''
       for (const key in selection) {
         if (selection[key]) {
@@ -275,24 +273,24 @@ export default {
     },
 
     async overrideHidden () {
-      const overridenPost = await fetchPost({ postId: this.postId, context: {...this.$route.query, override_hidden: true} })
-      this.post = {...overridenPost, comments: this.post.comments, side_articles: this.post.side_articles}
+      const overridenPost = await fetchPost({ postId: this.postId, context: { ...this.$route.query, override_hidden: true } })
+      this.post = { ...overridenPost, comments: this.post.comments, side_articles: this.post.side_articles }
       document.title = `Ara - ${this.post.title}`
     },
     async overrideHiddenComment ({ commentId }) {
       const overriddenComment = await fetchComment({
         commentId,
-        context: {...this.$route.query, override_hidden: true}
+        context: { ...this.$route.query, override_hidden: true }
       })
 
       for (const [commentIndex, comment] of this.post.comments.entries()) {
         if (comment.id === commentId) {
-          const newComment = {...comment, ...overriddenComment}
+          const newComment = { ...comment, ...overriddenComment }
           return this.$set(this.post.comments, commentIndex, newComment)
         }
         for (const [replyCommentIndex, replyComment] of comment.comments.entries()) {
           if (replyComment.id === commentId) {
-            const newComment = {...replyComment, ...overriddenComment}
+            const newComment = { ...replyComment, ...overriddenComment }
             return this.$set(this.post.comments[commentIndex].comments, replyCommentIndex, newComment)
           }
         }

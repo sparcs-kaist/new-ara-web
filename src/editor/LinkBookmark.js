@@ -21,7 +21,7 @@ export default class LinkBookmark extends Node {
           priority: 51,
           tag: 'a[data-bookmark][href]',
           getAttrs: dom => {
-            let rawHref = dom.getAttribute('href')
+            const rawHref = dom.getAttribute('href')
             return {
               href: rawHref,
               title: dom.innerText
