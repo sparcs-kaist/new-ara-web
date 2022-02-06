@@ -24,6 +24,7 @@
     <ThePostComments
       :post="post"
       :comments="post.comments"
+      :anonymous-profile="anonymousProfile"
       @upload="addNewComment"
       @update="updateComment"
       @refresh="refresh"
@@ -45,6 +46,7 @@ import {
   votePost,
   fetchComment
 } from '@/api'
+import store from '@/store'
 import { fetchWithProgress } from '@/views/helper'
 import ThePostComments from '@/components/ThePostComments.vue'
 import ThePostDetail from '@/components/ThePostDetail.vue'
@@ -76,10 +78,10 @@ export default {
 
   data () {
     return {
-      post: {}
+      post: {},
+      anonymousProfile: {}
     }
   },
-
   computed: {
     /* eslint-disable camelcase */
     context () {
@@ -126,6 +128,36 @@ export default {
     }
   },
 
+  watch: {
+    post: function () {
+      if (this.post.is_anonymous) {
+        // Get my anonymous nickname from post's comments
+        for (const comment of this.post.comments) {
+          if (comment.is_mine) {
+            this.anonymousProfile = {
+              nickname: comment.created_by.username,
+              profileImage: comment.created_by.profile.picture
+            }
+            return
+          }
+          for (const replyComment of comment.comments) {
+            if (replyComment.is_mine) {
+              this.anonymousProfile = {
+                nickname: replyComment.created_by.username,
+                profileImage: replyComment.created_by.profile.picture
+              }
+              return
+            }
+          }
+        }
+      }
+      this.anonymousProfile = {
+        nickname: this.$t('anonymous'),
+        profileImage: this.post.created_by?.profile.picture
+      }
+    }
+  },
+
   async beforeRouteEnter ({ params: { postId }, query }, from, next) {
     const [ post ] = await fetchWithProgress([
       fetchPost({ postId, context: query })
@@ -147,33 +179,34 @@ export default {
 
   methods: {
     async addNewComment (comment) {
+      comment.is_mine = true
+      if (this.post.parent_board.id === 9) {
+        // Set nickname & profile image properly(need for anonymous).
+        comment.created_by.profile.nickname = this.anonymousProfile.nickname
+        comment.created_by.profile.picture = this.anonymousProfile.profileImage
+      } else {
+        const { userNickname, userPicture } = store.getters
+        comment.created_by.profile.nickname = userNickname
+        comment.created_by.profile.picture = userPicture
+      }
       if (comment.parent_comment) {
         /* Save the new recomment in local first. */
-        /* const rootComment = this.post.comments.find(parent => parent.id === comment.parent_comment)
-        if (rootComment.comments.length && rootComment.comments.length > 0) {
-          comment.is_mine = true
-          rootComment.comments = [
-            ...rootComment.comments,
-            comment
-          ]
-        } else {
-          return this.refresh()
-        } */
-        /* Then fetch data from DB. */
-        return this.refresh()
-      }
-      /* if (this.post.comments.length && this.post.comments.length > 0) {
+        const rootComment = this.post.comments.find(parent => parent.id === comment.parent_comment)
+        rootComment.comments = [
+          ...rootComment.comments,
+          comment
+        ]
+        // console.log('Not Refreshed.(Comment-Reply)')
+        // return this.refresh()
+      } else {
         // Save the new comment in local first.
-        comment.is_mine = true
         this.post.comments = [
           ...this.post.comments,
           comment
         ]
-      } else {
-        // Then fetch data from DB.
-        return this.refresh()
-      } */
-      return this.refresh()
+        // console.log('Not Refreshed.(Root-Comment)')
+      }
+      // return this.refresh()
     },
 
     async updateComment (update) {
