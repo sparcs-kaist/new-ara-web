@@ -3,7 +3,7 @@ module.exports = {
   env: {
     node: true
   },
-  'extends': [
+  extends: [
     'plugin:vue/recommended',
     '@vue/standard'
   ],
@@ -13,10 +13,13 @@ module.exports = {
     'vue/max-attributes-per-line': [
       'error',
       {
-        singleline: 2,
-      },
+        singleline: 2
+      }
     ],
-    'vue/require-default-prop': false
+    'vue/require-default-prop': 0,
+    'array-bracket-spacing': 0,
+    'vue/no-v-html': 0,
+    'vue/no-template-shadow': 0
   },
   parserOptions: {
     parser: 'babel-eslint'

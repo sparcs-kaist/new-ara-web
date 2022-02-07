@@ -1,6 +1,8 @@
 <template>
   <div id="comments" class="comments">
-    <div class="comments__title">{{ $t('comments') }} {{ commentCount }}</div>
+    <div class="comments__title">
+      {{ $t('comments') }} {{ commentCount }}
+    </div>
 
     <div v-if="!comments" class="comments__container comments__container--empty">
       {{ $t('no-comment') }}

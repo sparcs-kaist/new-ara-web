@@ -1,6 +1,8 @@
 <template>
   <TheLayout>
-    <p class="header side">Project</p>
+    <p class="header side">
+      Project
+    </p>
     <div class="the-makers projects">
       <MakersCard
         v-for="(project, projectIndex) in projects"
@@ -15,13 +17,17 @@
     </div>
 
     <div v-if="projects[selected].description" class="description-wrapper">
-      <p class="header side">Description</p>
+      <p class="header side">
+        Description
+      </p>
       <div class="description side">
         <p>{{ projects[selected].description }}</p>
       </div>
     </div>
 
-    <p class="header side">Member</p>
+    <p class="header side">
+      Member
+    </p>
     <div class="the-makers members">
       <template v-for="position in positions">
         <MakersCard
@@ -41,10 +47,10 @@ import TheLayout from '@/components/TheLayout.vue'
 import MakersCard from '@/components/MakersCard.vue'
 
 const abbr = {
-  'SO': 'SysOp',
-  'PM': 'Project Manager',
-  'DS': 'Designer',
-  'DV': 'Developer'
+  SO: 'SysOp',
+  PM: 'Project Manager',
+  DS: 'Designer',
+  DV: 'Developer'
 }
 const projects = [
   {
@@ -57,7 +63,7 @@ const projects = [
       Internet에 연결된 BBS (Bulletin Board System) 서비스입니다. 이때부터 아라는
       계속해서 리뉴얼되어 왔으며, 현존하는 BBS 서비스 중에서는 가장 오래되었습니다.`,
     members: {
-      'SO': ['cdpark:박종대']
+      SO: ['cdpark:박종대']
     }
   },
   {
@@ -69,7 +75,7 @@ const projects = [
       KAIST 구성원만을 위한 NewsGroup 뿐만 아니라 KAIST 주변의 한국 내 인터넷 사용자
       모두를 위한 NewsGroup 으로서의 역할도 하려고 하였습니다`,
     members: {
-      'SO': [
+      SO: [
         'kaien:박상진', 'godslord:권용철', 'algepher:변창환',
         'neosado:김영준', 'tapung:채주병'
       ]
@@ -84,7 +90,7 @@ const projects = [
       덕분에 Telnet, NNTP 뿐만 아니라 Web 으로도 아라를 이용이 가능해졌습니다.
       또한 파일 첨부기능이 추가되어 학우들이 더 다양한 방식으로 아라를 이용할 수 있었습니다.`,
     members: {
-      'SO': ['airlover:김유승', 'pcpenpal:박용수', 'softdie:김동주']
+      SO: ['airlover:김유승', 'pcpenpal:박용수', 'softdie:김동주']
     }
   },
   {
@@ -97,7 +103,7 @@ const projects = [
       Python을 기반으로 백엔드에서는 SQLAlchemy, 미들웨어로는 Thrift RPC,
       프론트엔드에서는 Django Template Engine 을 사용하였습니다.`,
     members: {
-      'DV': [
+      DV: [
         'serialx:홍성진', 'pipocket:서우석', 'ssaljalu:조준희', 'breadfish:구성모',
         'jcob:조지혁', 'peremen:박신조', 'combacsa:변규홍'
       ]
@@ -114,8 +120,8 @@ const projects = [
       기존 ARAra 엔진 디자인을 새롭게 하고, 동시에 XpressEngine 기반 아라를 개발하려는
       노력이 있었습니다. 또한 RSS 등 사용자들이 필요로 한 기능이 구현되었습니다.`,
     members: {
-      'PM': ['combacsa:변규홍'],
-      'DV': [
+      PM: ['combacsa:변규홍'],
+      DV: [
         'mikkang:김문범', 'reniowood:김진혁', 'harry:이대근', 'jeanclaire:이현진',
         'ssaljalu:조준희', 'anna418:조유정', 'richking:김창하', 'xhark:김재홍',
         'leopine:이가영', 'snogar:차동훈', 'imai:배성경', 'r4t5y6:임규리',
@@ -131,8 +137,8 @@ const projects = [
       `모바일 아라는 아라를 모바일로 이용하는 수요가 늘면서,
       그에 맞게 디자인을 개선시키고 Arara의 엔진 성능을 개선하고자한 프로젝트입니다.`,
     members: {
-      'PM': ['hodduc:이준성'],
-      'DV': [
+      PM: ['hodduc:이준성'],
+      DV: [
         'richking:김창하', 'combasa:변규홍', 'grandmarnier:차준호', 'bbashong:최낙현',
         'panda:조민지', 'elaborate:안병욱', 'penguin:민서영', 'pocari:이경태',
         'zzongaly:정진근'
@@ -143,8 +149,8 @@ const projects = [
     name: '아라리',
     period: '2012~2013',
     members: {
-      'PM': ['zzongaly:정진근'],
-      'DV': [
+      PM: ['zzongaly:정진근'],
+      DV: [
         'bbashong:최낙현', 'undead:이창원', 'boolgom:심규민', 'rodumani:정창제',
         'panda:조민지', 'naldo:박지혁', 'yasik:박중언', 'apple:김영석',
         'veritas:정진훈', 'jjus:김지현', 'alice:문슬기', 'penguin:민서영'
@@ -155,8 +161,8 @@ const projects = [
     name: '아라2',
     period: '2013~2014',
     members: {
-      'PM': ['serialx:홍성진'],
-      'DV': [
+      PM: ['serialx:홍성진'],
+      DV: [
         'hodduc:이준성', 'raon:김강인', 'bbashong:최낙현', 'richking:김창하'
       ]
     }
@@ -170,10 +176,10 @@ const projects = [
       주제에 대해 채팅을 나눌 수 있는 '불판', 동아리나 자치단체, 소모임을 위한 '그룹게시판',
       익명 글작성, 포인트 제도 등 재미있는 기능들이 기획되고 개발되었습니다.`,
     members: {
-      'PM': [
+      PM: [
         'story:김동화', 'kyeome:김태겸'
       ],
-      'DV': [
+      DV: [
         'kanon:김민수', 'apple:김영석', 'zealot:한승현', 'undead:이창원',
         'mandu:황태현', 'samjo:조성원', 'suckzoo:홍석주', 'luan:이상국',
         'george:조형준', 'jara:이문영'
@@ -191,18 +197,18 @@ const projects = [
       유지했으며, elasticsearch를 도입해 발전된 검색기능을 선보였습니다.
       또한 아라의 아이덴티티가 잘 드러나도록 홈페이지 디자인을 개선하였습니다.`,
     members: {
-      'PM': [
+      PM: [
         ['jessie:윤지수', 2021], ['victory:김주연', 2020], ['leo:정진우', 2019],
         ['yujingaya:김유진', 2018], ['swan:지수환', 2018], ['raon:김강인', 2017]
       ],
-      'DV': [
+      DV: [
         'ivy:이융희', 'jungnoh:노정훈', 'water:김윤수', 'triangle:주예준',
         'hanski:한석휘', 'idev:이재현', 'doolly:김제윤', 'nenw:김요한', 'fi:김도현',
         'james:문재호', 'busan:안재웅', 'kidevelop:함종현', 'holymolly:김태원',
         'gunwoo:김건우', 'todo:김동관', 'his:황인승', 'rongrong:이승민',
         'leesia:강현우', 'seol:설윤아', 'youns:최윤서', 'appleseed:강찬규'
       ],
-      'DS': [
+      DS: [
         'cheddar:최다은', 'stitch:이채영', 'zero:임현정', 'luny:김나영'
       ]
     }

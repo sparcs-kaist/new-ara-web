@@ -8,7 +8,8 @@
         {{ $t('page-not-found') }}
       </div>
       <router-link
-        :to="{ name: 'home' }">
+        :to="{ name: 'home' }"
+      >
         <div class="not-found-go-to-home">
           {{ $t('go-home') }}
         </div>

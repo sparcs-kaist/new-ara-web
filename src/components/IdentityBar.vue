@@ -13,8 +13,12 @@
             {{ $t("subtitle") }}
           </div>
         </div>
-        <button @click="installPWA">{{ $t("install") }}</button>
-        <button @click="closeInstall">{{ $t("close") }}</button>
+        <button @click="installPWA">
+          {{ $t("install") }}
+        </button>
+        <button @click="closeInstall">
+          {{ $t("close") }}
+        </button>
       </div>
     </transition>
   </div>

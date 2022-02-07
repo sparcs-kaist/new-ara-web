@@ -1,5 +1,5 @@
 <template>
-  <div v-if="sideArticlesEnabled" class="post-navigation" >
+  <div v-if="sideArticlesEnabled" class="post-navigation">
     <BoardItem
       v-if="post.side_articles.after"
       :post="post.side_articles.after"

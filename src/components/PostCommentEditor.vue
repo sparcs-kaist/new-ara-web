@@ -19,9 +19,9 @@
       <div class="comment-editor__content">
         <textarea
           ref="input"
+          v-model="content"
           :placeholder="$t('placeholder')"
           :style="{ height }"
-          v-model="content"
           class="comment-editor__editor"
           rows="1"
           @keydown.shift.enter.prevent="saveComment"

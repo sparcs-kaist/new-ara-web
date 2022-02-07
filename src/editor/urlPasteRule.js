@@ -10,8 +10,8 @@ export function urlPasteRule (type, getAttrs) {
       if (child.isText) {
         const { text } = child
         let pos = 0
-        let matches = urlParser(text, false, true)
-        for (let match of matches) {
+        const matches = urlParser(text, false, true)
+        for (const match of matches) {
           if (match[0]) {
             const start = match.index
             const end = start + match[0].length

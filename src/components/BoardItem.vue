@@ -36,7 +36,7 @@
           <div v-if="post.comment_count !== 0" class="board-item__comment">
             ({{ elideText(post.comment_count) }})
           </div>
-          <div v-if="post.read_status === 'N' || post.read_status === 'U'" class="board-item__read-status" >
+          <div v-if="post.read_status === 'N' || post.read_status === 'U'" class="board-item__read-status">
             {{ post.read_status === 'N' ? 'new' : 'up' }}
           </div>
         </div>
@@ -47,14 +47,17 @@
             {{ $t('views') + " " + elideText(post.hit_count) }}
           </div>
           <div class="board-item__vote">
-            <div class="board-item__vote__pos">+{{ post.positive_vote_count }}</div>
-            <div class="board-item__vote__neg">-{{ post.negative_vote_count }}</div>
+            <div class="board-item__vote__pos">
+              +{{ post.positive_vote_count }}
+            </div>
+            <div class="board-item__vote__neg">
+              -{{ post.negative_vote_count }}
+            </div>
           </div>
 
           <span :class="hidden_grey" class="board-item__author__mobile is-hidden-tablet">
             {{ post.created_by.profile.nickname }}
           </span>
-
         </div>
       </div>
     </div>
@@ -67,16 +70,11 @@
 
 <script>
 import elideText from '@/utils/elideText'
-import LikeButton from '@/components/LikeButton.vue'
 import i18n from '@/i18n'
 import { timeago } from '@/helper.js'
 
 export default {
   name: 'BoardItem',
-
-  components: {
-    LikeButton
-  },
 
   props: {
     post: {

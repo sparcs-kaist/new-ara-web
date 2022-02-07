@@ -2,8 +2,8 @@
   <div class="board-table">
     <div v-for="post in posts" :key="post.id">
       <BoardItem
-        :post="post"
         :key="post.id"
+        :post="post"
         :from-query="fromQuery"
       />
       <hr style="margin: 0">

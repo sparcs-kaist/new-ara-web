@@ -36,7 +36,7 @@ export const votePost = (postId, action) =>
   http.post(`articles/${postId}/${action}/`)
     .then(({ data }) => data)
 
-export const fetchComment = ({commentId, context}) =>
+export const fetchComment = ({ commentId, context }) =>
   http.get(`comments/${commentId}/?${queryBuilder(context)}`)
     .then(({ data }) => data)
 

@@ -16,7 +16,9 @@
       <h3 class="noti__title">
         {{ $t(isSubcomment ? 'comment-title' : 'article-title') }}
       </h3>
-      <p class="noti__content">{{ notification.content }}</p>
+      <p class="noti__content">
+        {{ notification.content }}
+      </p>
       <div class="noti__related">
         <div class="noti__subcomment-container">
           <div>{{ $t('article') }}: [{{ boardName }}] {{ relatedArticle }}</div>
@@ -27,10 +29,14 @@
             chat
           </i>
         </div>
-        <div v-if="isSubcomment">{{ $t('comment') }}: {{ relatedComment }}</div>
+        <div v-if="isSubcomment">
+          {{ $t('comment') }}: {{ relatedComment }}
+        </div>
       </div>
     </div>
-    <p class="noti__time">{{ timeago(notification.created_at, $i18n.locale) }}</p>
+    <p class="noti__time">
+      {{ timeago(notification.created_at, $i18n.locale) }}
+    </p>
   </router-link>
 </template>
 
