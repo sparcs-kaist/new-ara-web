@@ -40,33 +40,35 @@
   </router-link>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { timeago } from '@/helper'
+import { Notification } from '@/types'
 
-export default {
+export default Vue.extend({
   name: 'Notification',
 
   props: {
     notification: {
-      type: Object,
+      type: Object as () => Notification,
       required: true
     }
   },
 
   computed: {
-    isRead () {
+    isRead (): boolean {
       return this.notification.is_read
     },
-    isSubcomment () {
+    isSubcomment (): boolean {
       return this.notification.type === 'comment_commented'
     },
-    relatedArticle () {
+    relatedArticle (): string {
       return this.notification.related_article.title
     },
-    relatedComment () {
-      return this.notification.related_comment.content
+    relatedComment (): string | undefined {
+      return this.notification.related_comment?.content
     },
-    boardName () {
+    boardName (): string {
       return this.$store.getters.getNameById(
         this.notification.related_article.parent_board,
         this.$i18n.locale
@@ -75,7 +77,7 @@ export default {
   },
 
   methods: { timeago }
-}
+})
 </script>
 
 <i18n>
