@@ -19,7 +19,8 @@ export default {
     window.addEventListener('beforeinstallprompt', e => {
       e.preventDefault()
       // Stash the event so it can be triggered later.
-      this.$store.commit('setPWAPrompt', e)
+      // TODO: disable PWA temporary: not to show in n days
+      // this.$store.commit('setPWAPrompt', e)
     })
     window.addEventListener('appinstalled', () => {
       this.$store.commit('setPWAPrompt', null)
