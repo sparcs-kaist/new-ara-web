@@ -4,7 +4,7 @@
     <TheAlertDialogs />
     <div class="container">
       <div :class="{ 'default-columns': isColumnLayout }" class="columns">
-        <slot name="aside"/>
+        <slot name="aside" />
         <template v-if="isColumnLayout">
           <div class="column">
             <slot />
@@ -13,7 +13,7 @@
         <template v-else>
           <slot />
         </template>
-        <slot name="aside-right"/>
+        <slot name="aside-right" />
       </div>
     </div>
   </div>

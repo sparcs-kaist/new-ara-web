@@ -56,7 +56,7 @@ export default {
       }) // !주의: next는 한번만 호출돼야 함
     // 기존 글을 수정하는 경우
     } else {
-      const [ post ] = await fetchWithProgress([ fetchPost({ postId, context: {override_hidden: true} }) ], 'write-failed-fetch')
+      const [ post ] = await fetchWithProgress([ fetchPost({ postId, context: { override_hidden: true } }) ], 'write-failed-fetch')
       next(vm => {
         document.title = vm.$t('document-title.revise')
         vm.post = post

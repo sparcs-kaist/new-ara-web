@@ -3,10 +3,10 @@
     :class="{ 'board--sidebar': sidebar }"
     class="board"
   >
-    <div class="red-box"/>
+    <div class="red-box" />
     <h2 class="board__name">
       <span>
-        <slot/>
+        <slot />
       </span>
       <router-link
         v-if="href"

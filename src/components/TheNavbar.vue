@@ -10,13 +10,15 @@
         <div :class="{ 'navbar-active': isMobileMenuActive }" class="navbar-brand">
           <router-link
             :to="{ name: 'home' }"
-            class="navbar-item navbar-ara">
+            class="navbar-item navbar-ara"
+          >
             <img src="@/assets/ServiceAra.svg" class="ara-logo">
           </router-link>
 
           <router-link
             :to="{ name: 'write' }"
-            class="navbar-item navbar-item--mobile-write is-hidden-desktop">
+            class="navbar-item navbar-item--mobile-write is-hidden-desktop"
+          >
             <i class="material-icons write-icon">create</i>
           </router-link>
 
@@ -26,7 +28,8 @@
             role="button"
             aria-label="menu"
             aria-expanded="false"
-            @click="toggleMobileMenu">
+            @click="toggleMobileMenu"
+          >
             <span aria-hidden="true" />
             <span aria-hidden="true" />
             <span aria-hidden="true" />
@@ -93,7 +96,8 @@
               <span
                 :class="{'unread-noti': isUnreadNotificationExist}"
                 data-badge=" "
-                class="icon">
+                class="icon"
+              >
                 <i class="material-icons">notifications</i>
               </span>
 
@@ -193,7 +197,7 @@ export default {
 
   async beforeMount () {
     // Get only first page of notification.
-    const query = {...this.$route.query, page: '1'}
+    const query = { ...this.$route.query, page: '1' }
     const [ notifications ] = await fetchWithProgress([ fetchNotifications({ query }) ], 'notifications-failed-fetch')
     this.notifications = notifications.results
     if (this.notifications.some(noti => !noti.is_read)) {

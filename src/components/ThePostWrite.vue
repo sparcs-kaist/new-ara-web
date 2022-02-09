@@ -1,10 +1,12 @@
 <template>
   <div class="write">
-    <h1 class="write__title"> {{ writeTitle }} </h1>
+    <h1 class="write__title">
+      {{ writeTitle }}
+    </h1>
     <hr>
 
     <div class="write__row">
-      <i v-if="isCategoryWarning || isBoardWarning" class="material-icons write__warning" >
+      <i v-if="isCategoryWarning || isBoardWarning" class="material-icons write__warning">
         warning
       </i>
 
@@ -43,14 +45,17 @@
             >
               {{ $t('input-category') }}
             </option>
-            <option v-if="boardId" value="">{{ $t('no-category') }}</option>
+            <option v-if="boardId" value="">
+              {{ $t('no-category') }}
+            </option>
 
             <template v-if="categoryList.length">
               <option
                 v-for="category in categoryList"
                 :key="category.id"
                 :selected="categoryId === category.id"
-                :value="category.id">
+                :value="category.id"
+              >
                 {{ category[`${$i18n.locale}_name`] }}
               </option>
             </template>

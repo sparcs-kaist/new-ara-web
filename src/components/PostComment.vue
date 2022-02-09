@@ -71,7 +71,7 @@
         </div>
 
         <div class="comment__content">
-          <div v-html="content"/>
+          <div v-html="content" />
 
           <div v-if="isHidden && canOveride">
             <button class="button" @click="$emit('fetch-comment', { commentId: comment.id })">
@@ -251,9 +251,9 @@ export default {
       this.$emit('delete')
     },
     async reportComment () {
-      const {result, selection} = await this.$store.dispatch('dialog/report', this.$t('confirm-report'))
+      const { result, selection } = await this.$store.dispatch('dialog/report', this.$t('confirm-report'))
       if (!result) return
-      let typeReport = 'others'
+      const typeReport = 'others'
       let reasonReport = ''
       for (const key in selection) {
         if (selection[key]) {

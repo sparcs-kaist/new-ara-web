@@ -15,10 +15,9 @@
         </span>
       </template>
 
-      <template #option >
+      <template #option>
         <template v-if="topics && topics.length > 0">
           <div class="dropdown is-hoverable is-right board__filter">
-
             <div class="dropdown-trigger">
               <a
                 class="board__filter-trigger"

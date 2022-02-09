@@ -5,7 +5,7 @@ export const fetchBoardList = () =>
   http.get('boards/')
     .then(({ data }) => data)
 
-export const fetchArticles = ({boardId, query, page, pageSize, topicId, username} = {}) => {
+export const fetchArticles = ({ boardId, query, page, pageSize, topicId, username } = {}) => {
   const context = {}
   if (boardId) {
     if (Array.isArray(boardId)) context.parent_board__in = boardId.join(',')

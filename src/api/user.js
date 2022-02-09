@@ -31,7 +31,7 @@ export const blockUser = (userId) =>
   http.post('/blocks/', { user: userId })
 
 export const unblockUser = (userId) =>
-  http.post(`/blocks/without_id/`, { blocked: userId })
+  http.post('/blocks/without_id/', { blocked: userId })
 
 export const fetchNotifications = ({ query: { page } }) => {
   const context = {}

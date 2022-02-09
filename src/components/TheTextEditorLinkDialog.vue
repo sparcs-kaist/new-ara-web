@@ -6,17 +6,17 @@
 
     <div class="link-dialog__section">
       <input
+        v-model="url"
         :class="{ 'is-empty': url.length === 0 }"
         :placeholder="$t('link-url')"
-        v-model="url"
         class="input"
         type="text"
       >
 
       <input
+        v-model="title"
         :class="{ 'is-empty': title.length === 0 }"
         :placeholder="$t('link-title')"
-        v-model="title"
         class="input"
         type="text"
       >

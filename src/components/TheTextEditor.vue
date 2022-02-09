@@ -319,7 +319,7 @@ export default {
       }
     },
     removeImageByFile (file) {
-      let imagePositions = []
+      const imagePositions = []
 
       this.editor.state.doc.descendants((node, pos) => {
         if (node.type.name !== 'attachmentImage') return true
@@ -349,7 +349,7 @@ export default {
 
         if (newItem) {
           node.attrs['data-attachment'] = newItem.id
-          node.attrs['src'] = newItem.file // TODO is it correct?
+          node.attrs.src = newItem.file // TODO is it correct?
         }
       })
     }

@@ -33,11 +33,11 @@ export default {
       const rawTitle = this.node.attrs.title
       if (!rawTitle || rawTitle.replace(' ', '').length === 0) return 'URL'
 
-      let match = urlParser(rawTitle, true)
+      const match = urlParser(rawTitle, true)
       if (match) {
-        let domains = match[1].split('.')
+        const domains = match[1].split('.')
         domains.pop()
-        for (let i of domains.reverse()) {
+        for (const i of domains.reverse()) {
           if (i.length > 2) return i.toUpperCase()
         }
       }

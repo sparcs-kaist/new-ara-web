@@ -20,7 +20,7 @@ export default {
       const dialog = state.dialogs[index]
       if (dialog.callback) {
         if (dialog.type === 'report') {
-          dialog.callback({result: payload.value, selection: payload.chip_selection})
+          dialog.callback({ result: payload.value, selection: payload.chip_selection })
         } else {
           dialog.callback(payload.value)
         }

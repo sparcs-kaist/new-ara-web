@@ -1,6 +1,6 @@
 module.exports = {
   presets: [
-    [ '@vue/app' ], [ '@babel/preset-env' ]
+    [ '@vue/cli-plugin-babel/preset' ], [ '@babel/preset-env' ]
   ],
   plugins: [ '@babel/plugin-transform-runtime' ]
 }
