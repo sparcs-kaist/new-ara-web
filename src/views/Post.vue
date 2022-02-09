@@ -196,17 +196,13 @@ export default {
           ...rootComment.comments,
           comment
         ]
-        // console.log('Not Refreshed.(Comment-Reply)')
-        // return this.refresh()
       } else {
         // Save the new comment in local first.
         this.post.comments = [
           ...this.post.comments,
           comment
         ]
-        // console.log('Not Refreshed.(Root-Comment)')
       }
-      // return this.refresh()
     },
 
     async updateComment (update) {
