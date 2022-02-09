@@ -24,7 +24,7 @@
         <div class="board-item__title-wrapper">
           <div
             :title="post.title"
-            :class="hidden_grey"
+            :class="{ 'has-text-grey-light': post.is_hidden }"
             class="board-item__title"
           >
             <span v-if="post.parent_topic" class="board-item__topic">
@@ -36,7 +36,16 @@
           <div v-if="post.comment_count !== 0" class="board-item__comment">
             ({{ elideText(post.comment_count) }})
           </div>
-          <div v-if="post.read_status === 'N' || post.read_status === 'U'" class="board-item__read-status">
+          <i v-if="hasImage" class="material-icons-outlined">
+            image
+          </i>
+          <i v-if="hasOtherAttachment" class="material-icons-outlined">
+            attach_file
+          </i>
+          <div
+            v-if="post.read_status === 'N' || post.read_status === 'U'"
+            class="board-item__read-status"
+          >
             {{ post.read_status === 'N' ? 'new' : 'up' }}
           </div>
         </div>
@@ -55,30 +64,38 @@
             </div>
           </div>
 
-          <span :class="hidden_grey" class="board-item__author__mobile is-hidden-tablet">
+          <span
+            :class="{ 'has-text-grey-light': post.is_hidden }"
+            class="board-item__author__mobile is-hidden-tablet"
+          >
             {{ post.created_by.profile.nickname }}
           </span>
         </div>
       </div>
     </div>
 
-    <span :class="hidden_grey" class="board-item__author is-hidden-mobile">
+    <span
+      :class="{ 'has-text-grey-light': post.is_hidden }"
+      class="board-item__author is-hidden-mobile"
+    >
       {{ post.created_by.profile.nickname }}
     </span>
   </router-link>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import elideText from '@/utils/elideText'
 import i18n from '@/i18n'
 import { timeago } from '@/helper.js'
+import { Post } from '@/types'
 
-export default {
+export default Vue.extend({
   name: 'BoardItem',
 
   props: {
     post: {
-      type: Object,
+      type: Object as () => Post,
       required: true
     },
     fromQuery: {
@@ -91,14 +108,17 @@ export default {
   },
 
   computed: {
-    title () {
-      if (this.post.is_hidden) return i18n.t(this.post.why_hidden[0])
+    hasImage (): boolean {
+      return this.post.attachment_type === 'IMAGE' || this.post.attachment_type === 'BOTH'
+    },
+    hasOtherAttachment (): boolean {
+      return this.post.attachment_type === 'NON_IMAGE' || this.post.attachment_type === 'BOTH'
+    },
+    title (): string {
+      if (this.post.is_hidden) return i18n.t(this.post.why_hidden[0]).toString()
       return this.post.title
     },
-    hidden_grey () {
-      return this.post.is_hidden ? 'has-text-grey-light' : ''
-    },
-    hidden_icon () {
+    hidden_icon (): string {
       switch (this.post.why_hidden[0]) {
         case 'ADULT_CONTENT':
           return 'visibility_off'
@@ -112,7 +132,7 @@ export default {
           return 'help_outline'
       }
     },
-    timeago () {
+    timeago (): string {
       return timeago(this.post.created_at, this.$i18n.locale)
     }
   },
@@ -120,7 +140,7 @@ export default {
   methods: {
     elideText: elideText(2)
   }
-}
+})
 </script>
 
 <i18n>
@@ -196,6 +216,18 @@ en:
     display: flex;
     align-items: center;
     padding-right: 20px;
+
+    i {
+      height: 17px;
+      width: 17px;
+      line-height: 17px;
+      font-size: 17px;
+      color: var(--grey-400);
+
+      margin: {
+        right: 3px;
+      }
+    }
   }
 
   &__title {
@@ -278,5 +310,4 @@ en:
   }
 
 }
-
 </style>
