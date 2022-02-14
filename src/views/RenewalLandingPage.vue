@@ -15,12 +15,15 @@
         <div v-if="!helpPopup">
           <img src="@/assets/ServiceAra.svg" class="landing__logo">
 
-          <h3 class="landing__title">{{ $t('title') }}</h3>
+          <h3 class="landing__title">
+            {{ $t('title') }}
+          </h3>
 
           <div class="landing-section landing-section--relaxed">
             <p>{{ $t('from-oct') }}</p>
 
-            <p>{{ $t('notice') }}
+            <p>
+              {{ $t('notice') }}
               <span class="red">{{ $t('highlight') }}</span>
               {{ $t('let-access') }}
             </p>
@@ -31,7 +34,9 @@
             :key="key"
             class="landing-section"
           >
-            <h4 class="landing-section__title"> {{ section.title }} </h4>
+            <h4 class="landing-section__title">
+              {{ section.title }}
+            </h4>
 
             <div
               v-for="(content, i) in section.contents"
@@ -101,7 +106,7 @@ export default {
 
   computed: {
     sections () {
-      return this.$i18n.messages[this.$i18n.locale]['sections']
+      return this.$i18n.messages[this.$i18n.locale].sections
     }
   },
 

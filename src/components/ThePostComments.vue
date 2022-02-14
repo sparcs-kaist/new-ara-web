@@ -1,6 +1,8 @@
 <template>
   <div id="comments" class="comments">
-    <div class="comments__title">{{ $t('comments') }} {{ commentCount }}</div>
+    <div class="comments__title">
+      {{ $t('comments') }} {{ commentCount }}
+    </div>
 
     <div v-if="!comments" class="comments__container comments__container--empty">
       {{ $t('no-comment') }}
@@ -46,6 +48,7 @@ export default {
       type: Object,
       required: true
     },
+    anonymousProfile: Object,
     comments: Array
   },
 
@@ -53,31 +56,6 @@ export default {
     commentCount () {
       if (!this.post || !this.comments) return 0
       return this.post.comment_count
-    },
-    anonymousProfile () {
-      if (this.post.is_anonymous) {
-        // Get my anonymous nickname from post's comments
-        for (const comment of this.post.comments) {
-          if (comment.is_mine) {
-            return {
-              nickname: comment.created_by.username,
-              profileImage: comment.created_by.profile.picture
-            }
-          }
-          for (const replyComment of comment.comments) {
-            if (replyComment.is_mine) {
-              return {
-                nickname: replyComment.created_by.username,
-                profileImage: replyComment.created_by.profile.picture
-              }
-            }
-          }
-        }
-      }
-      return {
-        nickname: this.$t('anonymous'),
-        profileImage: this.post.created_by?.profile.picture
-      }
     }
   }
 }

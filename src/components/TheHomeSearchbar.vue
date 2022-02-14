@@ -53,7 +53,8 @@
               query: keyword[`${$i18n.locale}_name`]
             }
           }"
-          class="keywords__keyword">
+          class="keywords__keyword"
+        >
           {{ keyword[`${$i18n.locale}_name`] }}
         </router-link>
       </div>

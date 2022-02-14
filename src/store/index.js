@@ -35,7 +35,7 @@ export default new Vuex.Store({
       const board = boardList.find(board => board.id === id)
       return board ? board[`${locale}_name`] : i18n.t('all', locale)
     },
-    PWAPrompt: ({PWAPrompt}) => {
+    PWAPrompt: ({ PWAPrompt }) => {
       return PWAPrompt
     }
   },

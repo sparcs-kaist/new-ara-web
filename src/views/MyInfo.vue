@@ -11,7 +11,7 @@
           </div>
 
           <div class="box">
-            <div class="redbox"/>
+            <div class="redbox" />
             <h1 class="box__title">
               {{ $t('ranking-title') }}
             </h1>
@@ -52,8 +52,10 @@
           </div>
 
           <div class="box">
-            <div class="redbox"/>
-            <h1 class="box__title">{{ $t('settings-title') }}</h1>
+            <div class="redbox" />
+            <h1 class="box__title">
+              {{ $t('settings-title') }}
+            </h1>
             <h2 class="box__subtitle">
               {{ $t('settings-subtitle') }}
             </h2>
@@ -74,7 +76,7 @@
                 <div class="settings__container">
                   <span class="label">{{ $t('settings-social') }}</span>
                   <div @click="updateSetting('social')">
-                    <i v-if="user.social" class="material-icons toggle-on" >
+                    <i v-if="user.social" class="material-icons toggle-on">
                       toggle_on
                     </i>
                     <i v-else class="material-icons">
@@ -87,11 +89,11 @@
           </div>
 
           <div class="box">
-            <div class="redbox"/>
+            <div class="redbox" />
             <h1 class="box__title">
               {{ $t('blocked-title') }}
             </h1>
-            <h2 class="box__subtitle" v-html="$t('blocked-subtitle', { user: user.nickname })"/>
+            <h2 class="box__subtitle" v-html="$t('blocked-subtitle', { user: user.nickname })" />
 
             <div class="box__container">
               <ul v-if="blocks && blocks.results && blocks.results.length > 0" class="blocked">
@@ -153,7 +155,9 @@
 
         <div class="nickname-container">
           <div v-if="!isNicknameEditable" class="row">
-            <h1 class="nickname">{{ user.nickname }}</h1>
+            <h1 class="nickname">
+              {{ user.nickname }}
+            </h1>
             <a style="margin-left: 0.5rem;" @click="toggleNicknameInput">
               <i class="material-icons">create</i>
             </a>
@@ -165,7 +169,8 @@
                 :class="{ 'is-loading': updating }"
                 class="button"
                 style="margin-left: 0.8rem; color: var(--theme-400)"
-                @click="toggleNicknameInput(true)">
+                @click="toggleNicknameInput(true)"
+              >
                 {{ $t('save') }}
               </button>
               <button
@@ -177,7 +182,9 @@
               </button>
             </div>
           </div>
-          <h2 class="email">{{ user.email ? user.email : $t('empty-email') }}</h2>
+          <h2 class="email">
+            {{ user.email ? user.email : $t('empty-email') }}
+          </h2>
         </div>
       </div>
 

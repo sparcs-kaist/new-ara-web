@@ -7,7 +7,9 @@
     class="attachments"
   >
     <div class="attachments__header">
-      <h2 class="attachments__title"> {{ $t('upload') }} </h2>
+      <h2 class="attachments__title">
+        {{ $t('upload') }}
+      </h2>
       <button class="attachments__upload button" @click="openUpload">
         {{ $t('upload-button') }}
       </button>

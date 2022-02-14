@@ -1,14 +1,14 @@
 <template>
   <div>
     <splide
-      :options="primaryOptions"
       :key="$i18n.locale"
+      :options="primaryOptions"
       class="the-organizations organizations-padding"
     >
       <splide-slide
         v-for="organization in organizations"
-        v-bind="organization"
         :key="organization.id"
+        v-bind="organization"
       >
         <OrganizationCard
           :key="organization.id"
@@ -98,7 +98,7 @@ export default {
   },
 
   created () {
-    for (let i of [[1470, 8], [1280, 7], [1000, 6], [767, 5], [590, 4], [480, 4], [435, 3]]) {
+    for (const i of [[1470, 8], [1280, 7], [1000, 6], [767, 5], [590, 4], [480, 4], [435, 3]]) {
       this.primaryOptions.breakpoints[i[0].toString()] = {
         perPage: i[1],
         padding: {

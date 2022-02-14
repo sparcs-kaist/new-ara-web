@@ -5,7 +5,9 @@
     </div>
 
     <div class="alert-dialog__content">
-      <div class="content-text">{{ dialog.text }}</div>
+      <div class="content-text">
+        {{ dialog.text }}
+      </div>
     </div>
 
     <div v-if="dialog.type === 'report'" class="alert-dialog__chips">
