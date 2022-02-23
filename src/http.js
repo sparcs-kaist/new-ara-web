@@ -45,6 +45,9 @@ instance.interceptors
           router.push('/404')
         } else if (err.response.status === 418) {
           router.push('/tos')
+        } else if (err.response.status === 410) {
+          // Deleted post
+          router.push('/410')
         }
 
         if (typeof err.response.data === 'object') {
