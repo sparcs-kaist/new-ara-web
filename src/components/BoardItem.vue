@@ -138,6 +138,7 @@ export default Vue.extend({
     new_update (): boolean {
       // not over 24 hours after last update of the post.
       const now = new Date().getTime()
+      const createdAt:number = new Date(this.post.created_at).getTime()
       let lastCommentUp:number
       let lastContentUp:number
       if (this.post.commented_at == null) {
@@ -151,7 +152,8 @@ export default Vue.extend({
         lastContentUp = new Date(this.post.commented_at).getTime()
       }
       const lastUp = (lastCommentUp > lastContentUp) ? lastCommentUp : lastContentUp
-      const notOver24h : boolean = (now - lastUp) / (1000 * 3600) <= 24
+      const notOver24h : boolean = ((now - lastUp) / (1000 * 3600) <= 24) || (now - createdAt) / (1000 * 3600) <= 24
+      console.log(((this.post.read_status === 'N' || this.post.read_status === 'U') && notOver24h))
       return ((this.post.read_status === 'N' || this.post.read_status === 'U') && notOver24h)
     }
   },
