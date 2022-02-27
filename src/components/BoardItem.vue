@@ -153,7 +153,6 @@ export default Vue.extend({
       }
       const lastUp = (lastCommentUp > lastContentUp) ? lastCommentUp : lastContentUp
       const notOver24h : boolean = ((now - lastUp) / (1000 * 3600) <= 24) || (now - createdAt) / (1000 * 3600) <= 24
-      console.log(((this.post.read_status === 'N' || this.post.read_status === 'U') && notOver24h))
       return ((this.post.read_status === 'N' || this.post.read_status === 'U') && notOver24h)
     }
   },
