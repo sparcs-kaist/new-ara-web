@@ -43,7 +43,7 @@
             attach_file
           </i>
           <div
-            v-if="post.read_status === 'N' || post.read_status === 'U'"
+            v-if="new_update"
             class="board-item__read-status"
           >
             {{ post.read_status === 'N' ? 'new' : 'up' }}
@@ -134,6 +134,26 @@ export default Vue.extend({
     },
     timeago (): string {
       return timeago(this.post.created_at, this.$i18n.locale)
+    },
+    new_update (): boolean {
+      // not over 24 hours after last update of the post.
+      const now = new Date().getTime()
+      const createdAt:number = new Date(this.post.created_at).getTime()
+      let lastCommentUp:number
+      let lastContentUp:number
+      if (this.post.commented_at == null) {
+        lastCommentUp = 0
+      } else {
+        lastCommentUp = new Date(this.post.commented_at).getTime()
+      }
+      if (this.post.content_updated_at == null) {
+        lastContentUp = 0
+      } else {
+        lastContentUp = new Date(this.post.commented_at).getTime()
+      }
+      const lastUp = (lastCommentUp > lastContentUp) ? lastCommentUp : lastContentUp
+      const notOver24h : boolean = ((now - lastUp) / (1000 * 3600) <= 24) || (now - createdAt) / (1000 * 3600) <= 24
+      return ((this.post.read_status === 'N' || this.post.read_status === 'U') && notOver24h)
     }
   },
 
