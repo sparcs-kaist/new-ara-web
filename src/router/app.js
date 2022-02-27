@@ -9,6 +9,7 @@ import Home from '@/views/Home.vue'
 import NotFound from '@/views/NotFound.vue'
 import RenewalLandingPage from '@/views/RenewalLandingPage.vue'
 import Makers from '@/views/Makers.vue'
+import Deleted from '@/views/Deleted.vue'
 import { authGuard } from './auth.js'
 import { readNotification } from '@/api/user.js'
 
@@ -66,6 +67,11 @@ export default [
     path: '/404',
     name: 'not-found',
     component: NotFound
+  },
+  {
+    path: '/410',
+    name: 'deleted',
+    component: Deleted
   },
   {
     path: '/',

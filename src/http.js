@@ -5,11 +5,11 @@ import { getValidatorError } from '@/helper'
 
 const apiUrl = (function () {
   if (process.env.VUE_APP_API_MODE === 'development') {
-    return 'https://newara.dev.sparcs.org'
+    return 'https://newara.dev.sparcs.org' // if local, use 'http://127.0.0.1:9000'
   } else if (process.env.NODE_ENV === 'production') {
     return 'https://newara.sparcs.org'
   } else if (process.env.NODE_ENV === 'development') {
-    return 'https://newara.dev.sparcs.org'
+    return 'https://newara.dev.sparcs.org' // if local, use 'http://127.0.0.1:9000'
   } else {
     throw Error('Unknown NODE_ENV')
   }
@@ -45,6 +45,9 @@ instance.interceptors
           router.push('/404')
         } else if (err.response.status === 418) {
           router.push('/tos')
+        } else if (err.response.status === 410) {
+          // Deleted post
+          router.push('/410')
         }
 
         if (typeof err.response.data === 'object') {
