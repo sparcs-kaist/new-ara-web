@@ -1,5 +1,17 @@
 <template>
   <div class="board">
+    <div class="board__banner">
+      <!-- For html banner support.(ads or other special banners)-->
+      <div v-html="direct_html" />
+      <div v-if="!direct_html">
+        <h1 class="board__banner__name">
+          {{ bannerName }}
+        </h1>
+        <p class="board__banner__detail">
+          {{ bannerDetail }}
+        </p>
+      </div>
+    </div>
     <div class="board__header">
       <h1 v-if="!simplify" class="board__name">
         {{ queryTitle }}
@@ -83,6 +95,12 @@ export default {
       if (this.$route.query.query) { return this.$t('search', { title: this.title, query: this.$route.query.query }) }
 
       return this.title
+    },
+    bannerName () {
+      return 'SampleBanner'
+    },
+    bannerDetail () {
+      return 'SampleBannerDetail\nSampleBannerDetail2ndline'
     }
   }
 }
@@ -110,6 +128,15 @@ en:
     display: flex;
     margin-top: 20px;
     width: 100%;
+  }
+
+  &__banner{
+    text-align: center;
+    max-height: 300px;
+    max-width: 100%;
+    &__detail{
+      white-space: pre-wrap;
+    }
   }
 
   &__name {
