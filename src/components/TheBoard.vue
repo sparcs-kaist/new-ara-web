@@ -3,7 +3,7 @@
     <div class="board__banner">
       <!-- For html banner support.(ads or other special banners)-->
       <div v-html="direct_html" />
-      <div v-if="!direct_html">
+      <div v-if="!direct_html" class="board__banner__simple">
         <h1 class="board__banner__name">
           {{ bannerName }}
         </h1>
@@ -97,10 +97,10 @@ export default {
       return this.title
     },
     bannerName () {
-      return 'SampleBanner'
+      return '카이스트 신문고'
     },
     bannerDetail () {
-      return 'SampleBannerDetail\nSampleBannerDetail2ndline'
+      return '이 게시판은 교내 구성원들이 실명으로 학교에 의견을 제시하는 게시판입니다.\n투명하고 책임있는 의견 공유를 위해 의견 작성 시 본명이 공개되는 점 유의 바랍니다.'
     }
   }
 }
@@ -131,11 +131,34 @@ en:
   }
 
   &__banner{
+    position:relative;
     text-align: center;
-    max-height: 300px;
-    max-width: 100%;
+    height: 160px;
+    width: 100%;
+    border-radius:10px;
+    background-color:#333333;
+    color: #EEEEEE;
+    margin-bottom: 1rem;
+    &__simple{
+      width:100%;
+      position:absolute;
+      left:50%; top:50%;
+      transform: translate(-50%, -50%);
+    }
+    &__name{
+      font-size: 2.5rem;
+      @include breakPoint(mobile) {
+        font-size: 2rem;
+      }
+      font-weight: 700;
+    }
     &__detail{
       white-space: pre-wrap;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      @include breakPoint(mobile) {
+        font-size: 0.7rem;
+      }
     }
   }
 
