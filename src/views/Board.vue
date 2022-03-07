@@ -246,6 +246,7 @@ en:
 
   &__filter-menu-tags {
     display: flex;
+    margin-bottom: 0.6rem;
   }
 
   &__filter-item {
@@ -269,6 +270,7 @@ en:
     padding-left: 0.40rem;
     padding-right: 0.40rem;
     border-right: 1px solid;
+    font-size: 0.8rem;
     border-color: var(--grey-400);
     &.start-tag {
       border-left: 1px solid;
