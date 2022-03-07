@@ -27,6 +27,19 @@ export const fetchArticles = ({ boardId, page, pageSize, topicId, username, orde
     .then(({ data }) => data)
 }
 
+export const fetchBanner = ({ boardId, query, topicId} = {}) => {
+  const context = {}
+  if (boardId) {
+    if (Array.isArray(boardId)) context.parent_board__in = boardId.join(',')
+    else context.parent_board = boardId
+  }
+  if (topicId) context.parent_topic = topicId
+  if (query) context.main_search__contains = query
+
+  return http.get(`banner/?${queryBuilder(context)}`)
+    .then(({data}) => data)
+}
+
 export const fetchArchives = ({ query, page, pageSize } = {}) => {
   const context = {}
   if (query) context.main_search__contains = query
