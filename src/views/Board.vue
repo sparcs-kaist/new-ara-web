@@ -19,8 +19,15 @@
         <template v-if="topics && topics.length > 0">
           <div class="board__filter-menu-tags is-hidden-touch">
             <div
-              :class="{ 'board__filter-item-tag__selected' : (undefined === $route.query.topic) }"
               class="board__filter-item-tag start-tag"
+            >
+              <p>
+                {{ $t('filter') }}
+              </p>
+            </div>
+            <div
+              :class="{ 'board__filter-item-tag__selected' : (undefined === $route.query.topic) }"
+              class="board__filter-item-tag"
             >
               <router-link :to="{ query: { ...$route.query, topic: undefined } }">
                 {{ $t('no-filter') }}
@@ -246,7 +253,7 @@ en:
 
   &__filter-menu-tags {
     display: flex;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.8rem;
   }
 
   &__filter-item {
@@ -270,15 +277,18 @@ en:
     padding-left: 0.40rem;
     padding-right: 0.40rem;
     border-right: 1px solid;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     border-color: var(--grey-400);
+    a {
+      color: var(--grey-600);
+    }
     &.start-tag {
-      border-left: 1px solid;
-      border-color: var(--grey-400);
+      font-weight: 700;
     }
     &__selected {
       & > a{
         color: var(--theme-400);
+        font-weight: 700;
       }
     }
   }
