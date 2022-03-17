@@ -1,8 +1,9 @@
 <template>
   <div class="board">
     <Banner
-      :banner-name="bannerName"
-      :banner-details="bannerDetail"
+      :banner-name="title"
+      :banner-details="bannerDetails"
+      :banner-image="bannerImage"
     />
     <div class="board__header">
       <h1 v-if="!simplify" class="board__name">
@@ -65,6 +66,8 @@ export default {
       required: true
     },
     title: String,
+    bannerDetails: String,
+    bannerImage: String,
     fromQuery: Object,
     simplify: Boolean
   },
@@ -89,12 +92,6 @@ export default {
       if (this.$route.query.query) { return this.$t('search', { title: this.title, query: this.$route.query.query }) }
 
       return this.title
-    },
-    bannerName () {
-      return '카이스트 신문고'
-    },
-    bannerDetail () {
-      return '이 게시판은 교내 구성원들이 실명으로 학교에 의견을 제시하는 게시판입니다.\n투명하고 책임있는 의견 공유를 위해 의견 작성 시 본명이 공개되는 점 유의 바랍니다.'
     },
     customHtml () {
       return '<p>테스트 HTML</p>'

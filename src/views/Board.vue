@@ -9,6 +9,8 @@
       :board="board"
       :title="boardName"
       :from-query="fromQuery"
+      :banner-details="bannerDetail"
+      :banner-image="bannerImage"
     >
       <template v-if="topic" #title>
         <span class="board__topic">
@@ -203,6 +205,15 @@ export default {
     topic () { return this.topics.find(topic => topic.slug === this.topicId) },
     boardName () {
       return this.$store.getters.getNameById(this.boardId, this.$i18n.locale)
+    },
+    bannerDetail () {
+      return this.$store.getters.getBannerDescriptionById(
+        this.boardId,
+        this.$i18n.locale
+      )
+    },
+    bannerImage () {
+      return this.$store.getters.getBannerImageById(this.boardId)
     },
     fromQuery () {
       const { current } = this.board

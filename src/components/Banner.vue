@@ -1,5 +1,5 @@
 <template>
-  <div class="banner">
+  <div class="banner" :style="{ 'background-image': `url(${bannerImage})`}">
     <!-- For html banner support.(ads or other special banners)-->
     <div v-html="customHtml" />
     <div v-if="!customHtml" class="banner__simple">
@@ -27,7 +27,8 @@ export default {
     },
     customHtml: {
       type: String
-    }
+    },
+    bannerImage: String
   }
 }
 </script>
