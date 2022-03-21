@@ -17,7 +17,34 @@
 
       <template #option>
         <template v-if="topics && topics.length > 0">
-          <div class="dropdown is-hoverable is-right board__filter">
+          <div class="board__filter-menu-tags is-hidden-touch">
+            <div
+              class="board__filter-item-tag start-tag"
+            >
+              <p>
+                {{ $t('filter') }}
+              </p>
+            </div>
+            <div
+              :class="{ 'board__filter-item-tag__selected' : (undefined === $route.query.topic) }"
+              class="board__filter-item-tag"
+            >
+              <router-link :to="{ query: { ...$route.query, topic: undefined } }">
+                {{ $t('no-filter') }}
+              </router-link>
+            </div>
+            <div
+              v-for="topicItem in topics"
+              :key="topicItem.id"
+              :class="{ 'board__filter-item-tag__selected' : (topicItem.slug === $route.query.topic) }"
+              class="board__filter-item-tag"
+            >
+              <router-link :to="{ query: { ...$route.query, topic: topicItem.slug } }">
+                {{ topicItem[`${$i18n.locale}_name`] }}
+              </router-link>
+            </div>
+          </div>
+          <div class="dropdown is-hoverable is-right board__filter is-hidden-desktop">
             <div class="dropdown-trigger">
               <a
                 class="board__filter-trigger"
@@ -224,6 +251,11 @@ en:
     min-width: 6rem;
   }
 
+  &__filter-menu-tags {
+    display: flex;
+    margin-bottom: 0.8rem;
+  }
+
   &__filter-item {
     display: flex;
     border-radius: 5px;
@@ -238,6 +270,26 @@ en:
     & > a {
       padding: 0.375rem 0;
       flex: 1;
+    }
+  }
+
+  &__filter-item-tag {
+    padding-left: 0.40rem;
+    padding-right: 0.40rem;
+    border-right: 1px solid;
+    font-size: 0.9rem;
+    border-color: var(--grey-400);
+    a {
+      color: var(--grey-600);
+    }
+    &.start-tag {
+      font-weight: 700;
+    }
+    &__selected {
+      & > a{
+        color: var(--theme-400);
+        font-weight: 700;
+      }
     }
   }
 
