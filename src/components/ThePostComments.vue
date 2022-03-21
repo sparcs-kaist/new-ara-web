@@ -34,6 +34,7 @@
 <script>
 import PostComment from '@/components/PostComment.vue'
 import PostCommentEditor from '@/components/PostCommentEditor.vue'
+import _ from 'lodash'
 
 export default {
   name: 'ThePostComments',
@@ -56,6 +57,12 @@ export default {
     commentCount () {
       if (!this.post || !this.comments) return 0
       return this.post.comment_count
+    },
+
+    sortedComments () {
+      return _.filter(this.comments, { created_by: { is_official: '1' } }).concat(
+        _.filter(this.comments, { created_by: { is_official: '0' } })
+      )
     }
   }
 }
