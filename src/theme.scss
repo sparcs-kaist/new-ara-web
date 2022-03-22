@@ -69,3 +69,23 @@ $max-desktop-width: 1472px;
     }
   }
 }
+
+@mixin from($breakpoint) {
+  @if $breakpoint == "mobile" {
+    @media (min-width: #{$mobile-width}) {
+      @content;
+    }
+  } @else if $breakpoint == "min" {
+    @media (min-width: #{$min-desktop-width}) {
+      @content;
+    }
+  } @else if $breakpoint == "mid" {
+    @media (min-width: #{$mid-desktop-width}) {
+      @content;
+    }
+  } @else if $breakpoint == "max" {
+    @media (min-width: #{$max-desktop-width}) {
+      @content;
+    }
+  }
+}
