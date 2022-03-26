@@ -178,7 +178,17 @@
     </EditorMenuBar>
 
     <div class="content">
-      <EditorContent :editor="editor" class="editor-content" />
+      <EditorContent
+        v-if="editable"
+        :editor="editor"
+        class="editor-content"
+      />
+      <div
+        v-else
+        :editor="editor"
+        class="editor-content"
+        v-html="getContent()"
+      />
     </div>
 
     <div v-if="editable" class="dialogs">
