@@ -22,7 +22,7 @@
             :class="isAuthor && canOveride ? 'author_red' : ''"
             class="comment__author"
           >
-            <i class="material-icons">{{ isOfficial?"":"verified" }}</i>
+            <i v-if="isOfficial" class="material-icons">verified</i>
             {{ isHidden && !canOveride ? this.$t('hidden-user') : author }}
           </router-link>
 
