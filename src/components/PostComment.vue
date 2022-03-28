@@ -209,7 +209,8 @@ export default {
       return !!this.comment.is_anonymous
     },
     isVerified () {
-      return this.post.parent_board.id === 14 ? this.comment.created_by?.profile?.is_school_admin : this.comment.created_by?.profile?.is_official
+      const profile = this.comment.created_by?.profile
+      return this.post.parent_board.id === 14 ? profile?.is_school_admin : profile?.is_official
     },
     isAuthor () {
       if (!this.comment.is_anonymous) {
