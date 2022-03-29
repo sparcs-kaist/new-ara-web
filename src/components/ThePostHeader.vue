@@ -104,7 +104,7 @@ export default {
       return this.post.title
     },
     isRealName () {
-      return this.post.parent_board.id === 14
+      return [14].includes(this.post.parent_board.id) // modified to a list for potential creation of more real-name boards
     },
     isAnonymous () {
       return this.post.is_anonymous
