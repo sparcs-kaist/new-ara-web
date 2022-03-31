@@ -9,7 +9,7 @@
     </div>
     <div v-else class="comments__container">
       <PostComment
-        v-for="comment in comments"
+        v-for="comment in sortedComments"
         :key="comment.id"
         :comment="comment"
         :post="post"
@@ -60,9 +60,13 @@ export default {
     },
 
     sortedComments () {
-      return _.filter(this.comments, { created_by: { is_official: '1' } }).concat(
-        _.filter(this.comments, { created_by: { is_official: '0' } })
+      const officialSort = _.filter(this.comments, { created_by: { profile: { is_official: true } } }).concat(
+        _.filter(this.comments, { created_by: { profile: { is_official: false } } })
       )
+      const schoolAdminSort = _.filter(officialSort, { created_by: { profile: { is_school_admin: true } } }).concat(
+        _.filter(officialSort, { created_by: { profile: { is_school_admin: false } } })
+      )
+      return schoolAdminSort
     }
   }
 }
