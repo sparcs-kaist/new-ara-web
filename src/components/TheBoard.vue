@@ -1,6 +1,7 @@
 <template>
   <div class="board">
     <Banner
+      v-if="isBanner"
       :banner-name="title"
       :banner-details="bannerDetails"
       :banner-image="bannerImage"
@@ -93,8 +94,8 @@ export default {
 
       return this.title
     },
-    customHtml () {
-      return '<p>테스트 HTML</p>'
+    isBanner () {
+      return true
     }
   }
 }
