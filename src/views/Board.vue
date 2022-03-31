@@ -257,6 +257,7 @@ en:
   }
 
   &__filter-item {
+    display: flex;
     border-radius: 5px;
     margin: 0 5px;
     padding-top: 0;
