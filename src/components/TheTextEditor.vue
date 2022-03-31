@@ -187,7 +187,7 @@
         v-else
         :editor="editor"
         class="editor-content"
-        v-html="getContent()"
+        v-html="getVhtmlContent()"
       />
     </div>
 
@@ -298,6 +298,12 @@ export default {
   methods: {
     getContent () {
       return this.editor.getHTML()
+    },
+    getVhtmlContent () {
+      const content = this.editor.getHTML()
+      // Replace <p></p> to <br>(Which done in editor by Prosemirror)
+      const removeRegexP = /<p><\/p>/g
+      return content.replace(removeRegexP, '<br>')
     },
     showLinkDialog () {
       const { commands, schema, view, selection, state: { doc } } = this.editor
