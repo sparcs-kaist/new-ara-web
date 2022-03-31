@@ -257,7 +257,6 @@ en:
   }
 
   &__filter-item {
-    display: flex;
     border-radius: 5px;
     margin: 0 5px;
     padding-top: 0;
@@ -274,6 +273,9 @@ en:
   }
 
   &__filter-item-tag {
+    display: flex;
+    align-items:center;
+    white-space: nowrap;
     padding-left: 0.40rem;
     padding-right: 0.40rem;
     border-right: 1px solid;
