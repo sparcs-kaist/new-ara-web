@@ -178,7 +178,17 @@
     </EditorMenuBar>
 
     <div class="content">
-      <EditorContent :editor="editor" class="editor-content" />
+      <EditorContent
+        v-if="editable"
+        :editor="editor"
+        class="editor-content"
+      />
+      <div
+        v-else
+        :editor="editor"
+        class="editor-content"
+        v-html="getVhtmlContent()"
+      />
     </div>
 
     <div v-if="editable" class="dialogs">
@@ -288,6 +298,12 @@ export default {
   methods: {
     getContent () {
       return this.editor.getHTML()
+    },
+    getVhtmlContent () {
+      const content = this.editor.getHTML()
+      // Replace <p></p> to <br>(Which done in editor by Prosemirror)
+      const removeRegexP = /<p><\/p>/g
+      return content.replace(removeRegexP, '<br>')
     },
     showLinkDialog () {
       const { commands, schema, view, selection, state: { doc } } = this.editor
