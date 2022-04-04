@@ -24,6 +24,15 @@
       </div>
     </div>
 
+    <form v-if="dialog.agreeText" class="alert-dialog__form">
+      <input
+        v-model="agreeText"
+        class="alert-dialog__input input"
+        type="text"
+        :placeholder="dialog.agreeText"
+      >
+    </form>
+
     <div v-if="hasButtons" class="alert-dialog__buttons">
       <template v-if="dialog.type === 'confirm'">
         <button class="alert-dialog__button" @click="dismiss(false)">
@@ -31,6 +40,21 @@
         </button>
 
         <button class="alert-dialog__button alert-dialog__button--accent" @click="dismiss(true)">
+          {{ dialog.primary_button || $t('okay') }}
+        </button>
+      </template>
+
+      <template v-else-if="dialog.type === 'confirmAgree'">
+        <button class="alert-dialog__button" @click="dismiss(false)">
+          {{ dialog.secondary_button || $t('cancel') }}
+        </button>
+
+        <button
+          :class="{ 'alert-dialog__button--none' : agreeText!==dialog.agreeText }"
+          class="alert-dialog__button alert-dialog__button--accent"
+          :disabled="agreeText!==dialog.agreeText"
+          @click="dismiss(true)"
+        >
           {{ dialog.primary_button || $t('okay') }}
         </button>
       </template>
@@ -82,6 +106,7 @@
 <script>
 const icons = {
   confirm: 'check_circle_outline',
+  confirmAgree: 'check_circle_outline',
   report: 'check_circle_outline',
   error: 'error_outline',
   warning: 'highlight_off',
@@ -107,7 +132,8 @@ export default {
         fake_information: false,
         defamation: false,
         other: false
-      }
+      },
+      agreeText: ''
     }
   },
 
@@ -125,6 +151,11 @@ export default {
 
   methods: {
     dismiss (value) {
+      if (this.dialog.agreeText && value) {
+        if (this.agreeText !== this.dialog.agreeText) {
+          return
+        }
+      }
       this.$store.commit('dialog/removeDialog', {
         id: this.dialog.id,
         value,
@@ -251,6 +282,10 @@ en:
   &__buttons {
     display: flex;
     justify-content: center;
+  }
+
+  &__form {
+    margin-bottom: 20px;
   }
 
   &__button {

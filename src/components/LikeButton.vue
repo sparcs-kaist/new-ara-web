@@ -37,7 +37,8 @@ export default {
     },
     votable: Boolean,
     elide: Boolean,
-    table: Boolean
+    table: Boolean,
+    isSchool: Boolean
   },
 
   computed: {
@@ -53,11 +54,23 @@ export default {
   },
 
   methods: {
-    vote (ballot) {
+    async vote (ballot) {
       if (!this.votable) {
         return
       }
-
+      if (this.isSchool) {
+        if (this.liked) {
+          this.$store.dispatch('dialog/toast', this.$t('agreed'))
+          return
+        }
+        if (ballot) {
+          const result = await this.$store.dispatch('dialog/confirmAgree', {
+            message: this.$t('confirm-message'),
+            agreeText: this.$t('agree-text')
+          })
+          if (!result) return
+        }
+      }
       const myVote = this.item.my_vote === ballot
         ? 'vote_cancel'
         : (ballot ? 'vote_positive' : 'vote_negative')
@@ -74,6 +87,17 @@ export default {
   }
 }
 </script>
+
+<i18n>
+ko:
+  confirm-message: '신문고 게시판에서 좋아요는 취소할 수 없습니다. 좋아요를 누르려면 다음 문장을 입력해주세요'
+  agree-text: '동의합니다!'
+  agreed: '이미 동의한 글입니다. 동의는 취소할 수 없습니다.'
+en:
+  confirm-message: 'You cannot cancel your like in this board. If you want to like this post, please enter the following sentence'
+  agree-text: 'I agree!'
+  agreed: 'You already agreed. You cannot cancel it'
+</i18n>
 
 <style lang="scss" scoped>
 @import "@/theme.scss";
