@@ -46,8 +46,9 @@ export default {
   width: 100%;
   border-radius:10px;
   background-color:var(--grey-600);
+  background-prepeat: no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position: center bottom;
   color: var(--grey-100);
   margin-bottom: 1rem;
   &__simple{
