@@ -46,7 +46,7 @@ export default {
   width: 100%;
   border-radius:10px;
   background-color:var(--grey-600);
-  background-prepeat: no-repeat;
+  background-repeat: no-repeat;
   background-size: cover;
   background-position: center bottom;
   color: var(--grey-100);
