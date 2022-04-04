@@ -70,6 +70,7 @@
         :item="post"
         class="post__like"
         votable
+        :is-school="post.parent_board.id===14"
         @vote="$emit('vote', $event)"
       />
       <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons">
@@ -98,7 +99,7 @@
         </template>
         <template v-else>
           <button
-            v-if="!post.is_anonymous"
+            v-if="canBlock"
             class="button"
             @click="$emit('block')"
           >
@@ -184,6 +185,10 @@ export default {
     },
     isMine () {
       return this.post && this.post.is_mine
+    },
+    canBlock () {
+      const isInRealName = [14].includes(this.post.parent_board.id) // write realNameBoard Ids in array
+      return !(this.post.is_anonymous || isInRealName)
     },
     hiddenReason () {
       const title = `<div class="has-text-weight-bold"> ${this.post.why_hidden.map(v => i18n.t(v)).join('<br>')}</div>`

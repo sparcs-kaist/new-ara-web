@@ -22,6 +22,7 @@
             :class="isAuthor && canOveride ? 'author_red' : ''"
             class="comment__author"
           >
+            <i v-if="isVerified" class="material-icons">verified</i>
             {{ isHidden && !canOveride ? this.$t('hidden-user') : author }}
           </router-link>
 
@@ -206,6 +207,10 @@ export default {
     },
     isAnonymous () {
       return !!this.comment.is_anonymous
+    },
+    isVerified () {
+      const profile = this.comment.created_by?.profile
+      return this.post.parent_board.id === 14 ? profile?.is_school_admin : profile?.is_official
     },
     isAuthor () {
       if (!this.comment.is_anonymous) {
@@ -463,5 +468,9 @@ en:
 }
 .author_red{
   color: var(--theme-400);
+}
+.material-icons{
+  color: rgba(81,135,255,100);
+  font-size: 15px;
 }
 </style>
