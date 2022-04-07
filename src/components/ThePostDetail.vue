@@ -98,7 +98,7 @@
         </template>
         <template v-else>
           <button
-            v-if="canBlock"
+            v-if="isRegular"
             class="button"
             @click="$emit('block')"
           >
@@ -109,7 +109,7 @@
           </button>
 
           <button
-            v-if="!post.is_hidden"
+            v-if="!post.is_hidden && isNotRealName"
             class="button"
             @click="$emit('report')"
           >
@@ -185,8 +185,11 @@ export default {
     isMine () {
       return this.post && this.post.is_mine
     },
-    canBlock () {
+    isRegular () {
       return this.post.name_type === 0
+    },
+    isNotRealName () {
+      return this.post.name_type !== 2
     },
     hiddenReason () {
       const title = `<div class="has-text-weight-bold"> ${this.post.why_hidden.map(v => i18n.t(v)).join('<br>')}</div>`

@@ -13,7 +13,6 @@
         :key="comment.id"
         :comment="comment"
         :post="post"
-        :anonymous-profile="anonymousProfile"
         class="comments__comment"
         @update="$emit('update', $event)"
         @upload="$emit('upload', $event)"
@@ -26,7 +25,6 @@
     <PostCommentEditor
       :parent-article="post.id"
       :post="post"
-      :anonymous-profile="anonymousProfile"
       @upload="$emit('upload', $event)"
     />
   </div>
@@ -48,7 +46,6 @@ export default {
       type: Object,
       required: true
     },
-    anonymousProfile: Object,
     comments: Array
   },
 
@@ -65,12 +62,10 @@ export default {
 ko:
   comments: '댓글'
   no-comment: '댓글이 없습니다.'
-  anonymous: '익명'
 
 en:
   comments: 'Comments'
   no-comment: 'No comment.'
-  anonymous: 'Anonymous'
 </i18n>
 
 <style lang="scss" scoped>
