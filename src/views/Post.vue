@@ -128,7 +128,7 @@ export default {
 
   watch: {
     post: function () {
-      if (this.post.is_anonymous) {
+      if (this.post.name_type >= 1) {
         // Get my anonymous nickname from post's comments
         for (const comment of this.post.comments) {
           if (comment.is_mine) {
@@ -150,7 +150,7 @@ export default {
         }
       }
       this.anonymousProfile = {
-        nickname: this.$t('anonymous'),
+        nickname: this.post.name_type === 2 ? '실명' : this.$t('anonymous'), // TODO: i18n
         profileImage: this.post.created_by?.profile.picture
       }
     }
@@ -178,7 +178,7 @@ export default {
   methods: {
     async addNewComment (comment) {
       comment.is_mine = true
-      if (this.post.parent_board.id === 9) {
+      if (this.post.name_type >= 1) {
         // Set nickname & profile image properly(need for anonymous).
         comment.created_by.profile.nickname = this.anonymousProfile.nickname
         comment.created_by.profile.picture = this.anonymousProfile.profileImage

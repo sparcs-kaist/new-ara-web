@@ -3,7 +3,7 @@
     <label class="textarea comment-editor__input">
       <div class="comment-editor__author">
         <img
-          v-if="!isAnonymous"
+          v-if="isRegular"
           :src="userPicture"
           class="comment-editor__picture"
         >
@@ -12,7 +12,7 @@
           :src="anonymousProfile.profileImage"
           class="comment-editor__picture"
         >
-        <span v-if="!isAnonymous" class="comment-editor__name">{{ userNickname }}</span>
+        <span v-if="isRegular" class="comment-editor__name">{{ userNickname }}</span>
         <span v-else-if="isMine" class="comment-editor__name author_red">{{ $t('author') }}</span>
         <span v-else class="comment-editor__name">{{ anonymousProfile.nickname }}</span>
       </div>
@@ -84,8 +84,8 @@ export default {
   },
 
   computed: {
-    isAnonymous () {
-      return this.post.is_anonymous
+    isRegular () {
+      return this.post.name_type === 0
     },
     isMine () {
       return this.post.is_mine
@@ -114,7 +114,7 @@ export default {
         const result = this.editComment
           ? (await updateComment(this.editComment, {
             content: this.content,
-            is_anonymous: this.post.is_anonymous,
+            name_type: this.post.name_type,
             is_mine: true
           }))
 
@@ -122,7 +122,7 @@ export default {
             parent_article: this.parentArticle,
             parent_comment: this.parentComment,
             content: this.content,
-            is_anonymous: this.post.is_anonymous
+            name_type: this.post.name_type
           }))
         // console.log('After update/create comment...')
         this.$emit('upload', result)

@@ -9,7 +9,7 @@ type RelatedArticle = {
   hidden_at: string
   hit_count: number,
   id: number,
-  is_anonymous: boolean,
+  name_type: number,
   is_content_sexual: boolean,
   is_content_social: boolean,
   negative_vote_count: number,
@@ -29,7 +29,7 @@ type RelatedComment = {
   deleted_at: string,
   hidden_at: string,
   id: number,
-  is_anonymous: boolean,
+  name_type: number,
   negative_vote_count: number,
   parent_article: Object,
   parent_comment: number,

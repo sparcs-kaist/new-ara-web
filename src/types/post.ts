@@ -22,7 +22,7 @@ export type Post = {
   hidden_at: string,
   hit_count: number,
   id: number,
-  is_anonymous: boolean,
+  name_type: number,
   is_content_sexual: boolean,
   is_content_social: boolean,
   is_hidden: boolean,

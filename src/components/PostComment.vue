@@ -17,7 +17,7 @@
       <div class="comment__body">
         <div class="comment__header">
           <router-link
-            :is="isAnonymous ? 'span' : 'router-link'"
+            :is="isRegular ? 'router-link' : 'span'"
             :to="{ name: 'user', params: { username: authorId } }"
             :class="isAuthor && canOveride ? 'author_red' : ''"
             class="comment__author"
@@ -205,15 +205,15 @@ export default {
     isMine () {
       return this.comment.is_mine
     },
-    isAnonymous () {
-      return !!this.comment.is_anonymous
+    isRegular () {
+      return this.comment.name_type === 0
     },
     isVerified () {
       const profile = this.comment.created_by?.profile
       return this.post.parent_board.id === 14 ? profile?.is_school_admin : profile?.is_official
     },
     isAuthor () {
-      if (!this.comment.is_anonymous) {
+      if (this.comment.name_type === 0) {
         return false
       }
       return this.post.created_by.id === this.comment.created_by.id

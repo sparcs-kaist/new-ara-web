@@ -28,7 +28,7 @@
     </div>
     <div class="metadata">
       <router-link
-        :is="isAnonymous || isRealName ? 'span' : 'router-link'"
+        :is="isRegular ? 'router-link' : 'span'"
         :to="{
           name: 'user',
           params: { username: postAuthorId }
@@ -37,7 +37,7 @@
       >
         <img :src="userPictureUrl" class="author__picture">
         <span class="author__nickname">{{ postAuthor }}</span>
-        <i v-if="!(isAnonymous || isRealName)" class="author__icon material-icons">chevron_right</i>
+        <i v-if="isRegular" class="author__icon material-icons">chevron_right</i>
       </router-link>
       <LikeButton
         v-if="!post.is_hidden"
@@ -103,11 +103,8 @@ export default {
 
       return this.post.title
     },
-    isRealName () {
-      return [14].includes(this.post.parent_board.id) // modified to a list for potential creation of more real-name boards
-    },
-    isAnonymous () {
-      return this.post.is_anonymous
+    isRegular () {
+      return this.post.name_type === 0
     },
     beforeBoard () {
       const { from_view: fromView, topic_id: topicId, current } = this.$route.query

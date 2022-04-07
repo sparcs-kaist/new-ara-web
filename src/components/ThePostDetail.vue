@@ -64,7 +64,7 @@
       </div>
     </div>
 
-    <div v-if="!post.is_hidden || !post.is_anonymous" class="post__footer">
+    <div v-if="!post.is_hidden || !(post.name_type === 1)" class="post__footer">
       <LikeButton
         v-if="!post.is_hidden"
         :item="post"
@@ -186,8 +186,7 @@ export default {
       return this.post && this.post.is_mine
     },
     canBlock () {
-      const isInRealName = [14].includes(this.post.parent_board.id) // write realNameBoard Ids in array
-      return !(this.post.is_anonymous || isInRealName)
+      return this.post.name_type === 0
     },
     hiddenReason () {
       const title = `<div class="has-text-weight-bold"> ${this.post.why_hidden.map(v => i18n.t(v)).join('<br>')}</div>`
