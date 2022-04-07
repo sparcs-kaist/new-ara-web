@@ -27,10 +27,6 @@ export default {
     TheSidebar
   },
 
-  data () {
-    return { archive: {} }
-  },
-
   async beforeRouteEnter ({ query }, from, next) {
     const [ archive ] = await fetchWithProgress([ fetchArchivedPosts(query) ], 'archive-failed-fetch')
     next(vm => {
@@ -43,6 +39,10 @@ export default {
     const [ archive ] = await fetchWithProgress([ fetchArchivedPosts(query) ], 'archive-failed-fetch')
     this.archive = archive
     next()
+  },
+
+  data () {
+    return { archive: {} }
   }
 }
 </script>

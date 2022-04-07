@@ -24,35 +24,6 @@
   </div>
 </template>
 
-<style lang="scss">
-@import "@/theme.scss";
-
-.the-organizations {
-  margin: 0 auto;
-  position: absolute;
-  left: 0;
-  right: 0;
-}
-
-.organizations-padding{
-  padding: 0 50px;
-
-  @media screen and (max-width: 480px){
-    padding: 24px;
-  }
-}
-
-.custom-arrow > svg{
-  fill: #666666 !important;
-  font-size: 0.6em;
-  visibility: visible;
-
-  @media screen and (max-width: 480px){
-    visibility: collapse;
-  }
-}
-</style>
-
 <script>
 import OrganizationCard from '@/components/OrganizationCard.vue'
 import { Splide, SplideSlide } from '@splidejs/vue-splide'
@@ -110,3 +81,32 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@import "@/theme.scss";
+
+.the-organizations {
+  margin: 0 auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.organizations-padding{
+  padding: 0 50px;
+
+  @media screen and (max-width: 480px){
+    padding: 24px;
+  }
+}
+
+.custom-arrow > svg{
+  fill: #666666 !important;
+  font-size: 0.6em;
+  visibility: visible;
+
+  @media screen and (max-width: 480px){
+    visibility: collapse;
+  }
+}
+</style>

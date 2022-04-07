@@ -23,7 +23,7 @@
             class="comment__author"
           >
             <i v-if="isVerified" class="material-icons">verified</i>
-            {{ isHidden && !canOveride ? this.$t('hidden-user') : author }}
+            {{ isHidden && !canOveride ? $t('hidden-user') : author }}
           </router-link>
 
           <span class="comment__time"> {{ date }} </span>

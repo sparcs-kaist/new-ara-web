@@ -23,7 +23,8 @@ module.exports = {
     'vue/require-default-prop': 0,
     'array-bracket-spacing': 0,
     'vue/no-v-html': 0,
-    'vue/no-template-shadow': 0
+    'vue/no-template-shadow': 0,
+    'vue/multi-word-component-names': 0
   },
 
   parserOptions: {

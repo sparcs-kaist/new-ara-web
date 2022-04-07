@@ -110,50 +110,6 @@ export default {
     TheSidebar
   },
 
-  data () {
-    return {
-      board: {},
-      boardId: null
-    }
-  },
-
-  computed: {
-    topicId () { return this.$route.query.topic },
-    topics () {
-      const board = this.$store.getters.getBoardById(this.boardId)
-
-      if (board) return board.topics
-      return []
-    },
-    topic () { return this.topics.find(topic => topic.slug === this.topicId) },
-    boardName () {
-      return this.$store.getters.getNameById(this.boardId, this.$i18n.locale)
-    },
-    fromQuery () {
-      const { current } = this.board
-      if (this.$route.query.portal === 'exclude') {
-        return {
-          from_view: '-portal',
-          current
-        }
-      }
-      if (this.topicId) {
-        return {
-          from_view: 'topic',
-          topic_id: this.topicId,
-          current
-        }
-      }
-      if (this.boardId) {
-        return {
-          from_view: 'board',
-          current
-        }
-      }
-      return { from_view: 'all', current }
-    }
-  },
-
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
     let boardId
     let boardData
@@ -204,6 +160,50 @@ export default {
     this.boardId = boardId
     document.title = `Ara - ${this.boardName}`
     next()
+  },
+
+  data () {
+    return {
+      board: {},
+      boardId: null
+    }
+  },
+
+  computed: {
+    topicId () { return this.$route.query.topic },
+    topics () {
+      const board = this.$store.getters.getBoardById(this.boardId)
+
+      if (board) return board.topics
+      return []
+    },
+    topic () { return this.topics.find(topic => topic.slug === this.topicId) },
+    boardName () {
+      return this.$store.getters.getNameById(this.boardId, this.$i18n.locale)
+    },
+    fromQuery () {
+      const { current } = this.board
+      if (this.$route.query.portal === 'exclude') {
+        return {
+          from_view: '-portal',
+          current
+        }
+      }
+      if (this.topicId) {
+        return {
+          from_view: 'topic',
+          topic_id: this.topicId,
+          current
+        }
+      }
+      if (this.boardId) {
+        return {
+          from_view: 'board',
+          current
+        }
+      }
+      return { from_view: 'all', current }
+    }
   },
 
   methods: {

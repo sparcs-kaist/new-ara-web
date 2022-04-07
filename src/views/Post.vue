@@ -67,6 +67,25 @@ export default {
     TheSidebar
   },
 
+  async beforeRouteEnter ({ params: { postId }, query }, from, next) {
+    const [ post ] = await fetchWithProgress([
+      fetchPost({ postId, context: query })
+    ], 'post-failed-fetch')
+    next(vm => {
+      vm.post = post
+      document.title = `Ara - ${post.is_hidden ? vm.$t('hidden-post') : post.title}`
+    })
+  },
+
+  async beforeRouteUpdate ({ params: { postId }, query }, from, next) {
+    const [ post ] = await fetchWithProgress([
+      fetchPost({ postId, context: query })
+    ], 'post-failed-fetch')
+    document.title = `Ara - ${post.is_hidden ? this.$t('hidden-post') : post.title}`
+    this.post = post
+    next()
+  },
+
   props: {
     postId: {
       type: [String, Number],
@@ -154,25 +173,6 @@ export default {
         profileImage: this.post.created_by?.profile.picture
       }
     }
-  },
-
-  async beforeRouteEnter ({ params: { postId }, query }, from, next) {
-    const [ post ] = await fetchWithProgress([
-      fetchPost({ postId, context: query })
-    ], 'post-failed-fetch')
-    next(vm => {
-      vm.post = post
-      document.title = `Ara - ${post.is_hidden ? vm.$t('hidden-post') : post.title}`
-    })
-  },
-
-  async beforeRouteUpdate ({ params: { postId }, query }, from, next) {
-    const [ post ] = await fetchWithProgress([
-      fetchPost({ postId, context: query })
-    ], 'post-failed-fetch')
-    document.title = `Ara - ${post.is_hidden ? this.$t('hidden-post') : post.title}`
-    this.post = post
-    next()
   },
 
   methods: {

@@ -34,10 +34,6 @@ export default {
     TheSidebar
   },
 
-  data () {
-    return { board: {}, user: {} }
-  },
-
   async beforeRouteEnter ({ params: { username }, query }, from, next) {
     const [ board, user ] = await fetchWithProgress([
       fetchArticles({ username, ...query }),
@@ -59,6 +55,10 @@ export default {
     this.board = board
     this.user = user
     next()
+  },
+
+  data () {
+    return { board: {}, user: {} }
   }
 }
 </script>

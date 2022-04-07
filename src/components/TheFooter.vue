@@ -1,5 +1,5 @@
 <template>
-  <footer :class="{ 'login-footer': this.$route.path === '/login' }" class="the-footer">
+  <footer :class="{ 'login-footer': $route.path === '/login' }" class="the-footer">
     <div class="footer-menu">
       <div class="footer-item logo-item">
         <a id="sparcs-logo" href="https://sparcs.org">

@@ -113,17 +113,17 @@ export default {
       try {
         const result = this.editComment
           ? (await updateComment(this.editComment, {
-            content: this.content,
-            is_anonymous: this.post.is_anonymous,
-            is_mine: true
-          }))
+              content: this.content,
+              is_anonymous: this.post.is_anonymous,
+              is_mine: true
+            }))
 
           : (await createComment({
-            parent_article: this.parentArticle,
-            parent_comment: this.parentComment,
-            content: this.content,
-            is_anonymous: this.post.is_anonymous
-          }))
+              parent_article: this.parentArticle,
+              parent_comment: this.parentComment,
+              content: this.content,
+              is_anonymous: this.post.is_anonymous
+            }))
         // console.log('After update/create comment...')
         this.$emit('upload', result)
         this.content = ''

@@ -17,9 +17,6 @@ export default {
     TheLayout,
     TheNotifications
   },
-  data () {
-    return { notifications: {} }
-  },
   async beforeRouteEnter ({ query }, from, next) {
     const [ notifications ] = await fetchWithProgress([ fetchNotifications({ query }) ], 'notifications-failed-fetch')
     next(vm => {
@@ -31,6 +28,9 @@ export default {
     const [ notifications ] = await fetchWithProgress([ fetchNotifications({ query }) ], 'notifications-failed-fetch')
     this.notifications = notifications
     next()
+  },
+  data () {
+    return { notifications: {} }
   }
 }
 </script>

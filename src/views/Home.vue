@@ -62,6 +62,25 @@ export default {
     TheLayout
   },
 
+  async beforeRouteEnter (to, from, next) {
+    const promises = [ fetchHome() ]
+
+    const boardId = store.getters.getIdBySlug('ara-notice')
+    if (boardId) {
+      promises.push(fetchArticles({
+        boardId,
+        pageSize: 5
+      }))
+    }
+
+    const [ home, notice ] = await fetchWithProgress(promises, 'home-failed-fetch')
+    next(vm => {
+      vm.home = home
+      vm.notice = notice?.results
+      document.title = vm.$t('document-title')
+    })
+  },
+
   data () {
     return {
       home: {},
@@ -84,25 +103,6 @@ export default {
 
       return this.home.weekly_bests
     }
-  },
-
-  async beforeRouteEnter (to, from, next) {
-    const promises = [ fetchHome() ]
-
-    const boardId = store.getters.getIdBySlug('ara-notice')
-    if (boardId) {
-      promises.push(fetchArticles({
-        boardId,
-        pageSize: 5
-      }))
-    }
-
-    const [ home, notice ] = await fetchWithProgress(promises, 'home-failed-fetch')
-    next(vm => {
-      vm.home = home
-      vm.notice = notice?.results
-      document.title = vm.$t('document-title')
-    })
   }
 }
 </script>

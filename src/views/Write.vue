@@ -25,29 +25,6 @@ export default {
     ThePostWrite
   },
 
-  props: {
-    postId: String
-  },
-
-  data () {
-    return {
-      post: null,
-      saving: false,
-      saved: false,
-      emptyWarnings: []
-    }
-  },
-
-  computed: {
-    isEditing () {
-      return !!this.postId
-    },
-    postFetched () {
-      return !this.isEditing || // 새로운 글을 작성하는 경우 바로 보여줌
-        (this.isEditing && this.post) // 기존 글을 수정하는 경우 데이터 페치를 기다림
-    }
-  },
-
   async beforeRouteEnter ({ params: { postId } }, from, next) {
     // 새로운 글을 작성하는 경우
     if (!postId) {
@@ -88,6 +65,29 @@ export default {
       return
     }
     next()
+  },
+
+  props: {
+    postId: String
+  },
+
+  data () {
+    return {
+      post: null,
+      saving: false,
+      saved: false,
+      emptyWarnings: []
+    }
+  },
+
+  computed: {
+    isEditing () {
+      return !!this.postId
+    },
+    postFetched () {
+      return !this.isEditing || // 새로운 글을 작성하는 경우 바로 보여줌
+        (this.isEditing && this.post) // 기존 글을 수정하는 경우 데이터 페치를 기다림
+    }
   },
 
   mounted () {
