@@ -70,6 +70,7 @@
         :item="post"
         class="post__like"
         votable
+        :is-school="post.parent_board.id===14"
         @vote="$emit('vote', $event)"
       />
       <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons">

@@ -44,6 +44,7 @@
         :item="post"
         class="metadata__like"
         votable
+        :is-school="post.parent_board.id===14"
         @vote="$emit('vote', $event)"
       />
     </div>
