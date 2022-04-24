@@ -24,7 +24,6 @@
     <ThePostComments
       :post="post"
       :comments="post.comments"
-      :anonymous-profile="anonymousProfile"
       @upload="addNewComment"
       @update="updateComment"
       @refresh="refresh"
@@ -46,7 +45,6 @@ import {
   votePost,
   fetchComment
 } from '@/api'
-import store from '@/store'
 import { fetchWithProgress } from '@/views/helper'
 import ThePostComments from '@/components/ThePostComments.vue'
 import ThePostDetail from '@/components/ThePostDetail.vue'
@@ -76,8 +74,7 @@ export default {
 
   data () {
     return {
-      post: {},
-      anonymousProfile: {}
+      post: {}
     }
   },
   computed: {
@@ -126,36 +123,6 @@ export default {
     }
   },
 
-  watch: {
-    post: function () {
-      if (this.post.is_anonymous) {
-        // Get my anonymous nickname from post's comments
-        for (const comment of this.post.comments) {
-          if (comment.is_mine) {
-            this.anonymousProfile = {
-              nickname: comment.created_by.username,
-              profileImage: comment.created_by.profile.picture
-            }
-            return
-          }
-          for (const replyComment of comment.comments) {
-            if (replyComment.is_mine) {
-              this.anonymousProfile = {
-                nickname: replyComment.created_by.username,
-                profileImage: replyComment.created_by.profile.picture
-              }
-              return
-            }
-          }
-        }
-      }
-      this.anonymousProfile = {
-        nickname: this.$t('anonymous'),
-        profileImage: this.post.created_by?.profile.picture
-      }
-    }
-  },
-
   async beforeRouteEnter ({ params: { postId }, query }, from, next) {
     const [ post ] = await fetchWithProgress([
       fetchPost({ postId, context: query })
@@ -178,15 +145,9 @@ export default {
   methods: {
     async addNewComment (comment) {
       comment.is_mine = true
-      if (this.post.parent_board.id === 9) {
-        // Set nickname & profile image properly(need for anonymous).
-        comment.created_by.profile.nickname = this.anonymousProfile.nickname
-        comment.created_by.profile.picture = this.anonymousProfile.profileImage
-      } else {
-        const { userNickname, userPicture } = store.getters
-        comment.created_by.profile.nickname = userNickname
-        comment.created_by.profile.picture = userPicture
-      }
+      comment.created_by.profile.nickname = this.post.my_comment_profile.profile.nickname
+      comment.created_by.profile.picture = this.post.my_comment_profile.profile.picture
+      comment.created_by.id = this.post.my_comment_profile.id
       if (comment.parent_comment) {
         /* Save the new recomment in local first. */
         const rootComment = this.post.comments.find(parent => parent.id === comment.parent_comment)
@@ -219,7 +180,7 @@ export default {
       const commentIndex = this.post.comments.findIndex(comment => comment.id === update.id)
       if (commentIndex < 0) return
 
-      // Code for maintain anonymous profile when user modifies his/her comment.
+      // Code for maintain anonymous / realname profile when user modifies his/her comment.
       update.created_by.profile = this.post.comments[commentIndex].created_by.profile
       update.created_by.username = this.post.comments[commentIndex].created_by.username
       update.created_by.id = this.post.comments[commentIndex].created_by.id

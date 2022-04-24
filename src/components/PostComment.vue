@@ -17,9 +17,9 @@
       <div class="comment__body">
         <div class="comment__header">
           <router-link
-            :is="isAnonymous ? 'span' : 'router-link'"
+            :is="isRegular ? 'router-link' : 'span'"
             :to="{ name: 'user', params: { username: authorId } }"
-            :class="isAuthor && canOveride ? 'author_red' : ''"
+            :class="isAuthor ? 'author_red' : ''"
             class="comment__author"
           >
             <i v-if="isVerified" class="material-icons">verified</i>
@@ -109,7 +109,6 @@
         :text="comment.content"
         :edit-comment="comment.id"
         :post="post"
-        :anonymous-profile="anonymousProfile"
         @upload="updateComment"
         @close="isEditing = false"
       />
@@ -121,7 +120,6 @@
         :key="replyComment.id"
         :comment="replyComment"
         :post="post"
-        :anonymous-profile="anonymousProfile"
         is-reply-comment
         @vote="$emit('vote')"
         @delete="$emit('delete')"
@@ -135,7 +133,6 @@
           ref="commentEditor"
           :post="post"
           :parent-comment="comment.id"
-          :anonymous-profile="anonymousProfile"
           @upload="$emit('upload', $event)"
           @close="showReplyCommentInput = false"
         />
@@ -169,10 +166,6 @@ export default {
       type: Object,
       required: true
     },
-    anonymousProfile: {
-      type: Object,
-      required: true
-    },
     isReplyComment: Boolean
   },
 
@@ -186,7 +179,6 @@ export default {
 
   computed: {
     author () {
-      if (this.isAuthor) return this.$t('author')
       return this.comment.created_by?.profile.nickname
     },
     authorId () { return this.comment.created_by.id },
@@ -205,15 +197,15 @@ export default {
     isMine () {
       return this.comment.is_mine
     },
-    isAnonymous () {
-      return !!this.comment.is_anonymous
+    isRegular () {
+      return this.comment.name_type === 0
     },
     isVerified () {
       const profile = this.comment.created_by?.profile
       return this.post.parent_board.id === 14 ? profile?.is_school_admin : profile?.is_official
     },
     isAuthor () {
-      if (!this.comment.is_anonymous) {
+      if (this.comment.name_type === 0) {
         return false
       }
       return this.post.created_by.id === this.comment.created_by.id
@@ -286,7 +278,6 @@ export default {
 <i18n>
 ko:
   hidden-user: '가려진 사용자'
-  author: '글쓴이'
   delete: '삭제'
   report: '신고'
   edit: '수정'
@@ -304,7 +295,6 @@ ko:
   DELETED_CONTENT: '삭제된 댓글입니다.'
 en:
   hidden-user: 'Hidden user'
-  author: 'Author'
   delete: 'Delete'
   report: 'Report'
   edit: 'Edit'

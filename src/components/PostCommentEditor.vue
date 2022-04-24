@@ -3,18 +3,10 @@
     <label class="textarea comment-editor__input">
       <div class="comment-editor__author">
         <img
-          v-if="!isAnonymous"
           :src="userPicture"
           class="comment-editor__picture"
         >
-        <img
-          v-else
-          :src="anonymousProfile.profileImage"
-          class="comment-editor__picture"
-        >
-        <span v-if="!isAnonymous" class="comment-editor__name">{{ userNickname }}</span>
-        <span v-else-if="isMine" class="comment-editor__name author_red">{{ $t('author') }}</span>
-        <span v-else class="comment-editor__name">{{ anonymousProfile.nickname }}</span>
+        <span class="comment-editor__name" :class="authorRed">{{ userNickname }}</span>
       </div>
       <div class="comment-editor__content">
         <textarea
@@ -55,7 +47,6 @@
 
 <script>
 import { createComment, updateComment } from '@/api'
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'PostCommentEditor',
@@ -71,8 +62,7 @@ export default {
     },
     parentArticle: Number,
     parentComment: Number,
-    editComment: Number,
-    anonymousProfile: Object
+    editComment: Number
   },
 
   data () {
@@ -84,13 +74,15 @@ export default {
   },
 
   computed: {
-    isAnonymous () {
-      return this.post.is_anonymous
+    userNickname () {
+      return this.post.my_comment_profile ? this.post.my_comment_profile.profile.nickname : this.$t('placeholder')
     },
-    isMine () {
-      return this.post.is_mine
+    userPicture () {
+      return this.post.my_comment_profile ? this.post.my_comment_profile.profile.picture : this.post.created_by?.profile.picture
     },
-    ...mapGetters([ 'userNickname', 'userPicture' ])
+    authorRed () {
+      return this.post.name_type !== 0 && this.post.is_mine ? 'author_red' : ''
+    }
   },
 
   methods: {
@@ -114,7 +106,7 @@ export default {
         const result = this.editComment
           ? (await updateComment(this.editComment, {
             content: this.content,
-            is_anonymous: this.post.is_anonymous,
+            name_type: this.post.name_type,
             is_mine: true
           }))
 
@@ -122,7 +114,7 @@ export default {
             parent_article: this.parentArticle,
             parent_comment: this.parentComment,
             content: this.content,
-            is_anonymous: this.post.is_anonymous
+            name_type: this.post.name_type
           }))
         // console.log('After update/create comment...')
         this.$emit('upload', result)
@@ -154,7 +146,6 @@ ko:
   close-comment: '취소'
   write-failed: '댓글 작성에 실패하였습니다'
   author: '글쓴이'
-  anonymous: '익명'
 
 en:
   placeholder: 'Type here...'
@@ -162,7 +153,6 @@ en:
   close-comment: 'Cancel'
   write-failed: 'Failed to write comment'
   author: 'Author'
-  anonymous: 'Anonymous'
 </i18n>
 
 <style lang="scss" scoped>
