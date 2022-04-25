@@ -99,21 +99,23 @@
               {{ $t('language') }}
             </span>
           </a>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <router-link :to="{ name: 'notifications' }" class="alarmicon">
+              <span
+                :class="{'unread-noti': isUnreadNotificationExist}"
+                data-badge=" "
+                class="icon"
+              >
+                <i class="material-icons">notifications</i>
+              </span>
 
-          <router-link :to="{ name: 'notifications' }" class="navbar-item">
-            <span
-              :class="{'unread-noti': isUnreadNotificationExist}"
-              data-badge=" "
-              class="icon"
-            >
-              <i class="material-icons">notifications</i>
-            </span>
+              <TheAlarmPopup :notifications="notifications" class="navbar-dropdown is-hidden-touch alarm-popup" />
 
-            <span class="is-hidden-desktop">
-              {{ $t('notification') }}
-            </span>
-          </router-link>
-
+              <span class="is-hidden-desktop">
+                {{ $t('notification') }}
+              </span>
+            </router-link>
+          </div>
           <div class="navbar-item has-dropdown is-hoverable">
             <router-link
               :to="isMobileMenuActive ? { name: 'my-info' } : $route.fullPath"
@@ -151,13 +153,15 @@ import IdentityBar from '@/components/IdentityBar.vue'
 import { fetchNotifications } from '@/api'
 import { fetchWithProgress } from '@/views/helper'
 import { changeLocale } from '@/i18n'
+import TheAlarmPopup from '@/components/TheAlarmPopup.vue'
 import _ from 'lodash'
 
 export default {
   name: 'TheNavbar',
 
   components: {
-    IdentityBar
+    IdentityBar,
+    TheAlarmPopup
   },
 
   data () {
@@ -296,12 +300,15 @@ en:
       cursor: pointer;
     }
   }
-  .user {
+  .user{
     display: flex;
     flex-flow: row;
     align-items: center;
   }
-
+  .alarmicon{
+    display: flex;
+    align-items: center;
+  }
   .navbar-dropdown {
     padding: 0.5rem;
     border-bottom: {
