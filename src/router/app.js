@@ -1,6 +1,5 @@
 import Board from '@/views/Board.vue'
 import User from '@/views/User.vue'
-import Archive from '@/views/Archive.vue'
 import Post from '@/views/Post.vue'
 import Write from '@/views/Write.vue'
 import Notifications from '@/views/Notifications.vue'
@@ -24,12 +23,6 @@ export default [
     path: '/user/:username?',
     name: 'user',
     component: User,
-    beforeEnter: authGuard
-  },
-  {
-    path: '/archive',
-    name: 'archive',
-    component: Archive,
     beforeEnter: authGuard
   },
   {
