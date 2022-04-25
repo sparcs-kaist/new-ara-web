@@ -96,6 +96,7 @@ export default {
       return this.title
     },
     isBanner () {
+      if (this.$route.name === 'my-info') { return false }
       return true
     }
   }
