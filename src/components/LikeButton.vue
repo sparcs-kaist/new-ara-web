@@ -38,7 +38,8 @@ export default {
     votable: Boolean,
     elide: Boolean,
     table: Boolean,
-    isSchool: Boolean
+    isSchool: Boolean,
+    isMine: Boolean
   },
 
   computed: {
@@ -59,6 +60,11 @@ export default {
         return
       }
       if (this.isSchool) {
+        if (this.isMine) {
+          this.$store.dispatch('dialog/toast', this.$t('nonvotable-myself'))
+          return
+        }
+
         if (this.liked) {
           this.$store.dispatch('dialog/toast', this.$t('agreed'))
           return
@@ -93,10 +99,12 @@ ko:
   confirm-message: '신문고 게시판에서 좋아요는 취소할 수 없습니다. 좋아요를 누르려면 다음 문장을 입력해주세요'
   agree-text: '동의합니다!'
   agreed: '이미 동의한 글입니다. 동의는 취소할 수 없습니다.'
+  nonvotable-myself: '본인 게시물에는 좋아요를 누를 수 없습니다!'
 en:
   confirm-message: 'You cannot cancel your like in this board. If you want to like this post, please enter the following sentence'
   agree-text: 'I agree!'
   agreed: 'You already agreed. You cannot cancel it'
+  nonvotable-myself: 'You cannot vote for your post!'
 </i18n>
 
 <style lang="scss" scoped>
