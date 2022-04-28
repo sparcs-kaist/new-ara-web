@@ -85,7 +85,6 @@ export default {
       return this.post.created_by && this.post.created_by.profile.picture
     },
     postAuthor () {
-      console.log(window.history.length)
       return this.post.created_by && this.post.created_by.profile.nickname
     },
     postAuthorId () {
