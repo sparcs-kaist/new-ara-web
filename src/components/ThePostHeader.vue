@@ -1,7 +1,7 @@
 <template>
   <div class="post">
     <div class="title">
-      <a class="title__board" @click="$router.go(-1)">
+      <a class="title__board" @click="hasHistory() ? $router.back() : $router.push(beforeBoard)">
         <i class="material-icons title__board--icon">arrow_back_ios</i>
         <span class="title__board--name">
           {{ beforeBoardName }}
@@ -85,6 +85,7 @@ export default {
       return this.post.created_by && this.post.created_by.profile.picture
     },
     postAuthor () {
+      console.log(window.history.length)
       return this.post.created_by && this.post.created_by.profile.nickname
     },
     postAuthorId () {
@@ -137,6 +138,12 @@ export default {
       return this.$t('prev-page')
     },
     ...mapGetters([ 'userId' ])
+  },
+  methods: {
+    hasHistory () {
+      // The reason why this is 3 is that Vue basically uses 2.
+      return window.history.length > 3
+    }
   }
 }
 </script>
