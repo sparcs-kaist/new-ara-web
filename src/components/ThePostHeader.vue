@@ -134,14 +134,19 @@ export default {
       if (fromView === 'scrap') {
         return this.$t('archive')
       }
-      return this.$t('prev-page')
+      if (this.hasHistory()) {
+        return this.$t('prev-page')
+      }
+      return this.$t('all')
     },
     ...mapGetters([ 'userId' ])
   },
   methods: {
     hasHistory () {
       // The reason why this is 3 is that Vue basically uses 2.
-      return window.history.length > 3
+      return window.history.length > 3 ||
+       (document.referrer &&
+       (document.referrer.includes('sparcs.org') || document.referrer.includes('localhost')))
     }
   }
 }
