@@ -1,12 +1,12 @@
 <template>
   <div class="post">
     <div class="title">
-      <router-link :to="beforeBoard" class="title__board">
+      <a class="title__board" @click="$router.go(-1)">
         <i class="material-icons title__board--icon">arrow_back_ios</i>
         <span class="title__board--name">
           {{ beforeBoardName }}
         </span>
-      </router-link>
+      </a>
       <hr class="title__divider">
       <span class="title__text">
         <span v-if="post.parent_topic" class="title__topic">
@@ -134,7 +134,7 @@ export default {
       if (fromView === 'scrap') {
         return this.$t('archive')
       }
-      return this.$t('all')
+      return this.$t('prev-page')
     },
     ...mapGetters([ 'userId' ])
   }
@@ -157,6 +157,7 @@ ko:
   unblock: '사용자 차단해제'
   confirm-delete: '정말로 삭제하시겠습니까?'
   all: '모아보기'
+  prev-page: '이전 페이지'
 
 en:
   archive: 'Bookmark'
@@ -173,6 +174,7 @@ en:
   unblock: 'Unblock User'
   confirm-delete: 'Are you really want to delete this post?'
   all: 'All'
+  prev-page: 'Previous Page'
 </i18n>
 
 <style lang="scss" scoped>
