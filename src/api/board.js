@@ -50,6 +50,59 @@ export const fetchRecentViewedPosts = ({ query, page, pageSize } = {}) => {
     .then(({ data }) => data)
 }
 
+export const fetchAnsweredPostinTimeOrder = ({ boardId, query, page, pageSize } = {}) => {
+  const context = {}
+  if (query) context.main_search__contains = query
+  if (page) context.page = page
+  if (pageSize) context.page_size = pageSize
+  context.school_response_status = 3
+  return http.get(`board/${boardId}?${queryBuilder(context)}`)
+    .then(({ data }) => data)
+}
+
+export const fetchUnansweredPostinTimeOrder = ({ boardId, query, page, pageSize } = {}) => {
+  const context = {}
+  if (query) context.main_search__contains = query
+  if (page) context.page = page
+  if (pageSize) context.page_size = pageSize
+  context.school_response_status = 3
+  return http.get(`board/${boardId}?${queryBuilder(context)}`)
+    .then(({ data }) => data)
+}
+
+export const fetchAnsweredPostinPositiveOrder = ({ boardId, query, page, pageSize } = {}) => {
+  const context = {}
+  if (query) context.main_search__contains = query
+  if (page) context.page = page
+  if (pageSize) context.page_size = pageSize
+  context.school_response_status = 3
+  context.order = 'article__positive_vote_count'
+  return http.get(`board/${boardId}?${queryBuilder(context)}`)
+    .then(({ data }) => data)
+}
+
+export const fetchUnansweredPostinPositiveOrder = ({ boardId, query, page, pageSize } = {}) => {
+  const context = {}
+  if (query) context.main_search__contains = query
+  if (page) context.page = page
+  if (pageSize) context.page_size = pageSize
+  context.school_response_status = 3
+  context.order = 'article__positive_vote_count'
+  return http.get(`board/${boardId}?${queryBuilder(context)}`)
+    .then(({ data }) => data)
+}
+
+export const fetchAllPostinPositiveOrder = ({ boardId, query, page, pageSize } = {}) => {
+  const context = {}
+  if (query) context.main_search__contains = query
+  if (page) context.page = page
+  if (pageSize) context.page_size = pageSize
+  context.school_response_status = 3
+  context.order = 'article__positive_vote_count'
+  return http.get(`board/${boardId}?${queryBuilder(context)}`)
+    .then(({ data }) => data)
+}
+
 export const fetchReports = () =>
   http.get('reports/')
     .then(({ data }) => data)
