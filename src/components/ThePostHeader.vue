@@ -135,7 +135,7 @@ export default {
         return this.$t('archive')
       }
       if (this.hasHistory()) {
-        if (fromView === 'all'){
+        if (fromView === 'all') {
           return this.$t('all')
         }
         return this.$t('prev-page')
