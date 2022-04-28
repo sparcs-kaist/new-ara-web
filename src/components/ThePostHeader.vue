@@ -135,6 +135,9 @@ export default {
         return this.$t('archive')
       }
       if (this.hasHistory()) {
+        if (fromView === 'all'){
+          return this.$t('all')
+        }
         return this.$t('prev-page')
       }
       return this.$t('all')
@@ -144,6 +147,7 @@ export default {
   methods: {
     hasHistory () {
       // The reason why this is 3 is that Vue basically uses 2.
+      // If referrer is outside of newara, then it doesn't have history.
       return window.history.length > 3 ||
        (document.referrer &&
        (document.referrer.includes('sparcs.org') || document.referrer.includes('localhost')))
