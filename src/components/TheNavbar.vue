@@ -99,8 +99,8 @@
               {{ $t('language') }}
             </span>
           </a>
-          <div class="navbar-item has-dropdown is-hoverable">
-            <router-link :to="{ name: 'notifications' }" class="alarmicon">
+          <div class="navbar-item has-dropdown is-active">
+            <div class="alarmicon" @click="toggleAlram">
               <span
                 :class="{'unread-noti': isUnreadNotificationExist}"
                 data-badge=" "
@@ -108,13 +108,26 @@
               >
                 <i class="material-icons">notifications</i>
               </span>
-
-              <TheAlarmPopup :notifications="notifications" class="navbar-dropdown is-hidden-touch alarm-popup" />
-
+              <div v-if="isAlramShow" class="alarm-popup navbar-dropdown is-hidden-touch">
+                <TheAlarmPopup
+                  v-for="notification in notifications.slice(0,4)"
+                  :key="notification.id"
+                  :notification="notification"
+                  class="alarm-content"
+                />
+                <router-link
+                  :to="{ name: 'notifications' }"
+                  class="alarm-popup-router"
+                >
+                  <span>
+                    {{ $t('morealarm') }}
+                  </span>
+                </router-link>
+              </div>
               <span class="is-hidden-desktop">
                 {{ $t('notification') }}
               </span>
-            </router-link>
+            </div>
           </div>
           <div class="navbar-item has-dropdown is-hoverable">
             <router-link
@@ -176,7 +189,8 @@ export default {
         clubs: false,
         money: false,
         communication: false
-      }
+      },
+      isAlramShow: false
     }
   },
 
@@ -228,6 +242,9 @@ export default {
         this.boardGroup[board] = false
       }
       this.boardGroup[boardName] = true
+    },
+    toggleAlram () {
+      this.isAlramShow = !this.isAlramShow
     }
   }
 }
@@ -247,6 +264,7 @@ ko:
     clubs: '학생 단체 및 동아리'
     money: '돈'
     communication: '소통'
+  morealarm: '알림 더 보기'
 
 en:
   language: '한국어'
@@ -261,6 +279,7 @@ en:
     clubs: 'Organizations and Clubs'
     money: 'Money'
     communication: 'Communication'
+  morealarm: 'See more Alarms'
 </i18n>
 
 <style lang="scss" scoped>
@@ -308,6 +327,7 @@ en:
   .alarmicon{
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
   .navbar-dropdown {
     padding: 0.5rem;
@@ -316,12 +336,41 @@ en:
       right-radius: 15px;
     }
     $dropdown-width: 170px;
-    width: $dropdown-width !important;
+    width: $dropdown-width;
     left: calc(50% - #{$dropdown-width / 2});
     @include breakPoint(min) {
       width: 100% !important;
       padding: 0 !important;
       padding-left: 15px !important;
+    }
+  }
+  .alarm-popup {
+    $dropdown-width: 362px;
+    height: 384px;
+    width: $dropdown-width;
+    left: calc(50% - #{$dropdown-width/1.3});
+    margin: 10px;
+    margin-top: 0px;
+    border-radius: 0px 0px 20px 20px;
+    padding: 0;
+    .alarm-popup-router {
+      padding: 0;
+      width: 100%;
+      height: 40px;
+      background: var(--theme-400);
+      border: hidden;
+      border-radius: 0px 0px 20px 20px;
+      bottom: 0;
+      position: absolute;
+      display: flex;
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+      align-items: center;
+      text-align: center;
+      span {
+        width: 100%;
+      }
     }
   }
 
@@ -422,7 +471,6 @@ en:
         margin-right: 10px;
       }
     }
-
     @include breakPoint(min) {
       .icon {
         margin-right: 10px;
