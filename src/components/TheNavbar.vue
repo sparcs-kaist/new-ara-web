@@ -99,7 +99,24 @@
               {{ $t('language') }}
             </span>
           </a>
-          <div class="navbar-item has-dropdown is-active">
+
+          <router-link
+            :to="{ name: 'notifications' }"
+            class="navbar-item is-hidden-desktop"
+          >
+            <span
+              :class="{'unread-noti': isUnreadNotificationExist}"
+              data-badge=" "
+              class="icon"
+            >
+              <i class="material-icons">notifications</i>
+            </span>
+            <span class="is-hidden-desktop">
+              {{ $t('notification') }}
+            </span>
+          </router-link>
+
+          <div class="navbar-item has-dropdown is-active is-hidden-touch">
             <div class="alarmicon" @click="toggleAlram">
               <span
                 :class="{'unread-noti': isUnreadNotificationExist}"
@@ -124,9 +141,6 @@
                   </span>
                 </router-link>
               </div>
-              <span class="is-hidden-desktop">
-                {{ $t('notification') }}
-              </span>
             </div>
           </div>
           <div class="navbar-item has-dropdown is-hoverable">
