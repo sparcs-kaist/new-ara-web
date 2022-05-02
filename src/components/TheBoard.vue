@@ -8,68 +8,13 @@
 
       <div class="board__options">
         <slot name="option" />
+        <slot name="filter" />
+        <slot name="order" />
         <SearchBar
           v-if="!simplify"
           class="board__tablet-search is-flex-touch is-hidden-mobile"
           searchable
         />
-      </div>
-      <div class="dropdown is-hoverable">
-        <div class="dropdown-trigger">
-          <button
-            class="button"
-            aria-haspopup="true"
-            aria-controls="dropdown-menu">
-            <span>필터</span>
-            <span class="icon is-small">
-              <i class="material-icons">expand_more</i>
-            </span>
-          </button>
-        </div>
-        <div
-          id="dropdown-menu"
-          class="dropdown-menu"
-          role="menu"
-        >
-          <div class="dropdown-content">
-            <a href="#" class="dropdown-item">
-              전체 보기
-            </a>
-            <a class="dropdown-item">
-              답변 완료
-            </a>
-            <a href="#" class="dropdown-item is-active">
-              답변 미완
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="dropdown is-hoverable">
-        <div class="dropdown-trigger">
-          <button
-            class="button"
-            aria-haspopup="true"
-            aria-controls="dropdown-menu">
-            <span>정렬</span>
-            <span class="icon is-small">
-              <i class="material-icons">expand_more</i>
-            </span>
-          </button>
-        </div>
-        <div
-          id="dropdown-menu"
-          class="dropdown-menu"
-          role="menu"
-        >
-          <div class="dropdown-content">
-            <a href="#" class="dropdown-item">
-              최신순
-            </a>
-            <a class="dropdown-item">
-              추천순
-            </a>
-          </div>
-        </div>
       </div>
     </div>
     <hr v-if="title && !simplify" class="board__divider">
@@ -132,6 +77,11 @@ export default {
       return query
     },
     queryTitle () {
+      // console.log('this', this)
+      // console.log('this.$route:', this.$route)
+      // console.log('this.$route.query:', this.$route.query)
+      // console.log('this.$route.query.page:', this.$route.query.page)
+      // console.log('this.fromQuery:', this.fromQuery)
       if (this.$route.query.query) { return this.$t('search', { title: this.title, query: this.$route.query.query }) }
 
       return this.title

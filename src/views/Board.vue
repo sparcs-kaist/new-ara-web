@@ -1,3 +1,4 @@
+/* eslint-disable no-fallthrough */
 <template>
   <TheLayout class="board">
     <template #aside-right>
@@ -13,6 +14,70 @@
         <span class="board__topic">
           {{ `#${topic[`${$i18n.locale}_name`]}` }}
         </span>
+      </template>
+      <template v-if="boardId === 14" #filter>
+        <div class="dropdown is-hoverable">
+          <div class="dropdown-trigger">
+            <button
+              class="button"
+              aria-haspopup="true"
+              aria-controls="dropdown-menu"
+            >
+              <span>{{ selectedOrdering }}</span>
+              <span class="icon is-small">
+                <i class="material-icons">expand_more</i>
+              </span>
+            </button>
+          </div>
+          <div
+            id="dropdown-menu"
+            class="dropdown-menu"
+            role="menu"
+          >
+            <div class="dropdown-content">
+              <a
+                v-for="ordering in orderings"
+                :key="ordering.name"
+                class="dropdown-item"
+                @click="changeOrdering(ordering.name)"
+              >
+                {{ ordering.name }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template v-if="boardId === 14" #order>
+        <div class="dropdown is-hoverable">
+          <div class="dropdown-trigger">
+            <button
+              class="button"
+              aria-haspopup="true"
+              aria-controls="dropdown-menu"
+            >
+              <span>{{ selectedFilter }}</span>
+              <span class="icon is-small">
+                <i class="material-icons">expand_more</i>
+              </span>
+            </button>
+          </div>
+          <div
+            id="dropdown-menu"
+            class="dropdown-menu"
+            role="menu"
+          >
+            <div class="dropdown-content">
+              <a
+                v-for="filter in filters"
+                :key="filter.name"
+                class="dropdown-item"
+                @click="changeFilter(filter.name)"
+              >
+                {{ filter.name }}
+              </a>
+            </div>
+          </div>
+        </div>
       </template>
 
       <template #option>
@@ -80,7 +145,7 @@
         <template v-if="!$route.params.boardSlug">
           <div class="exclude">
             <span class="exclude__text">{{ $t('exclude_portal') }}</span>
-            <a class="exclude__change" @click="changeFilter">
+            <a class="exclude__change" @click="changePortalFilter">
               <span class="icon is-flex-touch exclude__toggle">
                 <i v-if="$route.query.portal === 'exclude'" class="material-icons exclude__icon exclude__icon--on">toggle_on</i>
                 <i v-else class="material-icons exclude__icon">toggle_off</i>
@@ -113,7 +178,18 @@ export default {
   data () {
     return {
       board: {},
-      boardId: null
+      boardId: null,
+      filters: [
+        { name: '전체 보기' },
+        { name: '답변 완료' },
+        { name: '답변 미완' }
+      ],
+      orderings: [
+        { name: '최신순' },
+        { name: '추천순' }
+      ],
+      selectedOrdering: '최신순',
+      selectedFilter: '전체 보기'
     }
   },
 
@@ -166,6 +242,7 @@ export default {
       boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
       boardData = store.getters.getBoardById(boardId)
     }
+
     const topic = (query.topic && boardData)
       ? boardData.topics.find(topic => topic.slug === query.topic)
       : null
@@ -191,6 +268,7 @@ export default {
     } else {
       boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
     }
+
     const topic = query.topic
       ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
       : null
@@ -207,11 +285,40 @@ export default {
   },
 
   methods: {
-    changeFilter () {
+    changePortalFilter () {
       if (this.$route.query.portal === 'exclude') {
         this.$router.push({ query: { ...this.$route.query, portal: undefined } })
       } else {
         this.$router.push({ query: { ...this.$route.query, portal: 'exclude' } })
+      }
+    },
+    changeOrdering (orderingOption) {
+      console.log(orderingOption)
+      switch (orderingOption) {
+        case '최신순':
+          this.$router.push({ query: { ...this.$route.query, ordering: undefined } })
+          break
+        case '추천순':
+          this.$router.push({ query: { ...this.$route.query, ordering: 'positive_vote_count' } })
+          break
+        default:
+          break
+      }
+    },
+    changeFilter (filterOption) {
+      console.log(filterOption)
+      switch (filterOption) {
+        case '전체보기':
+          this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: undefined, communication_article__school_response_status__lt: undefined } })
+          break
+        case '답변 완료':
+          this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: 3, communication_article__school_response_status__lt: undefined } })
+          break
+        case '답변 미완':
+          this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: undefined, communication_article__school_response_status__lt: 3 } })
+          break
+        default:
+          break
       }
     }
   }
