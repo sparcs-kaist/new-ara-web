@@ -15,7 +15,12 @@
           {{ `#${topic[`${$i18n.locale}_name`]}` }}
         </span>
       </template>
-      <template v-if="boardId === 14" #filter>
+      <div>hihi</div>
+      <template
+        v-if="boardId === 14"
+        #filter
+        class="filter"
+      >
         <div class="dropdown is-hoverable">
           <div class="dropdown-trigger">
             <button
@@ -47,7 +52,11 @@
           </div>
         </div>
       </template>
-      <template v-if="boardId === 14" #order>
+      <template
+        v-if="boardId === 14"
+        #order
+        class="order"
+      >
         <div class="dropdown is-hoverable">
           <div class="dropdown-trigger">
             <button
@@ -179,14 +188,14 @@ export default {
     return {
       board: {},
       boardId: null,
+      orderings: [
+        { name: '최신순' },
+        { name: '추천순' }
+      ],
       filters: [
         { name: '전체 보기' },
         { name: '답변 완료' },
         { name: '답변 미완' }
-      ],
-      orderings: [
-        { name: '최신순' },
-        { name: '추천순' }
       ],
       selectedOrdering: '최신순',
       selectedFilter: '전체 보기'
@@ -296,9 +305,11 @@ export default {
       console.log(orderingOption)
       switch (orderingOption) {
         case '최신순':
+          this.selectedOrdering = '최신순'
           this.$router.push({ query: { ...this.$route.query, ordering: undefined } })
           break
         case '추천순':
+          this.selectedOrdering = '추천순'
           this.$router.push({ query: { ...this.$route.query, ordering: 'positive_vote_count' } })
           break
         default:
@@ -308,13 +319,16 @@ export default {
     changeFilter (filterOption) {
       console.log(filterOption)
       switch (filterOption) {
-        case '전체보기':
+        case '전체 보기':
+          this.selectedFilter = '전체 보기'
           this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: undefined, communication_article__school_response_status__lt: undefined } })
           break
         case '답변 완료':
+          this.selectedFilter = '답변 완료'
           this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: 3, communication_article__school_response_status__lt: undefined } })
           break
         case '답변 미완':
+          this.selectedFilter = '답변 미완'
           this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: undefined, communication_article__school_response_status__lt: 3 } })
           break
         default:
