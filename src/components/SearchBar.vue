@@ -43,7 +43,7 @@ export default {
         return
       }
       // ...this.$route.query removed because of 404 error in search.
-      this.$router.push({ query: { query: this.searchText } })
+      this.$router.push({ query: { ...this.$route.query, query: this.searchText, page: undefined } })
     }
   }
 }
