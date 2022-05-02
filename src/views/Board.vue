@@ -15,7 +15,6 @@
           {{ `#${topic[`${$i18n.locale}_name`]}` }}
         </span>
       </template>
-      <div>hihi</div>
       <template
         v-if="boardId === 14"
         #filter
@@ -419,7 +418,9 @@ en:
     font-size: 1rem;
   }
 }
-
+.dropdown{
+  margin: 5px;
+}
 .exclude {
   display: flex;
   align-items: center;
