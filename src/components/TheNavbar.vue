@@ -9,7 +9,7 @@
     >
       <div
         :class="{
-          'navbar-active': isMobileMenuActive
+          'navbar-active': isMobileMenuActive|isMobileAlarmShow
         }"
         class="navbar-brand"
       >
@@ -25,6 +25,14 @@
         </router-link>
 
         <a
+          :to="{ name: 'notifications' }"
+          class="navbar-item navbar-item--mobile-alarm is-hidden-desktop"
+          @click="toggleMobileAlram"
+        >
+          <i class="material-icons write-icon">notifications</i>
+        </a>
+
+        <a
           :class="{ 'is-active': isMobileMenuActive }"
           class="navbar-burger"
           role="button"
@@ -36,6 +44,27 @@
           <span aria-hidden="true" />
           <span aria-hidden="true" />
         </a>
+      </div>
+
+      <div :class="{ 'navbar-clicked': !isMobileAlarmShow }" class="navbar-alarm has-dropdown">
+        <div class="navbar-dropdown">
+          <div class="alarm-popup">
+            <AlarmPopupNotifications
+              v-for="notification in notifications.slice(0,4)"
+              :key="notification.id"
+              :notification="notification"
+              class="alarm-content"
+            />
+            <router-link
+              :to="{ name: 'notifications' }"
+              class="alarm-popup-router"
+            >
+              <span>
+                {{ $t('morealarm') }}
+              </span>
+            </router-link>
+          </div>
+        </div>
       </div>
 
       <div :class="{ 'is-active': isMobileMenuActive }" class="navbar-menu">
@@ -100,23 +129,7 @@
             </span>
           </a>
 
-          <router-link
-            :to="{ name: 'notifications' }"
-            class="navbar-item is-hidden-desktop"
-          >
-            <span
-              :class="{'unread-noti': isUnreadNotificationExist}"
-              data-badge=" "
-              class="icon"
-            >
-              <i class="material-icons">notifications</i>
-            </span>
-            <span class="is-hidden-desktop">
-              {{ $t('notification') }}
-            </span>
-          </router-link>
-
-          <div class="navbar-item has-dropdown is-active is-hidden-touch">
+          <div class="navbar-item has-dropdown is-hidden-touch is-active">
             <div class="alarmicon" @click="toggleAlram">
               <span
                 :class="{'unread-noti': isUnreadNotificationExist}"
@@ -125,22 +138,22 @@
               >
                 <i class="material-icons">notifications</i>
               </span>
-              <div v-if="isAlramShow" class="alarm-popup navbar-dropdown is-hidden-touch">
-                <AlarmPopupNotifications
-                  v-for="notification in notifications.slice(0,4)"
-                  :key="notification.id"
-                  :notification="notification"
-                  class="alarm-content"
-                />
-                <router-link
-                  :to="{ name: 'notifications' }"
-                  class="alarm-popup-router"
-                >
-                  <span>
-                    {{ $t('morealarm') }}
-                  </span>
-                </router-link>
-              </div>
+            </div>
+            <div v-if="isAlramShow" class="alarm-popup navbar-dropdown is-hidden-touch">
+              <AlarmPopupNotifications
+                v-for="notification in notifications.slice(0,4)"
+                :key="notification.id"
+                :notification="notification"
+                class="alarm-content"
+              />
+              <router-link
+                :to="{ name: 'notifications' }"
+                class="alarm-popup-router"
+              >
+                <span>
+                  {{ $t('morealarm') }}
+                </span>
+              </router-link>
             </div>
           </div>
           <div class="navbar-item has-dropdown is-hoverable">
@@ -204,7 +217,8 @@ export default {
         money: false,
         communication: false
       },
-      isAlramShow: false
+      isAlramShow: false,
+      isMobileAlarmShow: false
     }
   },
 
@@ -244,6 +258,7 @@ export default {
   methods: {
     toggleMobileMenu () {
       this.isMobileMenuActive = !this.isMobileMenuActive
+      this.isMobileAlarmShow = false
     },
     changeLocale,
     ...mapActions(['toggleDarkMode']),
@@ -259,6 +274,10 @@ export default {
     },
     toggleAlram () {
       this.isAlramShow = !this.isAlramShow
+    },
+    toggleMobileAlram () {
+      this.isMobileAlarmShow = !this.isMobileAlarmShow
+      this.isMobileMenuActive = false
     }
   }
 }
@@ -360,22 +379,28 @@ en:
   }
   .alarm-popup {
     $dropdown-width: 362px;
-    height: 384px;
     width: $dropdown-width;
     left: calc(50% - #{$dropdown-width/1.3});
     margin: 10px;
     margin-top: 0px;
     border-radius: 0px 0px 20px 20px;
     padding: 0;
+    display: flex;
+    flex-flow: column;
+    @include breakPoint(min) {
+      width: 100%;
+      border-radius: 0px;
+      margin: 0;
+      padding-right: 15px;
+    }
     .alarm-popup-router {
       padding: 0;
+      margin-top: 10px;
       width: 100%;
       height: 40px;
       background: var(--theme-400);
       border: hidden;
       border-radius: 0px 0px 20px 20px;
-      bottom: 0;
-      position: absolute;
       display: flex;
       font-size: 14px;
       font-weight: 700;
@@ -384,6 +409,11 @@ en:
       text-align: center;
       span {
         width: 100%;
+      }
+      @include breakPoint(min) {
+        width: 110%;
+        border-radius: 0px;
+        margin-left: -15px;
       }
     }
   }
@@ -456,8 +486,19 @@ en:
       color: var(--theme-400);
     }
 
+    .alarm-icon {
+      color: var(--theme-400);
+    }
+
     &--mobile-write {
       width: 24px;
+      padding: 0;
+    }
+
+    &--mobile-alarm {
+      width: 24px;
+      margin-left: 15px;
+      margin-right: 5px;
       padding: 0;
     }
 
@@ -534,6 +575,14 @@ en:
     @include breakPoint(min) {
       padding: 10px 10px;
       padding-top: 0px;
+      width: inherit;
+      background-color: var(--theme-100);
+      box-shadow: 0 7px 6px 0 rgba(169, 169, 169, 0.64);
+    }
+  }
+
+  &-alarm {
+    @include breakPoint(min) {
       width: inherit;
       background-color: var(--theme-100);
       box-shadow: 0 7px 6px 0 rgba(169, 169, 169, 0.64);

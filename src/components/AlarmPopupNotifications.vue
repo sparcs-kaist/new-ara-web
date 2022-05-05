@@ -82,14 +82,20 @@ en:
 .noti {
   padding: 15px;
   display: flex;
-  border-top: 1px solid grey;
+  border-top: 1px solid lightgrey;
+  @include breakPoint(min) {
+    border: 0px;
+  }
 
   &:first-child {
-    border-top: 1px solid grey;
+    border-top: 0px;
   }
 
   &:last-child {
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid lightgrey;
+    @include breakPoint(min) {
+      border: 0px;
+    }
   }
 
   &__container {
