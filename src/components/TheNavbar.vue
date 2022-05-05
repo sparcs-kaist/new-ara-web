@@ -109,7 +109,7 @@
                 <i class="material-icons">notifications</i>
               </span>
               <div v-if="isAlramShow" class="alarm-popup navbar-dropdown is-hidden-touch">
-                <TheAlarmPopup
+                <AlarmPopupNotifications
                   v-for="notification in notifications.slice(0,4)"
                   :key="notification.id"
                   :notification="notification"
@@ -166,7 +166,7 @@ import IdentityBar from '@/components/IdentityBar.vue'
 import { fetchNotifications } from '@/api'
 import { fetchWithProgress } from '@/views/helper'
 import { changeLocale } from '@/i18n'
-import TheAlarmPopup from '@/components/TheAlarmPopup.vue'
+import AlarmPopupNotifications from '@/components/AlarmPopupNotifications.vue'
 import _ from 'lodash'
 
 export default {
@@ -174,7 +174,7 @@ export default {
 
   components: {
     IdentityBar,
-    TheAlarmPopup
+    AlarmPopupNotifications
   },
 
   data () {

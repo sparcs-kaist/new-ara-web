@@ -36,7 +36,7 @@ import { timeago } from '@/helper'
 import { Notification } from '@/types'
 
 export default Vue.extend({
-  name: 'Notification',
+  name: 'AlarmPopupNotifications',
 
   props: {
     notification: {
