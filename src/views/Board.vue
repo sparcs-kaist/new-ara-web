@@ -241,7 +241,7 @@ export default {
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
     let boardId
     let boardData
-
+    console.log('BeforeRouteEnter, query: ', query)
     // Portal-Notice filter
     if (query.portal === 'exclude') {
       boardId = store.state.boardList.filter(board => board.slug !== 'portal-notice').map(obj => obj.id)
@@ -269,22 +269,28 @@ export default {
 
   async beforeRouteUpdate ({ params: { boardSlug }, query }, from, next) {
     let boardId
-
+    const filter = {}
+    console.log('BeforeRouteUpdate, query: ', query)
     // Portal-Notice filter
     if (query.portal === 'exclude') {
       boardId = store.state.boardList.filter(board => board.slug !== 'portal-notice').map(obj => obj.id)
     } else {
       boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
     }
-
+    if (query.communication_article__school_response_status === '3') {
+      filter.communication_article__school_response_status = query.communication_article__school_response_status
+    }
+    if (query.communication_article__school_response_status__lt === '3') {
+      filter.communication_article__school_response_status__lt = query.communication_article__school_response_status__lt
+    }
     const topic = query.topic
       ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
       : null
 
     const topicId = topic ? topic.id : null
-
+    console.log('queryBefore', query)
     const [ board ] = await fetchWithProgress(
-      [ fetchArticles({ boardId, topicId, ...query }) ], 'board-failed-fetch'
+      [ fetchArticles({ boardId, topicId, ...query, filter }) ], 'board-failed-fetch'
     )
     this.board = board
     this.boardId = boardId
@@ -309,7 +315,7 @@ export default {
           break
         case '추천순':
           this.selectedOrdering = '추천순'
-          this.$router.push({ query: { ...this.$route.query, ordering: 'positive_vote_count' } })
+          this.$router.push({ query: { ...this.$route.query, ordering: 'positive_vote_count, -created_at' } })
           break
         default:
           break

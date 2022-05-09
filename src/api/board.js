@@ -5,14 +5,20 @@ export const fetchBoardList = () =>
   http.get('boards/')
     .then(({ data }) => data)
 
-export const fetchArticles = ({ boardId, query, page, pageSize, topicId, username } = {}) => {
+export const fetchArticles = ({ boardId, page, pageSize, topicId, username, ordering, filter } = {}) => {
   const context = {}
+  console.log('ordering: ', ordering)
+  console.log('filter :', filter)
   if (boardId) {
     if (Array.isArray(boardId)) context.parent_board__in = boardId.join(',')
     else context.parent_board = boardId
   }
   if (topicId) context.parent_topic = topicId
-  if (query) context.main_search__contains = query
+  if (ordering) context.ordering = ordering
+  if (filter) {
+    context.communication_article__school_response_status = filter.communication_article__school_response_status
+    context.communication_article__school_response_status__lt = filter.communication_article__school_response_status__lt
+  }
   if (page) context.page = page
   if (pageSize) context.page_size = pageSize
   if (username) context.created_by = username
