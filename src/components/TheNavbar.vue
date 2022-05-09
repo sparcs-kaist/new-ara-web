@@ -48,9 +48,9 @@
 
       <div :class="{ 'navbar-clicked': !isMobileAlarmShow }" class="navbar-alarm has-dropdown">
         <div class="navbar-dropdown">
-          <div class="alarm-popup">
+          <div class="alarm-popup alert-dialog">
             <AlarmPopupNotifications
-              v-for="notification in notifications.slice(0,4)"
+              v-for="notification in showedNotifications"
               :key="notification.id"
               :notification="notification"
               class="alarm-content"
@@ -139,9 +139,13 @@
                 <i class="material-icons">notifications</i>
               </span>
             </div>
-            <div v-if="isAlramShow" class="alarm-popup navbar-dropdown is-hidden-touch">
+            <div
+              v-if="isAlramShow"
+              :class="{ 'is-boxed': isHome }"
+              class="alarm-popup navbar-dropdown is-hidden-touch"
+            >
               <AlarmPopupNotifications
-                v-for="notification in notifications.slice(0,4)"
+                v-for="notification in showedNotifications"
                 :key="notification.id"
                 :notification="notification"
                 class="alarm-content"
@@ -207,7 +211,7 @@ export default {
   data () {
     return {
       isMobileMenuActive: false,
-      notifications: {},
+      notifications: [],
       isUnreadNotificationExist: false,
       isHome: true,
       boardGroup: {
@@ -230,6 +234,9 @@ export default {
     },
     groupedBoardList () {
       return _.groupBy(this.boardList, 'group_id')
+    },
+    showedNotifications () {
+      return this.notifications.slice(0, 4)
     }
   },
 
@@ -333,7 +340,7 @@ en:
 }
 
 .is-boxed {
-  border-radius: 15px;
+  border-radius: 15px !important;
 }
 
 .logout {
