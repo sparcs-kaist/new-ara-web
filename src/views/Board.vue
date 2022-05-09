@@ -196,8 +196,8 @@ export default {
         { name: '답변 완료' },
         { name: '답변 미완' }
       ],
-      selectedOrdering: '최신순',
-      selectedFilter: '전체 보기'
+      selectedOrdering: this.$route.query.ordering ? '추천순' : '최신순',
+      selectedFilter: this.$route.query.communication_article__school_response_status ? '답변 완료' : (this.$route.query.communication_article__school_response_status__lt ? '답변 미완' : '전체 보기')
     }
   },
 
