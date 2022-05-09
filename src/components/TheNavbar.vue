@@ -46,9 +46,12 @@
         </a>
       </div>
 
-      <div :class="{ 'navbar-clicked': !isMobileAlarmShow }" class="navbar-alarm has-dropdown">
+      <div
+        :class="{ 'navbar-clicked': !isMobileAlarmShow }"
+        class="navbar-alarm has-dropdown"
+      >
         <div class="navbar-dropdown">
-          <div class="alarm-popup alert-dialog">
+          <div class="alarm-popup">
             <AlarmPopupNotifications
               v-for="notification in showedNotifications"
               :key="notification.id"
@@ -129,7 +132,10 @@
             </span>
           </a>
 
-          <div class="navbar-item has-dropdown is-hidden-touch is-active">
+          <div
+            v-clickoutside="closeAlram"
+            class="navbar-item has-dropdown is-hidden-touch is-active"
+          >
             <div class="alarmicon" @click="toggleAlram">
               <span
                 :class="{'unread-noti': isUnreadNotificationExist}"
@@ -206,6 +212,22 @@ export default {
   components: {
     IdentityBar,
     AlarmPopupNotifications
+  },
+
+  directives: {
+    clickoutside: {
+      bind: function (el, binding, vnode) {
+        el.clickOutsideEvent = function (event) {
+          if (!(el === event.target || el.contains(event.target))) {
+            vnode.context[binding.expression](event)
+          }
+        }
+        document.body.addEventListener('click', el.clickOutsideEvent)
+      },
+      unbind: function (el) {
+        document.body.removeEventListener('click', el.clickOutsideEvent)
+      }
+    }
   },
 
   data () {
@@ -285,6 +307,12 @@ export default {
     toggleMobileAlram () {
       this.isMobileAlarmShow = !this.isMobileAlarmShow
       this.isMobileMenuActive = false
+    },
+    closeAlram () {
+      this.isAlramShow = false
+    },
+    closeMobileAlram () {
+      this.isMobileAlarmShow = false
     }
   }
 }
