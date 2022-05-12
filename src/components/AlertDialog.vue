@@ -22,20 +22,6 @@
       </div>
     </div>
 
-    <form
-      v-if="dialog.agreeText"
-      class="alert-dialog__form"
-      @submit.prevent="dismiss(true)"
-    >
-      <input
-        ref="check"
-        v-model="agreeText"
-        class="alert-dialog__input input"
-        type="text"
-        :placeholder="dialog.agreeText"
-      >
-    </form>
-
     <div v-if="hasButtons" class="alert-dialog__buttons">
       <template v-if="dialog.type === 'confirm'">
         <button class="alert-dialog__button" @click="dismiss(false)">
@@ -150,10 +136,6 @@ export default {
     hasButtons () {
       return !this.dialog.toast
     }
-  },
-
-  mounted () {
-    this.$refs.check.focus()
   },
 
   methods: {
