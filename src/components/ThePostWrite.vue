@@ -212,6 +212,14 @@ export default {
   },
 
   created () {
+    const fromBoard = this.$route.params.board
+    if (fromBoard) {
+      const sfb = fromBoard.split('/')
+      if (sfb[1] === 'board') {
+        const boardId = this.$store.getters.getIdBySlug(sfb[2])
+        if (this.boardList.map(v => v.id).includes(boardId)) this.boardId = boardId
+      }
+    }
     if (this.post) {
       this.boardId = this.post.parent_board.id
       this.title = this.post.title

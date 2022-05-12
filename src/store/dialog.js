@@ -68,7 +68,7 @@ export default {
       return new Promise(resolve => {
         payload.type = 'confirmAgree'
         payload.callback = resolve
-        payload.text = `${payload.message}\n"${[payload.agreeText]}"`
+        payload.text = payload.message
         dispatch('createDialog', payload)
       })
     },

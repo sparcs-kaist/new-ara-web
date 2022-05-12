@@ -64,7 +64,6 @@ export default {
           this.$store.dispatch('dialog/toast', this.$t('nonvotable-myself'))
           return
         }
-
         if (this.liked) {
           this.$store.dispatch('dialog/toast', this.$t('agreed'))
           return
@@ -81,6 +80,22 @@ export default {
         ? 'vote_cancel'
         : (ballot ? 'vote_positive' : 'vote_negative')
 
+      if (this.item.my_vote === null) {
+        this.item.my_vote = ballot
+        if (ballot) {
+          this.item.positive_vote_count++
+        } else {
+          this.item.negative_vote_count++
+        }
+      } else {
+        if (this.item.my_vote) {
+          this.item.positive_vote_count--
+        } else {
+          this.item.negative_vote_count--
+        }
+        this.item.my_vote = null
+      }
+
       this.$emit('vote', { id: this.item.id, vote: myVote })
     },
     elideText (text) {
@@ -96,12 +111,12 @@ export default {
 
 <i18n>
 ko:
-  confirm-message: '신문고 게시판에서 좋아요는 취소할 수 없습니다. 좋아요를 누르려면 다음 문장을 입력해주세요'
+  confirm-message: '해당 글에 동의하려면 아래에 <span style="color: #e15858;">동의합니다!</span>를 작성해주세요.<div style="color: #a9a9a9; font-size: 13px;">동의는 취소할 수 없으며 실명이 노출되지 않습니다.</div>'
   agree-text: '동의합니다!'
   agreed: '이미 동의한 글입니다. 동의는 취소할 수 없습니다.'
   nonvotable-myself: '본인 게시물에는 좋아요를 누를 수 없습니다!'
 en:
-  confirm-message: 'You cannot cancel your like in this board. If you want to like this post, please enter the following sentence'
+  confirm-message: 'If you want to like this post, please enter <span style="color: #e15858;">I agree!</span><div style="color: #a9a9a9; font-size: 13px;">You could not cancel it and it is anonymous.</div>'
   agree-text: 'I agree!'
   agreed: 'You already agreed. You cannot cancel it'
   nonvotable-myself: 'You cannot vote for your post!'

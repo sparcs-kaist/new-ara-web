@@ -5,9 +5,7 @@
     </div>
 
     <div class="alert-dialog__content">
-      <div class="content-text">
-        {{ dialog.text }}
-      </div>
+      <div class="content-text" v-html="dialog.text" />
     </div>
 
     <div v-if="dialog.type === 'report'" class="alert-dialog__chips">
@@ -24,8 +22,13 @@
       </div>
     </div>
 
-    <form v-if="dialog.agreeText" class="alert-dialog__form">
+    <form
+      v-if="dialog.agreeText"
+      class="alert-dialog__form"
+      @submit.prevent="dismiss(true)"
+    >
       <input
+        ref="check"
         v-model="agreeText"
         class="alert-dialog__input input"
         type="text"
@@ -149,6 +152,10 @@ export default {
     }
   },
 
+  mounted () {
+    this.$refs.check.focus()
+  },
+
   methods: {
     dismiss (value) {
       if (this.dialog.agreeText && value) {
@@ -223,6 +230,7 @@ en:
 
   &__icon {
     color: var(--theme-400);
+    margin-bottom: -10px;
     .material-icons {
       font-size: 40px;
     }
@@ -257,6 +265,8 @@ en:
     margin-bottom: 1.5rem;
     margin-top: 1rem;
 
+    width: 120%;
+
     .content-text {
       text-align: center;
       white-space: pre-line;
@@ -286,6 +296,7 @@ en:
 
   &__form {
     margin-bottom: 20px;
+    width: 100%;
   }
 
   &__button {
@@ -298,30 +309,18 @@ en:
     transition: background .4s ease;
     box-shadow: 0 2px 6px 0 rgba(169, 169, 169, 0.16);
 
-    &:hover {
-      background: var(--grey-300);
-    }
-
     &--accent {
-      color: var(--theme-400);
+      color: white;
+      background-color: var(--theme-400);
       font-weight: 500;
       z-index: 50 !important;
-      &:hover {
-        color: #fff;
-        background: var(--theme-400);
-      }
     }
 
     &--none {
       cursor: default;
-      color: var(--grey-600);
-      background: var(--grey-300);
+      color: white;
+      background-color: var(--theme-300);
       font-weight: normal;
-
-      &:hover {
-        color: var(--grey-600);
-        background: var(--grey-300);
-      }
     }
   }
 }
