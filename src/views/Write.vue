@@ -132,6 +132,11 @@ export default {
         return
       }
 
+      if (boardId === 14) {
+        const response = await this.$store.dispatch('dialog/confirm', this.$t('before-realname-write'))
+        if (!response) return
+      }
+
       this.saving = true
 
       const uploadNeededFiles = attachments.filter(item => !item.uploaded)
@@ -216,6 +221,7 @@ ko:
   create-failed: '글 작성에 실패했습니다. 다시 한 번 시도해주세요.'
   update-failed: '글 수정에 실패했습니다. 다시 한 번 시도해주세요.'
   before-unload: "아직 게시글을 올리지 않았습니다!\n올리지 않고 나가시겠습니까?"
+  before-realname-write: "이 게시판에 게시글을 작성하면 본인의 이름이 실명으로 올라가고, 본인의 닉네임과 개인 프로필은 공개되지 않습니다.\n정말로 글을 작성하시겠습니까?"
   document-title:
     write: 'Ara - 글쓰기'
     revise: 'Ara - 수정하기'
@@ -226,6 +232,7 @@ en:
   create-failed: 'Failed to write the post. Please try again after a while.'
   update-failed: 'Failed to update the post. Please try again after a while.'
   before-unload: "This post is not posted yet.\nAre you sure to exit?"
+  before-realname-write: "When you write a post in this board, your name will be posted as your real name, and your nickname and personal profile will not be revealed.\nAre you sure to write the post?"
   document-title:
     write: 'Ara - Write'
     revise: 'Ara - Revise'

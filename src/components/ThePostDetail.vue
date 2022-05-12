@@ -64,12 +64,14 @@
       </div>
     </div>
 
-    <div v-if="!post.is_hidden || !post.is_anonymous" class="post__footer">
+    <div v-if="!post.is_hidden || !(post.name_type === 1)" class="post__footer">
       <LikeButton
         v-if="!post.is_hidden"
         :item="post"
         class="post__like"
         votable
+        :is-school="post.parent_board.id===14"
+        :is-mine="post.is_mine"
         @vote="$emit('vote', $event)"
       />
       <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons">
@@ -98,7 +100,7 @@
         </template>
         <template v-else>
           <button
-            v-if="canBlock"
+            v-if="isRegular"
             class="button"
             @click="$emit('block')"
           >
@@ -109,7 +111,7 @@
           </button>
 
           <button
-            v-if="!post.is_hidden"
+            v-if="!post.is_hidden && isNotRealName"
             class="button"
             @click="$emit('report')"
           >
@@ -185,9 +187,11 @@ export default {
     isMine () {
       return this.post && this.post.is_mine
     },
-    canBlock () {
-      const isInRealName = [14].includes(this.post.parent_board.id) // write realNameBoard Ids in array
-      return !(this.post.is_anonymous || isInRealName)
+    isRegular () {
+      return this.post.name_type === 0
+    },
+    isNotRealName () {
+      return this.post.name_type !== 2
     },
     hiddenReason () {
       const title = `<div class="has-text-weight-bold"> ${this.post.why_hidden.map(v => i18n.t(v)).join('<br>')}</div>`

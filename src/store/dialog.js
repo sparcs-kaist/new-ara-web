@@ -64,6 +64,15 @@ export default {
       })
     },
 
+    confirmAgree ({ dispatch }, payload) {
+      return new Promise(resolve => {
+        payload.type = 'confirmAgree'
+        payload.callback = resolve
+        payload.text = payload.message
+        dispatch('createDialog', payload)
+      })
+    },
+
     report ({ dispatch }, payload) {
       if (typeof payload === 'string') { payload = { text: payload } }
 
