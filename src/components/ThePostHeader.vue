@@ -1,12 +1,12 @@
 <template>
   <div class="post">
     <div class="title">
-      <router-link :to="beforeBoard" class="title__board">
+      <a class="title__board" @click="hasHistory() ? $router.back() : $router.push(beforeBoard)">
         <i class="material-icons title__board--icon">arrow_back_ios</i>
         <span class="title__board--name">
           {{ beforeBoardName }}
         </span>
-      </router-link>
+      </a>
       <hr class="title__divider">
       <span class="title__text">
         <span v-if="post.parent_topic" class="title__topic">
@@ -45,6 +45,7 @@
         class="metadata__like"
         votable
         :is-school="post.parent_board.id===14"
+        :is-mine="post.is_mine"
         @vote="$emit('vote', $event)"
       />
     </div>
@@ -133,9 +134,24 @@ export default {
       if (fromView === 'scrap') {
         return this.$t('archive')
       }
+      if (this.hasHistory()) {
+        if (fromView === 'all') {
+          return this.$t('all')
+        }
+        return this.$t('prev-page')
+      }
       return this.$t('all')
     },
     ...mapGetters([ 'userId' ])
+  },
+  methods: {
+    hasHistory () {
+      // The reason why this is 3 is that Vue basically uses 2.
+      // If referrer is outside of newara, then it doesn't have history.
+      return window.history.length > 3 ||
+       (document.referrer &&
+       (document.referrer.includes('sparcs.org') || document.referrer.includes('localhost')))
+    }
   }
 }
 </script>
@@ -156,6 +172,7 @@ ko:
   unblock: '사용자 차단해제'
   confirm-delete: '정말로 삭제하시겠습니까?'
   all: '모아보기'
+  prev-page: '이전 페이지'
 
 en:
   archive: 'Bookmark'
@@ -172,6 +189,7 @@ en:
   unblock: 'Unblock User'
   confirm-delete: 'Are you really want to delete this post?'
   all: 'All'
+  prev-page: 'Previous Page'
 </i18n>
 
 <style lang="scss" scoped>

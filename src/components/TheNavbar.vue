@@ -18,7 +18,7 @@
         </router-link>
 
         <router-link
-          :to="{ name: 'write' }"
+          :to="{ name: 'write', params: {board: $route.path} }"
           class="navbar-item navbar-item--mobile-write is-hidden-desktop"
         >
           <i class="material-icons write-icon">create</i>
@@ -112,7 +112,7 @@
 
         <div class="navbar-end">
           <router-link
-            :to="{ name: 'write' }"
+            :to="{ name: 'write', params: {board: $route.path} }"
             class="navbar-item navbar-item--write is-hidden-touch"
           >
             <span>{{ $t('write') }}</span>

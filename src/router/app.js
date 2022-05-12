@@ -38,7 +38,7 @@ export default [
     component: Post,
     props: true,
     beforeEnter: async (to, from, next) => {
-      if (from.name === 'notifications') {
+      if (from.name === 'notifications' && to.params.notiId) {
         await readNotification(to.params.notiId)
       }
       await authGuard(to, from, next)
