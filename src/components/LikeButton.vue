@@ -62,7 +62,6 @@ export default {
         return
       }
       if (this.isSchool) {
-        console.log('thisisschool')
         if (this.isMine) {
           this.$store.dispatch('dialog/toast', this.$t('nonvotable-myself'))
           return
