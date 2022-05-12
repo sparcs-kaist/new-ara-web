@@ -42,7 +42,8 @@ export default {
 .banner{
   position:relative;
   text-align: center;
-  height: 160px;
+  aspect-ratio: 11/3;
+  max-height: 160px;
   width: 100%;
   border-radius:10px;
   background-color:var(--grey-600);

@@ -2,7 +2,6 @@
   <div class="board">
     <Banner
       v-if="isBanner"
-      class="is-hidden-mobile"
       :banner-name="title"
       :banner-details="bannerDetails"
       :banner-image="bannerImage"
