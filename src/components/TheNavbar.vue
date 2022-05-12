@@ -9,7 +9,7 @@
     >
       <div
         :class="{
-          'navbar-active': isMobileMenuActive
+          'navbar-active': isMobileMenuActive||isMobileAlarmShow
         }"
         class="navbar-brand"
       >
@@ -25,6 +25,14 @@
         </router-link>
 
         <a
+          :to="{ name: 'notifications' }"
+          class="navbar-item navbar-item--mobile-alarm is-hidden-desktop"
+          @click="toggleMobileAlram"
+        >
+          <i class="material-icons write-icon">notifications</i>
+        </a>
+
+        <a
           :class="{ 'is-active': isMobileMenuActive }"
           class="navbar-burger"
           role="button"
@@ -36,6 +44,30 @@
           <span aria-hidden="true" />
           <span aria-hidden="true" />
         </a>
+      </div>
+
+      <div
+        :class="{ 'navbar-clicked': !isMobileAlarmShow }"
+        class="navbar-alarm has-dropdown"
+      >
+        <div class="navbar-dropdown">
+          <div class="alarm-popup">
+            <AlarmPopupNotifications
+              v-for="notification in showedNotifications"
+              :key="notification.id"
+              :notification="notification"
+              class="alarm-content"
+            />
+            <router-link
+              :to="{ name: 'notifications' }"
+              class="alarm-popup-router"
+            >
+              <span>
+                {{ $t('morealarm') }}
+              </span>
+            </router-link>
+          </div>
+        </div>
       </div>
 
       <div :class="{ 'is-active': isMobileMenuActive }" class="navbar-menu">
@@ -100,20 +132,40 @@
             </span>
           </a>
 
-          <router-link :to="{ name: 'notifications' }" class="navbar-item">
-            <span
-              :class="{'unread-noti': isUnreadNotificationExist}"
-              data-badge=" "
-              class="icon"
+          <div
+            v-clickOutside="closeAlram"
+            class="navbar-item has-dropdown is-hidden-touch is-active"
+          >
+            <div class="alarmicon" @click="toggleAlram">
+              <span
+                :class="{'unread-noti': isUnreadNotificationExist}"
+                data-badge=" "
+                class="icon"
+              >
+                <i class="material-icons">notifications</i>
+              </span>
+            </div>
+            <div
+              v-if="isAlramShow"
+              :class="{ 'is-boxed': isHome }"
+              class="alarm-popup navbar-dropdown is-hidden-touch"
             >
-              <i class="material-icons">notifications</i>
-            </span>
-
-            <span class="is-hidden-desktop">
-              {{ $t('notification') }}
-            </span>
-          </router-link>
-
+              <AlarmPopupNotifications
+                v-for="notification in showedNotifications"
+                :key="notification.id"
+                :notification="notification"
+                class="alarm-content"
+              />
+              <router-link
+                :to="{ name: 'notifications' }"
+                class="alarm-popup-router"
+              >
+                <span>
+                  {{ $t('morealarm') }}
+                </span>
+              </router-link>
+            </div>
+          </div>
           <div class="navbar-item has-dropdown is-hoverable">
             <router-link
               :to="isMobileMenuActive ? { name: 'my-info' } : $route.fullPath"
@@ -151,19 +203,37 @@ import IdentityBar from '@/components/IdentityBar.vue'
 import { fetchNotifications } from '@/api'
 import { fetchWithProgress } from '@/views/helper'
 import { changeLocale } from '@/i18n'
+import AlarmPopupNotifications from '@/components/AlarmPopupNotifications.vue'
 import _ from 'lodash'
 
 export default {
   name: 'TheNavbar',
 
   components: {
-    IdentityBar
+    IdentityBar,
+    AlarmPopupNotifications
+  },
+
+  directives: {
+    clickOutside: {
+      bind: function (el, binding, vnode) {
+        el.clickOutsideEvent = function (event) {
+          if (!(el === event.target || el.contains(event.target))) {
+            vnode.context[binding.expression](event)
+          }
+        }
+        document.body.addEventListener('click', el.clickOutsideEvent)
+      },
+      unbind: function (el) {
+        document.body.removeEventListener('click', el.clickOutsideEvent)
+      }
+    }
   },
 
   data () {
     return {
       isMobileMenuActive: false,
-      notifications: {},
+      notifications: [],
       isUnreadNotificationExist: false,
       isHome: true,
       boardGroup: {
@@ -172,7 +242,9 @@ export default {
         clubs: false,
         money: false,
         communication: false
-      }
+      },
+      isAlramShow: false,
+      isMobileAlarmShow: false
     }
   },
 
@@ -184,6 +256,9 @@ export default {
     },
     groupedBoardList () {
       return _.groupBy(this.boardList, 'group_id')
+    },
+    showedNotifications () {
+      return this.notifications.slice(0, 4)
     }
   },
 
@@ -212,6 +287,7 @@ export default {
   methods: {
     toggleMobileMenu () {
       this.isMobileMenuActive = !this.isMobileMenuActive
+      this.isMobileAlarmShow = false
     },
     changeLocale,
     ...mapActions(['toggleDarkMode']),
@@ -224,6 +300,19 @@ export default {
         this.boardGroup[board] = false
       }
       this.boardGroup[boardName] = true
+    },
+    toggleAlram () {
+      this.isAlramShow = !this.isAlramShow
+    },
+    toggleMobileAlram () {
+      this.isMobileAlarmShow = !this.isMobileAlarmShow
+      this.isMobileMenuActive = false
+    },
+    closeAlram () {
+      this.isAlramShow = false
+    },
+    closeMobileAlram () {
+      this.isMobileAlarmShow = false
     }
   }
 }
@@ -243,6 +332,7 @@ ko:
     clubs: '학생 단체 및 동아리'
     money: '돈'
     communication: '소통'
+  morealarm: '알림 더 보기'
 
 en:
   language: '한국어'
@@ -257,6 +347,7 @@ en:
     clubs: 'Organizations and Clubs'
     money: 'Money'
     communication: 'Communication'
+  morealarm: 'See more Alarms'
 </i18n>
 
 <style lang="scss" scoped>
@@ -277,7 +368,7 @@ en:
 }
 
 .is-boxed {
-  border-radius: 15px;
+  border-radius: 15px !important;
 }
 
 .logout {
@@ -296,12 +387,16 @@ en:
       cursor: pointer;
     }
   }
-  .user {
+  .user{
     display: flex;
     flex-flow: row;
     align-items: center;
   }
-
+  .alarmicon{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
   .navbar-dropdown {
     padding: 0.5rem;
     border-bottom: {
@@ -309,12 +404,52 @@ en:
       right-radius: 15px;
     }
     $dropdown-width: 170px;
-    width: $dropdown-width !important;
+    width: $dropdown-width;
     left: calc(50% - #{$dropdown-width / 2});
     @include breakPoint(min) {
       width: 100% !important;
       padding: 0 !important;
       padding-left: 15px !important;
+    }
+  }
+  .alarm-popup {
+    $dropdown-width: 362px;
+    width: $dropdown-width;
+    left: calc(50% - #{$dropdown-width/1.3});
+    margin: 10px;
+    margin-top: 0px;
+    border-radius: 0px 0px 20px 20px;
+    padding: 0;
+    display: flex;
+    flex-flow: column;
+    @include breakPoint(min) {
+      width: 100%;
+      border-radius: 0px;
+      margin: 0;
+      padding-right: 15px;
+    }
+    .alarm-popup-router {
+      padding: 0;
+      margin-top: 10px;
+      width: 100%;
+      height: 40px;
+      background: var(--theme-400);
+      border: hidden;
+      border-radius: 0px 0px 20px 20px;
+      display: flex;
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+      align-items: center;
+      text-align: center;
+      span {
+        width: 100%;
+      }
+      @include breakPoint(min) {
+        width: 110%;
+        border-radius: 0px;
+        margin-left: -15px;
+      }
     }
   }
 
@@ -386,8 +521,19 @@ en:
       color: var(--theme-400);
     }
 
+    .alarm-icon {
+      color: var(--theme-400);
+    }
+
     &--mobile-write {
       width: 24px;
+      padding: 0;
+    }
+
+    &--mobile-alarm {
+      width: 24px;
+      margin-left: 15px;
+      margin-right: 5px;
       padding: 0;
     }
 
@@ -415,7 +561,6 @@ en:
         margin-right: 10px;
       }
     }
-
     @include breakPoint(min) {
       .icon {
         margin-right: 10px;
@@ -465,6 +610,14 @@ en:
     @include breakPoint(min) {
       padding: 10px 10px;
       padding-top: 0px;
+      width: inherit;
+      background-color: var(--theme-100);
+      box-shadow: 0 7px 6px 0 rgba(169, 169, 169, 0.64);
+    }
+  }
+
+  &-alarm {
+    @include breakPoint(min) {
       width: inherit;
       background-color: var(--theme-100);
       box-shadow: 0 7px 6px 0 rgba(169, 169, 169, 0.64);
