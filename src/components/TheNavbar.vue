@@ -9,7 +9,7 @@
     >
       <div
         :class="{
-          'navbar-active': isMobileMenuActive|isMobileAlarmShow
+          'navbar-active': isMobileMenuActive||isMobileAlarmShow
         }"
         class="navbar-brand"
       >
@@ -133,7 +133,7 @@
           </a>
 
           <div
-            v-clickoutside="closeAlram"
+            v-clickOutside="closeAlram"
             class="navbar-item has-dropdown is-hidden-touch is-active"
           >
             <div class="alarmicon" @click="toggleAlram">
@@ -215,7 +215,7 @@ export default {
   },
 
   directives: {
-    clickoutside: {
+    clickOutside: {
       bind: function (el, binding, vnode) {
         el.clickOutsideEvent = function (event) {
           if (!(el === event.target || el.contains(event.target))) {
