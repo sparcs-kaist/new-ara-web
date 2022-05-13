@@ -50,6 +50,9 @@ export default {
     },
     dislikedCount () {
       return this.elideText(this.item.negative_vote_count)
+    },
+    isSchool () {
+      return this.item.parent_board.id === 14
     }
   },
 
@@ -58,9 +61,13 @@ export default {
       if (!this.votable) {
         return
       }
-      if (this.item.parent_board.is_school_communication) {
+      if (this.isSchool) {
         if (this.isMine) {
           this.$store.dispatch('dialog/toast', this.$t('nonvotable-myself'))
+          return
+        }
+        if (this.liked && this.likedCount >= 30) {
+          this.$store.dispatch('dialog/toast', this.$t('impossible-cancel-like'))
           return
         }
       }
@@ -100,8 +107,10 @@ export default {
 <i18n>
 ko:
   nonvotable-myself: '본인 게시물에는 좋아요를 누를 수 없습니다!'
+  impossible-cancel-like: '좋아요가 30개를 넘은 경우 취소할 수 없습니다!'
 en:
   nonvotable-myself: 'You cannot vote for your post!'
+  impossible-cancel-like: 'If there are more than 30 likes, you cannot cancel it!'
 </i18n>
 
 <style lang="scss" scoped>
