@@ -16,13 +16,17 @@ export const fetchArticles = ({ boardId, page, pageSize, topicId, username, orde
   if (topicId) context.parent_topic = topicId
   if (ordering) context.ordering = ordering
   if (filter) {
-    context.communication_article__school_response_status = filter.communication_article__school_response_status
-    context.communication_article__school_response_status__lt = filter.communication_article__school_response_status__lt
+    if (filter.communication_article__school_response_status !== undefined) {
+      context.communication_article__school_response_status = filter.communication_article__school_response_status
+    } else if (filter.communication_article__school_response_status__lt !== undefined) {
+      context.communication_article__school_response_status__lt = filter.communication_article__school_response_status__lt
+    }
   }
   if (page) context.page = page
   if (pageSize) context.page_size = pageSize
   if (username) context.created_by = username
-
+  console.log('filter', filter)
+  console.log('context', context)
   return http.get(`articles/?${queryBuilder(context)}`)
     .then(({ data }) => data)
 }

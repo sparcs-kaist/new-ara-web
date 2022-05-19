@@ -241,6 +241,7 @@ export default {
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
     let boardId
     let boardData
+    const filter = {}
     console.log('BeforeRouteEnter, query: ', query)
     // Portal-Notice filter
     if (query.portal === 'exclude') {
@@ -250,7 +251,12 @@ export default {
       boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
       boardData = store.getters.getBoardById(boardId)
     }
-
+    if (query.communication_article__school_response_status === '2') {
+      filter.communication_article__school_response_status = query.communication_article__school_response_status
+    }
+    if (query.communication_article__school_response_status__lt === '2') {
+      filter.communication_article__school_response_status__lt = query.communication_article__school_response_status__lt
+    }
     const topic = (query.topic && boardData)
       ? boardData.topics.find(topic => topic.slug === query.topic)
       : null
@@ -277,10 +283,10 @@ export default {
     } else {
       boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
     }
-    if (query.communication_article__school_response_status === '3') {
+    if (query.communication_article__school_response_status === '2') {
       filter.communication_article__school_response_status = query.communication_article__school_response_status
     }
-    if (query.communication_article__school_response_status__lt === '3') {
+    if (query.communication_article__school_response_status__lt === '2') {
       filter.communication_article__school_response_status__lt = query.communication_article__school_response_status__lt
     }
     const topic = query.topic
@@ -311,11 +317,11 @@ export default {
       switch (orderingOption) {
         case '최신순':
           this.selectedOrdering = '최신순'
-          this.$router.push({ query: { ...this.$route.query, ordering: undefined } })
+          this.$router.push({ query: { ...this.$route.query, ordering: '-created_at' } })
           break
         case '추천순':
           this.selectedOrdering = '추천순'
-          this.$router.push({ query: { ...this.$route.query, ordering: 'positive_vote_count, -created_at' } })
+          this.$router.push({ query: { ...this.$route.query, ordering: '-positive_vote_count, -created_at' } })
           break
         default:
           break
@@ -330,11 +336,11 @@ export default {
           break
         case '답변 완료':
           this.selectedFilter = '답변 완료'
-          this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: 3, communication_article__school_response_status__lt: undefined } })
+          this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: 2, communication_article__school_response_status__lt: undefined } })
           break
         case '답변 미완':
           this.selectedFilter = '답변 미완'
-          this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: undefined, communication_article__school_response_status__lt: 3 } })
+          this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: undefined, communication_article__school_response_status__lt: 2 } })
           break
         default:
           break
