@@ -367,6 +367,10 @@ en:
   }
 }
 
+div {
+  user-select: none;
+}
+
 .is-boxed {
   border-radius: 15px !important;
 }
