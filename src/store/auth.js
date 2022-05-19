@@ -44,6 +44,9 @@ export default {
     },
     isDarkModeEnabled ({ userProfile }) {
       return userProfile.extra_preferences && userProfile.extra_preferences.darkMode
+    },
+    isSchoolAdmin ({ userProfile }) {
+      return userProfile.group === 6
     }
   },
   mutations: {
