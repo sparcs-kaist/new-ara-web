@@ -38,7 +38,6 @@ export default {
     votable: Boolean,
     elide: Boolean,
     table: Boolean,
-    isSchool: Boolean,
     isMine: Boolean
   },
 
@@ -51,6 +50,9 @@ export default {
     },
     dislikedCount () {
       return this.elideText(this.item.negative_vote_count)
+    },
+    isSchool () {
+      return this.item.parent_board.id === 14
     }
   },
 
@@ -64,16 +66,9 @@ export default {
           this.$store.dispatch('dialog/toast', this.$t('nonvotable-myself'))
           return
         }
-        if (this.liked) {
-          this.$store.dispatch('dialog/toast', this.$t('agreed'))
+        if (this.liked && this.likedCount >= 30) {
+          this.$store.dispatch('dialog/toast', this.$t('impossible-cancel-like'))
           return
-        }
-        if (ballot) {
-          const result = await this.$store.dispatch('dialog/confirmAgree', {
-            message: this.$t('confirm-message'),
-            agreeText: this.$t('agree-text')
-          })
-          if (!result) return
         }
       }
       const myVote = this.item.my_vote === ballot
@@ -111,15 +106,11 @@ export default {
 
 <i18n>
 ko:
-  confirm-message: '해당 글에 동의하려면 아래에 <span style="color: #e15858;">동의합니다!</span>를 작성해주세요.<div style="color: #a9a9a9; font-size: 13px;">동의는 취소할 수 없으며 실명이 노출되지 않습니다.</div>'
-  agree-text: '동의합니다!'
-  agreed: '이미 동의한 글입니다. 동의는 취소할 수 없습니다.'
   nonvotable-myself: '본인 게시물에는 좋아요를 누를 수 없습니다!'
+  impossible-cancel-like: '좋아요가 30개를 넘은 경우 취소할 수 없습니다!'
 en:
-  confirm-message: 'If you want to like this post, please enter <span style="color: #e15858;">I agree!</span><div style="color: #a9a9a9; font-size: 13px;">You could not cancel it and it is anonymous.</div>'
-  agree-text: 'I agree!'
-  agreed: 'You already agreed. You cannot cancel it'
   nonvotable-myself: 'You cannot vote for your post!'
+  impossible-cancel-like: 'If there are more than 30 likes, you cannot cancel it!'
 </i18n>
 
 <style lang="scss" scoped>
