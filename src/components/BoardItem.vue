@@ -10,11 +10,14 @@
   >
     <div class="board-item__body">
       <div class="board-item__image-wrapper">
-        <div v-if="post.is_hidden" class="board-item__hidden-frame">
+        <div v-if="isSchoolBoard" class="board-item__thumbsup">
+          <span>+ {{ thumbsUp }}</span>
+        </div>
+        <div v-else-if="post.is_hidden" class="board-item__hidden-frame">
           <i class="material-icons">{{ hidden_icon }}</i>
         </div>
         <img
-          v-if="!post.is_hidden"
+          v-else
           :src="post.created_by.profile.picture"
           class="board-item__image"
         >
@@ -30,7 +33,6 @@
             <span v-if="post.parent_topic" class="board-item__topic">
               [{{ post.parent_topic[`${$i18n.locale}_name`] }}]
             </span>
-
             {{ title }}
           </div>
           <div v-if="post.comment_count !== 0" class="board-item__comment">
@@ -42,19 +44,14 @@
           <i v-if="hasOtherAttachment" class="material-icons-outlined">
             attach_file
           </i>
-          <div
-            v-if="new_update"
-            class="board-item__read-status"
-          >
+          <div v-if="new_update" class="board-item__read-status">
             {{ post.read_status === 'N' ? 'new' : 'up' }}
           </div>
         </div>
 
         <div class="board-item__subtitle">
           <span>{{ timeago }}</span>
-          <div>
-            {{ $t('views') + " " + elideText(post.hit_count) }}
-          </div>
+          <div>{{ $t('views') + " " + elideText(post.hit_count) }}</div>
           <div class="board-item__vote">
             <div class="board-item__vote__pos">
               +{{ post.positive_vote_count }}
@@ -65,6 +62,7 @@
           </div>
 
           <span
+            v-if="!isSchoolBoard"
             :class="{ 'has-text-grey-light': post.is_hidden }"
             class="board-item__author__mobile is-hidden-tablet"
           >
@@ -75,20 +73,39 @@
     </div>
 
     <span
+      v-if="!isSchoolBoard && statusText"
       :class="{ 'has-text-grey-light': post.is_hidden }"
       class="board-item__author is-hidden-mobile"
     >
       {{ post.created_by.profile.nickname }}
     </span>
+    <span v-else class="board-item__author status">
+      <span v-if="dday && isSchoolAdmin" class="d-day">
+        {{ dday }}
+      </span>
+      <div
+        :class="{
+          'polling': status === 0,
+          'preparing': status === 1,
+          'answered': status === 2
+        }"
+        class="status--button"
+      >
+        {{ statusText }}
+      </div>
+    </span>
   </router-link>
 </template>
 
 <script lang="ts">
+/* eslint-disable camelcase */
 import Vue from 'vue'
 import elideText from '@/utils/elideText'
 import i18n from '@/i18n'
 import { timeago } from '@/helper.js'
 import { Post } from '@/types'
+import { millisecondsToHours } from 'date-fns'
+import { mapGetters } from 'vuex'
 
 export default Vue.extend({
   name: 'BoardItem',
@@ -108,6 +125,7 @@ export default Vue.extend({
   },
 
   computed: {
+    ...mapGetters(['isSchoolAdmin']),
     hasImage (): boolean {
       return this.post.attachment_type === 'IMAGE' || this.post.attachment_type === 'BOTH'
     },
@@ -115,13 +133,12 @@ export default Vue.extend({
       return this.post.attachment_type === 'NON_IMAGE' || this.post.attachment_type === 'BOTH'
     },
     title (): string {
-      if (this.post.is_hidden) return i18n.t(this.post.why_hidden[0]).toString()
-      return this.post.title
+      const { is_hidden, why_hidden, title } = this.post
+      return is_hidden ? i18n.t(why_hidden[0]).toString() : title
     },
     hidden_icon (): string {
       switch (this.post.why_hidden[0]) {
         case 'ADULT_CONTENT':
-          return 'visibility_off'
         case 'SOCIAL_CONTENT':
           return 'visibility_off'
         case 'REPORTED_CONTENT':
@@ -137,23 +154,28 @@ export default Vue.extend({
     },
     new_update (): boolean {
       // not over 24 hours after last update of the post.
-      const now = new Date().getTime()
-      const createdAt:number = new Date(this.post.created_at).getTime()
-      let lastCommentUp:number
-      let lastContentUp:number
-      if (this.post.commented_at == null) {
-        lastCommentUp = 0
-      } else {
-        lastCommentUp = new Date(this.post.commented_at).getTime()
-      }
-      if (this.post.content_updated_at == null) {
-        lastContentUp = 0
-      } else {
-        lastContentUp = new Date(this.post.commented_at).getTime()
-      }
-      const lastUp = (lastCommentUp > lastContentUp) ? lastCommentUp : lastContentUp
-      const notOver24h : boolean = ((now - lastUp) / (1000 * 3600) <= 24) || (now - createdAt) / (1000 * 3600) <= 24
-      return ((this.post.read_status === 'N' || this.post.read_status === 'U') && notOver24h)
+      const { created_at, commented_at, content_updated_at, read_status } = this.post
+      const lastUpdates = [created_at, commented_at, content_updated_at]
+        .map(time => new Date(time ?? 0).getTime())
+
+      const notOver24h = millisecondsToHours(new Date().getTime() - Math.max(...lastUpdates)) < 24
+      return notOver24h && (read_status === 'N' || read_status === 'U')
+    },
+    isSchoolBoard (): boolean {
+      return this.$route.path === '/board/with-school'
+    },
+    thumbsUp (): number {
+      return this.post.positive_vote_count
+    },
+    status (): number {
+      return this.post.communication_article_status ?? 0
+    },
+    statusText (): string {
+      const t = ['polling', 'preparing', 'answered'][this.status]
+      return this.$t(`status.${t}`).toString()
+    },
+    dday (): string | undefined {
+      return 'D-321'
     }
   },
 
@@ -167,19 +189,67 @@ export default Vue.extend({
 ko:
   comments: '댓글'
   views: '조회수'
-
+  status:
+    polling: '달성전'
+    preparing: '답변 준비중'
+    answered: '답변 완료'
 en:
   comments: 'Reply'
   views: 'View'
+  status:
+    polling: 'Polling'
+    preparing: 'Preparing'
+    answered: 'Answered'
 </i18n>
 
 <style lang="scss" scoped>
 @import '@/theme.scss';
 
+.status {
+  .d-day {
+    color: black;
+    margin-right: 17px;
+  }
+  color: var(--theme-400);
+  div {
+    padding: 2px 5px;
+    border-radius: 5px;
+    width: 5rem;
+    text-align: center;
+  }
+  .polling {
+    background-color: var(--theme-100);
+  }
+  .preparing {
+    background-color: var(--theme-300);
+  }
+  .answered {
+    color: white;
+    background-color: var(--theme-400);;
+  }
+}
+
 .board-item {
   color: var(--text);
   display: flex;
   padding: 8px 5px;
+
+  &__status-badge {
+    border-radius: 7px;
+    padding: 2px 5px;
+    color: var(--theme-400);
+  }
+
+  &__thumbsup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--theme-400);
+  }
 
   &__body {
     display: flex;
