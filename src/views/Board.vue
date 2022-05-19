@@ -242,7 +242,6 @@ export default {
     let boardId
     let boardData
     const filter = {}
-    console.log('BeforeRouteEnter, query: ', query)
     // Portal-Notice filter
     if (query.portal === 'exclude') {
       boardId = store.state.boardList.filter(board => board.slug !== 'portal-notice').map(obj => obj.id)
@@ -276,7 +275,6 @@ export default {
   async beforeRouteUpdate ({ params: { boardSlug }, query }, from, next) {
     let boardId
     const filter = {}
-    console.log('BeforeRouteUpdate, query: ', query)
     // Portal-Notice filter
     if (query.portal === 'exclude') {
       boardId = store.state.boardList.filter(board => board.slug !== 'portal-notice').map(obj => obj.id)
@@ -294,7 +292,6 @@ export default {
       : null
 
     const topicId = topic ? topic.id : null
-    console.log('queryBefore', query)
     const [ board ] = await fetchWithProgress(
       [ fetchArticles({ boardId, topicId, ...query, filter }) ], 'board-failed-fetch'
     )
@@ -313,7 +310,6 @@ export default {
       }
     },
     changeOrdering (orderingOption) {
-      console.log(orderingOption)
       switch (orderingOption) {
         case '최신순':
           this.selectedOrdering = '최신순'
@@ -328,7 +324,6 @@ export default {
       }
     },
     changeFilter (filterOption) {
-      console.log(filterOption)
       switch (filterOption) {
         case '전체 보기':
           this.selectedFilter = '전체 보기'

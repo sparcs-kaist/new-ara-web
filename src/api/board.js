@@ -25,8 +25,6 @@ export const fetchArticles = ({ boardId, page, pageSize, topicId, username, orde
   if (page) context.page = page
   if (pageSize) context.page_size = pageSize
   if (username) context.created_by = username
-  console.log('filter', filter)
-  console.log('context', context)
   return http.get(`articles/?${queryBuilder(context)}`)
     .then(({ data }) => data)
 }
