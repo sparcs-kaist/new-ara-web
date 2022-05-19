@@ -7,6 +7,7 @@ export type Post = {
   can_override_hidden: boolean,
   comment_count: number,
   commented_at: string,
+  communication_article_status: 0 | 1 | 2,
   content_updated_at: string,
   created_at: string,
   created_by: {
