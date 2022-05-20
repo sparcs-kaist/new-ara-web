@@ -187,15 +187,6 @@ export default {
     return {
       board: {},
       boardId: null,
-      // orderings: [
-      //   { name: this.$t('recent-order') },
-      //   { name: this.$t('positive-order') }
-      // ],
-      // filters: [
-      //   { name: this.$t('all-post') },
-      //   { name: this.$t('answered') },
-      //   { name: this.$t('not-answered') }
-      // ],
       selectedOrdering: this.$route.query.ordering ? 0 : 1,
       selectedFilter: this.$route.query.communication_article__school_response_status ? 0 : (this.$route.query.communication_article__school_response_status__lt ? 1 : 2)
     }
