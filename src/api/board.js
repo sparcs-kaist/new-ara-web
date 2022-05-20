@@ -7,8 +7,6 @@ export const fetchBoardList = () =>
 
 export const fetchArticles = ({ boardId, page, pageSize, topicId, username, ordering, filter } = {}) => {
   const context = {}
-  console.log('ordering: ', ordering)
-  console.log('filter :', filter)
   if (boardId) {
     if (Array.isArray(boardId)) context.parent_board__in = boardId.join(',')
     else context.parent_board = boardId
