@@ -27,7 +27,7 @@
               aria-haspopup="true"
               aria-controls="dropdown-menu"
             >
-              <span>{{ selectedOrdering }}</span>
+              <span>{{ selectedOrdering == 0? $t('positive-order') : $t('recent-order') }}</span>
               <span class="icon is-small">
                 <i class="material-icons">expand_more</i>
               </span>
@@ -40,12 +40,12 @@
           >
             <div class="dropdown-content">
               <a
-                v-for="ordering in orderings"
-                :key="ordering.name"
+                v-for="ordering in [1, 0]"
+                :key="ordering"
                 class="dropdown-item"
-                @click="changeOrdering(ordering.name)"
+                @click="changeOrdering(ordering)"
               >
-                {{ ordering.name }}
+                {{ ordering == 0 ? $t('positive-order') : $t('recent-order') }}
               </a>
             </div>
           </div>
@@ -63,7 +63,7 @@
               aria-haspopup="true"
               aria-controls="dropdown-menu"
             >
-              <span>{{ selectedFilter }}</span>
+              <span>{{ selectedFilter == 0? $t('answered') : selectedFilter ==1 ? $t('not-answered') : $t('all-post') }}</span>
               <span class="icon is-small">
                 <i class="material-icons">expand_more</i>
               </span>
@@ -76,12 +76,12 @@
           >
             <div class="dropdown-content">
               <a
-                v-for="filter in filters"
-                :key="filter.name"
+                v-for="filter in [2, 0, 1]"
+                :key="filter"
                 class="dropdown-item"
-                @click="changeFilter(filter.name)"
+                @click="changeFilter(filter)"
               >
-                {{ filter.name }}
+                {{ filter==0? $t('answered') : (filter ==1 ? $t('not-answered') : $t('all-post')) }}
               </a>
             </div>
           </div>
@@ -187,17 +187,17 @@ export default {
     return {
       board: {},
       boardId: null,
-      orderings: [
-        { name: '최신순' },
-        { name: '추천순' }
-      ],
-      filters: [
-        { name: '전체 보기' },
-        { name: '답변 완료' },
-        { name: '답변 미완' }
-      ],
-      selectedOrdering: this.$route.query.ordering ? '추천순' : '최신순',
-      selectedFilter: this.$route.query.communication_article__school_response_status ? '답변 완료' : (this.$route.query.communication_article__school_response_status__lt ? '답변 미완' : '전체 보기')
+      // orderings: [
+      //   { name: this.$t('recent-order') },
+      //   { name: this.$t('positive-order') }
+      // ],
+      // filters: [
+      //   { name: this.$t('all-post') },
+      //   { name: this.$t('answered') },
+      //   { name: this.$t('not-answered') }
+      // ],
+      selectedOrdering: this.$route.query.ordering ? 0 : 1,
+      selectedFilter: this.$route.query.communication_article__school_response_status ? 0 : (this.$route.query.communication_article__school_response_status__lt ? 1 : 2)
     }
   },
 
@@ -256,6 +256,7 @@ export default {
     if (query.communication_article__school_response_status__lt === '2') {
       filter.communication_article__school_response_status__lt = query.communication_article__school_response_status__lt
     }
+
     const topic = (query.topic && boardData)
       ? boardData.topics.find(topic => topic.slug === query.topic)
       : null
@@ -263,7 +264,7 @@ export default {
     const topicId = topic ? topic.id : null
 
     const [ board ] = await fetchWithProgress(
-      [ fetchArticles({ boardId, topicId, ...query }) ], 'board-failed-fetch'
+      [ fetchArticles({ boardId, topicId, ...query, filter }) ], 'board-failed-fetch'
     )
     next(vm => {
       vm.board = board
@@ -311,12 +312,12 @@ export default {
     },
     changeOrdering (orderingOption) {
       switch (orderingOption) {
-        case '최신순':
-          this.selectedOrdering = '최신순'
+        case (1):
+          this.selectedOrdering = 1
           this.$router.push({ query: { ...this.$route.query, ordering: '-created_at' } })
           break
-        case '추천순':
-          this.selectedOrdering = '추천순'
+        case (0):
+          this.selectedOrdering = 0
           this.$router.push({ query: { ...this.$route.query, ordering: '-positive_vote_count, -created_at' } })
           break
         default:
@@ -325,19 +326,17 @@ export default {
     },
     changeFilter (filterOption) {
       switch (filterOption) {
-        case '전체 보기':
-          this.selectedFilter = '전체 보기'
-          this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: undefined, communication_article__school_response_status__lt: undefined } })
-          break
-        case '답변 완료':
-          this.selectedFilter = '답변 완료'
+        case (0):
+          this.selectedFilter = 0
           this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: 2, communication_article__school_response_status__lt: undefined } })
           break
-        case '답변 미완':
-          this.selectedFilter = '답변 미완'
+        case (1):
+          this.selectedFilter = 1
           this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: undefined, communication_article__school_response_status__lt: 2 } })
           break
         default:
+          this.selectedFilter = 2
+          this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: undefined, communication_article__school_response_status__lt: undefined } })
           break
       }
     }
@@ -350,11 +349,21 @@ ko:
   no-filter: '없음'
   filter: '필터'
   exclude_portal: '포탈 공지글 제외하기'
+  positive-order: '추천순'
+  recent-order: '최신순'
+  all-post: '전체 보기'
+  not-answered: '답변 미완'
+  answered: '답변 완료'
 
 en:
   no-filter: 'No Filter'
   filter: 'Filter'
   exclude_portal: 'Exclude portal notices'
+  positive-order: 'Most Likes'
+  recent-order: 'Recent'
+  all-post: 'All'
+  not-answered: 'Not answered'
+  answered: 'Answered'
 </i18n>
 
 <style lang="scss" scoped>

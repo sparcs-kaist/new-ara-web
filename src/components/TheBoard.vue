@@ -77,11 +77,6 @@ export default {
       return query
     },
     queryTitle () {
-      // console.log('this', this)
-      // console.log('this.$route:', this.$route)
-      // console.log('this.$route.query:', this.$route.query)
-      // console.log('this.$route.query.page:', this.$route.query.page)
-      // console.log('this.fromQuery:', this.fromQuery)
       if (this.$route.query.query) { return this.$t('search', { title: this.title, query: this.$route.query.query }) }
 
       return this.title
