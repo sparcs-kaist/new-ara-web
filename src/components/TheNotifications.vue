@@ -1,7 +1,11 @@
 <template>
   <div class="the-notifications">
-    <div id="read-all--wrapper">
-      <button id="read-all" @click="readAllAlarm">
+    <div class="read-all__wrapper">
+      <button
+        class="read-all"
+        :class="{ 'read-all__on': isUnreadExist}"
+        @click="readAllAlarm"
+      >
         <i class="material-icons check-icon">check_circle_outline</i>
         {{ $t('readAll') }}
       </button>
@@ -52,8 +56,19 @@ export default {
     title: String
   },
 
+  computed: {
+    isUnreadExist () {
+      return this.notifications.results?.filter(e => {
+        return e.is_read === false
+      }).length > 0
+    }
+  },
+
   methods: {
     readAllAlarm () {
+      this.notifications.results = this.notifications.results?.map(e => {
+        e.is_read = true
+      })
       readAllNotification()
     }
   }
@@ -73,7 +88,7 @@ export default {
     color: var(--theme-400);
   }
 
-  #read-all {
+  .read-all {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -97,10 +112,14 @@ export default {
       font-size: 15px;
     }
 
-    &--wrapper{
+    &__wrapper{
       display: flex;
       flex-direction: row;
       padding-bottom: 7px;
+    }
+
+    &__on{
+      color: var(--theme-400) !important
     }
   }
 }
