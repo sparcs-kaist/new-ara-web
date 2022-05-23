@@ -57,6 +57,10 @@ export const readNotification = (notiId) =>
   http.post(`notifications/${notiId}/read/`)
     .then(({ data }) => data)
 
+export const readAllNotification = () =>
+  http.post('notifications/read_all')
+    .then(({ data }) => data)
+
 export const fetchBlocks = () =>
   http.get('blocks/')
     .then(({ data }) => data)
