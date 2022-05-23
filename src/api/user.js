@@ -44,7 +44,7 @@ export const readNotification = (notiId) =>
     .then(({ data }) => data)
 
 export const readAllNotification = () =>
-  http.post('notifications/read_all')
+  http.post('notifications/read_all/')
     .then(({ data }) => data)
 
 export const fetchBlocks = () =>
