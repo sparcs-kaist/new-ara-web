@@ -1,8 +1,14 @@
 <template>
   <div class="the-notifications">
-    <h1 id="title">
-      {{ title }}
-    </h1>
+    <div id="read-all--wrapper">
+      <button id="read-all" @click="readAllAlarm">
+        <i class="material-icons check-icon">check_circle_outline</i>
+        {{ $t('readAll') }}
+      </button>
+      <h1 id="title">
+        {{ title }}
+      </h1>
+    </div>
     <div>
       <Notification
         v-for="notification in notifications.results"
@@ -18,9 +24,17 @@
   </div>
 </template>
 
+<i18n>
+ko:
+  readAll: '모두 읽음'
+en:
+  readAll: 'Read All'
+</i18n>
+
 <script>
 import Notification from '@/components/Notification.vue'
 import ThePaginator from '@/components/ThePaginator.vue'
+import { readAllNotification } from '@/api'
 
 export default {
   name: 'TheNotifications',
@@ -36,6 +50,12 @@ export default {
       required: true
     },
     title: String
+  },
+
+  methods: {
+    readAllAlarm () {
+      readAllNotification()
+    }
   }
 }
 </script>
@@ -48,8 +68,40 @@ export default {
     display: block;
     font-size: 1.5rem;
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin: 0;
+    margin-left: auto;
     color: var(--theme-400);
+  }
+
+  #read-all {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+
+    width: 90px;
+    height: 33px;
+    left: 150px;
+    top: 99px;
+    background: #FFFFFF;
+    border: 0.5px solid #DBDBDB;
+    box-shadow: 0px 2px 6px rgba(169, 169, 169, 0.16);
+    border-radius: 8px;
+
+    color: var(--grey-400);
+    font-size: 12px;
+    cursor: pointer;
+
+    .check-icon{
+      font-size: 15px;
+    }
+
+    &--wrapper{
+      display: flex;
+      flex-direction: row;
+      padding-bottom: 7px;
+    }
   }
 }
 </style>
