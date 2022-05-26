@@ -19,7 +19,10 @@
     </div>
     <hr v-if="title && !simplify" class="board__divider">
 
-    <TheBoardTable :posts="board.results" :from-query="fromQueryWithPage" />
+    <TheBoardTable
+      :posts="board.results"
+      :from-query="fromQueryWithPage"
+    />
 
     <div class="board__navbar">
       <ThePaginator

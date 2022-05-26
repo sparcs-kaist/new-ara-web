@@ -40,7 +40,6 @@ export default {
     table: Boolean,
     isMine: Boolean
   },
-
   computed: {
     // my_vote can be true, false, or null
     liked () { return this.item.my_vote === true },
@@ -66,10 +65,10 @@ export default {
           this.$store.dispatch('dialog/toast', this.$t('nonvotable-myself'))
           return
         }
-        if (this.liked && this.likedCount >= 30) {
-          this.$store.dispatch('dialog/toast', this.$t('impossible-cancel-like'))
-          return
-        }
+      }
+      if (this.liked && this.item.communication_article_status === 1) {
+        this.$store.dispatch('dialog/toast', this.$t('impossible-cancel-like'))
+        return
       }
       const myVote = this.item.my_vote === ballot
         ? 'vote_cancel'
