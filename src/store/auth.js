@@ -46,7 +46,7 @@ export default {
       return userProfile.extra_preferences && userProfile.extra_preferences.darkMode
     },
     isSchoolAdmin ({ userProfile }) {
-      return userProfile.group === 6
+      return userProfile.is_school_admin
     }
   },
   mutations: {

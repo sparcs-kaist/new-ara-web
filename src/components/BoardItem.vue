@@ -50,16 +50,23 @@
         </div>
 
         <div class="board-item__subtitle">
-          <span>{{ timeago }}</span>
-          <div>{{ $t('views') + " " + elideText(post.hit_count) }}</div>
-          <div class="board-item__vote">
-            <div class="board-item__vote__pos">
-              +{{ post.positive_vote_count }}
+          <template v-if="!isSchoolBoard">
+            <span>{{ timeago }}</span>
+            <div>{{ $t('views') + " " + elideText(post.hit_count) }}</div>
+            <div class="board-item__vote">
+              <div class="board-item__vote__pos">
+                +{{ post.positive_vote_count }}
+              </div>
+              <div class="board-item__vote__neg">
+                -{{ post.negative_vote_count }}
+              </div>
             </div>
-            <div class="board-item__vote__neg">
-              -{{ post.negative_vote_count }}
-            </div>
-          </div>
+          </template>
+          <template v-else>
+            <span>{{ post.created_by.username }}</span>
+            <span>{{ timeago }}</span>
+            <div>{{ $t('views') + " " + elideText(post.hit_count) }}</div>
+          </template>
 
           <span
             v-if="!isSchoolBoard"
@@ -175,7 +182,14 @@ export default Vue.extend({
       return this.$t(`status.${t}`).toString()
     },
     dday (): string | undefined {
-      return 'D-321'
+      if (this.status === 1) {
+        if (this.post.days_left === 0) {
+          return 'D-Day'
+        } else if (this.post.days_left > 0) {
+          return `D-${this.post.days_left}`
+        }
+      }
+      return undefined
     }
   },
 
