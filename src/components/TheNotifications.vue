@@ -3,7 +3,7 @@
     <div class="read-all__wrapper">
       <button
         class="read-all"
-        :class="{ 'read-all__on': isUnreadExist}"
+        :class="{ 'read-all__on': isButtonOn}"
         @click="readAllAlarm"
       >
         <i class="material-icons check-icon">check_circle_outline</i>
@@ -56,19 +56,27 @@ export default {
     title: String
   },
 
+  data () {
+    return {
+      isButtonClicked: false
+    }
+  },
+
   computed: {
     isUnreadExist () {
       return this.notifications.results?.filter(e => {
         return e.is_read === false
       }).length > 0
+    },
+    isButtonOn () {
+      return this.isUnreadExist && !this.isButtonClicked
     }
   },
 
   methods: {
     readAllAlarm () {
-      this.notifications.results = this.notifications.results?.map(e => {
-        e.is_read = true
-      })
+      this.isButtonClicked = true
+      for (const v of this.notifications.results) v.is_read = true
       readAllNotification()
     }
   }
