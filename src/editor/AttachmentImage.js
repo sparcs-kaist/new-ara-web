@@ -31,6 +31,9 @@ export default class AttachmentImage extends Node {
         title: {
           default: null
         },
+        width: {
+          default: 500
+        },
         'data-attachment': {
           default: null
         }
@@ -44,6 +47,7 @@ export default class AttachmentImage extends Node {
             src: dom.getAttribute('src'),
             title: dom.getAttribute('title'),
             alt: dom.getAttribute('alt'),
+            width: dom.getAttribute('width'),
             'data-attachment': dom.getAttribute('data-attachment')
           })
         }
