@@ -87,6 +87,7 @@
             :item="comment"
             class="comment__vote"
             votable
+            :is-mine="comment.is_mine"
             @vote="vote"
           />
           <a
