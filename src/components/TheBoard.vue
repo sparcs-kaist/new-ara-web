@@ -8,6 +8,8 @@
 
       <div class="board__options">
         <slot name="option" />
+        <slot name="filter" />
+        <slot name="order" />
         <SearchBar
           v-if="!simplify"
           class="board__tablet-search is-flex-touch is-hidden-mobile"

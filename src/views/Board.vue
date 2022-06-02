@@ -1,3 +1,4 @@
+/* eslint-disable no-fallthrough */
 <template>
   <TheLayout class="board">
     <template #aside-right>
@@ -13,6 +14,78 @@
         <span class="board__topic">
           {{ `#${topic[`${$i18n.locale}_name`]}` }}
         </span>
+      </template>
+      <template
+        v-if="boardId === 14"
+        #filter
+        class="filter"
+      >
+        <div class="dropdown is-hoverable">
+          <div class="dropdown-trigger">
+            <button
+              class="button"
+              aria-haspopup="true"
+              aria-controls="dropdown-menu"
+            >
+              <span>{{ selectedOrdering == 0? $t('positive-order') : $t('recent-order') }}</span>
+              <span class="icon is-small">
+                <i class="material-icons">expand_more</i>
+              </span>
+            </button>
+          </div>
+          <div
+            id="dropdown-menu"
+            class="dropdown-menu"
+            role="menu"
+          >
+            <div class="dropdown-content">
+              <a
+                v-for="ordering in [1, 0]"
+                :key="ordering"
+                class="dropdown-item"
+                @click="changeOrdering(ordering)"
+              >
+                {{ ordering == 0 ? $t('positive-order') : $t('recent-order') }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template
+        v-if="boardId === 14"
+        #order
+        class="order"
+      >
+        <div class="dropdown is-hoverable">
+          <div class="dropdown-trigger">
+            <button
+              class="button"
+              aria-haspopup="true"
+              aria-controls="dropdown-menu"
+            >
+              <span>{{ selectedFilter == 0? $t('answered') : selectedFilter ==1 ? $t('not-answered') : $t('all-post') }}</span>
+              <span class="icon is-small">
+                <i class="material-icons">expand_more</i>
+              </span>
+            </button>
+          </div>
+          <div
+            id="dropdown-menu"
+            class="dropdown-menu"
+            role="menu"
+          >
+            <div class="dropdown-content">
+              <a
+                v-for="filter in [2, 0, 1]"
+                :key="filter"
+                class="dropdown-item"
+                @click="changeFilter(filter)"
+              >
+                {{ filter==0? $t('answered') : (filter ==1 ? $t('not-answered') : $t('all-post')) }}
+              </a>
+            </div>
+          </div>
+        </div>
       </template>
 
       <template #option>
@@ -80,7 +153,7 @@
         <template v-if="!$route.params.boardSlug">
           <div class="exclude">
             <span class="exclude__text">{{ $t('exclude_portal') }}</span>
-            <a class="exclude__change" @click="changeFilter">
+            <a class="exclude__change" @click="changePortalFilter">
               <span class="icon is-flex-touch exclude__toggle">
                 <i v-if="$route.query.portal === 'exclude'" class="material-icons exclude__icon exclude__icon--on">toggle_on</i>
                 <i v-else class="material-icons exclude__icon">toggle_off</i>
@@ -113,7 +186,9 @@ export default {
   data () {
     return {
       board: {},
-      boardId: null
+      boardId: null,
+      selectedOrdering: this.$route.query.ordering ? 0 : 1,
+      selectedFilter: this.$route.query.communication_article__school_response_status ? 0 : (this.$route.query.communication_article__school_response_status__lt ? 1 : 2)
     }
   },
 
@@ -157,7 +232,7 @@ export default {
   async beforeRouteEnter ({ params: { boardSlug }, query }, from, next) {
     let boardId
     let boardData
-
+    const filter = {}
     // Portal-Notice filter
     if (query.portal === 'exclude') {
       boardId = store.state.boardList.filter(board => board.slug !== 'portal-notice').map(obj => obj.id)
@@ -166,6 +241,13 @@ export default {
       boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
       boardData = store.getters.getBoardById(boardId)
     }
+    if (query.communication_article__school_response_status === '2') {
+      filter.communication_article__school_response_status = query.communication_article__school_response_status
+    }
+    if (query.communication_article__school_response_status__lt === '2') {
+      filter.communication_article__school_response_status__lt = query.communication_article__school_response_status__lt
+    }
+
     const topic = (query.topic && boardData)
       ? boardData.topics.find(topic => topic.slug === query.topic)
       : null
@@ -173,7 +255,7 @@ export default {
     const topicId = topic ? topic.id : null
 
     const [ board ] = await fetchWithProgress(
-      [ fetchArticles({ boardId, topicId, ...query }) ], 'board-failed-fetch'
+      [ fetchArticles({ boardId, topicId, ...query, filter }) ], 'board-failed-fetch'
     )
     next(vm => {
       vm.board = board
@@ -184,21 +266,26 @@ export default {
 
   async beforeRouteUpdate ({ params: { boardSlug }, query }, from, next) {
     let boardId
-
+    const filter = {}
     // Portal-Notice filter
     if (query.portal === 'exclude') {
       boardId = store.state.boardList.filter(board => board.slug !== 'portal-notice').map(obj => obj.id)
     } else {
       boardId = boardSlug ? store.getters.getIdBySlug(boardSlug) : null
     }
+    if (query.communication_article__school_response_status === '2') {
+      filter.communication_article__school_response_status = query.communication_article__school_response_status
+    }
+    if (query.communication_article__school_response_status__lt === '2') {
+      filter.communication_article__school_response_status__lt = query.communication_article__school_response_status__lt
+    }
     const topic = query.topic
       ? store.getters.getBoardById(this.boardId).topics.find(topic => topic.slug === query.topic)
       : null
 
     const topicId = topic ? topic.id : null
-
     const [ board ] = await fetchWithProgress(
-      [ fetchArticles({ boardId, topicId, ...query }) ], 'board-failed-fetch'
+      [ fetchArticles({ boardId, topicId, ...query, filter }) ], 'board-failed-fetch'
     )
     this.board = board
     this.boardId = boardId
@@ -207,11 +294,41 @@ export default {
   },
 
   methods: {
-    changeFilter () {
+    changePortalFilter () {
       if (this.$route.query.portal === 'exclude') {
         this.$router.push({ query: { ...this.$route.query, portal: undefined } })
       } else {
         this.$router.push({ query: { ...this.$route.query, portal: 'exclude' } })
+      }
+    },
+    changeOrdering (orderingOption) {
+      switch (orderingOption) {
+        case (1):
+          this.selectedOrdering = 1
+          this.$router.push({ query: { ...this.$route.query, ordering: '-created_at' } })
+          break
+        case (0):
+          this.selectedOrdering = 0
+          this.$router.push({ query: { ...this.$route.query, ordering: '-positive_vote_count, -created_at' } })
+          break
+        default:
+          break
+      }
+    },
+    changeFilter (filterOption) {
+      switch (filterOption) {
+        case (0):
+          this.selectedFilter = 0
+          this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: 2, communication_article__school_response_status__lt: undefined } })
+          break
+        case (1):
+          this.selectedFilter = 1
+          this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: undefined, communication_article__school_response_status__lt: 2 } })
+          break
+        default:
+          this.selectedFilter = 2
+          this.$router.push({ query: { ...this.$route.query, communication_article__school_response_status: undefined, communication_article__school_response_status__lt: undefined } })
+          break
       }
     }
   }
@@ -223,11 +340,21 @@ ko:
   no-filter: '없음'
   filter: '필터'
   exclude_portal: '포탈 공지글 제외하기'
+  positive-order: '추천순'
+  recent-order: '최신순'
+  all-post: '전체 보기'
+  not-answered: '답변 미완'
+  answered: '답변 완료'
 
 en:
   no-filter: 'No Filter'
   filter: 'Filter'
   exclude_portal: 'Exclude portal notices'
+  positive-order: 'Most Likes'
+  recent-order: 'Recent'
+  all-post: 'All'
+  not-answered: 'Not answered'
+  answered: 'Answered'
 </i18n>
 
 <style lang="scss" scoped>
@@ -303,7 +430,9 @@ en:
     font-size: 1rem;
   }
 }
-
+.dropdown{
+  margin: 5px;
+}
 .exclude {
   display: flex;
   align-items: center;

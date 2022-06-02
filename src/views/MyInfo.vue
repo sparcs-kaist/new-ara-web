@@ -407,7 +407,7 @@ export default {
         this.user[key] = !this.user[key]
         // Toast
         this.$store.dispatch('dialog/toast', {
-          text: this.$t('success'),
+          text: ('success'),
           type: 'confirm'
         })
       } catch (err) {
