@@ -42,8 +42,11 @@ export default {
 .banner{
   position:relative;
   text-align: center;
-  aspect-ratio: 11/3;
-  max-height: 160px;
+  aspect-ratio: 4/1;
+  @include breakPoint(mobile) {
+    min-height: 160px;
+    aspect-ratio: initial;
+  }
   width: 100%;
   border-radius:10px;
   background-color:var(--grey-600);
@@ -68,10 +71,23 @@ export default {
   &__detail{
     white-space: pre-wrap;
     margin-top: 0.5rem;
+    margin-left: 20px;
+    margin-right: 20px;
     font-size: 0.85rem;
     @include breakPoint(mobile) {
       font-size: 0.7rem;
     }
   }
+}
+.banner::before{
+  content: "";
+  border-radius:10px;
+  opacity: 0.3;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: #000;
 }
 </style>
