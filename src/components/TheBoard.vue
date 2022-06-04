@@ -1,5 +1,11 @@
 <template>
   <div class="board">
+    <Banner
+      v-if="isBanner"
+      :banner-name="title"
+      :banner-details="bannerDetails"
+      :banner-image="bannerImage"
+    />
     <div class="board__header">
       <h1 v-if="!simplify" class="board__name">
         {{ queryTitle }}
@@ -43,6 +49,7 @@
 import SearchBar from '@/components/SearchBar.vue'
 import ThePaginator from '@/components/ThePaginator.vue'
 import TheBoardTable from '@/components/TheBoardTable.vue'
+import Banner from '@/components/Banner.vue'
 
 export default {
   name: 'TheBoard',
@@ -50,7 +57,8 @@ export default {
   components: {
     SearchBar,
     ThePaginator,
-    TheBoardTable
+    TheBoardTable,
+    Banner
   },
 
   props: {
@@ -59,6 +67,8 @@ export default {
       required: true
     },
     title: String,
+    bannerDetails: String,
+    bannerImage: String,
     fromQuery: Object,
     simplify: Boolean
   },
@@ -83,6 +93,10 @@ export default {
       if (this.$route.query.query) { return this.$t('search', { title: this.title, query: this.$route.query.query }) }
 
       return this.title
+    },
+    isBanner () {
+      if (this.$route.name === 'my-info') { return false }
+      return true
     }
   }
 }
