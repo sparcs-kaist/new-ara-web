@@ -169,7 +169,7 @@ export default {
       return this.post.content
     },
     boardList () {
-      return this.boardListAll.filter(v => !v.is_readonly)
+      return this.boardListAll.filter(v => !v.is_readonly && v.user_writable)
     },
     board () {
       return this.boardListAll.find(v => v.id === this.boardId)
