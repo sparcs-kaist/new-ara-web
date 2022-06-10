@@ -57,11 +57,13 @@ export default {
       if (!this.votable) {
         return
       }
-      if (this.isMine) {
-        this.$store.dispatch('dialog/toast', this.$t('nonvotable-myself'))
-        return
+      if (this.isSchool) {
+        if (this.isMine) {
+          this.$store.dispatch('dialog/toast', this.$t('nonvotable-myself'))
+          return
+        }
       }
-      if (this.liked && this.item.communication_article_status === 1) {
+      if (this.liked && [1, 2].includes(this.item.communication_article_status)) {
         this.$store.dispatch('dialog/toast', this.$t('impossible-cancel-like'))
         return
       }
