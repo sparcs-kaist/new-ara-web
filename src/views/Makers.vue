@@ -202,7 +202,7 @@ const projects = [
         ['yujingaya:김유진', 2018], ['swan:지수환', 2018], ['raon:김강인', 2017]
       ],
       DV: [
-        'ivy:이융희', 'jungnoh:노정훈', 'water:김윤수', 'triangle:주예준',
+        'ina:송인화', 'ddungiii:김기영', 'ducan:이동재', 'panya:김지연', 'yuwol:황인준', 'ivy:이융희', 'jungnoh:노정훈', 'water:김윤수', 'triangle:주예준',
         'hanski:한석휘', 'idev:이재현', 'doolly:김제윤', 'nenw:김요한', 'fi:김도현',
         'james:문재호', 'busan:안재웅', 'kidevelop:함종현', 'holymolly:김태원',
         'gunwoo:김건우', 'todo:김동관', 'his:황인승', 'rongrong:이승민',
