@@ -1,6 +1,9 @@
 <template>
   <div class="the-notifications">
     <div class="read-all__wrapper">
+      <h1 id="title">
+        {{ title }}
+      </h1>
       <button
         class="read-all"
         :class="{ 'read-all__on': isButtonOn}"
@@ -9,9 +12,6 @@
         <i class="material-icons check-icon">check_circle_outline</i>
         {{ $t('readAll') }}
       </button>
-      <h1 id="title">
-        {{ title }}
-      </h1>
     </div>
     <div>
       <Notification
@@ -89,10 +89,9 @@ export default {
 .the-notifications {
   #title {
     display: block;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 700;
-    margin: 0;
-    margin-left: auto;
+    margin-bottom: 3px;
     color: var(--theme-400);
   }
 
@@ -122,7 +121,7 @@ export default {
 
     &__wrapper{
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       padding-bottom: 7px;
     }
 

@@ -145,6 +145,7 @@ en:
       width: 20px;
       font-size: 15px;
       line-height: 20px;
+      padding-left: 2px;
     }
   }
 
