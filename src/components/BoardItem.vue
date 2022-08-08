@@ -87,7 +87,7 @@
       {{ post.created_by.profile.nickname }}
     </span>
     <span v-else class="board-item__author status">
-      <span v-if="dday && isSchoolAdmin" class="d-day">
+      <span v-if="dday && isCommunicationAdmin" class="d-day">
         {{ dday }}
       </span>
       <div
@@ -132,7 +132,7 @@ export default Vue.extend({
   },
 
   computed: {
-    ...mapGetters(['isSchoolAdmin']),
+    ...mapGetters(['isCommunicationAdmin']),
     hasImage (): boolean {
       return this.post.attachment_type === 'IMAGE' || this.post.attachment_type === 'BOTH'
     },
@@ -182,11 +182,16 @@ export default Vue.extend({
       return this.$t(`status.${t}`).toString()
     },
     dday (): string | undefined {
+      console.log('d-day', this.post.days_left)
+      console.log('id:', this.post.id)
+      console.log('status:', this.status)
       if (this.status === 1) {
         if (this.post.days_left === 0) {
           return 'D-Day'
         } else if (this.post.days_left > 0) {
           return `D-${this.post.days_left}`
+        } else {
+          return '기간 경과'
         }
       }
       return undefined
