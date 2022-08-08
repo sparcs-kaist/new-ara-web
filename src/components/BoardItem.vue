@@ -182,9 +182,6 @@ export default Vue.extend({
       return this.$t(`status.${t}`).toString()
     },
     dday (): string | undefined {
-      console.log('d-day', this.post.days_left)
-      console.log('id:', this.post.id)
-      console.log('status:', this.status)
       if (this.status === 1) {
         if (this.post.days_left === 0) {
           return 'D-Day'
