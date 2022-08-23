@@ -31,7 +31,7 @@
               'preparing': status === 1,
               'answered': status === 2
             }"
-            class="status--button"
+            class="status--button message"
           >
             {{ statusText }}
           </span>
@@ -95,7 +95,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isCommunicationAdmin']),
+    ...mapGetters(['isCommunicationAdmin', 'userPicture']),
     dday () {
       if (this.status === 1) {
         if (this.post.days_left === 0) {
@@ -241,6 +241,7 @@ en:
   .d-day {
     color: black;
     margin-right: 17px;
+    margin-left: 10px;
   }
   color: var(--theme-400);
   div {
@@ -258,6 +259,10 @@ en:
   .answered {
     color: white;
     background-color: var(--theme-400);;
+  }
+  &--button{
+    border-radius: 4px;
+    font-size: 12px;
   }
 }
 .board-item {

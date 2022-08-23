@@ -234,14 +234,18 @@ en:
     text-align: center;
   }
   .polling {
-    background-color: var(--theme-100);
+    color:var(--grey-600);
+    border: var(--grey-600) solid 1px;
+    background-color: white;
   }
   .preparing {
-    background-color: var(--theme-300);
+    color:var(--theme-400);
+    border:var(--theme-400) solid 1px;
+    background-color: white;
   }
   .answered {
     color: white;
-    background-color: var(--theme-400);;
+    background-color: var(--theme-400);
   }
 }
 

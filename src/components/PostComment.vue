@@ -183,9 +183,13 @@ export default {
       return this.comment.created_by?.profile.nickname
     },
     authorId () { return this.comment.created_by.id },
-    profileImage () { return this.comment.created_by?.profile?.picture },
+    profileImage () {
+      console.log('profile:', this.comment.created_by)
+      // return this.isCommunicationAdmin ? this.userPicture : this.comment.created_by?.profile?.picture
+      return this.comment.created_by?.profile?.picture
+    },
     date () { return timeago(this.comment.created_at, this.$i18n.locale) },
-    ...mapGetters([ 'userNickname' ]),
+    ...mapGetters([ 'userNickname', 'isCommunicationAdmin', 'userPicture' ]),
     content () {
       if (this.comment.is_hidden) {
         return this.$t(this.comment.why_hidden[0])
@@ -461,7 +465,7 @@ en:
   color: var(--theme-400);
 }
 .material-icons{
-  color: rgba(81,135,255,100);
+  color: rgba(225,88,88,100);
   font-size: 15px;
 }
 </style>
