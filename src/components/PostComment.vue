@@ -184,7 +184,6 @@ export default {
     },
     authorId () { return this.comment.created_by.id },
     profileImage () {
-      console.log('profile:', this.comment.created_by)
       // return this.isCommunicationAdmin ? this.userPicture : this.comment.created_by?.profile?.picture
       return this.comment.created_by?.profile?.picture
     },

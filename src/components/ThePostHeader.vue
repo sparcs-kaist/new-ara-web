@@ -31,7 +31,7 @@
               'preparing': status === 1,
               'answered': status === 2
             }"
-            class="status--button message"
+            class="status--button"
           >
             {{ statusText }}
           </span>
@@ -251,14 +251,18 @@ en:
     text-align: center;
   }
   .polling {
-    background-color: var(--theme-100);
+    color:var(--grey-600);
+    border: var(--grey-600) solid 1px;
+    background-color: white;
   }
   .preparing {
-    background-color: var(--theme-300);
+    color:var(--theme-400);
+    border:var(--theme-400) solid 1px;
+    background-color: white;
   }
   .answered {
     color: white;
-    background-color: var(--theme-400);;
+    background-color: var(--theme-400);
   }
   &--button{
     border-radius: 4px;
