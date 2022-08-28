@@ -205,7 +205,7 @@ ko:
   block: '사용자 차단'
   unblock: '사용자 차단해제'
   confirm-delete: '정말로 삭제하시겠습니까?'
-  all: '모아보기'
+  all: '전체보기'
   prev-page: '이전 페이지'
   status:
     polling: '달성전'

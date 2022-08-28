@@ -407,9 +407,6 @@ div {
       left-radius: 15px;
       right-radius: 15px;
     }
-    $dropdown-width: 170px;
-    width: $dropdown-width;
-    left: calc(50% - #{$dropdown-width / 2});
     @include breakPoint(min) {
       width: 100% !important;
       padding: 0 !important;
