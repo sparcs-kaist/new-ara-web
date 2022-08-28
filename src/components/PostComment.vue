@@ -22,8 +22,10 @@
             :class="isAuthor ? 'author_red' : ''"
             class="comment__author"
           >
-            <i v-if="isVerified" class="material-icons">verified</i>
-            {{ author }}
+            <div class="comment__author_box">
+              <i v-if="isVerified" class="material-icons">verified</i>
+              <div> {{ author }} </div>
+            </div>
           </router-link>
 
           <span class="comment__time"> {{ date }} </span>
@@ -434,6 +436,15 @@ en:
   &__author {
     font-size: .9rem;
     font-weight: bold;
+  }
+
+  &__author_box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    i {
+      padding-right: 4px;
+    }
   }
 
   &__footer {
