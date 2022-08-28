@@ -71,21 +71,21 @@ export default {
         ? 'vote_cancel'
         : (ballot ? 'vote_positive' : 'vote_negative')
 
-      if (this.item.my_vote === null) {
-        this.item.my_vote = ballot
-        if (ballot) {
-          this.item.positive_vote_count++
-        } else {
-          this.item.negative_vote_count++
-        }
-      } else {
-        if (this.item.my_vote) {
-          this.item.positive_vote_count--
-        } else {
-          this.item.negative_vote_count--
-        }
-        this.item.my_vote = null
-      }
+      // if (this.item.my_vote === null) {
+      //   this.item.my_vote = ballot
+      //   if (ballot) {
+      //     this.item.positive_vote_count++
+      //   } else {
+      //     this.item.negative_vote_count++
+      //   }
+      // } else {
+      //   if (this.item.my_vote) {
+      //     this.item.positive_vote_count--
+      //   } else {
+      //     this.item.negative_vote_count--
+      //   }
+      //   this.item.my_vote = null
+      // }
 
       this.$emit('vote', { id: this.item.id, vote: myVote })
     },

@@ -330,7 +330,7 @@ ko:
     notice: '공지'
     talk: '잡담'
     clubs: '학생 단체 및 동아리'
-    money: '돈'
+    money: '거래'
     communication: '소통'
   morealarm: '알림 더 보기'
 

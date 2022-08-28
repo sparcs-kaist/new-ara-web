@@ -24,6 +24,21 @@
         <span class="title__hit">
           조회수 · {{ post.hit_count }}
         </span>
+        <span class="board-item__author status">
+          <span
+            :class="{
+              'polling': status === 0,
+              'preparing': status === 1,
+              'answered': status === 2
+            }"
+            class="status--button"
+          >
+            {{ statusText }}
+          </span>
+          <span v-if="dday && isCommunicationAdmin" class="d-day">
+            {{ dday }}
+          </span>
+        </span>
       </span>
     </div>
     <div class="metadata">
@@ -80,6 +95,26 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['isCommunicationAdmin', 'userPicture']),
+    dday () {
+      if (this.status === 1) {
+        if (this.post.days_left === 0) {
+          return 'D-Day'
+        } else if (this.post.days_left > 0) {
+          return `D-${this.post.days_left}`
+        } else {
+          return '기간 경과'
+        }
+      }
+      return undefined
+    },
+    status () {
+      return this.post.communication_article_status ?? 0
+    },
+    statusText () {
+      const t = ['polling', 'preparing', 'answered'][this.status]
+      return this.$t(`status.${t}`).toString()
+    },
     userPictureUrl () {
       return this.post.created_by && this.post.created_by.profile.picture
     },
@@ -172,6 +207,10 @@ ko:
   confirm-delete: '정말로 삭제하시겠습니까?'
   all: '모아보기'
   prev-page: '이전 페이지'
+  status:
+    polling: '달성전'
+    preparing: '답변 준비중'
+    answered: '답변 완료'
 
 en:
   archive: 'Bookmark'
@@ -189,10 +228,68 @@ en:
   confirm-delete: 'Are you really want to delete this post?'
   all: 'All'
   prev-page: 'Previous Page'
+  status:
+    polling: 'Polling'
+    preparing: 'Preparing'
+    answered: 'Answered'
 </i18n>
 
 <style lang="scss" scoped>
 @import "@/theme.scss";
+
+.status {
+  .d-day {
+    color: black;
+    margin-right: 17px;
+    margin-left: 10px;
+  }
+  color: var(--theme-400);
+  div {
+    padding: 2px 5px;
+    border-radius: 5px;
+    width: 5rem;
+    text-align: center;
+  }
+  .polling {
+    color:var(--grey-600);
+    border: var(--grey-600) solid 1px;
+    background-color: white;
+  }
+  .preparing {
+    color:var(--theme-400);
+    border:var(--theme-400) solid 1px;
+    background-color: white;
+  }
+  .answered {
+    color: white;
+    background-color: var(--theme-400);
+  }
+  &--button{
+    border-radius: 4px;
+    font-size: 12px;
+  }
+}
+.board-item {
+    &__author {
+    // display: flex;
+    // justify-content: flex-end;
+    align-items: center;
+    margin-left: 5px;
+    margin-right: 10px;
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 500;
+
+    &__mobile{
+      white-space: nowrap;
+      font-size: 11px;
+      font-weight: 500;
+      color: unset;
+      margin-left: auto;
+    }
+  }
+
+}
 
 .title {
   color: var(--grey-700);
