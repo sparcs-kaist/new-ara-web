@@ -1,36 +1,43 @@
 # Url 구조
+
 ## 게시판
+
 ```
-/board (모아보기)
+/board (전체보기)
 /board/:boardSlug (개별 게시판)
 ```
 
 ## 사용자 작성글
+
 ```
 /user/:username (사용자)
 ```
 
 ## 담아두기
+
 ```
 /archive (담아두기)
 ```
 
 ## 게시물
+
 ```
-/post/:postId (모아보기)
+/post/:postId (전체보기)
 /post/:postId?board=:boardSlug (게시판)
-/post/:postId?query=:query (모아보기 검색)
+/post/:postId?query=:query (전체보기 검색)
 /post/:postId?board=:boardSlug&query=:query (게시판 검색)
 ```
 
 ## 글 작성
+
 ```
-/write (모아보기에서 새 글 작성)
+/write (전체보기에서 새 글 작성)
 /write?board=:boardSlug (게시판에서 새 글 작성)
 /write/:postId (글 수정)
 ```
 
 ## 설정
+
 ```
 /settings
 ```
@@ -44,7 +51,7 @@
 
 개발자의 입장에서 생각했을 때, 라우팅을 먼저하게 되면 매 컴퍼넌트는 *아직 데이터가 페치되지 않았을 때*를 다루는 방법이 필요합니다. 예를들어, 댓글이 페치되기 전까지는 페치 중임을 알리는 UI가 필요합니다. 따라서 개발자가 모든 컴퍼넌트를 두 벌씩 개발하게 됩니다. 반면 데이터를 먼저 페치하게 되면 컴퍼넌트는 마운트되는 시점엔 이미 데이터를 가지고 있기 때문에 그럴 필요가 없습니다.
 
-사용자 측면에서 살펴보면, 라우팅 전 데이터를 페치하는 것이 자연스럽습니다. 그것이 고전적인 웹 사이트가 작동하는 방식이기 때문입니다. [spa](https://en.wikipedia.org/wiki/Single-page_application)가 등장하기 전 웹사이트에서는 유저가 링크를 누르면 서버에서 데이터를 DB에서 페치하고, 레이아웃에 알맞게 배치해서 유저에게 돌려줬습니다. 브라우저는 이 과정동안 *직전까지 보고 있던 페이지를 보여줍니다*. spa에서 라우팅 후 데이터를 페치하게되면, 사용자는 우선 빈 페이지를 보고, 데이터가 페치된 이후에야 의미있는 정보를 얻을 수 있습니다.
+사용자 측면에서 살펴보면, 라우팅 전 데이터를 페치하는 것이 자연스럽습니다. 그것이 고전적인 웹 사이트가 작동하는 방식이기 때문입니다. [spa](https://en.wikipedia.org/wiki/Single-page_application)가 등장하기 전 웹사이트에서는 유저가 링크를 누르면 서버에서 데이터를 DB에서 페치하고, 레이아웃에 알맞게 배치해서 유저에게 돌려줬습니다. 브라우저는 이 과정동안 _직전까지 보고 있던 페이지를 보여줍니다_. spa에서 라우팅 후 데이터를 페치하게되면, 사용자는 우선 빈 페이지를 보고, 데이터가 페치된 이후에야 의미있는 정보를 얻을 수 있습니다.
 
 이런 두 가지 이유에서 라우팅 전 데이터를 먼저 페치하는 전략을 선택했습니다. 이를 위해 `/views` 아래의 각 컴퍼넌트는 [내비게이션 가드](https://router.vuejs.org/kr/guide/advanced/navigation-guards.html)를 이용하여 데이터를 페치한 후 화면을 전환합니다.
 
@@ -55,7 +62,7 @@
 ```html
 // ✗ 피하세요
 <router-link to="/logout">
-
-// ✓ 좋아요
-<router-link :to="{ name: 'logout' }">
+  // ✓ 좋아요
+  <router-link :to="{ name: 'logout' }"></router-link
+></router-link>
 ```
