@@ -63,6 +63,5 @@
 // ✗ 피하세요
 <router-link to="/logout">
 // ✓ 좋아요
-<router-link :to="{ name: 'logout' }"></router-link
-></router-link>
+<router-link :to="{ name: 'logout' }">
 ```
