@@ -451,6 +451,10 @@ en:
     i {
       padding-right: 4px;
     }
+    .material-icons{
+      color: rgba(81,135,255,100);
+      font-size: 15px;
+    }
   }
 
   &__footer {
@@ -480,8 +484,5 @@ en:
 .author_red{
   color: var(--theme-400);
 }
-.material-icons{
-  color: rgba(225,88,88,100);
-  font-size: 15px;
-}
+
 </style>
