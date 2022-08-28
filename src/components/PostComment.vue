@@ -23,7 +23,7 @@
             class="comment__author"
           >
             <i v-if="isVerified" class="material-icons">verified</i>
-            {{ isHidden && !canOveride ? this.$t('hidden-user') : author }}
+            {{ author }}
           </router-link>
 
           <span class="comment__time"> {{ date }} </span>
@@ -72,7 +72,7 @@
         </div>
 
         <div class="comment__content">
-          <div v-html="content" />
+          <div :style="isHidden && !canOveride ? 'color: #aaa;' : ''" v-html="content" />
 
           <div v-if="isHidden && canOveride">
             <button class="button" @click="$emit('fetch-comment', { commentId: comment.id })">
