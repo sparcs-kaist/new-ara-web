@@ -235,6 +235,10 @@ export default {
 
   methods: {
     async vote (ballot) {
+      if (this.isMine) {
+        const result = await this.$store.dispatch('dialog/toast', this.$t('nonvotable-myself'))
+        if (!result) return
+      }
       this.isVoting = true
       await voteComment(ballot.id, ballot.vote)
       this.$emit('vote')
@@ -293,6 +297,7 @@ ko:
   new-reply-comment: '작성하기'
   confirm-delete: '정말로 이 댓글을 삭제하시겠습니까?'
   confirm-report: '정말로 이 댓글을 신고하시겠습니까?'
+  nonvotable-myself: '본인 게시물이나 댓글에는 좋아요를 누를 수 없습니다!'
   show-hidden: '댓글 보기'
   ADULT_CONTENT: '성인/음란성 내용의 댓글입니다.'
   SOCIAL_CONTENT: '정치/사회성 내용의 댓글입니다.'
@@ -311,6 +316,7 @@ en:
   confirm-delete: 'Are you really want to delete this comment?'
   confirm-report: 'Are you really want to report this comment?'
   show-hidden: 'Show Hidden Comment'
+  nonvotable-myself: 'You cannot vote for your post or comment!'
   ADULT_CONTENT: 'This comment has adult/obscene contents.'
   SOCIAL_CONTENT: 'This comment has political/social contents.'
   REPORTED_CONTENT: 'This comment was hidden due to cumulative reporting.'
