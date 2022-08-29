@@ -103,10 +103,10 @@ export default {
 <i18n>
 ko:
   nonvotable-myself: '본인 게시물이나 댓글에는 좋아요를 누를 수 없습니다!'
-  impossible-cancel-like: '좋아요가 30개를 넘은 경우 취소할 수 없습니다!'
+  impossible-cancel-like: '좋아요가 20개를 넘은 경우 취소할 수 없습니다!'
 en:
   nonvotable-myself: 'You cannot vote for your post or comment!'
-  impossible-cancel-like: 'If there are more than 30 likes, you cannot cancel it!'
+  impossible-cancel-like: 'If there are more than 20 likes, you cannot cancel it!'
 </i18n>
 
 <style lang="scss" scoped>
