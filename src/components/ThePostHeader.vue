@@ -26,6 +26,7 @@
         </span>
         <span class="board-item__author status">
           <span
+            v-if="isCommunicationPost"
             :class="{
               'polling': status === 0,
               'preparing': status === 1,
@@ -110,6 +111,13 @@ export default {
     },
     status () {
       return this.post.communication_article_status ?? 0
+    },
+    isCommunicationPost () {
+      if (this.post.parent_board.id === 14) {
+        return true
+      } else {
+        return false
+      }
     },
     statusText () {
       const t = ['polling', 'preparing', 'answered'][this.status]
@@ -254,15 +262,18 @@ en:
     color:var(--grey-600);
     border: var(--grey-600) solid 1px;
     background-color: white;
+    padding: 1px 3.5px 1px 3.5px;
   }
   .preparing {
     color:var(--theme-400);
     border:var(--theme-400) solid 1px;
     background-color: white;
+    padding: 1px 3.5px 1px 3.5px;
   }
   .answered {
     color: white;
     background-color: var(--theme-400);
+    padding: 1px 3.5px 1px 3.5px;
   }
   &--button{
     border-radius: 4px;
