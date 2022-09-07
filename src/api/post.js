@@ -3,7 +3,10 @@ import { queryBuilder } from '@/helper'
 
 export const fetchPost = ({ postId, context = {} }) =>
   http.get(`articles/${postId}/?${queryBuilder(context)}`)
-    .then(({ data }) => data)
+    .then(({ data }) => {
+      console.log('asdf')
+      return data
+    })
 
 export const createPost = ({ boardId, newArticle }) =>
   http.post('articles/', {
