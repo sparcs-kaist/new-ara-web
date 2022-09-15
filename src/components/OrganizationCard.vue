@@ -63,7 +63,7 @@ export default {
         return {
           name: 'board',
           params: {
-            boardSlug: 'organization-notice'
+            boardSlug: 'students-group'
           },
           query: {
             topic: this.slug
