@@ -104,7 +104,7 @@
               :class="{ 'board__filter-item-tag__selected' : (undefined === $route.query.topic) }"
               class="board__filter-item-tag"
             >
-              <router-link :to="{ query: { ...$route.query, topic: undefined } }">
+              <router-link :to="{ query: { ...$route.query, topic: undefined, page: 1 } }">
                 {{ $t('no-filter') }}
               </router-link>
             </div>
@@ -114,7 +114,7 @@
               :class="{ 'board__filter-item-tag__selected' : (topicItem.slug === $route.query.topic) }"
               class="board__filter-item-tag"
             >
-              <router-link :to="{ query: { ...$route.query, topic: topicItem.slug } }">
+              <router-link :to="{ query: { ...$route.query, topic: topicItem.slug, page: 1 } }">
                 {{ topicItem[`${$i18n.locale}_name`] }}
               </router-link>
             </div>
@@ -134,7 +134,7 @@
             <div class="dropdown-menu board__filter-menu">
               <div class="dropdown-content">
                 <div class="dropdown-item board__filter-item">
-                  <router-link :to="{ query: { ...$route.query, topic: undefined } }">
+                  <router-link :to="{ query: { ...$route.query, topic: undefined, page: 1 } }">
                     {{ $t('no-filter') }}
                   </router-link>
                 </div>
@@ -144,7 +144,7 @@
                   :key="topicItem.id"
                   class="dropdown-item board__filter-item"
                 >
-                  <router-link :to="{ query: { ...$route.query, topic: topicItem.slug } }">
+                  <router-link :to="{ query: { ...$route.query, topic: topicItem.slug, page: 1 } }">
                     {{ topicItem[`${$i18n.locale}_name`] }}
                   </router-link>
                 </div>
