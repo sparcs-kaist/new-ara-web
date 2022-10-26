@@ -71,21 +71,21 @@ export default {
         ? 'vote_cancel'
         : (ballot ? 'vote_positive' : 'vote_negative')
 
-      if (this.item.my_vote === null) {
-        this.item.my_vote = ballot
-        if (ballot) {
-          this.item.positive_vote_count++
-        } else {
-          this.item.negative_vote_count++
-        }
-      } else {
-        if (this.item.my_vote) {
-          this.item.positive_vote_count--
-        } else {
-          this.item.negative_vote_count--
-        }
-        this.item.my_vote = null
-      }
+      // if (this.item.my_vote === null) {
+      //   this.item.my_vote = ballot
+      //   if (ballot) {
+      //     this.item.positive_vote_count++
+      //   } else {
+      //     this.item.negative_vote_count++
+      //   }
+      // } else {
+      //   if (this.item.my_vote) {
+      //     this.item.positive_vote_count--
+      //   } else {
+      //     this.item.negative_vote_count--
+      //   }
+      //   this.item.my_vote = null
+      // }
 
       this.$emit('vote', { id: this.item.id, vote: myVote })
     },
@@ -103,10 +103,10 @@ export default {
 <i18n>
 ko:
   nonvotable-myself: '본인 게시물이나 댓글에는 좋아요를 누를 수 없습니다!'
-  impossible-cancel-like: '좋아요가 30개를 넘은 경우 취소할 수 없습니다!'
+  impossible-cancel-like: '좋아요가 20개를 넘은 경우 취소할 수 없습니다!'
 en:
   nonvotable-myself: 'You cannot vote for your post or comment!'
-  impossible-cancel-like: 'If there are more than 30 likes, you cannot cancel it!'
+  impossible-cancel-like: 'If there are more than 20 likes, you cannot cancel it!'
 </i18n>
 
 <style lang="scss" scoped>
