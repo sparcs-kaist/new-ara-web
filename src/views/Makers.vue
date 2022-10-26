@@ -198,10 +198,12 @@ const projects = [
       또한 아라의 아이덴티티가 잘 드러나도록 홈페이지 디자인을 개선하였습니다.`,
     members: {
       PM: [
-        ['jessie:윤지수', 2021], ['victory:김주연', 2020], ['leo:정진우', 2019],
-        ['yujingaya:김유진', 2018], ['swan:지수환', 2018], ['raon:김강인', 2017]
+        ['yuwol:황인준', 2022], ['jessie:윤지수', 2021], ['victory:김주연', 2020],
+        ['leo:정진우', 2019], ['yujingaya:김유진', 2018], ['swan:지수환', 2018],
+        ['raon:김강인', 2017]
       ],
       DV: [
+        'ina:송인화', 'ddungiii:김기영', 'duncan:이동재', 'panya:김지연',
         'ivy:이융희', 'jungnoh:노정훈', 'water:김윤수', 'triangle:주예준',
         'hanski:한석휘', 'idev:이재현', 'doolly:김제윤', 'nenw:김요한', 'fi:김도현',
         'james:문재호', 'busan:안재웅', 'kidevelop:함종현', 'holymolly:김태원',

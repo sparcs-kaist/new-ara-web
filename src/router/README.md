@@ -1,36 +1,43 @@
 # Url 구조
+
 ## 게시판
+
 ```
-/board (모아보기)
+/board (전체보기)
 /board/:boardSlug (개별 게시판)
 ```
 
 ## 사용자 작성글
+
 ```
 /user/:username (사용자)
 ```
 
 ## 담아두기
+
 ```
 /archive (담아두기)
 ```
 
 ## 게시물
+
 ```
-/post/:postId (모아보기)
+/post/:postId (전체보기)
 /post/:postId?board=:boardSlug (게시판)
-/post/:postId?query=:query (모아보기 검색)
+/post/:postId?query=:query (전체보기 검색)
 /post/:postId?board=:boardSlug&query=:query (게시판 검색)
 ```
 
 ## 글 작성
+
 ```
-/write (모아보기에서 새 글 작성)
+/write (전체보기에서 새 글 작성)
 /write?board=:boardSlug (게시판에서 새 글 작성)
 /write/:postId (글 수정)
 ```
 
 ## 설정
+
 ```
 /settings
 ```
@@ -55,7 +62,6 @@
 ```html
 // ✗ 피하세요
 <router-link to="/logout">
-
 // ✓ 좋아요
 <router-link :to="{ name: 'logout' }">
 ```
