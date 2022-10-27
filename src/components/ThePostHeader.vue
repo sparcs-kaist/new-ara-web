@@ -113,7 +113,7 @@ export default {
       return this.post.communication_article_status ?? 0
     },
     isCommunicationPost () {
-      if (this.post.parent_board.id === 14) {
+      if (this.post.parent_board?.id === 14) {
         return true
       } else {
         return false
