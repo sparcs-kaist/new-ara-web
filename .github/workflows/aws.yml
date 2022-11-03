@@ -37,6 +37,10 @@ name: Deploy to Amazon ECR newara-front
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: newara-front
+  FIREBASE_CONFIG_PROD: ${{ secrets.FIREBASE_CONFIG_PROD }}
+  FIREBASE_CONFIG_DEV: ${{ secrets.FIREBASE_CONFIG_DEV }}
+  FIREBASE_VAPID_KEY_PROD: ${{ secrets.FIREBASE_VAPID_KEY_PROD }}
+  FIREBASE_VAPID_KEY_DEV: ${{ secrets.FIREBASE_VAPID_KEY_DEV }}
 
 defaults: # do we need this?
   run:
@@ -77,6 +81,6 @@ jobs:
         # be deployed to ECS.
         chmod +x ./.github/workflows/github-actions.sh
         . ./.github/workflows/github-actions.sh
-        docker build --cache-from $ECR/$PROJECT_NAME:$CACHE_DOCKER_TAG --build-arg VUE_APP_API_MODE -t $ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG .
+        docker build --cache-from $ECR/$PROJECT_NAME:$CACHE_DOCKER_TAG --build-arg VUE_APP_API_MODE --build-arg VUE_APP_FIREBASE_CONFIG --build-arg VUE_APP_FIREBASE_VAPID_KEY -t $ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG"

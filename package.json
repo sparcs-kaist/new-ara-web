@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "node swenvGenerator.js && vue-cli-service build",
     "swenv": "node swenvGenerator.js",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
