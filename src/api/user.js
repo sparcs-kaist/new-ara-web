@@ -5,6 +5,14 @@ export const fetchMe = () =>
   http.get('me')
     .then(({ data }) => data)
 
+export const updateFCMToken = (token) =>
+  http.patch('fcm_token/update', { token })
+    .then(({ data }) => data)
+
+export const deleteFCMToken = (token) =>
+  http.patch('fcm_token/delete', { token })
+    .then(({ data }) => data)
+
 export const fetchUser = (userId) =>
   http.get(`user_profiles/${userId}/`)
     .then(({ data }) => data)
