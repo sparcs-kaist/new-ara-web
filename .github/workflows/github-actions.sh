@@ -11,16 +11,22 @@ if [ ! -z $GITHUB_REF ]; then
             export DOCKER_TAG=prod
             export CACHE_DOCKER_TAG=prod
             export VUE_APP_API_MODE=production
+            export VUE_APP_FIREBASE_CONFIG=$FIREBASE_CONFIG_PROD
+            export VUE_APP_FIREBASE_VAPID_KEY=$FIREBASE_VAPID_KEY_PROD
         else
             # Docker tag에 /가 들어갈 수 없어서 -로 변경
             export DOCKER_TAG=$(echo $NAME | sed -e "s/\//-/g")
             export CACHE_DOCKER_TAG=dev
             export VUE_APP_API_MODE=development
+            export VUE_APP_FIREBASE_CONFIG=$FIREBASE_CONFIG_DEV
+            export VUE_APP_FIREBASE_VAPID_KEY=$FIREBASE_VAPID_KEY_DEV
         fi
     elif [ $TRIGGER_TYPE = "tags" ]; then
         export DOCKER_TAG=$NAME
         export CACHE_DOCKER_TAG=prod
         export VUE_APP_API_MODE=production
+        export VUE_APP_FIREBASE_CONFIG=$FIREBASE_CONFIG_PROD
+        export VUE_APP_FIREBASE_VAPID_KEY=$FIREBASE_VAPID_KEY_PROD
     fi
 fi
 
