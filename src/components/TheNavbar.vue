@@ -27,7 +27,7 @@
         <a
           :to="{ name: 'notifications' }"
           class="navbar-item navbar-item--mobile-alarm is-hidden-desktop"
-          @click="toggleMobileAlram"
+          @click="toggleMobileAlarm"
         >
           <i class="material-icons write-icon">notifications</i>
         </a>
@@ -133,10 +133,10 @@
           </a>
 
           <div
-            v-clickOutside="closeAlram"
+            v-clickOutside="closeAlarm"
             class="navbar-item has-dropdown is-hidden-touch is-active"
           >
-            <div class="alarmicon" @click="toggleAlram">
+            <div class="alarmicon" @click="toggleAlarm">
               <span
                 :class="{'unread-noti': isUnreadNotificationExist}"
                 data-badge=" "
@@ -146,7 +146,7 @@
               </span>
             </div>
             <div
-              v-if="isAlramShow"
+              v-if="isAlarmShow"
               :class="{ 'is-boxed': isHome }"
               class="alarm-popup navbar-dropdown is-hidden-touch"
             >
@@ -243,7 +243,7 @@ export default {
         money: false,
         communication: false
       },
-      isAlramShow: false,
+      isAlarmShow: false,
       isMobileAlarmShow: false
     }
   },
@@ -301,17 +301,17 @@ export default {
       }
       this.boardGroup[boardName] = true
     },
-    toggleAlram () {
-      this.isAlramShow = !this.isAlramShow
+    toggleAlarm () {
+      this.isAlarmShow = !this.isAlarmShow
     },
-    toggleMobileAlram () {
+    toggleMobileAlarm () {
       this.isMobileAlarmShow = !this.isMobileAlarmShow
       this.isMobileMenuActive = false
     },
-    closeAlram () {
-      this.isAlramShow = false
+    closeAlarm () {
+      this.isAlarmShow = false
     },
-    closeMobileAlram () {
+    closeMobileAlarm () {
       this.isMobileAlarmShow = false
     }
   }
