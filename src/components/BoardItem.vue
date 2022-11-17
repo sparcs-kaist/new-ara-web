@@ -50,16 +50,23 @@
         </div>
 
         <div class="board-item__subtitle">
-          <span>{{ timeago }}</span>
-          <div>{{ $t('views') + " " + elideText(post.hit_count) }}</div>
-          <div class="board-item__vote">
-            <div class="board-item__vote__pos">
-              +{{ post.positive_vote_count }}
+          <template v-if="!isSchoolBoard">
+            <span>{{ timeago }}</span>
+            <div>{{ $t('views') + " " + elideText(post.hit_count) }}</div>
+            <div class="board-item__vote">
+              <div class="board-item__vote__pos">
+                +{{ post.positive_vote_count }}
+              </div>
+              <div class="board-item__vote__neg">
+                -{{ post.negative_vote_count }}
+              </div>
             </div>
-            <div class="board-item__vote__neg">
-              -{{ post.negative_vote_count }}
-            </div>
-          </div>
+          </template>
+          <template v-else>
+            <span>{{ post.created_by.username }}</span>
+            <span>{{ timeago }}</span>
+            <div>{{ $t('views') + " " + elideText(post.hit_count) }}</div>
+          </template>
 
           <span
             v-if="!isSchoolBoard"
@@ -80,7 +87,7 @@
       {{ post.created_by.profile.nickname }}
     </span>
     <span v-else class="board-item__author status">
-      <span v-if="dday && isSchoolAdmin" class="d-day">
+      <span v-if="dday && isCommunicationAdmin" class="d-day">
         {{ dday }}
       </span>
       <div
@@ -125,7 +132,7 @@ export default Vue.extend({
   },
 
   computed: {
-    ...mapGetters(['isSchoolAdmin']),
+    ...mapGetters(['isCommunicationAdmin']),
     hasImage (): boolean {
       return this.post.attachment_type === 'IMAGE' || this.post.attachment_type === 'BOTH'
     },
@@ -175,7 +182,16 @@ export default Vue.extend({
       return this.$t(`status.${t}`).toString()
     },
     dday (): string | undefined {
-      return 'D-321'
+      if (this.status === 1) {
+        if (this.post.days_left === 0) {
+          return 'D-Day'
+        } else if (this.post.days_left > 0) {
+          return `D-${this.post.days_left}`
+        } else {
+          return '기간 경과'
+        }
+      }
+      return undefined
     }
   },
 
@@ -218,14 +234,18 @@ en:
     text-align: center;
   }
   .polling {
-    background-color: var(--theme-100);
+    color:var(--grey-600);
+    border: var(--grey-600) solid 1px;
+    background-color: white;
   }
   .preparing {
-    background-color: var(--theme-300);
+    color:var(--theme-400);
+    border:var(--theme-400) solid 1px;
+    background-color: white;
   }
   .answered {
     color: white;
-    background-color: var(--theme-400);;
+    background-color: var(--theme-400);
   }
 }
 

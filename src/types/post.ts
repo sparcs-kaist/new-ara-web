@@ -18,7 +18,8 @@ export type Post = {
       user: string
     },
     username: string
-  }
+  },
+  days_left: number,
   deleted_at: string,
   hidden_at: string,
   hit_count: number,

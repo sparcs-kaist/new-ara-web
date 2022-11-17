@@ -22,8 +22,10 @@
             :class="isAuthor ? 'author_red' : ''"
             class="comment__author"
           >
-            <i v-if="isVerified" class="material-icons">verified</i>
-            {{ isHidden && !canOveride ? this.$t('hidden-user') : author }}
+            <div class="comment__author_box">
+              <i v-if="isVerified" class="material-icons">verified</i>
+              <div> {{ author }} </div>
+            </div>
           </router-link>
 
           <span class="comment__time"> {{ date }} </span>
@@ -72,7 +74,7 @@
         </div>
 
         <div class="comment__content">
-          <div v-html="content" />
+          <div :style="isHidden && !canOveride ? 'color: #aaa;' : ''" v-html="content" />
 
           <div v-if="isHidden && canOveride">
             <button class="button" @click="$emit('fetch-comment', { commentId: comment.id })">
@@ -87,6 +89,7 @@
             :item="comment"
             class="comment__vote"
             votable
+            :is-mine="comment.is_mine"
             @vote="vote"
           />
           <a
@@ -182,9 +185,12 @@ export default {
       return this.comment.created_by?.profile.nickname
     },
     authorId () { return this.comment.created_by.id },
-    profileImage () { return this.comment.created_by?.profile?.picture },
+    profileImage () {
+      // return this.isCommunicationAdmin ? this.userPicture : this.comment.created_by?.profile?.picture
+      return this.comment.created_by?.profile?.picture
+    },
     date () { return timeago(this.comment.created_at, this.$i18n.locale) },
-    ...mapGetters([ 'userNickname' ]),
+    ...mapGetters([ 'userNickname', 'isCommunicationAdmin', 'userPicture' ]),
     content () {
       if (this.comment.is_hidden) {
         return this.$t(this.comment.why_hidden[0])
@@ -229,6 +235,10 @@ export default {
 
   methods: {
     async vote (ballot) {
+      if (this.isMine) {
+        const result = await this.$store.dispatch('dialog/toast', this.$t('nonvotable-myself'))
+        if (!result) return
+      }
       this.isVoting = true
       await voteComment(ballot.id, ballot.vote)
       this.$emit('vote')
@@ -287,6 +297,7 @@ ko:
   new-reply-comment: '작성하기'
   confirm-delete: '정말로 이 댓글을 삭제하시겠습니까?'
   confirm-report: '정말로 이 댓글을 신고하시겠습니까?'
+  nonvotable-myself: '본인 게시물이나 댓글에는 좋아요를 누를 수 없습니다!'
   show-hidden: '댓글 보기'
   ADULT_CONTENT: '성인/음란성 내용의 댓글입니다.'
   SOCIAL_CONTENT: '정치/사회성 내용의 댓글입니다.'
@@ -305,6 +316,7 @@ en:
   confirm-delete: 'Are you really want to delete this comment?'
   confirm-report: 'Are you really want to report this comment?'
   show-hidden: 'Show Hidden Comment'
+  nonvotable-myself: 'You cannot vote for your post or comment!'
   ADULT_CONTENT: 'This comment has adult/obscene contents.'
   SOCIAL_CONTENT: 'This comment has political/social contents.'
   REPORTED_CONTENT: 'This comment was hidden due to cumulative reporting.'
@@ -432,6 +444,19 @@ en:
     font-weight: bold;
   }
 
+  &__author_box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    i {
+      padding-right: 4px;
+    }
+    .material-icons{
+      color: rgba(81,135,255,100);
+      font-size: 15px;
+    }
+  }
+
   &__footer {
     display: flex;
     margin-top: 8px;
@@ -459,8 +484,5 @@ en:
 .author_red{
   color: var(--theme-400);
 }
-.material-icons{
-  color: rgba(81,135,255,100);
-  font-size: 15px;
-}
+
 </style>

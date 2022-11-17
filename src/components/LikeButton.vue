@@ -40,7 +40,6 @@ export default {
     table: Boolean,
     isMine: Boolean
   },
-
   computed: {
     // my_vote can be true, false, or null
     liked () { return this.item.my_vote === true },
@@ -50,9 +49,6 @@ export default {
     },
     dislikedCount () {
       return this.elideText(this.item.negative_vote_count)
-    },
-    isSchool () {
-      return this.item.parent_board.id === 14
     }
   },
 
@@ -66,30 +62,30 @@ export default {
           this.$store.dispatch('dialog/toast', this.$t('nonvotable-myself'))
           return
         }
-        if (this.liked && this.likedCount >= 30) {
-          this.$store.dispatch('dialog/toast', this.$t('impossible-cancel-like'))
-          return
-        }
+      }
+      if (this.liked && [1, 2].includes(this.item.communication_article_status)) {
+        this.$store.dispatch('dialog/toast', this.$t('impossible-cancel-like'))
+        return
       }
       const myVote = this.item.my_vote === ballot
         ? 'vote_cancel'
         : (ballot ? 'vote_positive' : 'vote_negative')
 
-      if (this.item.my_vote === null) {
-        this.item.my_vote = ballot
-        if (ballot) {
-          this.item.positive_vote_count++
-        } else {
-          this.item.negative_vote_count++
-        }
-      } else {
-        if (this.item.my_vote) {
-          this.item.positive_vote_count--
-        } else {
-          this.item.negative_vote_count--
-        }
-        this.item.my_vote = null
-      }
+      // if (this.item.my_vote === null) {
+      //   this.item.my_vote = ballot
+      //   if (ballot) {
+      //     this.item.positive_vote_count++
+      //   } else {
+      //     this.item.negative_vote_count++
+      //   }
+      // } else {
+      //   if (this.item.my_vote) {
+      //     this.item.positive_vote_count--
+      //   } else {
+      //     this.item.negative_vote_count--
+      //   }
+      //   this.item.my_vote = null
+      // }
 
       this.$emit('vote', { id: this.item.id, vote: myVote })
     },
@@ -106,11 +102,11 @@ export default {
 
 <i18n>
 ko:
-  nonvotable-myself: '본인 게시물에는 좋아요를 누를 수 없습니다!'
-  impossible-cancel-like: '좋아요가 30개를 넘은 경우 취소할 수 없습니다!'
+  nonvotable-myself: '본인 게시물이나 댓글에는 좋아요를 누를 수 없습니다!'
+  impossible-cancel-like: '좋아요가 20개를 넘은 경우 취소할 수 없습니다!'
 en:
-  nonvotable-myself: 'You cannot vote for your post!'
-  impossible-cancel-like: 'If there are more than 30 likes, you cannot cancel it!'
+  nonvotable-myself: 'You cannot vote for your post or comment!'
+  impossible-cancel-like: 'If there are more than 20 likes, you cannot cancel it!'
 </i18n>
 
 <style lang="scss" scoped>

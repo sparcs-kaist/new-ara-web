@@ -2,7 +2,7 @@
   <div>
     <IdentityBar />
     <div
-      :class="{ 'navbar-shadow': !isHome }"
+      :class="{ 'navbar-shadow': false }"
       class="navbar"
       aria-label="main"
       role="navigation"
@@ -89,7 +89,7 @@
             <div
               :class="{
                 'navbar-clicked': !groupClicked,
-                'is-boxed': isHome
+                'is-boxed': true
               }"
               class="navbar-dropdown"
             >
@@ -205,6 +205,7 @@ import { fetchWithProgress } from '@/views/helper'
 import { changeLocale } from '@/i18n'
 import AlarmPopupNotifications from '@/components/AlarmPopupNotifications.vue'
 import _ from 'lodash'
+import { onMessageListener } from '@/firebase'
 
 export default {
   name: 'TheNavbar',
@@ -269,19 +270,13 @@ export default {
     }
   },
 
+  mounted () {
+    onMessageListener(this)
+  },
+
   async beforeMount () {
     this.isHome = this.$route.name === 'home'
-
-    // Get only first page of notification.
-    const query = { ...this.$route.query, page: '1' }
-    const [notifications] = await fetchWithProgress(
-      [fetchNotifications({ query })],
-      'notifications-failed-fetch'
-    )
-    this.notifications = notifications.results
-    if (this.notifications.some(noti => !noti.is_read)) {
-      this.isUnreadNotificationExist = true
-    }
+    await this.reloadNotification()
   },
 
   methods: {
@@ -313,6 +308,18 @@ export default {
     },
     closeMobileAlram () {
       this.isMobileAlarmShow = false
+    },
+    async reloadNotification () {
+      // Get only first page of notification.
+      const query = { ...this.$route.query, page: '1' }
+      const [notifications] = await fetchWithProgress(
+        [fetchNotifications({ query })],
+        'notifications-failed-fetch'
+      )
+      this.notifications = notifications.results
+      if (this.notifications.some(noti => !noti.is_read)) {
+        this.isUnreadNotificationExist = true
+      }
     }
   }
 }
@@ -330,7 +337,7 @@ ko:
     notice: '공지'
     talk: '잡담'
     clubs: '학생 단체 및 동아리'
-    money: '돈'
+    money: '거래'
     communication: '소통'
   morealarm: '알림 더 보기'
 
@@ -403,13 +410,11 @@ div {
   }
   .navbar-dropdown {
     padding: 0.5rem;
+    border-color: white;
     border-bottom: {
       left-radius: 15px;
       right-radius: 15px;
     }
-    $dropdown-width: 170px;
-    width: $dropdown-width;
-    left: calc(50% - #{$dropdown-width / 2});
     @include breakPoint(min) {
       width: 100% !important;
       padding: 0 !important;
@@ -428,7 +433,7 @@ div {
     flex-flow: column;
     @include breakPoint(min) {
       width: 100%;
-      border-radius: 0px;
+      border-radius: 0px 0px 20px 20px;
       margin: 0;
       padding-right: 15px;
     }

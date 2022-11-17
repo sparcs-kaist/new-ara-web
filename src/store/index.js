@@ -35,6 +35,15 @@ export default new Vuex.Store({
       const board = boardList.find(board => board.id === id)
       return board ? board[`${locale}_name`] : i18n.t('all', locale)
     },
+    getBannerDescriptionById: ({ boardList }) => (id, locale) => {
+      const board = boardList.find(board => board.id === id)
+      const bannerDesc = board ? board[`${locale}_banner_description`] : ''
+      return (bannerDesc === null) ? '' : bannerDesc
+    },
+    getBannerImageById: ({ boardList }) => id => {
+      const board = boardList.find(board => board.id === id)
+      return board ? board.banner_image : ''
+    },
     PWAPrompt: ({ PWAPrompt }) => {
       return PWAPrompt
     }
@@ -59,7 +68,7 @@ export default new Vuex.Store({
   actions: {
     async fetchBoardList ({ commit, getters: { hasFetchedBoardList } }) {
       if (!hasFetchedBoardList) {
-        const { results } = await fetchBoardList()
+        const results = await fetchBoardList()
         commit('setBoardList', results)
       }
     },
