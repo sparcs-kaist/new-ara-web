@@ -43,17 +43,6 @@ export const onMessageListener = (context) => {
     navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope').then(async registration => {
       await context.reloadNotification()
       context.$store.dispatch('dialog/toast', payload.notification.title + '\n' + payload.notification.body)
-      // registration.showNotification(
-      //   payload.notification.title,
-      //   {
-      //     body: payload.notification.body, // Maybe bug: no enough information of WebpushNotification on payload.notification
-      //     icon: '/img/icons/ara-pwa-192.png',
-      //     tag: 'foreground-notification',
-      //     action_open_url: payload.data.action_open_url,
-      //     renotify: true,
-      //     data: payload.data
-      //   }
-      // )
     })
   })
 }
