@@ -4,8 +4,8 @@ import router from '@/router'
 import { getValidatorError } from '@/helper'
 
 const apiUrl = (function () {
-  if (process.env.VUE_APP_API_MODE === 'local') {
-    return process.env.VUE_APP_API_HOST ?? 'http://127.0.0.1:9000'
+  if (process.env.VUE_APP_API_HOST) {
+    return process.env.VUE_APP_API_HOST
   } if (process.env.VUE_APP_API_MODE === 'development') {
     return 'https://newara.dev.sparcs.org' // if local, use 'http://127.0.0.1:9000'
   } else if (process.env.NODE_ENV === 'production') {
