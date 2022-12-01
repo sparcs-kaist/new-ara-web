@@ -4,6 +4,8 @@ import { logout } from '@/api'
 import Facade from '@/views/Facade.vue'
 import Terms from '@/views/Terms.vue'
 
+import { acquireFCMToken, releaseFCMToken } from '@/firebase'
+
 export const authGuard = async (to, from, next) => {
   await store.dispatch('fetchMe')
 
@@ -12,6 +14,7 @@ export const authGuard = async (to, from, next) => {
   } else {
     try {
       await store.dispatch('fetchBoardList')
+      acquireFCMToken()
       next()
     } catch (err) {
       if (err.apierr) {
@@ -36,6 +39,7 @@ export default [
       if (store.getters.isLoggedIn) {
         next('/')
       } else {
+        releaseFCMToken()
         next()
       }
     }
