@@ -205,6 +205,7 @@ import { fetchWithProgress } from '@/views/helper'
 import { changeLocale } from '@/i18n'
 import AlarmPopupNotifications from '@/components/AlarmPopupNotifications.vue'
 import _ from 'lodash'
+import { onMessageListener } from '@/firebase'
 
 export default {
   name: 'TheNavbar',
@@ -269,19 +270,13 @@ export default {
     }
   },
 
+  mounted () {
+    onMessageListener(this)
+  },
+
   async beforeMount () {
     this.isHome = this.$route.name === 'home'
-
-    // Get only first page of notification.
-    const query = { ...this.$route.query, page: '1' }
-    const [notifications] = await fetchWithProgress(
-      [fetchUnreadNotifications({ query })],
-      'notifications-failed-fetch'
-    )
-    this.notifications = notifications.results
-    if (this.notifications.some(noti => !noti.is_read)) {
-      this.isUnreadNotificationExist = true
-    }
+    await this.reloadNotification()
   },
 
   methods: {
@@ -313,6 +308,18 @@ export default {
     },
     closeMobileAlram () {
       this.isMobileAlarmShow = false
+    },
+    async reloadNotification () {
+      // Get only first page of notification.
+      const query = { ...this.$route.query, page: '1' }
+      const [notifications] = await fetchWithProgress(
+        [fetchNotifications({ query })],
+        'notifications-failed-fetch'
+      )
+      this.notifications = notifications.results
+      if (this.notifications.some(noti => !noti.is_read)) {
+        this.isUnreadNotificationExist = true
+      }
     }
   }
 }

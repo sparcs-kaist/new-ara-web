@@ -7,6 +7,7 @@
           class="comment-editor__picture"
         >
         <span class="comment-editor__name" :class="authorRed">{{ userNickname }}</span>
+        <i v-if="isVerified" class="material-icons">verified</i>
       </div>
       <div class="comment-editor__content">
         <textarea
@@ -82,6 +83,10 @@ export default {
     },
     authorRed () {
       return this.post.name_type !== 0 && this.post.is_mine ? 'author_red' : ''
+    },
+    isVerified () {
+      const profile = this.post.my_comment_profile.profile
+      return this.post.parent_board.id === 14 ? profile?.is_school_admin : profile?.is_official
     }
   },
 
@@ -156,6 +161,12 @@ en:
 </i18n>
 
 <style lang="scss" scoped>
+.material-icons{
+  padding-left: 5px;
+  color: rgba(81,135,255,100);
+  font-size: 15px;
+}
+
 .comment-editor {
   position: relative;
 
