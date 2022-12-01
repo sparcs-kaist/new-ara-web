@@ -200,7 +200,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import IdentityBar from '@/components/IdentityBar.vue'
-import { fetchNotifications } from '@/api'
+import { fetchUnreadNotifications } from '@/api'
 import { fetchWithProgress } from '@/views/helper'
 import { changeLocale } from '@/i18n'
 import AlarmPopupNotifications from '@/components/AlarmPopupNotifications.vue'
@@ -313,7 +313,7 @@ export default {
       // Get only first page of notification.
       const query = { ...this.$route.query, page: '1' }
       const [notifications] = await fetchWithProgress(
-        [fetchNotifications({ query })],
+        [fetchUnreadNotifications({ query })],
         'notifications-failed-fetch'
       )
       this.notifications = notifications.results
