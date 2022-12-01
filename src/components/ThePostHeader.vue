@@ -1,10 +1,15 @@
 <template>
   <div class="post">
     <div class="title">
-      <a class="title__board" @click="hasHistory() ? $router.back() : $router.push(beforeBoard)">
+      <a class="title__board">
         <i class="material-icons title__board--icon">arrow_back_ios</i>
-        <span class="title__board--name">
+        <span class="title__board--name" @click="hasHistory() ? $router.back() : $router.push(beforeBoard)">
           {{ beforeBoardName }}
+        </span>
+        <span v-if="beforeBoardName === '전체보기' || beforeBoardName === 'All'" class="title__info">
+            <router-link :to="{name: 'board', params: { boardSlug: post.parent_board['slug'] }} " class="title__info">
+              | {{ post.parent_board[`${$i18n.locale}_name`] }}
+            </router-link>
         </span>
       </a>
       <hr class="title__divider">
@@ -329,6 +334,12 @@ en:
       font-size: 18px;
       line-height: 18px;
     }
+  }
+
+  &__info {
+    color: #A9A9A9;
+    font-size: 18px;
+    padding-left:2px;
   }
 
   &__text {
