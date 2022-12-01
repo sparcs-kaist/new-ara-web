@@ -313,7 +313,7 @@ export default {
       // Get only first page of notification.
       const query = { ...this.$route.query, page: '1' }
       const [notifications] = await fetchWithProgress(
-        [fetchNotifications({ query })],
+        [fetchUnreadNotifications({ query })],
         'notifications-failed-fetch'
       )
       this.notifications = notifications.results

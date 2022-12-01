@@ -7,9 +7,9 @@
           {{ beforeBoardName }}
         </span>
         <span v-if="beforeBoardName === '전체보기' || beforeBoardName === 'All'" class="title__info">
-            <router-link :to="{name: 'board', params: { boardSlug: post.parent_board['slug'] }} " class="title__info">
-              | {{ post.parent_board[`${$i18n.locale}_name`] }}
-            </router-link>
+          <router-link :to="{name: 'board', params: { boardSlug: post.parent_board['slug'] }} " class="title__info">
+            | {{ post.parent_board[`${$i18n.locale}_name`] }}
+          </router-link>
         </span>
       </a>
       <hr class="title__divider">
