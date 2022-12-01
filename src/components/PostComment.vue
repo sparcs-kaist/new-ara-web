@@ -23,8 +23,8 @@
             class="comment__author"
           >
             <div class="comment__author_box">
-              <i v-if="isVerified" class="material-icons">verified</i>
               <div> {{ author }} </div>
+              <i v-if="isVerified" class="material-icons">verified</i>
             </div>
           </router-link>
 
@@ -452,6 +452,7 @@ en:
       padding-right: 4px;
     }
     .material-icons{
+      padding-left: 5px;
       color: rgba(81,135,255,100);
       font-size: 15px;
     }
