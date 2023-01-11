@@ -1,10 +1,23 @@
 <template>
   <div :class="{ 'alert-dialog--toast': dialog.toast }" class="alert-dialog">
-    <div class="alert-dialog__icon">
+    <div v-if="dialog.type != 'comment'" class="alert-dialog__icon">
+      <i class="material-icons">{{ iconName }}</i>
+    </div>
+    <div v-else-if="dialog.type === 'comment'" class="alert-dialog__img">
       <i class="material-icons">{{ iconName }}</i>
     </div>
 
-    <div class="alert-dialog__content">
+    <div v-if="dialog.type === 'comment'" class="alert-dialog__content">
+      <div class="comment-title">
+        {{ $t('comment-title') }}
+      </div>
+      <div class="comment-text" v-html="dialog.text" />
+      <div class="comment-postInfo">
+        | {{ dialog.info }}
+      </div>
+    </div>
+
+    <div v-else class="alert-dialog__content">
       <div class="content-text" v-html="dialog.text" />
     </div>
 
@@ -99,7 +112,8 @@ const icons = {
   report: 'check_circle_outline',
   error: 'error_outline',
   warning: 'highlight_off',
-  info: 'info_outline'
+  info: 'info_outline',
+  comment: 'forum'
 }
 
 export default {
@@ -174,6 +188,7 @@ ko:
   defamation: '명예훼손'
   other: '기타'
   need-reason-for-report: '신고 사유를 1개 이상 선택해주세요'
+  comment-title: '새로운 댓글이 달렸습니다'
 
 en:
   error: 'Error'
@@ -190,6 +205,7 @@ en:
   defamation: 'Defamation'
   other: 'Other'
   need-reason-for-report: 'Please select reason for report at least one'
+  comment-title: 'A new comment has been posted'
 </i18n>
 
 <style lang="scss" scoped>
@@ -213,6 +229,17 @@ en:
   &__icon {
     color: var(--theme-400);
     margin-bottom: -10px;
+    margin-right: 10px;
+    .material-icons {
+      font-size: 40px;
+    }
+  }
+
+  &__img {
+    align-items: start !important;
+    color: var(--theme-400);
+    margin-bottom: -10px;
+    margin-right: 10px;
     .material-icons {
       font-size: 40px;
     }
@@ -229,16 +256,19 @@ en:
     margin: 10px 0;
     display: flex;
     flex-flow: row;
-    align-items: center;
+    align-items: start;
 
     .material-icons {
+      padding-top: 20px;
       font-size: 30px;
     }
 
     .content-text {
+      align-items: center;
       text-align: left;
       margin-left: 10px;
     }
+
   }
 
   &__content {
@@ -362,5 +392,37 @@ en:
     background: var(--theme-400);
     color: var(--background);
   }
+}
+
+.comment_author {
+  display: flex;
+  align-items: center;
+
+  &__picture {
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+    object-fit: cover;
+    border-radius: 100%;
+    margin-right: 0.5rem;
+  }
+}
+
+.comment-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333333;
+}
+
+.comment-text {
+  font-size: 14px;
+  font-weight: normal;
+  color: #666666;
+}
+
+.comment-postInfo {
+  font-size: 12px;
+  font-weight: normal;
+  color: #a9a9a9
 }
 </style>

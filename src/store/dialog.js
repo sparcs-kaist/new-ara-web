@@ -8,6 +8,7 @@ export default {
   mutations: {
     addDialog (state, dialog) {
       dialog.id = Math.random().toString(36).slice(2)
+      console.log(dialog)
       state.dialogs.push(dialog)
     },
 
@@ -73,6 +74,17 @@ export default {
 
         dispatch('createDialog', payload)
       })
+    },
+
+    webPush ({ dispatch }, payload) {
+      if (typeof payload.text === 'string') { payload = { text: payload.text, info: payload.info, from: payload.from } }
+
+      payload.type = 'comment'
+      payload.timeout = 2000
+      payload.toast = true
+      payload.info = payload.info.substring(5, payload.info.length)
+
+      return dispatch('alert', payload)
     },
 
     toast ({ dispatch }, payload) {

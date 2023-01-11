@@ -427,13 +427,13 @@ div {
     left: calc(50% - #{$dropdown-width/1.3});
     margin: 10px;
     margin-top: 0px;
-    border-radius: 0px 0px 20px 20px;
+    border-radius: 15px 15px 15px 15px;
     padding: 0;
     display: flex;
     flex-flow: column;
     @include breakPoint(min) {
       width: 100%;
-      border-radius: 0px 0px 20px 20px;
+      border-radius: 15px 15px 15px 15px;
       margin: 0;
       padding-right: 15px;
     }
@@ -444,7 +444,7 @@ div {
       height: 40px;
       background: var(--theme-400);
       border: hidden;
-      border-radius: 0px 0px 20px 20px;
+      border-radius: 0px 0px 15px 15px;
       display: flex;
       font-size: 14px;
       font-weight: 700;

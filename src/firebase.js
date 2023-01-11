@@ -42,7 +42,8 @@ export const onMessageListener = (context) => {
   onMessage(getMessaging(app), (payload) => {
     navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope').then(async registration => {
       await context.reloadNotification()
-      context.$store.dispatch('dialog/toast', payload.notification.title + '\n' + payload.notification.body)
+      console.log(payload)
+      context.$store.dispatch('dialog/webPush', { text: payload.notification.body, info: payload.data.action_open_url, from: payload.from })
     })
   })
 }
