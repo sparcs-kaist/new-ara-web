@@ -119,9 +119,10 @@ export default {
       // 3. if user did subs board, then ask dialog, and release subs
       // TODO: fix button align
       // TODO: i18n english
+      // TODO: 전체보기 게시판은 board_null 이 됨
       // TODO: extend board/boardId/boardTopic (board topic, not FCM topic)
       const topics = await getFCMTopic()
-      const curTopic = `board/${this.boardId}`
+      const curTopic = `board_${this.boardId}`
       if (topics.includes(curTopic)) {
         const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-delete-topic'))
         if (result) {
