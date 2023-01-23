@@ -99,6 +99,12 @@
         </template>
         <template v-else>
           <button
+            class="button"
+            @click="subscribePost"
+          >
+            {{ $t("subscribe") }}
+          </button>
+          <button
             v-if="isRegular"
             class="button"
             @click="$emit('block')"
@@ -141,6 +147,7 @@ import TextEditor from '@/components/TheTextEditor.vue'
 import ThePostBookmark from '@/components/ThePostBookmark.vue'
 import { mapGetters } from 'vuex'
 import i18n from '@/i18n'
+import { patchFCMTopic, getFCMTopic } from '@/api/user'
 
 export default {
   name: 'ThePostDetail',
@@ -238,6 +245,24 @@ export default {
 
       await apiDeletePost(this.post.id)
       this.$router.go(-1)
+    },
+    async subscribePost () {
+      // TODO: 아래 로직이 TheBoard의 구독 로직과 비슷함. utils로 빼도 될 듯, i18n 문장 수정 필요.
+      const topics = await getFCMTopic()
+      const curTopic = `article_comment_${this.post.id}`
+      if (topics.includes(curTopic)) {
+        const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-delete-topic'))
+        if (result) {
+          await patchFCMTopic(null, [curTopic])
+          await this.$store.dispatch('dialog/toast', this.$t('delete-topic'))
+        }
+      } else {
+        const result = await this.$store.dispatch('dialog/confirm', this.$t('confirm-add-topic'))
+        if (result) {
+          await patchFCMTopic([curTopic], null)
+          await this.$store.dispatch('dialog/toast', this.$t('add-topic'))
+        }
+      }
     }
   }
 }
@@ -255,6 +280,11 @@ ko:
   attachments: '첨부파일 모아보기'
   more: '{author} 님의 게시글 더 보기'
   show-hidden: '숨김글 보기'
+  subscribe: '댓글 알림 구독'
+  confirm-add-topic: '댓글 알림을 구독하시겠습니까? 이 글에 새로운 댓글이 올라올 때마다 알림이 오게 됩니다.'
+  confirm-delete-topic: '이미 구독된 글입니다. 정말로 댓글 구독을 제거하시겠습니까? 더이상 알림을 받지 못하게 됩니다.'
+  delete-topic: '구독 제거가 완료되었습니다.'
+  add-topic: '구독 추가가 완료되었습니다.'
   confirm-delete: '정말로 삭제하시겠습니까?'
   hidden-notice-ADULT_CONTENT: '게시물 보기 설정은 마이페이지에서 수정할 수 있습니다.'
   hidden-notice-SOCIAL_CONTENT: '게시물 보기 설정은 마이페이지에서 수정할 수 있습니다.'
@@ -270,6 +300,11 @@ en:
   delete: 'Delete'
   attachments: 'Attachments'
   more: 'Read more posts by {author}'
+  subscribe: 'Comment subscribe'
+  confirm-add-topic: '댓글 알림을 구독하시겠습니까? 이 글에 새로운 댓글이 올라올 때마다 알림이 오게 됩니다.'
+  confirm-delete-topic: '이미 구독된 글입니다. 정말로 댓글 구독을 제거하시겠습니까? 더이상 알림을 받지 못하게 됩니다.'
+  delete-topic: '구독 제거가 완료되었습니다.'
+  add-topic: '구독 추가가 완료되었습니다.'
   show-hidden: 'Show hidden posts'
   confirm-delete: 'Are you really want to delete this post?'
   hidden-notice-ADULT_CONTENT: 'You can change the setting in your MyInfo page to show this kinds of post.'

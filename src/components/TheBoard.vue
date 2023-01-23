@@ -117,10 +117,12 @@ export default {
       // 1. get current state of token
       // 2. if user did not subs board, do subs
       // 3. if user did subs board, then ask dialog, and release subs
-      // TODO: fix button align
-      // TODO: i18n english
-      // TODO: 전체보기 게시판은 board_null 이 됨
-      // TODO: extend board/boardId/boardTopic (board topic, not FCM topic)
+      // FIXME: fix button align
+      // FIXME: i18n english for delete-topic and add-topic
+      // TODO: 전반적인 리디자인
+      // TODO: 버튼 텍스트에 현재 구독이 되어있는지, 그렇지 않은지 띄우기
+      // FIXME: 전체보기 게시판은 board_null 이 됨
+      // TODO: extend board_boardId_boardTopic (board topic, not FCM topic) w/ backend
       const topics = await getFCMTopic()
       const curTopic = `board_${this.boardId}`
       if (topics.includes(curTopic)) {
