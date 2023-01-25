@@ -7,7 +7,11 @@
       <i class="material-icons">{{ iconName }}</i>
     </div>
 
-    <div v-if="dialog.type === 'comment'" class="alert-dialog__content">
+    <div
+      v-if="dialog.type === 'comment'"
+      class="alert-dialog__content"
+      @click="scrollToComment"
+    >
       <div class="comment-title">
         {{ $t('comment-title') }}
       </div>
@@ -153,6 +157,9 @@ export default {
   },
 
   methods: {
+    scrollToComment () {
+      this.$refs[this.dialog.id].scrollIntoView({ behavior: 'smooth' }) // TODO: this.dialog.id가 comment id가 맞는지 check
+    },
     dismiss (value) {
       if (this.dialog.agreeText && value) {
         if (this.agreeText !== this.dialog.agreeText) {

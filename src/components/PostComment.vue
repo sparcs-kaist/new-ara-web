@@ -120,6 +120,7 @@
     <div class="comment__reply-comments">
       <PostComment
         v-for="replyComment in comment.comments"
+        :id="replyComment.id"
         :key="replyComment.id"
         :comment="replyComment"
         :post="post"
