@@ -51,6 +51,12 @@ export default {
 
   computed: {
     loginUrl () {
+      var referrer = document.referrer
+      console.log(window.location.href)
+      console.log(window.history.go.toString)
+      if (referrer.includes(location.host)) {
+        return `${apiUrl}/api/users/sso_login/?next=${referrer}`
+      }
       return `${apiUrl}/api/users/sso_login/?next=${location.protocol}//${location.host}/login-handler`
     }
   },
