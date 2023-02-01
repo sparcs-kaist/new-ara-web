@@ -51,9 +51,7 @@ export default {
 
   computed: {
     loginUrl () {
-      var referrer = document.referrer
-      console.log(window.location.href)
-      console.log(window.history.go.toString)
+      var referrer = this.$route.query.next
       if (referrer.includes(location.host)) {
         return `${apiUrl}/api/users/sso_login/?next=${referrer}`
       }

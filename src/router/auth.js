@@ -10,9 +10,8 @@ export const authGuard = async (to, from, next) => {
   await store.dispatch('fetchMe')
 
   if (!store.getters.isLoggedIn) {
-    console.log(to)
-    // console.log(location.protocol + '//' + location.host + to.fullPath)
-    next('/login')
+    const urlRef = (to.path && to.path !== '/') ? `?next=${location.protocol}//${location.host}${to.fullPath}` : ''
+    next(`/login${urlRef}`)
   } else {
     try {
       await store.dispatch('fetchBoardList')
