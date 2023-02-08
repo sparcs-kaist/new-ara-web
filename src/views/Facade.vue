@@ -52,10 +52,7 @@ export default {
   computed: {
     loginUrl () {
       var referrer = this.$route.query.next
-      if (referrer.includes(location.host)) {
-        return `${apiUrl}/api/users/sso_login/?next=${location.protocol}//${location.host}/login-handler?link=${referrer}`
-      }
-      return `${apiUrl}/api/users/sso_login/?next=${location.protocol}//${location.host}/login-handler?link=main`
+      return `${apiUrl}/api/users/sso_login/?next=${location.protocol}//${location.host}/login-handler?link=${referrer}`
     }
   },
 
