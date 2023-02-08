@@ -50,7 +50,12 @@ export default [
     name: 'login-handler',
     beforeEnter: (to, from, next) => {
       store.commit('setAuthState', true)
-      next('/')
+      if (to.query.link === 'main') {
+        next('/')
+      } else {
+        var host = location.protocol + '//' + location.host
+        next(to.query.link.substr(host.length))
+      }
     }
   },
   {
