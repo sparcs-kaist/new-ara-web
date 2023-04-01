@@ -10,8 +10,10 @@ const firebaseConfig = JSON.parse(process.env.VUE_APP_FIREBASE_CONFIG || {})
 
 const app = firebase.initializeApp(firebaseConfig)
 let acquired = false
+const fcmDisable = true
 
 export const acquireFCMToken = async () => {
+  if (fcmDisable) return
   if (!acquired && 'Notification' in window) {
     Notification.requestPermission().then(function (result) {
       if (result === 'granted') {
@@ -38,6 +40,7 @@ export const acquireFCMToken = async () => {
 }
 
 export const onMessageListener = (context) => {
+  if (fcmDisable) return
   // Foreground notification
   onMessage(getMessaging(app), (payload) => {
     navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope').then(async registration => {
