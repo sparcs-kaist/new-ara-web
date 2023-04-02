@@ -74,7 +74,7 @@
         @vote="$emit('vote', $event)"
       />
       <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons">
-        <template v-if="isMine && (post.can_override_hidden !== false) && post.hidden_at === '0001-01-01T08:28:00+08:28'">
+        <template v-if="isMine && (post.can_override_hidden !== false) && post.hidden_at === null">
           <button class="button" @click="deletePost">
             <i class="like-button__icon material-icons-outlined">
               delete
