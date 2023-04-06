@@ -49,7 +49,8 @@ defaults: # do we need this?
 jobs:
   deploy:
     name: Deploy
-    runs-on: ubuntu-18.04
+    # runs-on: ubuntu-18.04
+    runs-on: [self-hosted]
     permissions:
       packages: write
       contents: read
@@ -79,8 +80,8 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        chmod +x ./.github/workflows/github-actions.sh
-        . ./.github/workflows/github-actions.sh
+        chmod +x ./.github/workflows/generate-docker-tag.sh
+        . ./.github/workflows/generate-docker-tag.sh
         docker build --cache-from $ECR/$PROJECT_NAME:$CACHE_DOCKER_TAG --build-arg VUE_APP_API_MODE --build-arg VUE_APP_FIREBASE_CONFIG --build-arg VUE_APP_FIREBASE_VAPID_KEY -t $ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$DOCKER_TAG"
