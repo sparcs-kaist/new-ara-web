@@ -122,6 +122,10 @@ en:
 .like-button {
   display: inline-flex;
   outline: none;
+  @include breakPoint(mobile) {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
 
   &--enabled &__item {
     cursor: pointer;
