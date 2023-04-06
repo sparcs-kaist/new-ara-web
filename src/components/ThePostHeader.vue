@@ -7,8 +7,8 @@
           {{ beforeBoardName }}
         </span>
         <span v-if="beforeBoardName === '전체보기' || beforeBoardName === 'All'" class="title__info">
-          <router-link :to="{name: 'board', params: { boardSlug: post.parent_board['slug'] }} " class="title__info">
-            | {{ post.parent_board[`${$i18n.locale}_name`] }}
+          <router-link :to="{name: 'board', params: { boardSlug: boardSlug }} " class="title__info">
+            | {{ boardName }}
           </router-link>
         </span>
       </a>
@@ -118,11 +118,7 @@ export default {
       return this.post.communication_article_status ?? 0
     },
     isCommunicationPost () {
-      if (this.post.parent_board?.id === 14) {
-        return true
-      } else {
-        return false
-      }
+      return this.post.parent_board?.id === 14
     },
     statusText () {
       const t = ['polling', 'preparing', 'answered'][this.status]

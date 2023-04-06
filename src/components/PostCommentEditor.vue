@@ -85,8 +85,11 @@ export default {
       return this.post.name_type !== 0 && this.post.is_mine ? 'author_red' : ''
     },
     isVerified () {
+      if (!this.post.my_comment_profile) {
+        return false
+      }
       const profile = this.post.my_comment_profile.profile
-      return this.post.parent_board.id === 14 ? profile?.is_school_admin : profile?.is_official
+      return this.post.parent_board?.id === 14 ? profile.is_school_admin : profile.is_official
     }
   },
 
