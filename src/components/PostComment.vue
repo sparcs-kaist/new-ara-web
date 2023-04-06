@@ -30,7 +30,7 @@
 
           <span class="comment__time"> {{ date }} </span>
 
-          <div v-if="comment.deleted_at === '0001-01-01T08:28:00+08:28' && !isHidden" class="dropdown is-right is-hoverable">
+          <div v-if="comment.deleted_at === null && !isHidden" class="dropdown is-right is-hoverable">
             <div class="dropdown-trigger">
               <button
                 class="dropdown-button"
