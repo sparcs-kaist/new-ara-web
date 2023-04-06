@@ -81,7 +81,6 @@ en:
 
 .sidebar {
   max-width: 135px;
-  margin-top: 30px;
   margin-bottom: 2rem;
   font-family: var(--font);
 
