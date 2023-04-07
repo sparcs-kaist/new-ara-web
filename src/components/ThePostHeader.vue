@@ -6,8 +6,8 @@
         <span class="title__board--name" @click="hasHistory() ? $router.back() : $router.push(beforeBoard)">
           {{ beforeBoardName }}
         </span>
-        <span v-if="beforeBoardName === '전체보기' || beforeBoardName === 'All'" class="title__info">
-          <router-link :to="{name: 'board', params: { boardSlug: boardSlug }} " class="title__info">
+        <span v-if="beforeBoardName === $t('all')" class="title__info">
+          <router-link :to="{name: 'board', params: { boardSlug }} " class="title__info">
             | {{ boardName }}
           </router-link>
         </span>

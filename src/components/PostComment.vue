@@ -207,8 +207,11 @@ export default {
       return this.comment.name_type === 0
     },
     isVerified () {
-      const profile = this.comment.created_by?.profile
-      return this.post.parent_board.id === 14 ? profile?.is_school_admin : profile?.is_official
+      if (!this.comment.created_by || !this.post.parent_board) {
+        return false
+      }
+      const profile = this.comment.created_by.profile
+      return this.post.parent_board.id === 14 ? profile.is_school_admin : profile.is_official
     },
     isAuthor () {
       if (this.comment.name_type === 0) {
