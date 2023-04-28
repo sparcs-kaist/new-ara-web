@@ -17,6 +17,7 @@
       @archive="archive"
       @block="block"
       @report="report"
+      @share="share"
       @vote="vote"
       @show-hidden="overrideHidden"
     />
@@ -262,6 +263,10 @@ export default {
       await this.refresh()
     },
 
+    async share () {
+      this.$store.dispatch('dialog/share', this.$t('share'))
+    },
+
     async overrideHidden () {
       const overridenPost = await fetchPost({ postId: this.postId, context: { ...this.$route.query, override_hidden: true } })
       this.post = { ...overridenPost, comments: this.post.comments, side_articles: this.post.side_articles }
@@ -304,6 +309,7 @@ ko:
   hidden-post: '숨겨진 글'
   report-unavailable: '신고가 불가능한 글입니다!'
   block-rate-limit: '하루에 최대 10번만 차단/해제 할 수 있습니다.'
+  share: '공유하기'
 
 en:
   archived: 'Successfully added to your archive!'
@@ -311,11 +317,12 @@ en:
   reported: 'Successfully reported!'
   blocked: 'The user has been blocked!'
   unblocked: 'The user has been unblocked!'
-  confirm-report: 'Let me know your reason for reporting the post.'
-  confirm-block: 'Are you really want to block this user?'
+  confirm-report: 'Let us know your reason for reporting the post.'
+  confirm-block: 'Do you really want to block this user?'
   nonvotable-myself: 'You cannot vote for your post!'
   already-reported: "You've already reported this article."
   hidden-post: 'Hidden post'
   report-unavailable: 'You cannot report this post!'
-  block-rate-limit: 'You could block/unblock at most 10 times a day.'
+  block-rate-limit: 'You can block/unblock at most 10 times a day.'
+  share: 'Share'
 </i18n>

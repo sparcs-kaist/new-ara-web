@@ -75,6 +75,17 @@ export default {
       })
     },
 
+    share ({ dispatch }, payload) {
+      if (typeof payload === 'string') { payload = { text: payload } }
+
+      return new Promise(resolve => {
+        payload.type = 'share'
+        payload.callback = resolve
+
+        dispatch('createDialog', payload)
+      })
+    },
+
     toast ({ dispatch }, payload) {
       if (typeof payload === 'string') { payload = { text: payload } }
 

@@ -22,6 +22,33 @@
       </div>
     </div>
 
+    <div v-if="dialog.type === 'share'" class="alert-dialog__chips">
+      <div class="alert-dialog__chip">
+        <button
+          v-for="to in shareTo"
+          :key="to"
+          class="chip"
+          @click="()=>{}"
+        >
+          {{ $t(to) }}
+        </button>
+      </div>
+      <div class="alert-dialog__url">
+        <input
+          class="url"
+          type="url"
+          value="https://newara.sparcs.org/"
+          readonly
+        >
+        <button
+          class="copy"
+          @click="()=>{}"
+        >
+          {{ $t('copy') }}
+        </button>
+      </div>
+    </div>
+
     <div v-if="hasButtons" class="alert-dialog__buttons">
       <template v-if="dialog.type === 'confirm'">
         <button class="alert-dialog__button" @click="dismiss(false)">
@@ -99,7 +126,8 @@ const icons = {
   report: 'check_circle_outline',
   error: 'error_outline',
   warning: 'highlight_off',
-  info: 'info_outline'
+  info: 'info_outline',
+  share: 'share'
 }
 
 export default {
@@ -122,6 +150,11 @@ export default {
         defamation: false,
         other: false
       },
+      shareTo: [
+        'facebook',
+        'twitter',
+        'kakaotalk'
+      ],
       agreeText: ''
     }
   },
@@ -174,6 +207,10 @@ ko:
   defamation: '명예훼손'
   other: '기타'
   need-reason-for-report: '신고 사유를 1개 이상 선택해주세요'
+  facebook: '페이스북'
+  twitter: '트위터'
+  kakaotalk: '카카오톡'
+  copy: 'URL 복사'
 
 en:
   error: 'Error'
@@ -190,6 +227,10 @@ en:
   defamation: 'Defamation'
   other: 'Other'
   need-reason-for-report: 'Please select reason for report at least one'
+  facebook: 'Facebook'
+  twitter: 'Twitter'
+  kakaotalk: 'Kakaotalk'
+  copy: 'Copy URL'
 </i18n>
 
 <style lang="scss" scoped>
@@ -266,6 +307,12 @@ en:
   }
 
   &__chip {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  &__url {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -363,4 +410,15 @@ en:
     color: var(--background);
   }
 }
+
+.url {
+  width: 220px;
+  height: 30px;
+}
+
+.copy {
+  width: 80px;
+  height: 30px;
+}
+
 </style>
