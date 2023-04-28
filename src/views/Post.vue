@@ -264,7 +264,7 @@ export default {
     },
 
     async share () {
-      this.$store.dispatch('dialog/share', this.$t('share'))
+      this.$store.dispatch('dialog/share', { postId: this.postId, postTitle: this.post.title, text: this.$t('share') })
     },
 
     async overrideHidden () {

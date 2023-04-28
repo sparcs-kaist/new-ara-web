@@ -37,14 +37,16 @@
         <input
           class="url"
           type="url"
-          value="https://newara.sparcs.org/"
           readonly
+          :value="postURL"
+          :title="postURL"
+          @click="copyURL"
         >
         <button
           class="copy"
-          @click="()=>{}"
+          @click="copyURL"
         >
-          {{ $t('copy') }}
+          {{ isCopied ? $t('copied') : $t('copy') }}
         </button>
       </div>
     </div>
@@ -155,6 +157,7 @@ export default {
         'twitter',
         'kakaotalk'
       ],
+      isCopied: false,
       agreeText: ''
     }
   },
@@ -168,6 +171,11 @@ export default {
     },
     hasButtons () {
       return !this.dialog.toast
+    },
+    postURL () {
+      const title = `[${this.dialog.postTitle}]`
+      const url = 'https://newara.sparcs.org/post/' + this.dialog.postId
+      return url + ' ' + title
     }
   },
 
@@ -186,6 +194,11 @@ export default {
     },
     chipClick (chip) {
       this.chips[chip] = !this.chips[chip]
+    },
+    copyURL () {
+      navigator.clipboard.writeText(this.postURL).then(() => {
+        this.isCopied = true
+      })
     }
   }
 }
@@ -211,6 +224,7 @@ ko:
   twitter: '트위터'
   kakaotalk: '카카오톡'
   copy: 'URL 복사'
+  copied: '복사됨'
 
 en:
   error: 'Error'
@@ -231,6 +245,7 @@ en:
   twitter: 'Twitter'
   kakaotalk: 'Kakaotalk'
   copy: 'Copy URL'
+  copied: 'Copied'
 </i18n>
 
 <style lang="scss" scoped>
@@ -412,13 +427,19 @@ en:
 }
 
 .url {
-  width: 220px;
+  width: 240px;
   height: 30px;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .copy {
   width: 80px;
   height: 30px;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 </style>
