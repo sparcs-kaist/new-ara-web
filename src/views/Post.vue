@@ -199,7 +199,6 @@ export default {
       } catch (err) {
         this.$store.dispatch('dialog/toast', this.$t('nonvotable-myself'))
       }
-      await this.refresh()
     },
 
     async archive () {
