@@ -25,25 +25,33 @@
     <div v-if="dialog.type === 'share'" class="alert-dialog__chips">
       <div class="alert-dialog__chip">
         <button
-          v-for="to in shareTo"
-          :key="to"
-          class="chip"
-          @click="()=>{}"
+          v-for="target in Object.keys(shareTarget)"
+          :key="target"
+          class="share-target"
+          @click="shareTargetClick(target)"
         >
-          {{ $t(to) }}
+          <img
+            class="share-target__icon"
+            :src="shareTarget[target].icon"
+            :alt="target"
+          >
+          <div>
+            {{ $t(target) }}
+          </div>
         </button>
       </div>
       <div class="alert-dialog__url">
         <input
-          class="url"
-          type="url"
-          readonly
+          class="input url-input"
           :value="postURL"
           :title="postURL"
-          @click="copyURL"
+          type="url"
+          readonly
         >
         <button
-          class="copy"
+          class="button url-copy"
+          :class="{ 'url-copy__clicked' : isCopied }"
+          :title="$t('copy-hint')"
           @click="copyURL"
         >
           {{ isCopied ? $t('copied') : $t('copy') }}
@@ -122,6 +130,10 @@
 </template>
 
 <script>
+import IconFacebook from '@/assets/IconFacebook.svg'
+import IconTwitter from '@/assets/IconTwitter.svg'
+import IconKakaoTalk from '@/assets/IconKakaoTalk.svg'
+
 const icons = {
   confirm: 'check_circle_outline',
   confirmAgree: 'check_circle_outline',
@@ -152,11 +164,26 @@ export default {
         defamation: false,
         other: false
       },
-      shareTo: [
-        'facebook',
-        'twitter',
-        'kakaotalk'
-      ],
+      shareTarget: {
+        facebook: {
+          icon: IconFacebook,
+          link: (content) => {
+            return `https://www.facebook.com/sharer/sharer.php?u=${content}`
+          }
+        },
+        twitter: {
+          icon: IconTwitter,
+          link: (content) => {
+            return `https://twitter.com/intent/tweet?text=${content}`
+          }
+        },
+        kakaotalk: {
+          icon: IconKakaoTalk,
+          link: (content) => {
+            return `https://story.kakao.com/share?text=${content}`
+          }
+        }
+      },
       isCopied: false,
       agreeText: ''
     }
@@ -174,7 +201,7 @@ export default {
     },
     postURL () {
       const title = `[${this.dialog.postTitle}]`
-      const url = 'https://newara.sparcs.org/post/' + this.dialog.postId
+      const url = window.location.origin + '/post/' + this.dialog.postId
       return url + ' ' + title
     }
   },
@@ -195,9 +222,13 @@ export default {
     chipClick (chip) {
       this.chips[chip] = !this.chips[chip]
     },
+    shareTargetClick (target) {
+      window.open(this.shareTarget[target].link(this.postURL))
+    },
     copyURL () {
       navigator.clipboard.writeText(this.postURL).then(() => {
         this.isCopied = true
+        this.$store.dispatch('dialog/toast', this.$t('copy-success'))
       })
     }
   }
@@ -225,6 +256,8 @@ ko:
   kakaotalk: '카카오톡'
   copy: 'URL 복사'
   copied: '복사됨'
+  copy-hint: '클릭하여 클립보드에 복사'
+  copy-success: 'URL을 클립보드에 복사했습니다.'
 
 en:
   error: 'Error'
@@ -243,9 +276,11 @@ en:
   need-reason-for-report: 'Please select reason for report at least one'
   facebook: 'Facebook'
   twitter: 'Twitter'
-  kakaotalk: 'Kakaotalk'
+  kakaotalk: 'KakaoTalk'
   copy: 'Copy URL'
   copied: 'Copied'
+  copy-hint: 'Click to copy to the clipboard'
+  copy-success: 'Copied URL to the clipboard.'
 </i18n>
 
 <style lang="scss" scoped>
@@ -426,19 +461,30 @@ en:
   }
 }
 
-.url {
-  width: 240px;
-  height: 30px;
-  &:hover {
-    cursor: pointer;
+.share-target {
+  background: transparent;
+  border: none;
+  padding: 0px 5px 5px;
+  margin: 0px 10px 5px;
+  height: 90px;
+  cursor: pointer;
+  &__icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
   }
 }
 
-.copy {
+.url-input {
+  width: 200px;
+}
+
+.url-copy {
   width: 80px;
-  height: 30px;
-  &:hover {
-    cursor: pointer;
+  transition: background .4s ease;
+  &__clicked {
+    background: var(--theme-400);
+    color: var(--background);
   }
 }
 
