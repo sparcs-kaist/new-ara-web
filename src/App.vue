@@ -2,6 +2,7 @@
   <div id="root-container">
     <div id="app">
       <router-view />
+      <vue-progress-bar />
     </div>
     <TheFooter />
   </div>
@@ -15,7 +16,23 @@ export default {
 
   components: { TheFooter },
 
+  created () {
+    this.$Progress.start()
+    this.$router.beforeEach((to, from, next) => {
+      if (to.meta.progress !== undefined) {
+        const meta = to.meta.progress
+        this.$Progress.parseMeta(meta)
+      }
+      this.$Progress.start()
+      next()
+    })
+    this.$router.afterEach((to, from) => {
+      this.$Progress.finish()
+    })
+  },
+
   mounted () {
+    this.$Progress.finish()
     window.addEventListener('beforeinstallprompt', e => {
       e.preventDefault()
       // Stash the event so it can be triggered later.
