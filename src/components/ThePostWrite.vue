@@ -78,7 +78,7 @@
           <input v-model="isSocial" type="checkbox">
         </label>
 
-        <label v-if = "boardId===7"  class="checkbox">
+        <label v-if="boardId===7" class="checkbox">
           {{ $t('is-anonymous') }}
           <input v-model="isAnonymous" type="checkbox">
         </label>
