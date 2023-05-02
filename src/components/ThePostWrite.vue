@@ -77,6 +77,11 @@
           {{ $t('is-social') }}
           <input v-model="isSocial" type="checkbox">
         </label>
+
+        <label v-if = "boardId===7"  class="checkbox">
+          {{ $t('is-anonymous') }}
+          <input v-model="isAnonymous" type="checkbox">
+        </label>
       </div>
     </div>
 
@@ -156,6 +161,7 @@ export default {
       title: '',
       isSexual: false,
       isSocial: false,
+      isAnonymous: false,
       loaded: true
     }
   },
@@ -314,6 +320,7 @@ ko:
   uploading: '현재 업로딩 중입니다.'
   is-sexual: '성인글'
   is-social: '정치글'
+  is-anonymous: '익명'
 
 en:
   write: 'Write a post'
@@ -328,6 +335,7 @@ en:
   uploading: 'It is currently uploading post. Please wait for a second.'
   is-sexual: 'Adult Post'
   is-social: 'Politics Post'
+  is-anonymous: 'Anonymous'
 </i18n>
 
 <style lang="scss" scoped>
