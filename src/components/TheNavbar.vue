@@ -76,6 +76,10 @@
             <span>{{ $t('all') }}</span>
           </router-link>
 
+          <router-link :to="{ name: 'board', params: { boardSlug: 'talk' } }" class="navbar-item">
+            <span>{{ $t('talk') }}</span>
+          </router-link>
+
           <div
             v-for="(groupClicked, groupName, groupId) in boardGroup"
             :key="groupName"
@@ -239,7 +243,6 @@ export default {
       isHome: true,
       boardGroup: {
         notice: false,
-        talk: false,
         clubs: false,
         money: false,
         communication: false
@@ -331,11 +334,11 @@ ko:
   notification: '알림'
   write: '게시글 작성하기'
   all: '전체보기'
+  talk: '자유게시판'
   my-page: '마이페이지'
   logout: '로그아웃'
   group:
     notice: '공지'
-    talk: '잡담'
     clubs: '학생 단체 및 동아리'
     money: '거래'
     communication: '소통'
@@ -346,11 +349,11 @@ en:
   notification: 'Notifications'
   write: 'Write Post'
   all: 'All'
+  talk: 'Talk'
   my-page: 'My Page'
   logout: 'Logout'
   group:
     notice: 'Notice'
-    talk: 'Talk'
     clubs: 'Organizations and Clubs'
     money: 'Money'
     communication: 'Communication'
