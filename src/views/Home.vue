@@ -55,6 +55,14 @@ import TheLayout from '@/components/TheLayout.vue'
 export default {
   name: 'Home',
 
+  metaInfo: {
+    meta: [
+      { charset: 'utf-8' },
+      { vmid: 'title', property: 'og:title', content: 'Content Title for post' },
+      { vmid: 'descripton', property: 'og:description', content: 'Description Here' }
+    ]
+  },
+
   components: {
     SmallBoard,
     TheHomeSearchbar,

@@ -56,6 +56,14 @@ import TheSidebar from '@/components/TheSidebar.vue'
 export default {
   name: 'Post',
 
+  metaInfo: {
+    meta: [
+      { charset: 'utf-8' },
+      { vmid: 'title', property: 'og:title', content: 'Content Title for post' },
+      { vmid: 'descripton', property: 'og:description', content: 'Description Here' }
+    ]
+  },
+
   components: {
     TheLayout,
     ThePostComments,
