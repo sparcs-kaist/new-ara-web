@@ -6,7 +6,7 @@ import * as firebase from 'firebase/app'
 import { getMessaging, getToken, onMessage } from 'firebase/messaging'
 import { updateFCMToken, deleteFCMToken } from './api'
 
-const firebaseConfig = JSON.parse(process.env.VUE_APP_FIREBASE_CONFIG || {})
+const firebaseConfig = JSON.parse(process.env.VUE_APP_FIREBASE_CONFIG || '{}')
 
 const app = firebase.initializeApp(firebaseConfig)
 let acquired = false
