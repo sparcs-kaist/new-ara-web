@@ -76,19 +76,54 @@
             <span>{{ $t('all') }}</span>
           </router-link>
 
-          <router-link :to="{ name: 'board', params: { boardSlug: 'talk' } }" class="navbar-item">
-            <span>{{ $t('talk') }}</span>
-          </router-link>
-
+          <!-- group1: 공지, 소통 -->
           <div
-            v-for="(groupClicked, groupName, groupId) in boardGroup"
+            v-for="(groupClicked, groupName, groupId) in boardGroup1"
             :key="groupName"
             class="navbar-item has-dropdown is-hoverable boardlist"
           >
             <div class="navbar-item" @click="click(groupName)">
               <i v-if="groupClicked" class="material-icons is-hidden-desktop">expand_less</i>
               <i v-else class="material-icons is-hidden-desktop">expand_more</i>
-              <span>{{ $t(`group.${groupName}`) }}</span>
+              <span>{{ $t(`group1.${groupName}`) }}</span>
+            </div>
+            <div
+              :class="{
+                'navbar-clicked': !groupClicked,
+                'is-boxed': true
+              }"
+              class="navbar-dropdown"
+            >
+              <router-link
+                v-for="board in groupedBoardList[groupId+1]"
+                :key="board.id"
+                :to="{
+                  name: 'board',
+                  params: {
+                    boardSlug: board.slug
+                  }
+                }"
+                class="navbar-item"
+              >
+                <div>{{ board[`${$i18n.locale}_name`] }}</div>
+              </router-link>
+            </div>
+          </div>
+
+          <router-link :to="{ name: 'board', params: { boardSlug: 'talk' } }" class="navbar-item">
+            <span>{{ $t('talk') }}</span>
+          </router-link>
+
+          <!-- group2: 거래, 학생 단체 및 동아리 -->
+          <div
+            v-for="(groupClicked, groupName, groupId) in boardGroup2"
+            :key="groupName"
+            class="navbar-item has-dropdown is-hoverable boardlist"
+          >
+            <div class="navbar-item" @click="click(groupName)">
+              <i v-if="groupClicked" class="material-icons is-hidden-desktop">expand_less</i>
+              <i v-else class="material-icons is-hidden-desktop">expand_more</i>
+              <span>{{ $t(`group2.${groupName}`) }}</span>
             </div>
             <div
               :class="{
@@ -241,11 +276,13 @@ export default {
       notifications: [],
       isUnreadNotificationExist: false,
       isHome: true,
-      boardGroup: {
+      boardGroup1: {
         notice: false,
-        clubs: false,
-        money: false,
         communication: false
+      },
+      boardGroup2: {
+        clubs: false,
+        money: false
       },
       isAlramShow: false,
       isMobileAlarmShow: false
@@ -337,11 +374,12 @@ ko:
   talk: '자유게시판'
   my-page: '마이페이지'
   logout: '로그아웃'
-  group:
+  group1:
     notice: '공지'
-    clubs: '학생 단체 및 동아리'
-    money: '거래'
     communication: '소통'
+  group2:
+    money: '거래'
+    clubs: '학생 단체 및 동아리'
   morealarm: '알림 더 보기'
 
 en:
@@ -352,11 +390,12 @@ en:
   talk: 'Talk'
   my-page: 'My Page'
   logout: 'Logout'
-  group:
+  group1:
     notice: 'Notice'
-    clubs: 'Organizations and Clubs'
-    money: 'Money'
     communication: 'Communication'
+  group2:
+    money: 'Money'
+    clubs: 'Organizations and Clubs'
   morealarm: 'See more Alarms'
 </i18n>
 
