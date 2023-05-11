@@ -39,13 +39,17 @@
         <div :class="{ 'is-placeholder': categoryNotSet }" class="select">
           <select v-model="categoryId" :disabled="editMode">
             <option
+              v-if="!boardId"
               value="$not-set"
               disabled
-              selected
             >
               {{ $t('input-category') }}
             </option>
-            <option v-if="boardId" value="">
+            <option
+              v-if="boardId"
+              value=""
+              :selected="categoryId = ''"
+            >
               {{ $t('no-category') }}
             </option>
 
@@ -68,6 +72,11 @@
       </div>
 
       <div class="write__input write__content-checkbox">
+        <label v-if="boardId===7" class="checkbox">
+          {{ $t('is-anonymous') }}
+          <input v-model="isAnonymous" type="checkbox">
+        </label>
+
         <label class="checkbox">
           {{ $t('is-sexual') }}
           <input v-model="isSexual" type="checkbox">
@@ -76,11 +85,6 @@
         <label class="checkbox">
           {{ $t('is-social') }}
           <input v-model="isSocial" type="checkbox">
-        </label>
-
-        <label v-if="boardId===7" class="checkbox">
-          {{ $t('is-anonymous') }}
-          <input v-model="isAnonymous" type="checkbox">
         </label>
       </div>
     </div>
