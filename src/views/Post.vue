@@ -59,8 +59,7 @@ export default {
   metaInfo: {
     meta: [
       { charset: 'utf-8' },
-      { vmid: 'title', property: 'og:title', content: 'Content Title for post' },
-      { vmid: 'descripton', property: 'og:description', content: 'Description Here' }
+      { vmid: 'title', property: 'og:title', content: this.post.title }
     ]
   },
 
