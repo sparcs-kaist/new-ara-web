@@ -76,99 +76,42 @@
             <span>{{ $t('all') }}</span>
           </router-link>
 
-          <!-- group1: 공지, 소통 -->
           <div
-            v-for="(groupClicked, groupName, groupId) in boardGroup1"
-            :key="groupName"
-            class="navbar-item has-dropdown is-hoverable boardlist"
+            v-for="group in boardGroup"
+            :key="group.name"
           >
-            <div class="navbar-item" @click="click(groupName)">
-              <i v-if="groupClicked" class="material-icons is-hidden-desktop">expand_less</i>
-              <i v-else class="material-icons is-hidden-desktop">expand_more</i>
-              <span>{{ $t(`group1.${groupName}`) }}</span>
-            </div>
-            <div
-              v-if="groupName === 'notice'"
-              :class="{
-                'navbar-clicked': !groupClicked,
-                'is-boxed': true
-              }"
-              class="navbar-dropdown"
-            >
-              <router-link
-                v-for="board in groupedBoardList[groupId+1]"
-                :key="board.id"
-                :to="{
-                  name: 'board',
-                  params: {
-                    boardSlug: board.slug
-                  }
-                }"
-                class="navbar-item"
-              >
-                <div>{{ board[`${$i18n.locale}_name`] }}</div>
+            <div v-if="group.name === 'talk'">
+              <router-link :to="{ name: 'board', params: { boardSlug: 'talk' } }" class="navbar-item">
+                <span>{{ $t('talk') }}</span>
               </router-link>
             </div>
-
-            <div
-              v-if="groupName === 'communication'"
-              :class="{
-                'navbar-clicked': !groupClicked,
-                'is-boxed': true
-              }"
-              class="navbar-dropdown"
-            >
-              <router-link
-                v-for="board in groupedBoardList[groupId+4]"
-                :key="board.id"
-                :to="{
-                  name: 'board',
-                  params: {
-                    boardSlug: board.slug
-                  }
+            <div v-else class="navbar-item has-dropdown is-hoverable boardlist">
+              <div class="navbar-item" @click="click(group.name)">
+                <i v-if="group.clicked" class="material-icons is-hidden-desktop">expand_less</i>
+                <i v-else class="material-icons is-hidden-desktop">expand_more</i>
+                <span>{{ $t(`group.${group.name}`) }}</span>
+              </div>
+              <div
+                :class="{
+                  'navbar-clicked': !group.clicked,
+                  'is-boxed': true
                 }"
-                class="navbar-item"
+                class="navbar-dropdown"
               >
-                <div>{{ board[`${$i18n.locale}_name`] }}</div>
-              </router-link>
-            </div>
-          </div>
-
-          <router-link :to="{ name: 'board', params: { boardSlug: 'talk' } }" class="navbar-item">
-            <span>{{ $t('talk') }}</span>
-          </router-link>
-
-          <!-- group2: 거래, 학생 단체 및 동아리 -->
-          <div
-            v-for="(groupClicked, groupName, groupId) in boardGroup2"
-            :key="groupName"
-            class="navbar-item has-dropdown is-hoverable boardlist"
-          >
-            <div class="navbar-item" @click="click(groupName)">
-              <i v-if="groupClicked" class="material-icons is-hidden-desktop">expand_less</i>
-              <i v-else class="material-icons is-hidden-desktop">expand_more</i>
-              <span>{{ $t(`group2.${groupName}`) }}</span>
-            </div>
-            <div
-              :class="{
-                'navbar-clicked': !groupClicked,
-                'is-boxed': true
-              }"
-              class="navbar-dropdown"
-            >
-              <router-link
-                v-for="board in groupedBoardList[groupId+3]"
-                :key="board.id"
-                :to="{
-                  name: 'board',
-                  params: {
-                    boardSlug: board.slug
-                  }
-                }"
-                class="navbar-item"
-              >
-                <div>{{ board[`${$i18n.locale}_name`] }}</div>
-              </router-link>
+                <router-link
+                  v-for="board in groupedBoardList[group.id]"
+                  :key="board.id"
+                  :to="{
+                    name: 'board',
+                    params: {
+                      boardSlug: board.slug
+                    }
+                  }"
+                  class="navbar-item"
+                >
+                  <div>{{ board[`${$i18n.locale}_name`] }}</div>
+                </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -300,13 +243,32 @@ export default {
       notifications: [],
       isUnreadNotificationExist: false,
       isHome: true,
-      boardGroup1: {
-        notice: false,
-        communication: false
-      },
-      boardGroup2: {
-        clubs: false,
-        money: false
+      boardGroup: {
+        notice: {
+          clicked: false,
+          id: 1,
+          name: 'notice'
+        },
+        communication: {
+          clicked: false,
+          id: 5,
+          name: 'communication'
+        },
+        talk: {
+          clicked: false,
+          id: 7,
+          name: 'talk'
+        },
+        clubs: {
+          clicked: false,
+          id: 3,
+          name: 'clubs'
+        },
+        money: {
+          clicked: false,
+          id: 4,
+          name: 'money'
+        }
       },
       isAlramShow: false,
       isMobileAlarmShow: false
@@ -320,6 +282,7 @@ export default {
       return this.boardList.filter(v => !v.is_hidden)
     },
     groupedBoardList () {
+      console.log(this.boardList)
       return _.groupBy(this.boardList, 'group_id')
     },
     showedNotifications () {
@@ -351,14 +314,14 @@ export default {
     changeLocale,
     ...mapActions(['toggleDarkMode']),
     click (boardName) {
-      if (this.boardGroup[boardName]) {
-        this.boardGroup[boardName] = false
+      if (this.boardGroup[boardName].clicked) {
+        this.boardGroup[boardName].clicked = false
         return
       }
       for (const board in this.boardGroup) {
-        this.boardGroup[board] = false
+        this.boardGroup[board].clicked = false
       }
-      this.boardGroup[boardName] = true
+      this.boardGroup[boardName].clicked = true
     },
     toggleAlram () {
       this.isAlramShow = !this.isAlramShow
@@ -398,10 +361,9 @@ ko:
   talk: '자유게시판'
   my-page: '마이페이지'
   logout: '로그아웃'
-  group1:
+  group:
     notice: '공지'
     communication: '소통'
-  group2:
     money: '거래'
     clubs: '학생 단체 및 동아리'
   morealarm: '알림 더 보기'
@@ -414,10 +376,9 @@ en:
   talk: 'Talk'
   my-page: 'My Page'
   logout: 'Logout'
-  group1:
+  group:
     notice: 'Notice'
     communication: 'Communication'
-  group2:
     money: 'Money'
     clubs: 'Organizations and Clubs'
   morealarm: 'See more Alarms'
