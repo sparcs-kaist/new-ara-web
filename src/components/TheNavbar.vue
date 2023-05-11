@@ -282,7 +282,6 @@ export default {
       return this.boardList.filter(v => !v.is_hidden)
     },
     groupedBoardList () {
-      console.log(this.boardList)
       return _.groupBy(this.boardList, 'group_id')
     },
     showedNotifications () {
