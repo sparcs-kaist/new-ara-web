@@ -8,12 +8,12 @@ import '@/registerServiceWorker'
 const VueProgressBar = require('vue-progressbar')
 
 const options = {
-  color: '#bffaf3',
-  failedColor: '#874b4b',
+  color: '#f4b9b9',
+  failedColor: '#b22020',
   thickness: '5px',
   transition: {
     speed: '0.1s',
-    opacity: '0.6s',
+    opacity: '0.3s',
     termination: 300
   },
   autoRevert: true,
