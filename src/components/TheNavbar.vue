@@ -88,6 +88,7 @@
               <span>{{ $t(`group1.${groupName}`) }}</span>
             </div>
             <div
+              v-if="groupName === 'notice'"
               :class="{
                 'navbar-clicked': !groupClicked,
                 'is-boxed': true
@@ -96,6 +97,29 @@
             >
               <router-link
                 v-for="board in groupedBoardList[groupId+1]"
+                :key="board.id"
+                :to="{
+                  name: 'board',
+                  params: {
+                    boardSlug: board.slug
+                  }
+                }"
+                class="navbar-item"
+              >
+                <div>{{ board[`${$i18n.locale}_name`] }}</div>
+              </router-link>
+            </div>
+
+            <div
+              v-if="groupName === 'communication'"
+              :class="{
+                'navbar-clicked': !groupClicked,
+                'is-boxed': true
+              }"
+              class="navbar-dropdown"
+            >
+              <router-link
+                v-for="board in groupedBoardList[groupId+4]"
                 :key="board.id"
                 :to="{
                   name: 'board',
@@ -133,7 +157,7 @@
               class="navbar-dropdown"
             >
               <router-link
-                v-for="board in groupedBoardList[groupId+1]"
+                v-for="board in groupedBoardList[groupId+3]"
                 :key="board.id"
                 :to="{
                   name: 'board',
