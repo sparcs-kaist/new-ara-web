@@ -57,36 +57,43 @@ export default {
       if (!this.votable) {
         return
       }
-      if (this.isSchool) {
-        if (this.isMine) {
-          this.$store.dispatch('dialog/toast', this.$t('nonvotable-myself'))
-          return
-        }
+      if (this.isMine) {
+        this.$store.dispatch('dialog/toast', this.$t('nonvotable-myself'))
+        return
       }
       if (this.liked && [1, 2].includes(this.item.communication_article_status)) {
         this.$store.dispatch('dialog/toast', this.$t('impossible-cancel-like'))
         return
       }
-      const myVote = this.item.my_vote === ballot
+
+      const oldVote = this.item.my_vote
+      const newVote = ballot
+
+      if (newVote === true && oldVote !== true) {
+        // vote up && previously not voted up
+        this.item.positive_vote_count++
+      } else if (oldVote === true) {
+        // previously voted up => change vote
+        this.item.positive_vote_count--
+      }
+      if (newVote === false && oldVote !== false) {
+        // vote down && previously not voted down
+        this.item.negative_vote_count++
+      } else if (oldVote === false) {
+        // previously voted down => change vote
+        this.item.negative_vote_count--
+      }
+      if (oldVote === newVote) {
+        // cancel vote
+        this.item.my_vote = null
+      } else {
+        // update vote
+        this.item.my_vote = newVote
+      }
+
+      const myVote = oldVote === newVote
         ? 'vote_cancel'
-        : (ballot ? 'vote_positive' : 'vote_negative')
-
-      // if (this.item.my_vote === null) {
-      //   this.item.my_vote = ballot
-      //   if (ballot) {
-      //     this.item.positive_vote_count++
-      //   } else {
-      //     this.item.negative_vote_count++
-      //   }
-      // } else {
-      //   if (this.item.my_vote) {
-      //     this.item.positive_vote_count--
-      //   } else {
-      //     this.item.negative_vote_count--
-      //   }
-      //   this.item.my_vote = null
-      // }
-
+        : (newVote ? 'vote_positive' : 'vote_negative')
       this.$emit('vote', { id: this.item.id, vote: myVote })
     },
     elideText (text) {

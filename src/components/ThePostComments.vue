@@ -16,7 +16,6 @@
         class="comments__comment"
         @update="$emit('update', $event)"
         @upload="$emit('upload', $event)"
-        @vote="$emit('refresh')"
         @delete="$emit('refresh')"
         @fetch-comment="$emit('fetch-comment', $event)"
       />
