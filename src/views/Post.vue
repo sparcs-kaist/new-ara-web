@@ -298,30 +298,32 @@ export default {
 
 <i18n>
 ko:
-  archived: '담아둔 게시글에 담아졌습니다!'
-  unarchived: '담아둔 게시글에서 제거하였습니다!'
-  reported: '신고되었습니다!'
+  archived: '담아둔 게시글에 추가했습니다!'
+  unarchived: '담아둔 게시글에서 제거했습니다!'
+  reported: '해당 게시물을 신고했습니다!'
   blocked: '해당 유저가 차단되었습니다!'
-  unblocked: '해당 유저가 차단해제되었습니다!'
+  unblocked: '해당 유저가 차단 해제되었습니다!'
   confirm-report: '게시물 신고 사유를 알려주세요.'
   confirm-block: '정말로 차단하시겠습니까?'
   nonvotable-myself: '본인 게시물에는 좋아요를 누를 수 없습니다!'
-  already-reported: '이미 신고되었습니다.'
+  already-reported: '이미 신고한 게시물입니다.'
   hidden-post: '숨겨진 글'
   report-unavailable: '신고가 불가능한 글입니다!'
   block-rate-limit: '하루에 최대 10번만 차단/해제 할 수 있습니다.'
+  copy-success: 'URL을 클립보드에 복사했습니다.'
 
 en:
   archived: 'Successfully added to your archive!'
   unarchived: 'Successfully removed from your archive!'
-  reported: 'Successfully reported!'
+  reported: 'Successfully reported the post!'
   blocked: 'The user has been blocked!'
   unblocked: 'The user has been unblocked!'
-  confirm-report: 'Let me know your reason for reporting the post.'
-  confirm-block: 'Are you really want to block this user?'
+  confirm-report: 'Let us know your reason for reporting the post.'
+  confirm-block: 'Do you really want to block this user?'
   nonvotable-myself: 'You cannot vote for your post!'
   already-reported: "You've already reported this article."
   hidden-post: 'Hidden post'
   report-unavailable: 'You cannot report this post!'
-  block-rate-limit: 'You could block/unblock at most 10 times a day.'
+  block-rate-limit: 'You can block/unblock at most 10 times a day.'
+  copy-success: 'Copied URL to the clipboard.'
 </i18n>

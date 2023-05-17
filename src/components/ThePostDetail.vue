@@ -256,7 +256,7 @@ ko:
   archive: '담아두기'
   unarchive: '담아두기 취소'
   block: '차단'
-  unblock: '차단해제'
+  unblock: '차단 해제'
   report: '신고'
   edit: '수정'
   delete: '삭제'
