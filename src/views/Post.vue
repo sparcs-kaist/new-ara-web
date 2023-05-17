@@ -17,6 +17,7 @@
       @archive="archive"
       @block="block"
       @report="report"
+      @copy-url="copyURL"
       @vote="vote"
       @show-hidden="overrideHidden"
     />
@@ -127,6 +128,11 @@ export default {
             query
           }
       }
+    },
+    postURL () {
+      const title = `[${this.post.title}]`
+      const url = window.location.origin + '/post/' + this.postId
+      return title + ' ' + url
     }
   },
 
@@ -266,6 +272,12 @@ export default {
         }
       }
       await this.refresh()
+    },
+
+    async copyURL () {
+      navigator.clipboard.writeText(this.postURL).then(() => {
+        this.$store.dispatch('dialog/toast', { type: 'confirm', text: this.$t('copy-success') })
+      })
     },
 
     async overrideHidden () {
