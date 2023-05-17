@@ -218,11 +218,11 @@ export default {
       if (this.post.my_scrap) {
         await unarchivePost(this.post.my_scrap.id)
         this.post.my_scrap = null
-        this.$store.dispatch('dialog/toast', this.$t('unarchived'))
+        this.$store.dispatch('dialog/toast', { icon: 'check_circle_outline', text: this.$t('unarchived') })
       } else {
         const result = await archivePost(this.post.id)
         this.post.my_scrap = result
-        this.$store.dispatch('dialog/toast', this.$t('archived'))
+        this.$store.dispatch('dialog/toast', { icon: 'check_circle_outline', text: this.$t('archived') })
       }
       await this.$store.dispatch('fetchArchivedPosts')
     },
@@ -276,7 +276,7 @@ export default {
 
     async copyURL () {
       navigator.clipboard.writeText(this.postURL).then(() => {
-        this.$store.dispatch('dialog/toast', { type: 'confirm', text: this.$t('copy-success') })
+        this.$store.dispatch('dialog/toast', { icon: 'check_circle_outline', text: this.$t('copy-success') })
       })
     },
 
