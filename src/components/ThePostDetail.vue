@@ -128,6 +128,14 @@
           <i class="like-button__icon material-icons-outlined">add</i>
           {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
         </button>
+        <button
+          v-if="!post.is_hidden"
+          class="button"
+          @click="$emit('copy-url')"
+        >
+          <i class="like-button__icon material-icons-outlined">content_copy</i>
+          {{ $t('copy-url') }}
+        </button>
       </div>
     </div>
     <hr class="divider">
@@ -252,6 +260,7 @@ ko:
   report: '신고'
   edit: '수정'
   delete: '삭제'
+  copy-url: 'URL 복사'
   attachments: '첨부파일 모아보기'
   more: '{author} 님의 게시글 더 보기'
   show-hidden: '숨김글 보기'
@@ -268,6 +277,7 @@ en:
   report: 'Report'
   edit: 'Edit'
   delete: 'Delete'
+  copy-url: 'Copy URL'
   attachments: 'Attachments'
   more: 'Read more posts by {author}'
   show-hidden: 'Show hidden posts'
