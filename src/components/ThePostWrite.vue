@@ -286,6 +286,8 @@ export default {
       }
 
       const { title, boardId, categoryId, isSocial, isSexual } = this
+      let nameType = this.isAnonymous ? 'ANONYMOUS' : 'REGULAR'
+      nameType = this.boardId === 14 ? 'REALNAME' : nameType
       this.$emit('save-post',
         {
           title,
@@ -293,6 +295,7 @@ export default {
           categoryId,
           isSocial,
           isSexual,
+          nameType,
           attachments: this.$refs.attachments.files
         }
       )
