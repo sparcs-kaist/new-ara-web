@@ -74,7 +74,11 @@
       <div class="write__input write__content-checkbox">
         <label v-if="boardId===7" class="checkbox">
           {{ $t('is-anonymous') }}
-          <input v-model="isAnonymous" type="checkbox">
+          <input
+            v-model="isAnonymous"
+            type="checkbox"
+            :disabled="editMode"
+          >
         </label>
 
         <label class="checkbox">
@@ -235,6 +239,7 @@ export default {
       this.title = this.post.title
       this.isSocial = this.post.is_content_social
       this.isSexual = this.post.is_content_sexual
+      this.isAnonymous = this.post.name_type === 2
       this.loaded = false
 
       this.$nextTick(() => {
