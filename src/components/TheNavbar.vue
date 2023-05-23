@@ -79,39 +79,45 @@
           <div
             v-for="group in boardGroup"
             :key="group.name"
+            class="navbar-item has-dropdown is-hoverable boardlist"
           >
-            <div v-if="group.name === 'talk'">
-              <router-link :to="{ name: 'board', params: { boardSlug: 'talk' } }" class="navbar-item">
-                <span>{{ $t('talk') }}</span>
-              </router-link>
+            <router-link
+              v-if="group.name === 'talk'"
+              :to="{ name: 'board', params: { boardSlug: 'talk' } }"
+              class="navbar-item"
+            >
+              <span>{{ $t('talk') }}</span>
+            </router-link>
+            <div
+              v-if="group.name !== 'talk'"
+              class="navbar-item"
+              @click="click(group.name)"
+            >
+              <i v-if="group.clicked" class="material-icons is-hidden-desktop">expand_less</i>
+              <i v-else class="material-icons is-hidden-desktop">expand_more</i>
+              <span>{{ $t(`group.${group.name}`) }}</span>
             </div>
-            <div v-else class="navbar-item has-dropdown is-hoverable boardlist">
-              <div class="navbar-item" @click="click(group.name)">
-                <i v-if="group.clicked" class="material-icons is-hidden-desktop">expand_less</i>
-                <i v-else class="material-icons is-hidden-desktop">expand_more</i>
-                <span>{{ $t(`group.${group.name}`) }}</span>
-              </div>
-              <div
-                :class="{
-                  'navbar-clicked': !group.clicked,
-                  'is-boxed': true
+            <div
+              v-if="group.name !== 'talk'"
+              :class="{
+                'navbar-clicked': !group.clicked,
+                'is-boxed': true
+              }"
+              class="navbar-dropdown"
+            >
+              <router-link
+                v-for="board in groupedBoardList[group.id]"
+                :key="board.id"
+                :to="{
+                  name: 'board',
+                  params: {
+                    boardSlug: board.slug
+                  }
                 }"
-                class="navbar-dropdown"
+                class="navbar-item"
               >
-                <router-link
-                  v-for="board in groupedBoardList[group.id]"
-                  :key="board.id"
-                  :to="{
-                    name: 'board',
-                    params: {
-                      boardSlug: board.slug
-                    }
-                  }"
-                  class="navbar-item"
-                >
-                  <div>{{ board[`${$i18n.locale}_name`] }}</div>
-                </router-link>
-              </div>
+                <div>{{ board[`${$i18n.locale}_name`] }}</div>
+              </router-link>
             </div>
           </div>
         </div>
