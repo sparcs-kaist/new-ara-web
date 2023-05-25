@@ -247,9 +247,9 @@ export default {
 ko:
   archive: '담아두기'
   unarchive: '담아두기 취소'
-  block: '차단하기'
+  block: '차단'
   unblock: '차단해제'
-  report: '신고하기'
+  report: '신고'
   edit: '수정'
   delete: '삭제'
   attachments: '첨부파일 모아보기'
@@ -263,8 +263,8 @@ ko:
 en:
   archive: 'Bookmark'
   unarchive: 'Delete Bookmark'
-  block: 'Block User'
-  unblock: 'Unblock User'
+  block: 'Block'
+  unblock: 'Unblock'
   report: 'Report'
   edit: 'Edit'
   delete: 'Delete'
@@ -278,6 +278,8 @@ en:
 </i18n>
 
 <style lang="scss" scoped>
+@import '@/theme.scss';
+
 #title {
   margin-bottom: 0.25rem;
 }
@@ -286,8 +288,11 @@ en:
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
     font-size: 0.9rem;
+    @include breakPoint(mobile) {
+      flex-direction: column;
+      display: right;
+    }
   }
   &__buttons {
     display: flex;
@@ -308,6 +313,10 @@ en:
       display: flex;
       align-items: center;
       line-height: 0.9rem;
+      @include breakPoint(mobile) {
+        float: right;
+      }
+
       .like-button__icon {
         margin-right: 5px;
         font-size: 18px;
@@ -318,6 +327,16 @@ en:
     font-size: 1.0rem;
     margin-left: -6px;
     margin-top: 10px;
+    @include breakPoint(mobile) {
+      margin-top:25px;
+    }
+  }
+}
+
+.post__like {
+  @include breakPoint(mobile) {
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 }
 
