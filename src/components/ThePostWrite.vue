@@ -48,7 +48,6 @@
             <option
               v-if="boardId"
               value=""
-              :selected="categoryId = ''"
             >
               {{ $t('no-category') }}
             </option>
@@ -217,11 +216,7 @@ export default {
 
   watch: {
     boardId () {
-      if (this.categoryList.length) {
-        this.categoryId = '$not-set'
-      } else {
-        this.categoryId = ''
-      }
+      this.categoryId = ''
     }
   },
 

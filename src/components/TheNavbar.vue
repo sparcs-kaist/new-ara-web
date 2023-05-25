@@ -319,7 +319,6 @@ export default {
     changeLocale,
     ...mapActions(['toggleDarkMode']),
     click (boardName) {
-      console.log(this.boardList)
       if (this.boardGroup[boardName].clicked) {
         this.boardGroup[boardName].clicked = false
         return
