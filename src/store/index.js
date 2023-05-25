@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import i18n from '@/i18n'
+import Meta from 'vue-meta'
 import {
   fetchArchivedPosts as apiFetchArchivedPosts,
   fetchBoardList,
@@ -12,6 +13,7 @@ import dialog from '@/store/dialog'
 import fetch from '@/store/fetch'
 
 Vue.use(Vuex)
+Vue.use(Meta)
 
 export default new Vuex.Store({
   modules: { auth, dialog, fetch },
