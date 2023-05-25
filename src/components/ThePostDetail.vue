@@ -74,68 +74,72 @@
         @vote="$emit('vote', $event)"
       />
       <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons">
-        <template v-if="isMine && (post.can_override_hidden !== false) && post.hidden_at === null">
-          <button class="button" @click="deletePost">
-            <i class="like-button__icon material-icons-outlined">
-              delete
-            </i>
-            {{ $t('delete') }}
-          </button>
+        <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons">
+          <template v-if="isMine && (post.can_override_hidden !== false) && post.hidden_at === null">
+            <button class="button" @click="deletePost">
+              <i class="like-button__icon material-icons-outlined">
+                delete
+              </i>
+              {{ $t('delete') }}
+            </button>
 
-          <router-link
-            :to="{
-              name: 'write',
-              params: {
-                postId
-              }
-            }"
-            class="button"
-          >
-            <i class="like-button__icon material-icons-outlined">
-              edit
-            </i>
-            {{ $t('edit' ) }}
-          </router-link>
-        </template>
-        <template v-else>
-          <button
-            v-if="isRegular"
-            class="button"
-            @click="$emit('block')"
-          >
-            <i class="like-button__icon material-icons-outlined">
-              remove_circle_outline
-            </i>
-            {{ $t(isBlocked ? 'unblock' : 'block') }}
-          </button>
+            <router-link
+              :to="{
+                name: 'write',
+                params: {
+                  postId
+                }
+              }"
+              class="button"
+            >
+              <i class="like-button__icon material-icons-outlined">
+                edit
+              </i>
+              {{ $t('edit' ) }}
+            </router-link>
+          </template>
+          <template v-else>
+            <button
+              v-if="isRegular"
+              class="button"
+              @click="$emit('block')"
+            >
+              <i class="like-button__icon material-icons-outlined">
+                remove_circle_outline
+              </i>
+              {{ $t(isBlocked ? 'unblock' : 'block') }}
+            </button>
 
+            <button
+              v-if="!post.is_hidden && isNotRealName"
+              class="button"
+              @click="$emit('report')"
+            >
+              <i class="like-button__icon material-icons-outlined">
+                campaign
+              </i>
+              {{ $t('report') }}
+            </button>
+          </template>
+        </div>
+        <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons">
           <button
-            v-if="!post.is_hidden && isNotRealName"
-            class="button"
-            @click="$emit('report')"
+            v-if="!post.is_hidden"
+            class="button archive-button"
+            @click="$emit('archive')"
           >
-            <i class="like-button__icon material-icons-outlined">
-              campaign
-            </i>
-            {{ $t('report') }}
+            <i class="like-button__icon material-icons-outlined">add</i>
+            {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
           </button>
-        </template>
-        <button
-          v-if="!post.is_hidden"
-          class="button archive-button"
-          @click="$emit('archive')"
-        >
-          <i class="like-button__icon material-icons-outlined">add</i>
-          {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
-        </button>
-        <button
-          v-if="!post.is_hidden"
-          class="button"
-          @click="$emit('copy-url')"
-        >
-          <i class="like-button__icon material-icons-outlined">content_copy</i>
-          {{ $t('copy-url') }}
-        </button>
+          <button
+            v-if="!post.is_hidden"
+            class="button"
+            @click="$emit('copy-url')"
+          >
+            <i class="like-button__icon material-icons-outlined">content_copy</i>
+            {{ $t('copy-url') }}
+          </button>
+        </div>
       </div>
     </div>
     <hr class="divider">
@@ -346,7 +350,6 @@ en:
 .post__like {
   @include breakPoint(mobile) {
     margin-top: 30px;
-    margin-bottom: 30px;
   }
 }
 
