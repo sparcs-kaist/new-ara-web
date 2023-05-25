@@ -96,7 +96,6 @@ en:
     width: 30px;
     background-color: var(--theme-400);
     margin-bottom: 1em;
-    margin-left: 1.2rem;
     @include breakPoint(mobile) {
       margin: 0 auto;
       margin-bottom: 14px;
@@ -110,7 +109,6 @@ en:
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 0.7em;
-    padding-left: 1rem;
 
     span {
       width: 100%
@@ -200,7 +198,6 @@ en:
     &__post {
       font-size: 13px;
       padding: 0;
-      padding-left: 1rem;
 
       .post__title {
         font-size: 13px;
