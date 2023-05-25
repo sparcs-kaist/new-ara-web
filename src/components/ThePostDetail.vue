@@ -333,6 +333,13 @@ en:
   }
 }
 
+.post__like {
+  @include breakPoint(mobile) {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+}
+
 .content {
   margin: 30px 0 20px 0;
   &__bookmark {
