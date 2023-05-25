@@ -56,12 +56,12 @@ import TheSidebar from '@/components/TheSidebar.vue'
 export default {
   name: 'Post',
 
-  metaInfo: {
-    meta: [
-      { charset: 'utf-8' },
-      { vmid: 'title', property: 'og:title', content: this.post.title }
-    ]
-  },
+  // metaInfo: {
+  //   meta: [
+  //     { charset: 'utf-8' },
+  //     { vmid: 'title', property: 'og:title' }
+  //   ]
+  // },
 
   components: {
     TheLayout,
