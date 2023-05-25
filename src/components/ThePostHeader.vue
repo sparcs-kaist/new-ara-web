@@ -2,10 +2,12 @@
   <div class="post">
     <div class="title">
       <a class="title__board">
-        <i class="material-icons title__board--icon">arrow_back_ios</i>
-        <span class="title__board--name" @click="hasHistory() ? $router.back() : $router.push(beforeBoard)">
-          {{ beforeBoardName }}
-        </span>
+        <div class="title__board" @click="beforeBoardName === $t('prev-page') ? $router.back() : $router.push(beforeBoard)">
+          <i class="material-icons title__board--icon">arrow_back_ios</i>
+          <span class="title__board--name">
+            {{ beforeBoardName }}
+          </span>
+        </div>
         <span v-if="beforeBoardName === $t('all')" class="title__info">
           <router-link :to="{name: 'board', params: { boardSlug }} " class="title__info">
             | {{ boardName }}
