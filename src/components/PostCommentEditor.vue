@@ -124,7 +124,6 @@ export default {
             content: this.content,
             name_type: this.post.name_type
           }))
-        // console.log('After update/create comment...')
         this.$emit('upload', result)
         this.content = ''
         this.autosize()
