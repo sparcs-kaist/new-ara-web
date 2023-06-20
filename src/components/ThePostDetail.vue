@@ -125,19 +125,20 @@
         <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons">
           <button
             v-if="!post.is_hidden"
-            class="button archive-button"
-            @click="$emit('archive')"
-          >
-            <i class="like-button__icon material-icons-outlined">add</i>
-            {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
-          </button>
-          <button
-            v-if="!post.is_hidden"
             class="button"
             @click="$emit('copy-url')"
           >
             <i class="like-button__icon material-icons-outlined">content_copy</i>
             {{ $t('copy-url') }}
+          </button>
+          <button
+            v-if="!post.is_hidden"
+            class="button archive-button"
+            :class="{ 'button--clicked': post.my_scrap }"
+            @click="$emit('archive')"
+          >
+            <i class="like-button__icon material-icons-outlined">add</i>
+            {{ $t('archive') }}
           </button>
         </div>
       </div>
@@ -339,6 +340,12 @@ en:
       display: flex;
       align-items: center;
       line-height: 0.9rem;
+      transition: background-color 0.2s ease-in-out;
+
+      &--clicked {
+        background-color: var(--theme-400);
+        color: white;
+      }
 
       & > .button-text {
         @include breakPoint(mobile) {
