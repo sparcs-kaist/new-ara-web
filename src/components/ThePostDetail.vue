@@ -73,14 +73,14 @@
         :is-mine="post.is_mine"
         @vote="$emit('vote', $event)"
       />
-      <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons">
+      <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons-box">
         <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons">
           <template v-if="isMine && (post.can_override_hidden !== false) && post.hidden_at === null">
             <button class="button" @click="deletePost">
               <i class="like-button__icon material-icons-outlined">
                 delete
               </i>
-              {{ $t('delete') }}
+              <label class="button-text">{{ $t('delete') }}</label>
             </button>
 
             <router-link
@@ -95,7 +95,7 @@
               <i class="like-button__icon material-icons-outlined">
                 edit
               </i>
-              {{ $t('edit' ) }}
+              <label class="button-text">{{ $t('edit') }}</label>
             </router-link>
           </template>
           <template v-else>
@@ -107,7 +107,7 @@
               <i class="like-button__icon material-icons-outlined">
                 remove_circle_outline
               </i>
-              {{ $t(isBlocked ? 'unblock' : 'block') }}
+              <label class="button-text">{{ $t(isBlocked ? 'unblock' : 'block') }}</label>
             </button>
 
             <button
@@ -118,7 +118,7 @@
               <i class="like-button__icon material-icons-outlined">
                 campaign
               </i>
-              {{ $t('report') }}
+              <label class="button-text">{{ $t('report') }}</label>
             </button>
           </template>
         </div>
@@ -308,12 +308,24 @@ en:
       display: right;
     }
   }
-  &__buttons {
+
+  &__buttons-box {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     flex-wrap: wrap;
     margin-top: 10px;
+    @include breakPoint(mobile) {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
 
     &--hidden {
       flex: 1;
@@ -327,8 +339,11 @@ en:
       display: flex;
       align-items: center;
       line-height: 0.9rem;
-      @include breakPoint(mobile) {
-        float: right;
+
+      & > .button-text {
+        @include breakPoint(mobile) {
+          display: none;
+        }
       }
 
       .like-button__icon {
@@ -350,6 +365,7 @@ en:
 .post__like {
   @include breakPoint(mobile) {
     margin-top: 30px;
+    margin-bottom: 30px;
   }
 }
 
