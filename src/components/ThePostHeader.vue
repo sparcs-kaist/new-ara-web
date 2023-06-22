@@ -164,7 +164,10 @@ export default {
         return { name, params, query: { ...query, topic: topicId } }
       }
       if (fromView === 'scrap') {
-        return { name: 'archive', query }
+        return { name: 'my-info', query: { board: 'archive', ...query } }
+      }
+      if (fromView === 'recent') {
+        return { name: 'my-info', query: { board: 'recent', ...query } }
       }
       if (fromView === '-portal') {
         return { name, query: { ...query, portal: 'exclude' } }
@@ -177,7 +180,10 @@ export default {
         return this.boardName
       }
       if (fromView === 'scrap') {
-        return this.$t('archive')
+        return this.$t('archive-board')
+      }
+      if (fromView === 'recent') {
+        return this.$t('recent-board')
       }
       if (this.hasHistory()) {
         if (fromView === 'all') {
@@ -218,6 +224,8 @@ ko:
   confirm-delete: '정말로 삭제하시겠습니까?'
   all: '전체보기'
   prev-page: '이전 페이지'
+  recent-board: '최근 본 글'
+  archive-board: '담아둔 글'
   status:
     polling: '달성전'
     preparing: '답변 준비중'
@@ -239,6 +247,8 @@ en:
   confirm-delete: 'Are you really want to delete this post?'
   all: 'All'
   prev-page: 'Previous Page'
+  recent-board: 'Recent Articles'
+  archive-board: 'Bookmarks'
   status:
     polling: 'Polling'
     preparing: 'Preparing'
