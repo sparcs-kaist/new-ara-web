@@ -8,6 +8,7 @@
     <SmallBoard
       :listitems="recentPosts"
       :from-query="{ from_view: 'recent' }"
+      :href="{ name: 'my-info', query: { board: 'recent' } }"
       sidebar
     >
       {{ $t('recent') }}
@@ -16,6 +17,7 @@
     <SmallBoard
       :listitems="archiveList"
       :from-query="{ from_view: 'scrap' }"
+      :href="{ name: 'my-info', query: { board: 'archive' } }"
       sidebar
     >
       {{ $t('archive') }}

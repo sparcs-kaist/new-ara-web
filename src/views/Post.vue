@@ -88,10 +88,10 @@ export default {
   computed: {
     /* eslint-disable camelcase */
     context () {
-      const { from_view, from_page, search_query } = this.$route.query
+      const { from_view, current, search_query } = this.$route.query
       const query = {}
-      if (from_page) {
-        query.page = from_page
+      if (current) {
+        query.page = current
       }
 
       if (search_query) {
