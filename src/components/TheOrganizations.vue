@@ -71,7 +71,7 @@ export default {
     return {
       organizations: [
         { name: 'portal-notice', id: 'KAIST', backgroundColor: '#dbdbdb' },
-        { name: 'all-posts', id: 'all', icon: 'dashboard', backgroundColor: '#e15858' },
+        { name: 'all-posts', id: 'all', icon: 'dashboard', backgroundColor: '#ed3a3a' },
         { name: 'clubs-union', id: 'UA', slug: 'clubs-union' },
         { name: 'dormitory-council', id: 'GSDC', slug: 'dorm-council' },
         { name: 'welfare-committee', id: 'SWF', slug: 'welfare-cmte' },
