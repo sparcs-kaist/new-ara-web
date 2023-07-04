@@ -96,6 +96,7 @@ en:
     width: 30px;
     background-color: var(--theme-400);
     margin-bottom: 1em;
+    margin-left: 1.2rem;
     @include breakPoint(mobile) {
       margin: 0 auto;
       margin-bottom: 14px;
@@ -109,6 +110,7 @@ en:
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 0.7em;
+    padding-left: 1rem;
 
     span {
       width: 100%
@@ -193,6 +195,7 @@ en:
   &--sidebar & {
     &__name {
       font-size: 15px;
+      padding-left: 0;
     }
 
     &__post {
@@ -208,6 +211,10 @@ en:
         font-size: 11px;
       }
     }
+  }
+
+  &--sidebar .red-box {
+    margin-left: 0;
   }
 }
 </style>
