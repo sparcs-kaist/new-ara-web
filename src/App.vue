@@ -10,6 +10,7 @@
 
 <script>
 import TheFooter from '@/components/TheFooter.vue'
+import ChannelService from '@/channel.js'
 
 export default {
   name: 'App',
@@ -28,6 +29,10 @@ export default {
     })
     this.$router.afterEach((to, from) => {
       this.$Progress.finish()
+    })
+    ChannelService.loadScript()
+    ChannelService.boot({
+      pluginKey: 'YOUR_PLUGIN_KEY' // fill your plugin key
     })
   },
 
