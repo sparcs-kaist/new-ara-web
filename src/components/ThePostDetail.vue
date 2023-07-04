@@ -64,7 +64,7 @@
       </div>
     </div>
 
-    <div v-if="!post.is_hidden || !(post.name_type === 1)" class="post__footer">
+    <div v-if="!post.is_hidden || !(post.name_type === 2)" class="post__footer">
       <LikeButton
         v-if="!post.is_hidden"
         :item="post"
@@ -200,10 +200,10 @@ export default {
       return this.post && this.post.is_mine
     },
     isRegular () {
-      return this.post.name_type === 0
+      return this.post.name_type === 1
     },
     isNotRealName () {
-      return this.post.name_type !== 2
+      return this.post.name_type !== 4
     },
     hiddenReason () {
       const title = `<div class="has-text-weight-bold"> ${this.post.why_hidden.map(v => i18n.t(v)).join('<br>')}</div>`

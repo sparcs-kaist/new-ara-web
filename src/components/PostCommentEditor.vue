@@ -82,7 +82,7 @@ export default {
       return this.post.my_comment_profile ? this.post.my_comment_profile.profile.picture : this.post.created_by?.profile.picture
     },
     authorRed () {
-      return this.post.name_type !== 0 && this.post.is_mine ? 'author_red' : ''
+      return this.post.name_type !== 1 && this.post.is_mine ? 'author_red' : ''
     },
     isVerified () {
       if (!this.post.my_comment_profile || !this.post.parent_board) {
