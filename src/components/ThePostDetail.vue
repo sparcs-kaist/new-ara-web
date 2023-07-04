@@ -75,7 +75,7 @@
       />
       <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons-box">
         <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons">
-          <template v-if="isMine && (post.can_override_hidden !== false) && post.hidden_at === null">
+          <template v-if="isMine && (post.can_override_hidden !== false) && !post.is_hidden">
             <button class="button" @click="deletePost">
               <i class="like-button__icon material-icons-outlined">
                 delete

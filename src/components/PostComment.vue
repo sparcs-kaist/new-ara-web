@@ -30,7 +30,7 @@
 
           <span class="comment__time"> {{ date }} </span>
 
-          <div v-if="comment.deleted_at === null && !isHidden" class="dropdown is-right is-hoverable">
+          <div v-if="!isDeleted && !isHidden" class="dropdown is-right is-hoverable">
             <div class="dropdown-trigger">
               <button
                 class="dropdown-button"
@@ -218,6 +218,9 @@ export default {
         return false
       }
       return this.post.created_by.id === this.comment.created_by.id
+    },
+    isDeleted () {
+      return this.comment.is_hidden && this.comment.why_hidden[0] === 'DELETED_CONTENT'
     },
     isHidden () {
       return this.comment.is_hidden
