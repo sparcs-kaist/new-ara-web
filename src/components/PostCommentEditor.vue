@@ -107,6 +107,13 @@ export default {
       if (this.isUploading) {
         return
       }
+      if (!this.content) {
+        this.$store.dispatch('dialog/toast', {
+          type: 'warning',
+          text: this.$t('no-empty')
+        })
+        return
+      }
 
       this.isUploading = true
 
@@ -151,14 +158,16 @@ ko:
   placeholder: '댓글을 작성하세요.'
   new-comment: '등록'
   close-comment: '취소'
-  write-failed: '댓글 작성에 실패하였습니다'
+  write-failed: '댓글 작성을 실패했습니다.'
+  no-empty: '내용을 입력해주세요.'
   author: '글쓴이'
 
 en:
   placeholder: 'Type here...'
-  new-comment: 'Send'
+  new-comment: 'Write'
   close-comment: 'Cancel'
-  write-failed: 'Failed to write comment'
+  write-failed: 'Failed to write comment.'
+  no-empty: 'Please fill in the empty input.'
   author: 'Author'
 </i18n>
 
