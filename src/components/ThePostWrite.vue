@@ -39,13 +39,16 @@
         <div :class="{ 'is-placeholder': categoryNotSet }" class="select">
           <select v-model="categoryId" :disabled="editMode">
             <option
+              v-if="!boardId"
               value="$not-set"
               disabled
-              selected
             >
               {{ $t('input-category') }}
             </option>
-            <option v-if="boardId" value="">
+            <option
+              v-if="boardId"
+              value=""
+            >
               {{ $t('no-category') }}
             </option>
 
@@ -68,6 +71,15 @@
       </div>
 
       <div class="write__input write__content-checkbox">
+        <label v-if="boardId===7" class="checkbox">
+          {{ $t('is-anonymous') }}
+          <input
+            v-model="isAnonymous"
+            type="checkbox"
+            :disabled="editMode"
+          >
+        </label>
+
         <label class="checkbox">
           {{ $t('is-sexual') }}
           <input v-model="isSexual" type="checkbox">
@@ -156,6 +168,7 @@ export default {
       title: '',
       isSexual: false,
       isSocial: false,
+      isAnonymous: false,
       loaded: true
     }
   },
@@ -203,11 +216,7 @@ export default {
 
   watch: {
     boardId () {
-      if (this.categoryList.length) {
-        this.categoryId = '$not-set'
-      } else {
-        this.categoryId = ''
-      }
+      this.categoryId = ''
     }
   },
 
@@ -225,6 +234,7 @@ export default {
       this.title = this.post.title
       this.isSocial = this.post.is_content_social
       this.isSexual = this.post.is_content_sexual
+      this.isAnonymous = this.post.name_type === 2
       this.loaded = false
 
       this.$nextTick(() => {
@@ -276,6 +286,8 @@ export default {
       }
 
       const { title, boardId, categoryId, isSocial, isSexual } = this
+      let nameType = this.isAnonymous ? 'ANONYMOUS' : 'REGULAR'
+      nameType = this.boardId === 14 ? 'REALNAME' : nameType
       this.$emit('save-post',
         {
           title,
@@ -283,6 +295,7 @@ export default {
           categoryId,
           isSocial,
           isSexual,
+          nameType,
           attachments: this.$refs.attachments.files
         }
       )
@@ -314,6 +327,7 @@ ko:
   uploading: '현재 업로딩 중입니다.'
   is-sexual: '성인글'
   is-social: '정치글'
+  is-anonymous: '익명'
 
 en:
   write: 'Write a post'
@@ -328,6 +342,7 @@ en:
   uploading: 'It is currently uploading post. Please wait for a second.'
   is-sexual: 'Adult Post'
   is-social: 'Politics Post'
+  is-anonymous: 'Anonymous'
 </i18n>
 
 <style lang="scss" scoped>

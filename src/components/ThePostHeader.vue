@@ -1,10 +1,17 @@
 <template>
   <div class="post">
     <div class="title">
-      <a class="title__board" @click="hasHistory() ? $router.back() : $router.push(beforeBoard)">
-        <i class="material-icons title__board--icon">arrow_back_ios</i>
-        <span class="title__board--name">
-          {{ beforeBoardName }}
+      <a class="title__board">
+        <div class="title__board" @click="beforeBoardName === $t('prev-page') ? $router.back() : $router.push(beforeBoard)">
+          <i class="material-icons title__board--icon">arrow_back_ios</i>
+          <span class="title__board--name">
+            {{ beforeBoardName }}
+          </span>
+        </div>
+        <span v-if="beforeBoardName === $t('all')" class="title__info">
+          <router-link :to="{name: 'board', params: { boardSlug }} " class="title__info">
+            | {{ boardName }}
+          </router-link>
         </span>
       </a>
       <hr class="title__divider">
@@ -113,11 +120,7 @@ export default {
       return this.post.communication_article_status ?? 0
     },
     isCommunicationPost () {
-      if (this.post.parent_board?.id === 14) {
-        return true
-      } else {
-        return false
-      }
+      return this.post.parent_board?.id === 14
     },
     statusText () {
       const t = ['polling', 'preparing', 'answered'][this.status]
@@ -161,7 +164,10 @@ export default {
         return { name, params, query: { ...query, topic: topicId } }
       }
       if (fromView === 'scrap') {
-        return { name: 'archive', query }
+        return { name: 'my-info', query: { board: 'archive', ...query } }
+      }
+      if (fromView === 'recent') {
+        return { name: 'my-info', query: { board: 'recent', ...query } }
       }
       if (fromView === '-portal') {
         return { name, query: { ...query, portal: 'exclude' } }
@@ -174,7 +180,10 @@ export default {
         return this.boardName
       }
       if (fromView === 'scrap') {
-        return this.$t('archive')
+        return this.$t('archive-board')
+      }
+      if (fromView === 'recent') {
+        return this.$t('recent-board')
       }
       if (this.hasHistory()) {
         if (fromView === 'all') {
@@ -215,6 +224,8 @@ ko:
   confirm-delete: '정말로 삭제하시겠습니까?'
   all: '전체보기'
   prev-page: '이전 페이지'
+  recent-board: '최근 본 글'
+  archive-board: '담아둔 글'
   status:
     polling: '달성전'
     preparing: '답변 준비중'
@@ -236,6 +247,8 @@ en:
   confirm-delete: 'Are you really want to delete this post?'
   all: 'All'
   prev-page: 'Previous Page'
+  recent-board: 'Recent Articles'
+  archive-board: 'Bookmarks'
   status:
     polling: 'Polling'
     preparing: 'Preparing'
@@ -329,6 +342,12 @@ en:
       font-size: 18px;
       line-height: 18px;
     }
+  }
+
+  &__info {
+    color: #A9A9A9;
+    font-size: 18px;
+    padding-left:2px;
   }
 
   &__text {

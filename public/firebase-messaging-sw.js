@@ -3,7 +3,7 @@ importScripts('https://www.gstatic.com/firebasejs/9.13.0/firebase-messaging-comp
 importScripts('swenv.js')
 
 // TODO: Run `npm run swenv` manually to generate process.env.VUE_APP_FIREBASE_CONFIG in local environment
-const firebaseConfig = JSON.parse(process.env.VUE_APP_FIREBASE_CONFIG || {})
+const firebaseConfig = JSON.parse(process.env.VUE_APP_FIREBASE_CONFIG || '{}')
 
 firebase.initializeApp(firebaseConfig)
 firebase.messaging()

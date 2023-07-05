@@ -77,24 +77,36 @@
           </router-link>
 
           <div
-            v-for="(groupClicked, groupName, groupId) in boardGroup"
-            :key="groupName"
+            v-for="group in boardGroup"
+            :key="group.name"
             class="navbar-item has-dropdown is-hoverable boardlist"
           >
-            <div class="navbar-item" @click="click(groupName)">
-              <i v-if="groupClicked" class="material-icons is-hidden-desktop">expand_less</i>
+            <router-link
+              v-if="group.name === 'talk'"
+              :to="{ name: 'board', params: { boardSlug: 'talk' } }"
+              class="navbar-item"
+            >
+              <span>{{ $t('talk') }}</span>
+            </router-link>
+            <div
+              v-if="group.name !== 'talk'"
+              class="navbar-item"
+              @click="click(group.name)"
+            >
+              <i v-if="group.clicked" class="material-icons is-hidden-desktop">expand_less</i>
               <i v-else class="material-icons is-hidden-desktop">expand_more</i>
-              <span>{{ $t(`group.${groupName}`) }}</span>
+              <span>{{ $t(`group.${group.name}`) }}</span>
             </div>
             <div
+              v-if="group.name !== 'talk'"
               :class="{
-                'navbar-clicked': !groupClicked,
+                'navbar-clicked': !group.clicked,
                 'is-boxed': true
               }"
               class="navbar-dropdown"
             >
               <router-link
-                v-for="board in groupedBoardList[groupId+1]"
+                v-for="board in groupedBoardList[group.id]"
                 :key="board.id"
                 :to="{
                   name: 'board',
@@ -200,7 +212,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import IdentityBar from '@/components/IdentityBar.vue'
-import { fetchNotifications } from '@/api'
+import { fetchUnreadNotifications } from '@/api'
 import { fetchWithProgress } from '@/views/helper'
 import { changeLocale } from '@/i18n'
 import AlarmPopupNotifications from '@/components/AlarmPopupNotifications.vue'
@@ -238,11 +250,31 @@ export default {
       isUnreadNotificationExist: false,
       isHome: true,
       boardGroup: {
-        notice: false,
-        talk: false,
-        clubs: false,
-        money: false,
-        communication: false
+        notice: {
+          clicked: false,
+          id: 1,
+          name: 'notice'
+        },
+        communication: {
+          clicked: false,
+          id: 5,
+          name: 'communication'
+        },
+        talk: {
+          clicked: false,
+          id: 7,
+          name: 'talk'
+        },
+        clubs: {
+          clicked: false,
+          id: 3,
+          name: 'clubs'
+        },
+        money: {
+          clicked: false,
+          id: 4,
+          name: 'money'
+        }
       },
       isAlramShow: false,
       isMobileAlarmShow: false
@@ -287,14 +319,14 @@ export default {
     changeLocale,
     ...mapActions(['toggleDarkMode']),
     click (boardName) {
-      if (this.boardGroup[boardName]) {
-        this.boardGroup[boardName] = false
+      if (this.boardGroup[boardName].clicked) {
+        this.boardGroup[boardName].clicked = false
         return
       }
       for (const board in this.boardGroup) {
-        this.boardGroup[board] = false
+        this.boardGroup[board].clicked = false
       }
-      this.boardGroup[boardName] = true
+      this.boardGroup[boardName].clicked = true
     },
     toggleAlram () {
       this.isAlramShow = !this.isAlramShow
@@ -313,7 +345,7 @@ export default {
       // Get only first page of notification.
       const query = { ...this.$route.query, page: '1' }
       const [notifications] = await fetchWithProgress(
-        [fetchNotifications({ query })],
+        [fetchUnreadNotifications({ query })],
         'notifications-failed-fetch'
       )
       this.notifications = notifications.results
@@ -331,14 +363,14 @@ ko:
   notification: '알림'
   write: '게시글 작성하기'
   all: '전체보기'
+  talk: '자유게시판'
   my-page: '마이페이지'
   logout: '로그아웃'
   group:
     notice: '공지'
-    talk: '잡담'
-    clubs: '학생 단체 및 동아리'
-    money: '거래'
     communication: '소통'
+    money: '거래'
+    clubs: '학생 단체 및 동아리'
   morealarm: '알림 더 보기'
 
 en:
@@ -346,14 +378,14 @@ en:
   notification: 'Notifications'
   write: 'Write Post'
   all: 'All'
+  talk: 'Talk'
   my-page: 'My Page'
   logout: 'Logout'
   group:
     notice: 'Notice'
-    talk: 'Talk'
-    clubs: 'Organizations and Clubs'
-    money: 'Money'
     communication: 'Communication'
+    money: 'Money'
+    clubs: 'Organizations and Clubs'
   morealarm: 'See more Alarms'
 </i18n>
 

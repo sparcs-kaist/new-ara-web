@@ -36,6 +36,8 @@ module.exports = {
   },
   productionSourceMap: false,
   devServer: {
+    disableHostCheck: true,
+    public: process.env.VUE_APP_DX_HOST,
     proxy: {
       '^/api': {
         target: 'http://127.0.0.1:9000'

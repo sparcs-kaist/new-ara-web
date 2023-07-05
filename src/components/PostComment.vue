@@ -23,14 +23,14 @@
             class="comment__author"
           >
             <div class="comment__author_box">
-              <i v-if="isVerified" class="material-icons">verified</i>
               <div> {{ author }} </div>
+              <i v-if="isVerified" class="material-icons">verified</i>
             </div>
           </router-link>
 
           <span class="comment__time"> {{ date }} </span>
 
-          <div v-if="comment.deleted_at === '0001-01-01T08:28:00+08:28' && !isHidden" class="dropdown is-right is-hoverable">
+          <div v-if="comment.deleted_at === null && !isHidden" class="dropdown is-right is-hoverable">
             <div class="dropdown-trigger">
               <button
                 class="dropdown-button"
@@ -207,8 +207,11 @@ export default {
       return this.comment.name_type === 0
     },
     isVerified () {
-      const profile = this.comment.created_by?.profile
-      return this.post.parent_board.id === 14 ? profile?.is_school_admin : profile?.is_official
+      if (!this.comment.created_by || !this.post.parent_board) {
+        return false
+      }
+      const profile = this.comment.created_by.profile
+      return this.post.parent_board.id === 14 ? profile.is_school_admin : profile.is_official
     },
     isAuthor () {
       if (this.comment.name_type === 0) {
@@ -241,7 +244,6 @@ export default {
       }
       this.isVoting = true
       await voteComment(ballot.id, ballot.vote)
-      this.$emit('vote')
       this.isVoting = false
     },
     toggleReplyCommentInput () {
@@ -452,6 +454,7 @@ en:
       padding-right: 4px;
     }
     .material-icons{
+      padding-left: 5px;
       color: rgba(81,135,255,100);
       font-size: 15px;
     }

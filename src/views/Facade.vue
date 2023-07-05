@@ -51,7 +51,8 @@ export default {
 
   computed: {
     loginUrl () {
-      return `${apiUrl}/api/users/sso_login/?next=${location.protocol}//${location.host}/login-handler`
+      var referrer = this.$route.query.next
+      return `${apiUrl}/api/users/sso_login/?next=${location.protocol}//${location.host}/login-handler?link=${referrer}`
     }
   },
 
