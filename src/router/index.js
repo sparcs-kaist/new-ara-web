@@ -15,7 +15,7 @@ export default new Router({
     ...app,
     {
       path: '*',
-      name: 'not-found',
+      name: 'error',
       component: NotFound
     }
   ],
