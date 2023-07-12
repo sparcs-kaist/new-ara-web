@@ -51,7 +51,6 @@ import SmallBoard from '@/components/SmallBoard.vue'
 import TheHomeSearchbar from '@/components/TheHomeSearchbar.vue'
 import TheOrganizations from '@/components/TheOrganizations.vue'
 import TheLayout from '@/components/TheLayout.vue'
-import ChannelService from '@/channel.js'
 
 export default {
   name: 'Home',
@@ -85,14 +84,6 @@ export default {
 
       return this.home.weekly_bests
     }
-  },
-
-  created () {
-    ChannelService.loadScript()
-    ChannelService.boot({
-      pluginKey: 'YOUR_PLUGIN_KEY', // fill your plugin key
-      hideChannelButtonOnBoot: true
-    })
   },
 
   async beforeRouteEnter (to, from, next) {

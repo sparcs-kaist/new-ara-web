@@ -58,10 +58,7 @@ export default {
   },
 
   created () {
-    ChannelService.loadScript()
-    ChannelService.boot({
-      pluginKey: 'YOUR_PLUGIN_KEY' // fill your plugin key
-    })
+    ChannelService.showChannelButton()
   },
 
   methods: {

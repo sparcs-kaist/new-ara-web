@@ -31,6 +31,10 @@ export default {
       this.$Progress.finish()
     })
     ChannelService.loadScript()
+    ChannelService.boot({
+      pluginKey: 'YOUR_PLUGIN_KEY', // fill your plugin key
+      hideChannelButtonOnBoot: true
+    })
   },
 
   mounted () {
