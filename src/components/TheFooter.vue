@@ -73,9 +73,13 @@ export default {
 
   methods: {
     openChannelService () {
-      ChannelService.boot({
-        pluginKey: 'YOUR_PLUGIN_KEY' // fill your plugin key
+      ChannelService.updateUser({
+        profile: {
+          name: this.$store.state.auth.userProfile?.nickname,
+          email: this.$store.state.auth.userProfile?.email
+        }
       })
+      ChannelService.showChannelButton()
     }
   }
 }
