@@ -101,6 +101,7 @@ export default {
     justify-content: center;
     align-items: center;
     gap: 5px;
+    float: right;
 
     width: 90px;
     height: 33px;
@@ -114,15 +115,16 @@ export default {
     color: var(--grey-400);
     font-size: 12px;
     cursor: pointer;
-
     .check-icon{
       font-size: 15px;
     }
 
     &__wrapper{
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      align-items: center;
       padding-bottom: 7px;
+      justify-content: space-between;
     }
 
     &__on{
