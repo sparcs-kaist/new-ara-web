@@ -239,9 +239,9 @@ export default {
         }
       }
 
-      // if (this.boardSlug === 'top') {
-      //   return { from_view: 'top', current }
-      // }
+      if (this.boardSlug === 'top') {
+        return { from_view: 'top', current }
+      }
       return { from_view: 'all', current }
     }
   },

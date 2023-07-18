@@ -8,7 +8,7 @@
             {{ beforeBoardName }}
           </span>
         </div>
-        <span v-if="beforeBoardName === $t('all')" class="title__info">
+        <span v-if="[ $t('all'), $t('top'), $t('archive-board'), $t('recent-board'), $t('prev-page') ].includes(beforeBoardName)" class="title__info">
           <router-link :to="{name: 'board', params: { boardSlug }} " class="title__info">
             | {{ boardName }}
           </router-link>
@@ -185,6 +185,9 @@ export default {
       if (fromView === 'recent') {
         return this.$t('recent-board')
       }
+      if (fromView === 'top') {
+        return this.$t('top')
+      }
       if (this.hasHistory()) {
         if (fromView === 'all') {
           return this.$t('all')
@@ -223,6 +226,7 @@ ko:
   unblock: '사용자 차단해제'
   confirm-delete: '정말로 삭제하시겠습니까?'
   all: '전체보기'
+  top: '인기글 게시판'
   prev-page: '이전 페이지'
   recent-board: '최근 본 글'
   archive-board: '담아둔 글'
@@ -246,6 +250,7 @@ en:
   unblock: 'Unblock User'
   confirm-delete: 'Are you really want to delete this post?'
   all: 'All'
+  top: 'Top Articles'
   prev-page: 'Previous Page'
   recent-board: 'Recent Articles'
   archive-board: 'Bookmarks'
