@@ -65,6 +65,12 @@ export default {
     TermsPopup
   },
 
+  data () {
+    return {
+      isChannelOpen: false
+    }
+  },
+
   computed: {
     agreeTosAt () {
       return this.$store.state.auth.userProfile?.agree_terms_of_service_at
@@ -73,13 +79,18 @@ export default {
 
   methods: {
     openChannelService () {
-      ChannelService.updateUser({
-        profile: {
-          name: this.$store.state.auth.userProfile?.nickname,
-          email: this.$store.state.auth.userProfile?.email
-        }
-      })
-      ChannelService.showChannelButton()
+      this.isChannelOpen = !this.isChannelOpen
+      if (this.isChannelOpen) {
+        ChannelService.updateUser({
+          profile: {
+            name: this.$store.state.auth.userProfile?.nickname,
+            email: this.$store.state.auth.userProfile?.email
+          }
+        })
+        ChannelService.showChannelButton()
+      } else {
+        ChannelService.hideChannelButton()
+      }
     }
   }
 }

@@ -30,9 +30,9 @@ export default {
     this.$router.afterEach((to, from) => {
       this.$Progress.finish()
     })
-    ChannelService.loadScript()
+
     ChannelService.boot({
-      pluginKey: 'YOUR_PLUGIN_KEY', // fill your plugin key
+      pluginKey: process.env.VUE_APP_CHANNEL_PLUGIN_KEY,
       hideChannelButtonOnBoot: true
     })
   },
