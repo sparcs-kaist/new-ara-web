@@ -30,7 +30,7 @@
 
           <span class="comment__time"> {{ date }} </span>
 
-          <div v-if="comment.deleted_at === null && !isHidden" class="dropdown is-right is-hoverable">
+          <div v-if="!isDeleted && !isHidden" class="dropdown is-right is-hoverable">
             <div class="dropdown-trigger">
               <button
                 class="dropdown-button"
@@ -204,7 +204,7 @@ export default {
       return this.comment.is_mine
     },
     isRegular () {
-      return this.comment.name_type === 0
+      return this.comment.name_type === 1
     },
     isVerified () {
       if (!this.comment.created_by || !this.post.parent_board) {
@@ -214,10 +214,13 @@ export default {
       return this.post.parent_board.id === 14 ? profile.is_school_admin : profile.is_official
     },
     isAuthor () {
-      if (this.comment.name_type === 0) {
+      if (this.comment.name_type === 1) {
         return false
       }
       return this.post.created_by.id === this.comment.created_by.id
+    },
+    isDeleted () {
+      return this.comment.is_hidden && this.comment.why_hidden[0] === 'DELETED_CONTENT'
     },
     isHidden () {
       return this.comment.is_hidden

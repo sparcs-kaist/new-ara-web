@@ -64,7 +64,7 @@
       </div>
     </div>
 
-    <div v-if="!post.is_hidden || !(post.name_type === 1)" class="post__footer">
+    <div v-if="!post.is_hidden || !(post.name_type === 2)" class="post__footer">
       <LikeButton
         v-if="!post.is_hidden"
         :item="post"
@@ -74,9 +74,9 @@
         @vote="$emit('vote', $event)"
       />
       <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons-box">
-        <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons">
-          <template v-if="isMine && (post.can_override_hidden !== false) && post.hidden_at === null">
-            <button class="button" @click="deletePost">
+        <div class="post__buttons">
+          <template v-if="isMine && (post.can_override_hidden !== false) && !post.is_hidden">
+            <button class="button mobile-button" @click="deletePost">
               <i class="like-button__icon material-icons-outlined">
                 delete
               </i>
@@ -90,7 +90,7 @@
                   postId
                 }
               }"
-              class="button"
+              class="button mobile-button"
             >
               <i class="like-button__icon material-icons-outlined">
                 edit
@@ -101,7 +101,7 @@
           <template v-else>
             <button
               v-if="isRegular"
-              class="button"
+              class="button mobile-button"
               @click="$emit('block')"
             >
               <i class="like-button__icon material-icons-outlined">
@@ -112,7 +112,7 @@
 
             <button
               v-if="!post.is_hidden && isNotRealName"
-              class="button"
+              class="button mobile-button"
               @click="$emit('report')"
             >
               <i class="like-button__icon material-icons-outlined">
@@ -122,7 +122,7 @@
             </button>
           </template>
         </div>
-        <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons">
+        <div class="post__buttons">
           <button
             v-if="!post.is_hidden"
             class="button"
@@ -200,10 +200,10 @@ export default {
       return this.post && this.post.is_mine
     },
     isRegular () {
-      return this.post.name_type === 0
+      return this.post.name_type === 1
     },
     isNotRealName () {
-      return this.post.name_type !== 2
+      return this.post.name_type !== 4
     },
     hiddenReason () {
       const title = `<div class="has-text-weight-bold"> ${this.post.why_hidden.map(v => i18n.t(v)).join('<br>')}</div>`
@@ -315,7 +315,6 @@ en:
     align-items: center;
     justify-content: flex-end;
     flex-wrap: wrap;
-    margin-top: 10px;
     @include breakPoint(mobile) {
       width: 100%;
       justify-content: space-between;
@@ -327,6 +326,7 @@ en:
     align-items: center;
     justify-content: flex-end;
     flex-wrap: wrap;
+    margin-top: 10px;
 
     &--hidden {
       flex: 1;
@@ -347,15 +347,25 @@ en:
         color: white;
       }
 
-      & > .button-text {
-        @include breakPoint(mobile) {
-          display: none;
-        }
+      .button-text {
+        cursor: pointer;
       }
 
       .like-button__icon {
         margin-right: 5px;
         font-size: 18px;
+      }
+    }
+
+    & > .mobile-button {
+      @include breakPoint(mobile) {
+        .button-text {
+          display: none;
+        }
+        .like-button__icon {
+          margin-right: 0px;
+          font-size: 18px;
+        }
       }
     }
   }

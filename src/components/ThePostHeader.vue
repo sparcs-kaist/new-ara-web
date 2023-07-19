@@ -150,7 +150,7 @@ export default {
       return this.post.title
     },
     isRegular () {
-      return this.post.name_type === 0
+      return this.post.name_type === 1
     },
     beforeBoard () {
       const { from_view: fromView, topic_id: topicId, current } = this.$route.query
