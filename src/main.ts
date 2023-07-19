@@ -5,6 +5,10 @@ import store from '@/store'
 import http from '@/http'
 import i18n from '@/i18n'
 import '@/registerServiceWorker'
+import ReactWrapper from '@/components/ReactWrapper.vue'
+
+Vue.component('ReactWrapper', ReactWrapper)
+
 const VueProgressBar = require('vue-progressbar')
 
 const options = {

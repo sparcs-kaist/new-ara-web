@@ -33,6 +33,14 @@
         </div>
       </div>
 
+      <div>
+        <react-wrapper
+          :component="HelloWorldComponent"
+          title="react test"
+          :respondFunction="respondFunction"
+        />
+      </div>
+
       <div class="footer-contact is-hidden-mobile">
         {{ $t('contact') }}:
         <a href="mailto:new-ara@sparcs.org">
@@ -50,16 +58,29 @@
 
 <script>
 import TermsPopup from '@/components/TermsPopup.vue'
+import { HelloWorld } from '@/react-migration/ReactComponent.tsx'
+import ReactWrapper from '@/components/ReactWrapper.vue'
+
 export default {
   name: 'TheFooter',
 
   components: {
-    TermsPopup
+    TermsPopup,
+    ReactWrapper
   },
 
   computed: {
     agreeTosAt () {
       return this.$store.state.auth.userProfile?.agree_terms_of_service_at
+    },
+    HelloWorldComponent () {
+      return HelloWorld
+    }
+  },
+
+  methods: {
+    respondFunction () {
+      alert('respind success')
     }
   }
 }
