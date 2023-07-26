@@ -41,6 +41,7 @@ env:
   FIREBASE_CONFIG_DEV: ${{ secrets.FIREBASE_CONFIG_DEV }}
   FIREBASE_VAPID_KEY_PROD: ${{ secrets.FIREBASE_VAPID_KEY_PROD }}
   FIREBASE_VAPID_KEY_DEV: ${{ secrets.FIREBASE_VAPID_KEY_DEV }}
+  CHANNEL_PLUGIN_KEY: ${{ secrets.CHANNEL_PLUGIN_KEY }}
 
 defaults: # do we need this?
   run:
