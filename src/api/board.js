@@ -5,6 +5,10 @@ export const fetchBoardList = () =>
   http.get('boards/')
     .then(({ data }) => data)
 
+export const fetchBoardGroups = () =>
+  http.get('board_groups/')
+    .then(({ data }) => data)
+
 export const fetchArticles = ({ boardId, query, page, pageSize, topicId, username, ordering, filter } = {}) => {
   const context = {}
   if (boardId) {
