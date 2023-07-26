@@ -10,6 +10,7 @@
 
 <script>
 import TheFooter from '@/components/TheFooter.vue'
+import ChannelService from '@/channel.js'
 
 export default {
   name: 'App',
@@ -28,6 +29,11 @@ export default {
     })
     this.$router.afterEach((to, from) => {
       this.$Progress.finish()
+    })
+
+    ChannelService.boot({
+      pluginKey: process.env.VUE_APP_CHANNEL_PLUGIN_KEY,
+      hideChannelButtonOnBoot: true
     })
   },
 
