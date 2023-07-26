@@ -4,6 +4,7 @@ import i18n from '@/i18n'
 import Meta from 'vue-meta'
 import {
   fetchArchivedPosts as apiFetchArchivedPosts,
+  fetchBoardGroups,
   fetchBoardList,
   fetchRecentViewedPosts
 } from '@/api'
@@ -19,6 +20,7 @@ export default new Vuex.Store({
   modules: { auth, dialog, fetch },
   state: {
     boardList: [],
+    boardGroups: [],
     recentPosts: [],
     archivedPosts: [],
     PWAPrompt: null
@@ -55,6 +57,10 @@ export default new Vuex.Store({
       state.boardList = boardList
     },
 
+    setBoardGroups (state, boardGroups) {
+      state.boardGroups = boardGroups.map(el => ({ ...el, clicked: false }))
+    },
+
     setRecentPosts (state, posts) {
       state.recentPosts = posts
     },
@@ -70,8 +76,11 @@ export default new Vuex.Store({
   actions: {
     async fetchBoardList ({ commit, getters: { hasFetchedBoardList } }) {
       if (!hasFetchedBoardList) {
-        const results = await fetchBoardList()
-        commit('setBoardList', results)
+        const boardList = await fetchBoardList()
+        commit('setBoardList', boardList)
+
+        const boardGroups = await fetchBoardGroups()
+        commit('setBoardGroups', boardGroups)
       }
     },
 
