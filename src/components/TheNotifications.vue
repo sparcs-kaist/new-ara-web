@@ -7,6 +7,7 @@
       <button
         class="read-all"
         :class="{ 'read-all__on': isButtonOn}"
+        :disabled="!isButtonOn"
         @click="readAllAlarm"
       >
         <i class="material-icons check-icon">check_circle_outline</i>
