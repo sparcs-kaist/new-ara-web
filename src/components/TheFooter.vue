@@ -87,9 +87,9 @@ export default {
             email: this.$store.state.auth.userProfile?.email
           }
         })
-        ChannelService.showChannelButton()
+        ChannelService.showMessenger()
       } else {
-        ChannelService.hideChannelButton()
+        ChannelService.hideMessenger()
       }
     }
   }
