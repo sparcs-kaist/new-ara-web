@@ -148,7 +148,7 @@
 </template>
 
 <script>
-import { getAttachmentUrls, deletePost as apiDeletePost } from '@/api'
+import { deletePost as apiDeletePost } from '@/api'
 import LikeButton from '@/components/LikeButton.vue'
 import TextEditor from '@/components/TheTextEditor.vue'
 import ThePostBookmark from '@/components/ThePostBookmark.vue'
@@ -233,11 +233,10 @@ export default {
         if (!attachments) {
           return
         }
-        const results = await getAttachmentUrls(attachments)
-        this.attachments = results.map(({ data }) => ({
-          url: data.file,
-          file: decodeURIComponent(new URL(data.file).pathname.split('/').pop()),
-          id: data.id
+        this.attachments = attachments.map(({ id, file }) => ({
+          id: id,
+          url: file,
+          file: decodeURIComponent(new URL(file).pathname.split('/').pop())
         }))
       },
       immediate: true
