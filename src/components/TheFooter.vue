@@ -31,14 +31,12 @@
             {{ $t('rules') }}
           </a>
         </div>
-      </div>
 
-      <div>
-        <react-wrapper
-          :component="HelloWorldComponent"
-          title="react test"
-          :respondFunction="respondFunction"
-        />
+        <div class="footer-item">
+          <router-link to="/calender">
+            {{ $t('calender') }}
+          </router-link>
+        </div>
       </div>
 
       <div class="footer-contact is-hidden-mobile">
@@ -58,29 +56,17 @@
 
 <script>
 import TermsPopup from '@/components/TermsPopup.vue'
-import { HelloWorld } from '@/react-migration/ReactComponent.tsx'
-import ReactWrapper from '@/components/ReactWrapper.vue'
 
 export default {
   name: 'TheFooter',
 
   components: {
-    TermsPopup,
-    ReactWrapper
+    TermsPopup
   },
 
   computed: {
     agreeTosAt () {
       return this.$store.state.auth.userProfile?.agree_terms_of_service_at
-    },
-    HelloWorldComponent () {
-      return HelloWorld
-    }
-  },
-
-  methods: {
-    respondFunction () {
-      alert('respind success')
     }
   }
 }
@@ -92,11 +78,13 @@ ko:
   license: '라이센스'
   rules: '이용 약관'
   contact: '문의'
+  calender: '캘린더'
 en:
   credit: 'Credit'
   license: 'License'
   rules: 'Terms of Service'
   contact: 'Contact'
+  calender: 'Calender'
 </i18n>
 
 <style lang="scss" scoped>

@@ -12,6 +12,8 @@
     "@types/react": "^18.2.15"
   },
   "dependencies": {
+    "@iconify/react": "^4.1.1",
+    "date-fns": "^2.30.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
