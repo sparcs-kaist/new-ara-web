@@ -203,6 +203,7 @@ const projects = [
         ['raon:김강인', 2017]
       ],
       DV: [
+        'arcticfox:고예준', 'phenol:권영완', 'alvin:김상오', 'default:김현수',
         'ina:송인화', 'ddungiii:김기영', 'duncan:이동재', 'panya:김지연',
         'ivy:이융희', 'jungnoh:노정훈', 'water:김윤수', 'triangle:주예준',
         'hanski:한석휘', 'idev:이재현', 'doolly:김제윤', 'nenw:김요한', 'fi:김도현',
@@ -211,7 +212,7 @@ const projects = [
         'leesia:강현우', 'seol:설윤아', 'youns:최윤서', 'appleseed:강찬규'
       ],
       DS: [
-        'cheddar:최다은', 'stitch:이채영', 'zero:임현정', 'luny:김나영'
+        'nine:배세윤', 'cheddar:최다은', 'stitch:이채영', 'zero:임현정', 'luny:김나영'
       ]
     }
   }
