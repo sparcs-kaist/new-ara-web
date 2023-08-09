@@ -172,6 +172,9 @@ export default {
       if (fromView === '-portal') {
         return { name, query: { ...query, portal: 'exclude' } }
       }
+      if (fromView === 'top') {
+        return { name, params: { boardSlug: 'top' }, query }
+      }
       return { name, query }
     },
     beforeBoardName () {
