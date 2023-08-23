@@ -125,20 +125,20 @@
         <div class="post__buttons">
           <button
             v-if="!post.is_hidden"
-            class="button"
+            class="button mobile-button"
             @click="$emit('copy-url')"
           >
             <i class="like-button__icon material-icons-outlined">content_copy</i>
-            {{ $t('copy-url') }}
+            <label class="button-text">{{ $t('copy-url') }}</label>
           </button>
           <button
             v-if="!post.is_hidden"
-            class="button archive-button"
+            class="button archive-button mobile-button"
             :class="{ 'button--clicked': post.my_scrap }"
             @click="$emit('archive')"
           >
             <i class="like-button__icon material-icons-outlined">add</i>
-            {{ $t('archive') }}
+            <label class="button-text">{{ $t('archive') }}</label>
           </button>
         </div>
       </div>
