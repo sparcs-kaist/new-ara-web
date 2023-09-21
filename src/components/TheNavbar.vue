@@ -75,12 +75,6 @@
           <router-link :to="{ name: 'board' }" class="navbar-item">
             <span>{{ $t('all') }}</span>
           </router-link>
-          <router-link
-            :to="{ name: 'board', params: { boardSlug: 'top' } }"
-            class="navbar-item"
-          >
-            <span>{{ $t('top') }}</span>
-          </router-link>
 
           <div
             v-for="group in boardGroups"
@@ -92,6 +86,7 @@
               :to="{ name: 'board', params: { boardSlug: 'talk' } }"
               class="navbar-item"
             >
+              <i class="material-icons is-hidden-desktop">navigate_next</i>
               <span>{{ group[[`${$i18n.locale}_name`]] }}</span>
             </router-link>
             <div
@@ -126,6 +121,14 @@
               </router-link>
             </div>
           </div>
+
+          <router-link
+            :to="{ name: 'board', params: { boardSlug: 'top' } }"
+            class="navbar-item"
+          >
+            <i class="material-icons is-hidden-desktop">navigate_next</i>
+            <span>{{ $t('top') }}</span>
+          </router-link>
         </div>
 
         <div class="navbar-end">
