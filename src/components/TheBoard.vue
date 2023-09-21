@@ -1,71 +1,161 @@
 <template>
   <div class="board">
-    <slot name="title"/>
-    <TheBoardTable
-      :articles="board.results"/>
-    <div class="board-navbar">
-      <div class="board-navbar-start">
-        <ThePaginator
-          :numPages="board.num_pages"
-          :currentPage="board.current"
-          :baseRouteTo="{
-            name: 'board',
-            params: { boardSlug }
-          }">
-        </ThePaginator>
-      </div>
-      <div class="board-navbar-end">
-        <slot name="tools"/>
+    <Banner
+      v-if="isBanner"
+      :banner-name="title"
+      :banner-details="bannerDetails"
+      :banner-image="bannerImage"
+    />
+    <div class="board__header">
+      <h1 v-if="!simplify" class="board__name">
+        {{ queryTitle }}
+        <slot name="title" />
+      </h1>
+
+      <div class="board__options">
+        <slot name="option" />
+        <slot name="filter" />
+        <slot name="order" />
+        <SearchBar
+          v-if="!simplify"
+          class="board__tablet-search is-flex-touch is-hidden-mobile"
+          searchable
+        />
       </div>
     </div>
+    <hr v-if="title && !simplify" class="board__divider">
+
+    <TheBoardTable
+      :posts="board.results"
+      :from-query="fromQueryWithPage"
+    />
+
+    <div class="board__navbar">
+      <ThePaginator
+        :num-pages="board.num_pages"
+        :current-page="board.current"
+      />
+    </div>
+    <SearchBar
+      :class="simplify ? 'is-hidden-desktop' : 'is-hidden-tablet'"
+      class="board__mobile-search"
+      searchable
+      fullwidth
+    />
   </div>
 </template>
 
 <script>
+import SearchBar from '@/components/SearchBar.vue'
 import ThePaginator from '@/components/ThePaginator.vue'
 import TheBoardTable from '@/components/TheBoardTable.vue'
+import Banner from '@/components/Banner.vue'
 
 export default {
-  name: 'the-board',
+  name: 'TheBoard',
+
+  components: {
+    SearchBar,
+    ThePaginator,
+    TheBoardTable,
+    Banner
+  },
+
   props: {
-    board: { required: true }
+    board: {
+      type: Object,
+      required: true
+    },
+    title: String,
+    bannerDetails: String,
+    bannerImage: String,
+    fromQuery: Object,
+    simplify: Boolean
   },
+
   computed: {
-    // @TODO: $route에 대한 의존성 제거
-    boardSlug () {
-      return this.$route.params.boardSlug
+    fromQueryWithPage () {
+      const query = {
+        ...this.fromQuery
+      }
+
+      if (this.$route.query.query) {
+        query.search_query = this.$route.query.query
+      }
+
+      if (this.$route.query.page) {
+        query.current = this.$route.query.page
+      }
+
+      return query
+    },
+    queryTitle () {
+      if (this.$route.query.query) { return this.$t('search', { title: this.title, query: this.$route.query.query }) }
+
+      return this.title
+    },
+    isBanner () {
+      if (this.$route.name === 'my-info') { return false }
+      return true
     }
-  },
-  components: { ThePaginator, TheBoardTable }
+  }
 }
 </script>
 
+<i18n>
+ko:
+  search: '{title}에서 {query} 검색'
+
+en:
+  search: 'Search {query} from {title}'
+</i18n>
+
 <style lang="scss" scoped>
+@import '@/theme.scss';
 .board {
   min-width: 100%;
 
-  .board-navbar {
+  &__tablet-search {
+    display: none;
+    margin-bottom: 1rem;
+  }
+
+  &__mobile-search{
     display: flex;
-    flex-direction: row;
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  &__name {
+    flex-shrink: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+
+    @include breakPoint(mobile) {
+      font-size: 1.2rem;
+    }
+  }
+
+  &__header {
+    display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+  }
 
-    @media screen and (max-width: 700px) {
-      flex-direction: column;
-    }
+  &__divider {
+    margin: 0;
+    background: #333333;
+  }
 
-    .board-navbar-start {
+  &__options {
+    margin-left: auto;
+    padding-left: 15px;
 
-      @media screen and (max-width: 700px) {
-        margin-bottom: 1rem;
-      }
-    }
-
-    .board-navbar-end {
-      @media screen and (max-width: 700px) {
-        width: 100%;
-      }
-    }
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
   }
 }
 </style>

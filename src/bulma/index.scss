@@ -3,17 +3,140 @@
 @import '~bulma/sass/utilities/initial-variables.sass';
 @import '~bulma/sass/utilities/functions.sass';
 
-$primary: $theme-red;
-$link: $grey-dark;
-$link-hover: $black-bis;
-
-a:hover {
-  text-decoration: underline;
-}
-
 @import './input.scss';
 @import './navbar.scss';
 @import './table.scss';
 @import './title.scss';
+@import './tab.scss';
 
 @import '~bulma/bulma.sass';
+
+.button {
+  color: var(--grey-text);
+  background: transparent;
+  border-radius: 10px;
+  border: solid 1px var(--grey-300);
+  transition: all var(--duration) var(--background-timing);
+
+  &:hover, &:focus {
+    &:not(:active) {
+      border-color: var(--grey-300);
+      box-shadow: 0 2px 6px 0 var(--grey-300);
+      outline: none;
+    }
+
+    &, .button:active {
+      background: transparent;
+    }
+  }
+
+  &:active {
+    border-color: var(--grey-400);
+  }
+
+  &.is-text {
+    &:hover, &:focus {
+      &:not(:active) {
+        background: var(--grey-100);
+        box-shadow: none;
+        border-color: transparent;
+      }
+    }
+
+    &:active {
+      border-color: transparent;
+    }
+  }
+}
+
+.input, .textarea {
+  //TODO it is better to use opacity transition on constant box-shadow.
+  //     But, as it needs multiple element and input tags don't support pseudo-element, I used box-shadow.
+
+  color: var(--text);
+  background: transparent;
+  border-radius: 10px;
+  border: solid 2px var(--grey-300);
+  box-sizing: border-box;
+  box-shadow: 0 0 6px 0 transparent;
+  transition: all var(--duration) var(--background-timing);
+
+  &:active, &:focus, &:hover {
+    box-shadow: 0 0 6px 0 var(--grey-400);
+    border-color: transparent;
+  }
+
+  &.is-large {
+    padding: 0 1rem;
+  }
+
+  &.is-medium {
+    height: 3rem;
+    padding: 0 1rem;
+    font-size: 1rem;
+  }
+}
+
+.control.has-icons-left, .control.has-icons-right {
+  .icon {
+    color: var(--grey-300);
+    top: 50%;
+    transform: translate(0, -50%);
+    margin: 0 .3em;
+    transition: color var(--duration) var(--background-timing);
+
+    &:hover {
+      color: var(--grey-500);
+    }
+  }
+}
+
+.control.has-icons-left {
+  .input {
+    padding-left: 3.6em;
+  }
+}
+
+.control.has-icons-right {
+  .input {
+    padding-right: 3.6em;
+  }
+}
+
+.select {
+  &:not(.is-multiple) {
+    height: initial;
+  }
+
+  select {
+    background: transparent;
+    border-radius: 10px;
+    border: solid 2px var(--grey-300) !important;
+    padding: 0 10px;
+    box-shadow: 0 0 6px 0 transparent;
+    transition: all var(--duration) var(--background-timing);
+
+    &:active, &:focus, &:hover {
+      box-shadow: 0 0 6px 0 var(--grey-400);
+      border-color: transparent;
+    }
+  }
+
+  &::after {
+    border-color: var(--grey-700) !important;
+  }
+}
+
+.navbar {
+  z-index: 20;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--background);
+}
+
+a {
+  color: var(--text);
+}

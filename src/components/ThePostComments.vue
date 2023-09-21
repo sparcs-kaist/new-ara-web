@@ -1,140 +1,98 @@
 <template>
-  <div id="comments" class="post-comments">
-    <div class="title">댓글</div>
-      <div
-        v-show="Object.keys(comments).length == 0"
-        class="no-comment-info"
-      >
-        댓글이 없습니다.
-      </div>
+  <div id="comments" class="comments">
+    <div class="comments__title">
+      {{ $t('comments') }} {{ commentCount }}
+    </div>
+
+    <div v-if="!comments" class="comments__container comments__container--empty">
+      {{ $t('no-comment') }}
+    </div>
+    <div v-else class="comments__container">
       <PostComment
-        v-show="Object.keys(comments).length != 0"
         v-for="comment in comments"
         :key="comment.id"
         :comment="comment"
-        @new-recomment-uploaded="$emit('new-recomment-uploaded', $event)"
-        @vote="$emit('refresh')"
+        :post="post"
+        class="comments__comment"
+        @update="$emit('update', $event)"
+        @upload="$emit('upload', $event)"
         @delete="$emit('refresh')"
+        @fetch-comment="$emit('fetch-comment', $event)"
       />
-    <div class="title">
-      새 댓글 작성
     </div>
-    <div class="comment-input">
-      <div class="comment-metadata">
-        <div class="comment-author"> {{ userNickname }} </div>
-        <div class="comment-time"> {{ now }} </div>
-      </div>
-      <div class="comment-content">
-        <textarea
-          placeholder="입력..."
-          v-model="content"
-          class="textarea new-comment"
-          cols="10"
-          rows="3"
-        />
-      </div>
-    </div>
-    <button
-      @click="saveComment"
-      class="button button-submit"
-      :class="{ 'is-loading': isUploading }"
-      :disabled="isUploading">
-      새 댓글
-    </button>
+
+    <PostCommentEditor
+      :parent-article="post.id"
+      :post="post"
+      @upload="$emit('upload', $event)"
+    />
   </div>
 </template>
-
 <script>
-import { mapGetters } from 'vuex'
-import { createComment } from '@/api'
-import { date } from '@/helper.js'
 import PostComment from '@/components/PostComment.vue'
+import PostCommentEditor from '@/components/PostCommentEditor.vue'
 
 export default {
-  name: 'the-post-comments',
+  name: 'ThePostComments',
+
+  components: {
+    PostComment,
+    PostCommentEditor
+  },
+
   props: {
-    comments: { required: true },
-    postId: { required: true }
+    post: {
+      type: Object,
+      required: true
+    },
+    comments: Array
   },
-  data () {
-    return {
-      content: '',
-      isUploading: false
-    }
-  },
+
   computed: {
-    now () { return date(new Date()) },
-    ...mapGetters([ 'userNickname' ])
-  },
-  methods: {
-    async saveComment () {
-      this.isUploading = true
-      try {
-        const result = await createComment({
-          parent_article: this.postId,
-          parent_comment: null,
-          content: this.content
-        })
-        this.$emit('new-comment-uploaded', result.data)
-        this.content = ''
-      } catch (error) {
-        // @TODO: 채팅 생성에 실패했다고 알려주기
-        alert(error)
-      } finally {
-        this.isUploading = false
-      }
+    commentCount () {
+      if (!this.post || !this.comments) return 0
+      return this.post.comment_count
     }
-  },
-  components: { PostComment }
+  }
 }
 </script>
 
+<i18n>
+ko:
+  comments: '댓글'
+  no-comment: '댓글이 없습니다.'
+
+en:
+  comments: 'Comments'
+  no-comment: 'No comment.'
+</i18n>
+
 <style lang="scss" scoped>
-#comments {
-  margin-top: 2rem;
-}
+.comments {
+  margin-top: 1rem;
 
-.no-comment-info {
-  margin-bottom: 1rem;
-  color: rgba(0,0,0,0.3);
-}
-
-.textarea {
-  padding: 0px;
-}
-
-.comment-input {
-  border: 1px solid rgba(0,0,0,0.3);
-  border-radius: 5px;
-  padding: 10px 15px 10px 15px;
-
-  &:hover {
-    border: 1px solid rgba(0,0,0,0.8);
+  &__title {
+    font-size: 18px;
+    font-weight: 500;
   }
 
-  .comment-metadata {
-    .comment-author {
-      display: inline-block;
-      font-weight: 700;
-      padding-right: 0.75rem;
-    }
-    .comment-time {
-      font-size: 12px;
-      display: inline-block;
-      color: #888;
+  &__container {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+
+    &--empty {
+      color: rgba(0,0,0,0.3);
+      margin: 12px 0;
     }
   }
-}
 
-.button-submit {
-  margin-top: 10px;
-  border: none;
-  background-color: #ED3A3A;
-  color: white;
+  &__comment {
+    border-top: 1px solid #f0f0f0;
 
-  &:hover {
-    background-color: rgb(199, 45, 45);
-    color: white;
+    &:first-child {
+      margin-top: -10px;
+      border: none;
+    }
   }
 }
 </style>

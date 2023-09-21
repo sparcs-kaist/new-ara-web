@@ -1,64 +1,329 @@
 <template>
   <div class="facade">
-    <div class="filter is-blur">
-      <div class="container is-fake">
-        <!-- <p>시와 잠, 위에 가슴속에 이웃 나는 별빛이 거외다. 풀이 비둘기, 릴케 별이 거외다. 하나에 지나고 헤는 청춘이 프랑시스 하나의 봅니다. 하나에 별들을 가난한 쓸쓸함과 사람들의 된 거외다. 지나고 어머니, 밤을 못 노루, 가을 이국 나는 않은 거외다. 이름과, 별 무덤 별 까닭입니다. 풀이 피어나듯이 동경과 계절이 별들을 어머니, 거외다. 봄이 별들을 하나에 나는 별에도 봅니다. 라이너 쓸쓸함과 어머님, 무덤 아직 계십니다. 사람들의 쉬이 하나에 듯합니다.</p>
-        <p>그러나 이름과 무성할 슬퍼하는 헤일 내린 아름다운 청춘이 까닭입니다. 피어나듯이 다 사람들의 까닭이요, 별 이네들은 계십니다. 비둘기, 이름과, 딴은 어머니 보고, 있습니다. 하나의 어머니, 이 시인의 토끼, 라이너 듯합니다. 했던 별들을 어머님, 멀리 버리었습니다. 써 책상을 이제 비둘기, 나의 버리었습니다. 내 청춘이 무덤 노루, 남은 나는 다 어머님, 하나에 버리었습니다. 별에도 불러 가난한 봅니다. 무엇인지 별 벌레는 봅니다. 했던 사랑과 노새, 이름과, 하나의 하나에 하나에 봅니다.</p>
-        <p>사람들의 우는 다 별 덮어 옥 있습니다. 까닭이요, 이제 딴은 어머니 비둘기, 경, 했던 까닭이요, 하나에 봅니다. 새워 라이너 쓸쓸함과 노루, 걱정도 써 듯합니다. 이름과, 별을 별 된 소학교 피어나듯이 버리었습니다. 나는 별 밤이 패, 부끄러운 까닭입니다. 벌레는 계집애들의 둘 언덕 별 거외다. 덮어 다 위에 아스라히 시와 버리었습니다. 하나에 아스라히 한 그러나 이 있습니다. 어머니, 위에 별 멀리 오는 강아지, 별을 잔디가 있습니다. 계집애들의 별 이네들은 비둘기, 가을로 무성할 까닭입니다.</p>
-        <p>마디씩 밤이 노루, 다 이름과, 가난한 어머니 까닭입니다. 걱정도 나의 사람들의 까닭입니다. 위에 어머니, 까닭이요, 지나고 하나에 시와 있습니다. 나의 프랑시스 이런 내린 듯합니다. 언덕 나의 별 강아지, 내린 덮어 봅니다. 피어나듯이 별들을 흙으로 쉬이 듯합니다. 했던 소학교 흙으로 새워 다 지나고 헤는 별을 있습니다. 그러나 보고, 토끼, 하나의 헤일 위에 벌레는 사람들의 듯합니다. 노새, 보고, 이웃 동경과 이네들은 위에도 어머니 봅니다.</p> -->
-      </div>
+    <button class="button language-button" @click="changeLocale">
+      <i class="material-icons">language</i>
+      <span class="is-hidden-touch">{{ $t('lang') }}</span>
+    </button>
+    <div class="title">
+      <img class="title__logo" src="@/assets/ServiceAra.svg">
+      <div class="title__description" v-html="$t('main')" />
     </div>
-    <div class="button-container is-blocker has-text-centered">
-      <div class="inner-container">
-        <div class="logo"> ARA </div>
-        <a class="login-button" :href="loginUrl"> SPARCS SSO로 로그인 </a>
+    <div class="banners">
+      <div class="banner login">
+        <div class="banner__identity-bar" />
+        <h1 class="banner__title">
+          {{ $t('login-title') }}
+        </h1>
+        <h2 class="banner__subtitle" v-html="$t('login-subtitle')" />
+        <a :href="loginUrl" class="button banner__button login__link">
+          <i class="material-icons">login</i>
+          {{ $t('login') }}
+        </a>
+      </div>
+      <div class="banner">
+        <div class="banner__identity-bar" />
+        <h1 class="banner__title" v-html="$t('signup-title')" />
+        <h2 class="banner__subtitle">
+          {{ $t('signup-subtitle') }}
+        </h2>
+        <div class="banner__buttons">
+          <a href="https://bit.ly/sso-signup" class="button banner__button">
+            {{ $t('signup') }}
+          </a>
+          <a href="https://bit.ly/newara-org-signup" class="button banner__button">
+            {{ $t('apply-organization') }}
+          </a>
+          <a href="https://bit.ly/newara-comp-signup" class="button banner__button">
+            {{ $t('apply-amenity') }}
+          </a>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { apiUrl } from '@/http.js'
+import { apiUrl } from '@/http'
+import { changeLocale } from '@/i18n'
+import ChannelService from '@/channel.js'
 
 export default {
-  name: 'facade',
+  name: 'Facade',
+
   computed: {
     loginUrl () {
-      return `${apiUrl}/api/users/sso_login/?next=${location.protocol}//${location.host}/login-handler`
+      var referrer = this.$route.query.next
+      return `${apiUrl}/api/users/sso_login/?next=${location.protocol}//${location.host}/login-handler?link=${referrer}`
     }
+  },
+
+  created () {
+    ChannelService.showChannelButton()
+  },
+
+  methods: {
+    changeLocale
   }
 }
 </script>
 
+<i18n>
+ko:
+  lang: 'English'
+  main: '가장 정확한 정보를<br />가장 신속하게.'
+  login-title: '뉴아라 서비스를 이용하시려면 로그인해주세요.'
+  login-subtitle: |
+    교직원과 졸업생은 SPARCS SSO에 접속한 뒤
+    &lt;카이스트 통합인증으로 로그인/가입&gt;을 선택해주세요.
+  login: 'SPARCS SSO로 로그인'
+  signup-title: |
+    학생단체/입주업체 공용 계정을
+    만들고 싶으신가요?
+  signup-subtitle: |
+    공용 이메일로 회원가입을 진행한 후,
+    아래 버튼을 클릭하여 신청서를 보내주세요.
+  signup: '공용 이메일로 회원가입'
+  apply-organization: '학생단체 계정 신청하기'
+  apply-amenity: '입주업체 계정 신청하기'
+
+en:
+  lang: '한국어'
+  main: 'the fastest delivery of<br />the most accurate information'
+  login-title: 'Please login to use NewAra services'
+  login-subtitle: |
+    For faculties and graduates, please connet to SPARCS SSO
+    and select &lt;Log in/Sign up with KAIST authentication&gt;
+  login: 'Log in with SPARCS SSO'
+  signup-title: 'Do you want to make Students Organizations/Amenities account?'
+  signup-subtitle: |
+    Sign up with email, and please click the buttons below
+    to send application forms.
+  signup: 'Sign up with email'
+  apply-organization: 'Apply for Organization account'
+  apply-amenity: 'Apply for Amenities account'
+</i18n>
+
 <style lang="scss" scoped>
 @import '@/theme.scss';
-.filter.is-blur {
-  filter: blur(5px);
+
+.language-button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 1;
+
+  color: var(--theme-400);
+  font-size: 12px;
+  line-height: 20px;
+  padding: 12px;
+  height: 2.5rem;
+
+  @include breakPoint(min) {
+    color: black;
+    border: none;
+    top: 5px;
+    padding: 0;
+    z-index: 3;
+    &:hover {
+      box-shadow: none;
+    }
+  }
+
+  i {
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+    font-size: 20px;
+  }
 }
 
-.container.is-fake {
-  margin-top: 4rem;
+.facade {
+  min-height: 754px;
+  margin-bottom: -54px;
+
+  @include breakPoint(min) {
+    min-height: 50rem;
+  }
+
+  @include breakPoint(mobile) {
+    min-height: 56rem;
+  }
 }
 
-.button-container.is-blocker {
+.title {
+  @keyframes title-animation {
+    from {
+      width: 100vw;
+    }
+    to {
+      width: 30vw;
+    }
+  }
+  animation-name: title-animation;
+  animation-timing-function: ease-in-out;
+  animation-delay: 1s;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+
   position: absolute;
   top: 0;
   left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 2;
+  min-height: 754px;
+  background-color: var(--theme-100);
+
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+
+  @include breakPoint(min) {
+    animation: none;
+    width: 100vw;
+    height: 250px;
+    min-height: 0;
+  }
+
+  &__description {
+    color: var(--theme-400);
+    text-align: center;
+    line-height: 3rem;
+    font-size: 32px;
+    width: 28vw;
+
+    @include breakPoint(min) {
+      font-size: 21px;
+      line-height: 25px;
+      width: inherit;
+    }
+  }
+
+  &__logo {
+    height: 5rem;
+    margin-bottom: 1rem;
+
+    @include breakPoint(min) {
+      height: 4rem;
+    }
+  }
+}
+
+.banners {
+  position: absolute;
+  top: 0;
+  left: 40vw;
   right: 0;
   bottom: 0;
-  .inner-container {
-    margin-top: 40vh;
-    .logo {
-      height: 4rem;
-      font-size: 3rem;
-      font-family: 'Raleway', sans-serif;
-      color: $theme-red;
+
+  display: flex;
+  justify-content: center;
+  flex-flow: column;
+  padding-top: 200px;
+
+  @include breakPoint(min-mid) {
+    left: 34vw;
+  }
+
+  @include breakPoint(min) {
+    left: 0;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 280px;
+    padding-top: 0;
+
+    margin-left: 0;
+  }
+}
+
+.banner {
+  display: flex;
+  flex-flow: column;
+
+  @include breakPoint(min) {
+    align-items: center;
+    width: 90%;
+    text-align: center;
+    max-width: 25rem;
+  }
+
+  &__identity-bar {
+    height: 5px;
+    width: 30px;
+    background-color: var(--theme-400);
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 12px 0;
+    word-break: keep-all;
+    white-space: normal;
+
+    @include breakPoint(min) {
+      font-size: 20px;
+      white-space: pre-wrap;
     }
-    .login-button {
-      height: 2rem;
-      font-size: 1.5rem;
-      font-weight: bold;
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    margin-bottom: 15px;
+    word-break: keep-all;
+    white-space: normal;
+
+    @include breakPoint(min) {
+      font-size: 12px;
+
+      white-space: pre-wrap;
     }
+  }
+  &__button {
+    color: var(--theme-400);
+    font-size: 15px;
+    margin-right: 10px;
+
+    @include breakPoint(min) {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+    &:hover {
+      color: var(--theme-500);
+    }
+  }
+  &__buttons {
+    display: flex;
+    align-items: center;
+    @include breakPoint(min) {
+      flex-flow: column;
+    }
+  }
+}
+
+.login {
+  margin-bottom: 100px;
+  .banner__title {
+    font-size: 28px;
+
+    @include breakPoint(min) {
+      font-size: 20px;
+    }
+  }
+  &__link {
+    width: 250px;
+    line-height: 20px;
+    font-size: 18px;
+
+    i {
+      font-size: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+  }
+
+  @include breakPoint(min) {
+    margin-bottom: 30px;
   }
 }
 </style>

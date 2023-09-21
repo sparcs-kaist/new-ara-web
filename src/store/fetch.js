@@ -9,13 +9,9 @@ export default {
   namespaced: true,
   state: {
     status: fetchStatus.IDLE,
-    progress: 0, // 0 <= progress <= 1
-    errorMessage: ''
+    progress: 0 // 0 <= progress <= 1
   },
   getters: {
-    isError ({ status }) {
-      return status === fetchStatus.ERROR
-    },
     isFetching ({ status }) {
       return status === fetchStatus.FETCHING ||
         status === fetchStatus.ENDING
@@ -24,11 +20,9 @@ export default {
   mutations: {
     updateError (state, message) {
       state.status = fetchStatus.ERROR
-      state.errorMessage = message
     },
     endError (state) {
       state.status = fetchStatus.IDLE
-      state.errorMessage = ''
     },
     startProgress (state) {
       state.status = fetchStatus.FETCHING
@@ -49,9 +43,14 @@ export default {
     }
   },
   actions: {
-    showError ({ commit }, message) {
-      commit('updateError', message)
+    showError ({ commit, dispatch }, message) {
+      commit('updateError')
       setTimeout(() => { commit('endError') }, 2000)
+
+      dispatch('dialog/toast', {
+        type: 'error',
+        text: message
+      }, { root: true })
     },
     startProgress ({ commit }) {
       commit('startProgress')

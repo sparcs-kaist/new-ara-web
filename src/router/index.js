@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import auth from './auth.js'
-import app from './app.js'
+import auth from '@/router/auth'
+import app from '@/router/app'
 import NotFound from '@/views/NotFound.vue'
+import Meta from 'vue-meta'
 
 Vue.use(Router)
+Vue.use(Meta)
 
 export default new Router({
   mode: 'history',
