@@ -20,7 +20,7 @@ import { fetchWithProgress } from '@/views/helper'
 import store from '@/store'
 import TheLayout from '@/components/TheLayout.vue'
 import ReactCalendar from '@/react-migration/components/ReactCalendar'
-import HelloWorld from '@/react-migration/components/hello.tsx'
+import HelloWorld from '@/react-migration/components/hello'
 import ReactWrapper from '@/components/ReactWrapper.vue'
 
 export default {

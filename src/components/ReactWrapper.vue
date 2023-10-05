@@ -9,7 +9,7 @@ export default {
   inheritAttrs: false,
   props: {
     component: {
-      type: Function,
+      type: null,
       required: true
     }
   },
