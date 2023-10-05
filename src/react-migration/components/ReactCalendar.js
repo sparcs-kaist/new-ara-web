@@ -1,10 +1,11 @@
+/* eslint-disable */
 import React, { Component } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import esLocale from '@fullcalendar/core/locales/es';
 import koLocale from '@fullcalendar/core/locales/ko';
-import './FullCalendar.css'
+import './ReactCalendar.css'
 
 const eventList = [
   { title: '으악', date: '2023-09-14', color:'#005AAA' },

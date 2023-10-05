@@ -4,7 +4,7 @@
 
 <script>
 import { createElement } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot } from 'react-dom'
 export default {
   inheritAttrs: false,
   props: {
