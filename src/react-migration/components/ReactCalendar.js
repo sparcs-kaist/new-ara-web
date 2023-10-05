@@ -14,54 +14,51 @@ const eventList = [
   { title: '추석', start: '2023-09-28', end: '2023-09-31', allday: true, color:'#ED3A3A' },
 ]
 
-class Calendar extends Component {
-    render() {
-        return (
-          <div className="Calendar">
-            <div className="DateCalendar">
-              <FullCalendar 
-                defaultView="dayGridMonth" 
-                plugins={[ dayGridPlugin ]}
-                titleFormat={{ year: 'numeric', month: 'long' }}
-                headerToolbar={{
-                  start: 'prev next',
-                  center: 'title',
-                  end: 'dayGridMonth,dayGridWeek,dayGridDay today'
-                }}
-                buttonText={{
-                  today:    '오늘',
-                  month:    '월',
-                  week:     '주',
-                  day:      '일',
-                  list:     '목록'
-                }}
-                events={eventList}
-                eventTextColor = 'white'
-                height = '635px'
-                contentHeight = '700px'
-                aspectRatio={1.0}
-                locales = {{ esLocale, koLocale }}
-                locale={'ko'}
-              />
-            </div>
-            <div className='EventCalendar'>
+export default function ReactCalendar() {
+      return (
+        <div className="Calendar">
+          <div className="DateCalendar">
             <FullCalendar 
-                initialView="listMonth" 
-                plugins={[ listPlugin ]}
-                headerToolbar={{
-                  start: '',
-                  center: '',
-                  end: ''
-                }}
-                events={eventList}
-                eventTextColor = 'black'
-                height='635px'
-                locales = {{ esLocale, koLocale }}
-                locale={'ko'}
-              />
-            </div>
+              defaultView="dayGridMonth" 
+              plugins={[ dayGridPlugin ]}
+              titleFormat={{ year: 'numeric', month: 'long' }}
+              headerToolbar={{
+                start: 'prev next',
+                center: 'title',
+                end: 'dayGridMonth,dayGridWeek,dayGridDay today'
+              }}
+              buttonText={{
+                today:    '오늘',
+                month:    '월',
+                week:     '주',
+                day:      '일',
+                list:     '목록'
+              }}
+              events={eventList}
+              eventTextColor = 'white'
+              height = '635px'
+              contentHeight = '700px'
+              aspectRatio={1.0}
+              locales = {{ esLocale, koLocale }}
+              locale={'ko'}
+            />
           </div>
-        );
-    }
+          <div className='EventCalendar'>
+          <FullCalendar 
+              initialView="listMonth" 
+              plugins={[ listPlugin ]}
+              headerToolbar={{
+                start: '',
+                center: '',
+                end: ''
+              }}
+              events={eventList}
+              eventTextColor = 'black'
+              height='635px'
+              locales = {{ esLocale, koLocale }}
+              locale={'ko'}
+            />
+          </div>
+        </div>
+      );
 }
-export default Calendar;

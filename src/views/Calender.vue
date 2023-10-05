@@ -1,9 +1,14 @@
 <template>
   <TheLayout class="home">
+    <div>
+      <react-wrapper
+        :component="HelloComponent"
+        title="Hello"
+      />
+    </div>
     <div class="calendar">
       <react-wrapper
         :component="ReactCalendarComponent"
-        title="Calendar"
       />
     </div>
   </TheLayout>
@@ -14,7 +19,8 @@ import { fetchArticles, fetchHome } from '@/api'
 import { fetchWithProgress } from '@/views/helper'
 import store from '@/store'
 import TheLayout from '@/components/TheLayout.vue'
-import Calendar from '@/react-migration/components/ReactCalendar'
+import ReactCalendar from '@/react-migration/components/ReactCalendar'
+import HelloWorld from '@/react-migration/components/hello.tsx'
 import ReactWrapper from '@/components/ReactWrapper.vue'
 
 export default {
@@ -33,8 +39,11 @@ export default {
   },
 
   computed: {
+    HelloComponent () {
+      return HelloWorld
+    },
     ReactCalendarComponent () {
-      return Calendar
+      return ReactCalendar
     }
   },
 
