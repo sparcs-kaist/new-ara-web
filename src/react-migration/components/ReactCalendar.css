@@ -1,0 +1,94 @@
+.DateCalendar {
+  width: 900px;
+  margin-right: 20px;
+  margin-left: 100px;
+  margin-top: 60px;
+  float: left;
+}
+
+.fc-scrollgrid  .fc-scrollgrid-liquid {
+  border-radius: 5px;
+}
+
+.fc-day-sun a {
+  color: #E15858;
+}
+
+.fc-day-sat a {
+  color: #535CAC;
+}
+
+.fc .fc-daygrid-day  .fc-day-today{
+  background-color: #F0F0F0;
+  border-color: transparent;
+}
+
+.fc .fc-button-primary {
+  background-color: transparent;
+  border-color: transparent;
+  color: #A9A9A9;
+}
+
+.fc .fc-button-primary:hover {
+  background-color: transparent;
+  border-color: transparent;
+  color: #E15858;
+}
+
+.fc .fc-dayGridMonth-button , .fc .fc-dayGridWeek-button , .fc .fc-dayGridDay-button {
+  background-color: #F0F0F0;
+  border-color: transparent;
+  padding-left: 30px;
+  padding-right: 30px;
+  color: #A9A9A9;
+}
+
+.fc .fc-dayGridMonth-button:hover , .fc .fc-dayGridWeek-button:hover , .fc .fc-dayGridDay-button:hover {
+  background-color: #F0F0F0;
+  border-color: transparent;
+  padding-left: 30px;
+  padding-right: 30px;
+  color: #000000;
+}
+
+
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background-color: #A9A9A9;
+  border-color: transparent;
+  color: #ffffff;
+}
+
+.fc .fc-today-button {
+  background-color: transparent;
+  border-color: transparent;
+  color: #A9A9A9;
+}
+
+.fc .fc-today-button:disabled {
+  background-color: transparent;
+  border-color: transparent;
+  color: #A9A9A9;
+}
+
+.fc-toolbar-title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 36px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+
+
+.EventCalendar {
+  width: 300px;
+  margin-top: 60px;
+  float: left;
+}
+
+
+.fc-list-day-cushion {
+  background-color: transparent;
+  border-color: transparent;
+  color: #A9A9A9;
+}

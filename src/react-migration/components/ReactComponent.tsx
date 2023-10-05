@@ -4,13 +4,12 @@ import React from 'react';
 
 type HelloWorldProps = {
  title: string;
- respondFunction: () => void;
 };
 
-export function HelloWorld ({ title, respondFunction }: HelloWorldProps) {
+export function HelloWorld ({ title }: HelloWorldProps) {
   return (
     <div>
-      <button onClick={() => respondFunction()}>{title}</button>
+      <h1>{title}</h1>
     </div>
   );
 }

@@ -12,6 +12,7 @@
     "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
+    "@iconify/react": "^4.1.1",
     "@splidejs/vue-splide": "^0.3.5",
     "axios": "^0.25.0",
     "bulma": "^0.7.1",
@@ -19,6 +20,7 @@
     "date-fns": "^2.30.0",
     "firebase": "^9.12.1",
     "lodash": "^4.17.21",
+    "moment": "^2.29.4",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "register-service-worker": "^1.7.2",
