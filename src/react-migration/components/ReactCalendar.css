@@ -1,8 +1,6 @@
 .DateCalendar {
   width: 900px;
-  margin-right: 20px;
-  margin-left: 100px;
-  margin-top: 60px;
+  margin-right: 10px;
   float: left;
 }
 
@@ -82,7 +80,6 @@
 
 .EventCalendar {
   width: 300px;
-  margin-top: 60px;
   float: left;
 }
 

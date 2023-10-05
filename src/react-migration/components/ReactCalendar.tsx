@@ -14,12 +14,12 @@ const eventList = [
   { title: '추석', start: '2023-09-28', end: '2023-09-31', allday: true, color:'#ED3A3A' },
 ]
 
-export default function ReactCalendar() {
+export default function ReactCalendar(): JSX.Element {
     return (
       <div className="Calendar">
         <div className="DateCalendar">
           <FullCalendar 
-            defaultView="dayGridMonth" 
+            defaultView='dayGridMonth'
             plugins={[ dayGridPlugin ]}
             titleFormat={{ year: 'numeric', month: 'long' }}
             headerToolbar={{
@@ -39,24 +39,24 @@ export default function ReactCalendar() {
             height = '635px'
             contentHeight = '700px'
             aspectRatio={1.0}
-            locales = {{ esLocale, koLocale }}
+            locales = {[ esLocale, koLocale ]}
             locale={'ko'}
           />
         </div>
         <div className='EventCalendar'>
-        <FullCalendar 
-            initialView="listMonth" 
-            plugins={[ listPlugin ]}
-            headerToolbar={{
-              start: '',
-              center: '',
-              end: ''
-            }}
-            events={eventList}
-            eventTextColor = 'black'
-            height='635px'
-            locales = {{ esLocale, koLocale }}
-            locale={'ko'}
+          <FullCalendar 
+              initialView="listYear" 
+              plugins={[ listPlugin ]}
+              headerToolbar={{
+                start: '',
+                center: '',
+                end: ''
+              }}
+              events={eventList}
+              eventTextColor = 'black'
+              height='635px'
+              locales = {[ esLocale, koLocale ]}
+              locale={'ko'}
           />
         </div>
       </div>

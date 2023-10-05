@@ -1,11 +1,5 @@
 <template>
   <TheLayout class="home">
-    <div>
-      <react-wrapper
-        :component="HelloComponent"
-        title="Hello"
-      />
-    </div>
     <div class="calendar">
       <react-wrapper
         :component="ReactCalendarComponent"
