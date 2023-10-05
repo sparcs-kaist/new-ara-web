@@ -77,28 +77,29 @@
           </router-link>
 
           <div
-            v-for="group in boardGroup"
-            :key="group.name"
+            v-for="group in boardGroups"
+            :key="group.id"
             class="navbar-item has-dropdown is-hoverable boardlist"
           >
             <router-link
-              v-if="group.name === 'talk'"
+              v-if="group.boards.length <= 1"
               :to="{ name: 'board', params: { boardSlug: 'talk' } }"
               class="navbar-item"
             >
-              <span>{{ $t('talk') }}</span>
+              <i class="material-icons is-hidden-desktop">navigate_next</i>
+              <span>{{ group[[`${$i18n.locale}_name`]] }}</span>
             </router-link>
             <div
-              v-if="group.name !== 'talk'"
+              v-if="group.boards.length > 1"
               class="navbar-item"
-              @click="click(group.name)"
+              @click="click(group.slug)"
             >
               <i v-if="group.clicked" class="material-icons is-hidden-desktop">expand_less</i>
               <i v-else class="material-icons is-hidden-desktop">expand_more</i>
-              <span>{{ $t(`group.${group.name}`) }}</span>
+              <span>{{ group[[`${$i18n.locale}_name`]] }}</span>
             </div>
             <div
-              v-if="group.name !== 'talk'"
+              v-if="group.boards.length > 1"
               :class="{
                 'navbar-clicked': !group.clicked,
                 'is-boxed': true
@@ -106,7 +107,7 @@
               class="navbar-dropdown"
             >
               <router-link
-                v-for="board in groupedBoardList[group.id]"
+                v-for="board in group.boards"
                 :key="board.id"
                 :to="{
                   name: 'board',
@@ -120,6 +121,14 @@
               </router-link>
             </div>
           </div>
+
+          <router-link
+            :to="{ name: 'board', params: { boardSlug: 'top' } }"
+            class="navbar-item"
+          >
+            <i class="material-icons is-hidden-desktop">navigate_next</i>
+            <span>{{ $t('top') }}</span>
+          </router-link>
         </div>
 
         <div class="navbar-end">
@@ -249,40 +258,13 @@ export default {
       notifications: [],
       isUnreadNotificationExist: false,
       isHome: true,
-      boardGroup: {
-        notice: {
-          clicked: false,
-          id: 1,
-          name: 'notice'
-        },
-        communication: {
-          clicked: false,
-          id: 5,
-          name: 'communication'
-        },
-        talk: {
-          clicked: false,
-          id: 7,
-          name: 'talk'
-        },
-        clubs: {
-          clicked: false,
-          id: 3,
-          name: 'clubs'
-        },
-        money: {
-          clicked: false,
-          id: 4,
-          name: 'money'
-        }
-      },
       isAlramShow: false,
       isMobileAlarmShow: false
     }
   },
 
   computed: {
-    ...mapState(['boardList']),
+    ...mapState(['boardList', 'boardGroups']),
     ...mapGetters(['userNickname', 'userPicture']),
     boardListVisible () {
       return this.boardList.filter(v => !v.is_hidden)
@@ -318,15 +300,14 @@ export default {
     },
     changeLocale,
     ...mapActions(['toggleDarkMode']),
-    click (boardName) {
-      if (this.boardGroup[boardName].clicked) {
-        this.boardGroup[boardName].clicked = false
-        return
+    click (groupSlug) {
+      const group = this.boardGroups.filter(group => group.slug === groupSlug)[0]
+
+      if (!group.clicked) {
+        this.boardGroups.forEach(group => { group.clicked = false })
       }
-      for (const board in this.boardGroup) {
-        this.boardGroup[board].clicked = false
-      }
-      this.boardGroup[boardName].clicked = true
+
+      group.clicked = !group.clicked
     },
     toggleAlram () {
       this.isAlramShow = !this.isAlramShow
@@ -363,6 +344,7 @@ ko:
   notification: '알림'
   write: '게시글 작성하기'
   all: '전체보기'
+  top: '인기글 게시판'
   talk: '자유게시판'
   my-page: '마이페이지'
   logout: '로그아웃'
@@ -378,6 +360,7 @@ en:
   notification: 'Notifications'
   write: 'Write Post'
   all: 'All'
+  top: 'Top Articles'
   talk: 'Talk'
   my-page: 'My Page'
   logout: 'Logout'

@@ -11,6 +11,12 @@
     <div class="columns is-multiline">
       <SmallBoard
         :listitems="dailyBests"
+        :href="{
+          name: 'board',
+          params: {
+            boardSlug: 'top'
+          }
+        }"
         class="home__board column is-4"
         detail
       >
@@ -19,6 +25,12 @@
 
       <SmallBoard
         :listitems="weeklyBests"
+        :href="{
+          name: 'board',
+          params: {
+            boardSlug: 'top'
+          }
+        }"
         class="home__board column is-4"
         detail
       >

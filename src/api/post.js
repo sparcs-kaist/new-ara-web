@@ -89,11 +89,3 @@ export const uploadAttachments = (attachments) => {
 
   return http.post('attachments/', generateFormData(attachments), httpOptions)
 }
-
-export const getAttachmentUrls = (attachmentIds) => {
-  const promises = []
-  attachmentIds.forEach((id) => {
-    promises.push(http.get(`attachments/${id}/`))
-  })
-  return Promise.all(promises)
-}
