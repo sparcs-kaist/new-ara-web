@@ -1,20 +1,23 @@
 <template>
   <div class="calendar">
     <div class="calendar-content">
-      <div class="main-calendar">
-        <FullCalendar
-          ref="mainCalendar"
-          :options="mainCalendarOptions"
-          :events="eventList"
-        />
-      </div>
-      <div class="event-calendar">
-        <FullCalendar
-          ref="eventCalendar"
-          :options="eventCalendarOptions"
-          :events="eventList"
-        />
-      </div>
+      <FullCalendar
+        ref="mainCalendar"
+        class="main-calendar"
+        :options="mainCalendarOptions"
+        :events="eventList"
+      />
+      <FullCalendar
+        ref="eventCalendar"
+        class="event-calendar"
+        :options="eventCalendarOptions"
+        :events="eventList"
+      />
+    </div>
+    <div class="calendar-bottom">
+      <h2 class="calendar-tag">
+        {{ $t('tag') }}
+      </h2>
     </div>
   </div>
 </template>
@@ -101,6 +104,13 @@ export default {
 }
 </script>
 
+<i18n>
+ko:
+  tag: '태그'
+en:
+  tag: 'Tag'
+</i18n>
+
 <style lang="scss" scoped>
 @import "@/theme.scss";
 .calendar-content {
@@ -125,33 +135,40 @@ export default {
   //float: left;
 }
 
-.fc-scrollgrid  .fc-scrollgrid-liquid {
-  border-radius: 5px;
+.calendar-tag {
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 
-.fc-day-sun a {
-  color: #E15858;
-}
+.main-calendar /deep/ {
+  & .fc-toolbar-title {
+    font-size: 2rem;
+    font-weight: 700;
+  }
 
-.fc-day-sat a {
-  color: #535CAC;
-}
-
-.fc .fc-daygrid-day  .fc-day-today{
-  background-color: #F0F0F0;
-  border-color: transparent;
-}
-
-.fc .fc-button-primary {
-  background-color: transparent;
-  border-color: transparent;
-  color: #A9A9A9;
-}
-
-.fc .fc-button-primary:hover {
-  background-color: transparent;
-  border-color: transparent;
-  color: #E15858;
+  & .fc-day-sun a {
+    color: #E15858;
+  }
+  & .fc-day-sat a {
+    color: #535CAC;
+  }
+  & .fc-scrollgrid, & .fc-scrollgrid-liquid {
+    border-radius: 5px;
+  }
+  & .fc-daygrid-day {
+    // background-color: #F0F0F0;
+    border-color: var(--fc-neutral-bg-color);
+  }
+  & .fc-button-primary {
+    background-color: var(--fc-neutral-bg-color);
+    border-color: transparent;
+    color: #A9A9A9;
+  }
+  & .fc-button-primary:hover {
+    //background-color: transparent;
+    //border-color: transparent;
+    color: #E15858;
+  }
 }
 
 .fc .fc-dayGridMonth-button , .fc .fc-dayGridWeek-button , .fc .fc-dayGridDay-button {
