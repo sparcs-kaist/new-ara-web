@@ -1,21 +1,21 @@
 <template>
-  <div>
-    <button @click="prev">
-      prev
-    </button>
-    <button @click="next">
-      next
-    </button>
-    <FullCalendar
-      ref="mainCalendar"
-      :options="mainCalendarOptions"
-      :events="eventList"
-    />
-    <FullCalendar
-      ref="eventCalendar"
-      :options="eventCalendarOptions"
-      :events="eventList"
-    />
+  <div class="calendar">
+    <div class="calendar-content">
+      <div class="main-calendar">
+        <FullCalendar
+          ref="mainCalendar"
+          :options="mainCalendarOptions"
+          :events="eventList"
+        />
+      </div>
+      <div class="event-calendar">
+        <FullCalendar
+          ref="eventCalendar"
+          :options="eventCalendarOptions"
+          :events="eventList"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -87,14 +87,15 @@ export default {
       }
     }
   },
-  methods: {
-    next () {
-      this.$refs.mainCalendar.getApi().next()
-      this.$refs.eventCalendar.getApi().next()
-    },
-    prev () {
-      this.$refs.mainCalendar.getApi().prev()
-      this.$refs.eventCalendar.getApi().prev()
+  mounted () {
+    const nextButton = this.$refs.mainCalendar.$el.querySelector('.fc-next-button')
+    const prevButton = this.$refs.mainCalendar.$el.querySelector('.fc-prev-button')
+
+    if (nextButton) {
+      nextButton.addEventListener('click', () => this.$refs.eventCalendar.getApi().next())
+    }
+    if (prevButton) {
+      prevButton.addEventListener('click', () => this.$refs.eventCalendar.getApi().prev())
     }
   }
 }
@@ -102,10 +103,26 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/theme.scss";
-.DateCalendar {
-  width: 900px;
+.calendar-content {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.main-calendar {
+  width: 700px;
   margin-right: 10px;
-  float: left;
+  //float: left;
+}
+
+.event-calendar {
+  width: 400px;
+  //float: left;
 }
 
 .fc-scrollgrid  .fc-scrollgrid-liquid {
@@ -177,11 +194,6 @@ export default {
   line-height: 36px;
   letter-spacing: 0em;
   text-align: left;
-}
-
-.EventCalendar {
-  width: 300px;
-  float: left;
 }
 
 .fc-list-day-cushion {
