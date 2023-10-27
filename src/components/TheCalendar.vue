@@ -49,7 +49,7 @@ export default {
   computed: {
     mainCalendarOptions () {
       return {
-        defaultView: 'dayGridMonth',
+        initialView: 'dayGridMonth',
         plugins: [ dayGridPlugin ],
         titleFormat: { year: 'numeric', month: 'long' },
         headerToolbar: {
@@ -69,7 +69,11 @@ export default {
         contentHeight: '700px',
         aspectRatio: 1.0,
         locales: [ esLocale, koLocale ],
-        locale: 'ko',
+        locale: this.$t('locale'),
+        dayCellContent: function (arg) {
+          return arg.dayNumberText.replace('일', '')
+        },
+        datesSet: this.syncCalendars,
         events: this.eventList
       }
     },
@@ -85,20 +89,29 @@ export default {
         eventTextColor: 'black',
         height: '635px',
         locales: [ esLocale, koLocale ],
-        locale: 'ko',
+        locale: this.$t('locale'),
         events: this.eventList
       }
     }
   },
   mounted () {
-    const nextButton = this.$refs.mainCalendar.$el.querySelector('.fc-next-button')
-    const prevButton = this.$refs.mainCalendar.$el.querySelector('.fc-prev-button')
+    // const nextButton = this.$refs.mainCalendar.$el.querySelector('.fc-next-button')
+    // const prevButton = this.$refs.mainCalendar.$el.querySelector('.fc-prev-button')
 
-    if (nextButton) {
-      nextButton.addEventListener('click', () => this.$refs.eventCalendar.getApi().next())
-    }
-    if (prevButton) {
-      prevButton.addEventListener('click', () => this.$refs.eventCalendar.getApi().prev())
+    // if (nextButton) {
+    //   nextButton.addEventListener('click', () => this.$refs.eventCalendar.getApi().next())
+    // }
+    // if (prevButton) {
+    //   prevButton.addEventListener('click', () => this.$refs.eventCalendar.getApi().prev())
+    // }
+  },
+  methods: {
+    syncCalendars (date) {
+      const eventCalendarApi = this.$refs.eventCalendar.getApi()
+
+      if (eventCalendarApi) {
+        eventCalendarApi.gotoDate(date.view.currentStart)
+      }
     }
   }
 }
@@ -106,8 +119,10 @@ export default {
 
 <i18n>
 ko:
+  locale: 'ko'
   tag: '태그'
 en:
+  locale: 'en'
   tag: 'Tag'
 </i18n>
 
@@ -142,8 +157,9 @@ en:
 
 .main-calendar /deep/ {
   & .fc-toolbar-title {
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 700;
+    line-height: 36px;
   }
 
   & .fc-day-sun a {
@@ -159,63 +175,57 @@ en:
     // background-color: #F0F0F0;
     border-color: var(--fc-neutral-bg-color);
   }
+
   & .fc-button-primary {
     background-color: var(--fc-neutral-bg-color);
     border-color: transparent;
     color: #A9A9A9;
+
+    &:active {
+      background-color: var(--fc-neutral-bg-color);
+    }
   }
   & .fc-button-primary:hover {
     //background-color: transparent;
     //border-color: transparent;
     color: #E15858;
   }
+
+  & .fc-button-group {
+    border-radius: 15px;
+    background-color: var(--fc-neutral-bg-color);
+
+    & .fc-button-active {
+      background-color: white;
+      color: black;
+      border: transparent;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px 0 rgba($color: #000000, $alpha: 0.1);
+    }
+  }
+  & .fc-dayGridMonth-button, & .fc-dayGridWeek-button, & .fc-dayGridDay-button {
+    background-color: transparent;
+    border-color: transparent;
+    width: 60px;
+    color: #A9A9A9;
+    margin: 5px 6px;
+    padding-top: 3px;
+    padding-bottom: 3px
+  }
+
+  & .fc-today-button {
+    width: 70px;
+    border: 1px solid var(--fc-border-color);
+    border-radius: 15px;
+    background-color: white;
+    color: black;
+  }
 }
 
-.fc .fc-dayGridMonth-button , .fc .fc-dayGridWeek-button , .fc .fc-dayGridDay-button {
-  background-color: #F0F0F0;
-  border-color: transparent;
-  padding-left: 30px;
-  padding-right: 30px;
-  color: #A9A9A9;
-}
-
-.fc .fc-dayGridMonth-button:hover , .fc .fc-dayGridWeek-button:hover , .fc .fc-dayGridDay-button:hover {
-  background-color: #F0F0F0;
-  border-color: transparent;
-  padding-left: 30px;
-  padding-right: 30px;
-  color: #000000;
-}
-
-.fc .fc-button-primary:not(:disabled).fc-button-active {
-  background-color: #A9A9A9;
-  border-color: transparent;
-  color: #ffffff;
-}
-
-.fc .fc-today-button {
+.fc-list-day {
   background-color: transparent;
   border-color: transparent;
   color: #A9A9A9;
 }
 
-.fc .fc-today-button:disabled {
-  background-color: transparent;
-  border-color: transparent;
-  color: #A9A9A9;
-}
-
-.fc-toolbar-title {
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 36px;
-  letter-spacing: 0em;
-  text-align: left;
-}
-
-.fc-list-day-cushion {
-  background-color: transparent;
-  border-color: transparent;
-  color: #A9A9A9;
-}
 </style>
