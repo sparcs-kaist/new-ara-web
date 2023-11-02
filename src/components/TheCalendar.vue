@@ -42,7 +42,9 @@ export default {
         { title: '으악', date: '2023-09-14', color: '#005AAA' },
         { title: '카포전', start: '2023-09-22', end: '2023-09-24', allday: true, color: '#005AAA' },
         { title: '으아아앙', date: '2023-09-25', color: '#005AAA' },
-        { title: '추석', start: '2023-09-28', end: '2023-09-31', allday: true, color: '#ED3A3A' }
+        { title: '추석', start: '2023-09-28', end: '2023-09-31', allday: true, color: '#ED3A3A' },
+        { title: '테스트', start: '2023-10-14', end: '2023-10-17', color: '#005AAA' },
+        { title: '테스트2', start: '2023-10-15', end: '2023-10-18', color: '#005AAA' }
       ]
     }
   },
@@ -90,6 +92,9 @@ export default {
         height: '635px',
         locales: [ esLocale, koLocale ],
         locale: this.$t('locale'),
+        listDayFormat: (date) => {
+          return date.date.day + '일'
+        },
         events: this.eventList
       }
     }
@@ -222,10 +227,11 @@ en:
   }
 }
 
-.fc-list-day {
-  background-color: transparent;
-  border-color: transparent;
-  color: #A9A9A9;
+.event-calendar /deep/ {
+  & .fc-list-day-cushion {
+    background-color: var(--fc-neutral-bg-color);
+    border: 0;
+  }
 }
 
 </style>
