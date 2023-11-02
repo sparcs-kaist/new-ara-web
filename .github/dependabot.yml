@@ -4,5 +4,6 @@ updates:
     directory: "/"
     # Check for updates once a week
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     target-branch: "dev"
+    
