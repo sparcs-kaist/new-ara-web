@@ -1,7 +1,9 @@
 <template>
   <div class="calendar">
     <div class="calendar-search">
-      <!-- <i class="material-icons">search</i> -->
+      <div class="search-icon">
+        <i class="material-icons">search</i>
+      </div>
       <input
         v-model="keyword"
         class="calendar-search-input"
@@ -76,10 +78,10 @@ export default {
     return {
       defaultEventList: [
         { title: 'KAIST 신입생 면접', date: '2023-11-29', color: '#88d7da', tag: '1' },
-        { title: '정기 정전', start: '2023-11-5', allday: true, color: '#88d7da', tag: '1' },
+        { title: '정기 정전', date: '2023-11-05', color: '#88d7da', tag: '1' },
         { title: '뭔가 있음', date: '2023-11-25', color: '#f49963', tag: '2' },
         { title: '검색 기능 테스트를 위한 긴 텍스트', start: '2023-11-28', end: '2023-11-31', allday: true, color: '#f49963', tag: '2' },
-        { title: 'G-Star 행사', start: '2023-11-18', end: '2023-11-19', color: '#ee82a1', tag: '3' },
+        { title: 'G-Star 행사', start: '2023-11-18', end: '2023-11-20', color: '#ee82a1', tag: '3' },
         { title: 'Ara 회식', start: '2023-11-13', color: '#ee82a1', tag: '3' }
       ],
       filteredEventList: [],
@@ -220,19 +222,14 @@ en:
 }
 
 .main-calendar {
-  width: 700px;
+  width: 70%;
   margin-right: 10px;
   //float: left;
 }
 
 .event-calendar {
-  width: 400px;
+  width: 30%;
   //float: left;
-}
-
-.calendar-tag {
-  font-size: 1.5rem;
-  font-weight: 500;
 }
 
 .main-calendar /deep/ {
@@ -254,6 +251,7 @@ en:
   & .fc-daygrid-day {
     // background-color: #F0F0F0;
     border-color: var(--fc-neutral-bg-color);
+    width: 10%;
   }
 
   & .fc-button-primary {
@@ -388,20 +386,37 @@ input[type="checkbox"]:checked + label {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.calendar-search-input {
-  width: 400px;
+  width: 100%;
   height: 40px;
   top: 15px;
   left: 399px;
   border-radius: 15px;
   background: #F0F0F0;
   border-style: none;
+}
+.search-icon {
+  width: 18.3px;
+  height: 18.3px;
+  top: 26.7px;
+  left: 410.7px;
+  .material-icons {
+    font-size: 18.3px;
+    font-weight: 500;
+    color: #A9A9A9;
+  }
+}
+.calendar-search-input {
+  width: 70px;
+  height: 23px;
+  top: 23px;
+  left: 568px;
+  background: none;
+  border: none;
   font-size: 16px;
   font-weight: 400;
   line-height: 23px;
   letter-spacing: 0em;
-  text-align: center;
+  text-align: left;
   color: #A9A9A9;
 }
 </style>
