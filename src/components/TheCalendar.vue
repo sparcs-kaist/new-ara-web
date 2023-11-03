@@ -142,6 +142,7 @@ export default {
     //   prevButton.addEventListener('click', () => this.$refs.eventCalendar.getApi().prev())
     // }
     this.filteredEventList = this.defaultEventList
+    this.selectedTags = this.tags.map((tag) => tag.value)
   },
   methods: {
     syncCalendars (date) {
