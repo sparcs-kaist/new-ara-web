@@ -1,5 +1,15 @@
 <template>
   <div class="calendar">
+    <div class="calendar-search">
+      <!-- <i class="material-icons">search</i> -->
+      <input
+        v-model="keyword"
+        class="calendar-search-input"
+        type="text"
+        placeholder="일정 검색"
+        @keyup.enter="searchEvent(keyword)"
+      >
+    </div>
     <div class="calendar-content">
       <FullCalendar
         ref="mainCalendar"
@@ -65,19 +75,20 @@ export default {
   data () {
     return {
       defaultEventList: [
-        { title: '태그1-1', date: '2023-11-14', color: '#88d7da', tag: '1' },
-        { title: '태그1-2', start: '2023-11-22', end: '2023-11-24', allday: true, color: '#88d7da', tag: '1' },
-        { title: '태그2-1', date: '2023-11-25', color: '#f49963', tag: '2' },
-        { title: '태그2-2', start: '2023-11-28', end: '2023-11-31', allday: true, color: '#f49963', tag: '2' },
-        { title: '태그3-1', start: '2023-11-14', end: '2023-11-17', color: '#ee82a1', tag: '3' },
-        { title: '태그3-2', start: '2023-11-15', end: '2023-11-18', color: '#ee82a1', tag: '3' }
+        { title: 'KAIST 신입생 면접', date: '2023-11-29', color: '#88d7da', tag: '1' },
+        { title: '정기 정전', start: '2023-11-5', allday: true, color: '#88d7da', tag: '1' },
+        { title: '뭔가 있음', date: '2023-11-25', color: '#f49963', tag: '2' },
+        { title: '검색 기능 테스트를 위한 긴 텍스트', start: '2023-11-28', end: '2023-11-31', allday: true, color: '#f49963', tag: '2' },
+        { title: 'G-Star 행사', start: '2023-11-18', end: '2023-11-19', color: '#ee82a1', tag: '3' },
+        { title: 'Ara 회식', start: '2023-11-13', color: '#ee82a1', tag: '3' }
       ],
       filteredEventList: [],
       selectedTags: [],
       tags: [
         { name: 'tag1', value: '1' },
         { name: 'tag2', value: '2' },
-        { name: 'tag3', value: '3' }]
+        { name: 'tag3', value: '3' }],
+      keyword: ''
     }
   },
   computed: {
@@ -164,6 +175,15 @@ export default {
       const newEventList = []
       this.defaultEventList.forEach((event) => {
         if (this.selectedTags.includes(event.tag)) {
+          newEventList.push(event)
+        }
+      })
+      this.filteredEventList = newEventList
+    },
+    searchEvent (keyword) {
+      const newEventList = []
+      this.defaultEventList.forEach((event) => {
+        if (event.title.includes(keyword)) {
           newEventList.push(event)
         }
       })
@@ -352,6 +372,7 @@ input[type="checkbox"]:checked + label {
   height: 40px;
   padding: 8px, 12px, 8px, 12px;
   border-radius: 20px;
+  border-style: none;
   margin-right: 8px;
   gap: 5px;
   background: #F0F0F0;
@@ -363,4 +384,24 @@ input[type="checkbox"]:checked + label {
   color: #333333;
 }
 
+.calendar-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.calendar-search-input {
+  width: 400px;
+  height: 40px;
+  top: 15px;
+  left: 399px;
+  border-radius: 15px;
+  background: #F0F0F0;
+  border-style: none;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 23px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: #A9A9A9;
+}
 </style>
