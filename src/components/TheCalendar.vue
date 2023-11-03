@@ -15,39 +15,34 @@
       />
     </div>
     <div class="calendar-bottom">
-      <h2 class="calendar-tag">
+      <div class="calendar-tag">
         {{ $t('tag') }}
-      </h2>
-      <div class="tag-select-button">
-        <input
-          v-model="selectedTags"
-          type="checkbox"
-          value="1"
-          @change="filterTag"
-        >
-        tag1
-        <input
-          v-model="selectedTags"
-          type="checkbox"
-          value="2"
-          @change="filterTag"
-        >
-        tag2
-        <input
-          v-model="selectedTags"
-          type="checkbox"
-          value="3"
-          @change="filterTag"
-        >
-        tag3
       </div>
-      <div class="tag-reset-button">
-        <button @click="selectAllEvent">
-          {{ $t('select-all') }}
-        </button>
-        <button @click="deselectAllEvent">
-          {{ $t('deselect-all') }}
-        </button>
+      <div calss="tag">
+        <div class="tag-select">
+          <div
+            v-for="tag in tags"
+            :key="tag.value"
+            class="tag-checkbox"
+          >
+            <input
+              :id="tag.name"
+              v-model="selectedTags"
+              :value="tag.value"
+              type="checkbox"
+              @change="filterTag"
+            >
+            <label class="tag-label" :for="tag.name">{{ tag.name }}</label>
+          </div>
+        </div>
+        <div class="tag-reset">
+          <button class="tag-reset-button" @click="selectAllEvent">
+            {{ $t('select-all') }}
+          </button>
+          <button class="tag-reset-button" @click="deselectAllEvent">
+            {{ $t('deselect-all') }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -70,15 +65,19 @@ export default {
   data () {
     return {
       defaultEventList: [
-        { title: '태그1-1', date: '2023-11-14', color: '#005AAA', tag: '1' },
-        { title: '태그1-2', start: '2023-11-22', end: '2023-11-24', allday: true, color: '#005AAA', tag: '1' },
-        { title: '태그2-1', date: '2023-11-25', color: '#005AAA', tag: '2' },
-        { title: '태그2-2', start: '2023-11-28', end: '2023-11-31', allday: true, color: '#ED3A3A', tag: '2' },
-        { title: '태그3-1', start: '2023-11-14', end: '2023-11-17', color: '#005AAA', tag: '3' },
-        { title: '태그3-2', start: '2023-11-15', end: '2023-11-18', color: '#005AAA', tag: '3' }
+        { title: '태그1-1', date: '2023-11-14', color: '#88d7da', tag: '1' },
+        { title: '태그1-2', start: '2023-11-22', end: '2023-11-24', allday: true, color: '#88d7da', tag: '1' },
+        { title: '태그2-1', date: '2023-11-25', color: '#f49963', tag: '2' },
+        { title: '태그2-2', start: '2023-11-28', end: '2023-11-31', allday: true, color: '#f49963', tag: '2' },
+        { title: '태그3-1', start: '2023-11-14', end: '2023-11-17', color: '#ee82a1', tag: '3' },
+        { title: '태그3-2', start: '2023-11-15', end: '2023-11-18', color: '#ee82a1', tag: '3' }
       ],
       filteredEventList: [],
-      selectedTags: []
+      selectedTags: [],
+      tags: [
+        { name: 'tag1', value: '1' },
+        { name: 'tag2', value: '2' },
+        { name: 'tag3', value: '3' }]
     }
   },
   computed: {
@@ -153,9 +152,11 @@ export default {
       }
     },
     selectAllEvent () {
+      this.selectedTags = this.tags.map((tag) => tag.value)
       this.filteredEventList = this.defaultEventList
     },
     deselectAllEvent () {
+      this.selectedTags = []
       this.filteredEventList = []
     },
     filterTag () {
@@ -285,6 +286,80 @@ en:
     background-color: var(--fc-neutral-bg-color);
     border: 0;
   }
+}
+
+.calendar-bottom {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.calendar-tag {
+  width: 45px;
+  height: 36px;
+  top: 874px;
+  left: 120px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 36px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #000000;
+  margin-right: 10px;
+}
+.tag {
+  justify-content: space-between;
+}
+.tag-checkbox {
+  margin-right: 10px;
+  margin-bottom: 8px;
+  float: left;
+}
+.tag-label {
+  width: 134px;
+  height: 40px;
+  padding: 8px, 14px, 8px, 14px;
+  border-radius: 20px;
+  gap: 5px;
+  border: 1px solid #DBDBDB;
+  border-style: dashed;
+  display: inline-block;
+  text-align: center;
+  color: #DBDBDB;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 33px;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"]:checked + label {
+  border-style: solid;
+  border-color: #666666;
+  color: #666666;
+;
+}
+
+.tag-reset {
+  flex: right;
+  margin-right: 10px;
+}
+.tag-reset-button {
+  width: 87px;
+  height: 40px;
+  padding: 8px, 12px, 8px, 12px;
+  border-radius: 20px;
+  margin-right: 8px;
+  gap: 5px;
+  background: #F0F0F0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 33px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: #333333;
 }
 
 </style>
