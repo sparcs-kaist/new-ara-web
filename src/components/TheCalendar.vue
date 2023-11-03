@@ -248,10 +248,20 @@ en:
   & .fc-scrollgrid, & .fc-scrollgrid-liquid {
     border-radius: 5px;
   }
+  & .fc-col-header-cell {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
   & .fc-daygrid-day {
     // background-color: #F0F0F0;
     border-color: var(--fc-neutral-bg-color);
     width: 10%;
+    border-left: none;
+    border-right: none;
+  }
+  & .fc-day-today{
+    background-color: #e8f5e9;
   }
 
   & .fc-button-primary {
