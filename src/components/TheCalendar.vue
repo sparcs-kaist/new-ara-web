@@ -5,19 +5,28 @@
         ref="mainCalendar"
         class="main-calendar"
         :options="mainCalendarOptions"
-        :events="eventList"
+        :events="filteredEventList"
       />
       <FullCalendar
         ref="eventCalendar"
         class="event-calendar"
         :options="eventCalendarOptions"
-        :events="eventList"
+        :events="filteredEventList"
       />
     </div>
     <div class="calendar-bottom">
       <h2 class="calendar-tag">
         {{ $t('tag') }}
       </h2>
+      <button @click="filterTag('1')">
+        tag1
+      </button>
+      <button @click="filterTag('2')">
+        tag2
+      </button>
+      <button @click="filterTag('3')">
+        tag3
+      </button>
     </div>
   </div>
 </template>
@@ -38,13 +47,21 @@ export default {
   },
   data () {
     return {
-      eventList: [
-        { title: '으악', date: '2023-09-14', color: '#005AAA' },
-        { title: '카포전', start: '2023-09-22', end: '2023-09-24', allday: true, color: '#005AAA' },
-        { title: '으아아앙', date: '2023-09-25', color: '#005AAA' },
-        { title: '추석', start: '2023-09-28', end: '2023-09-31', allday: true, color: '#ED3A3A' },
-        { title: '테스트', start: '2023-10-14', end: '2023-10-17', color: '#005AAA' },
-        { title: '테스트2', start: '2023-10-15', end: '2023-10-18', color: '#005AAA' }
+      defaultEventList: [
+        { title: '태그1-1', date: '2023-11-14', color: '#005AAA', tag: '1' },
+        { title: '태그1-2', start: '2023-11-22', end: '2023-11-24', allday: true, color: '#005AAA', tag: '1' },
+        { title: '태그2-1', date: '2023-11-25', color: '#005AAA', tag: '2' },
+        { title: '태그2-2', start: '2023-11-28', end: '2023-11-31', allday: true, color: '#ED3A3A', tag: '2' },
+        { title: '태그3-1', start: '2023-11-14', end: '2023-11-17', color: '#005AAA', tag: '3' },
+        { title: '태그3-2', start: '2023-11-15', end: '2023-11-18', color: '#005AAA', tag: '3' }
+      ],
+      filteredEventList: [
+        { title: '태그1-1', date: '2023-11-14', color: '#005AAA', tag: '1' },
+        { title: '태그1-2', start: '2023-11-22', end: '2023-11-24', allday: true, color: '#005AAA', tag: '1' },
+        { title: '태그2-1', date: '2023-11-25', color: '#005AAA', tag: '2' },
+        { title: '태그2-2', start: '2023-11-28', end: '2023-11-31', allday: true, color: '#ED3A3A', tag: '2' },
+        { title: '태그3-1', start: '2023-11-14', end: '2023-11-17', color: '#005AAA', tag: '3' },
+        { title: '태그3-2', start: '2023-11-15', end: '2023-11-18', color: '#005AAA', tag: '3' }
       ]
     }
   },
@@ -76,7 +93,7 @@ export default {
           return arg.dayNumberText.replace('일', '')
         },
         datesSet: this.syncCalendars,
-        events: this.eventList
+        events: this.filteredEventList
       }
     },
     eventCalendarOptions () {
@@ -95,7 +112,7 @@ export default {
         listDayFormat: (date) => {
           return date.date.day + '일'
         },
-        events: this.eventList
+        events: this.filteredEventList
       }
     }
   },
@@ -117,6 +134,15 @@ export default {
       if (eventCalendarApi) {
         eventCalendarApi.gotoDate(date.view.currentStart)
       }
+    },
+    filterTag (tag) {
+      const newEventList = []
+      this.defaultEventList.forEach((event) => {
+        if (event.tag === tag) {
+          newEventList.push(event)
+        }
+      })
+      this.filteredEventList = newEventList
     }
   }
 }
