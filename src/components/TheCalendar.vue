@@ -18,18 +18,37 @@
       <h2 class="calendar-tag">
         {{ $t('tag') }}
       </h2>
-      <button @click="resetTag">
-        reset
-      </button>
-      <button @click="filterTag('1')">
+      <div class="tag-select-button">
+        <input
+          v-model="selectedTags"
+          type="checkbox"
+          value="1"
+          @change="filterTag"
+        >
         tag1
-      </button>
-      <button @click="filterTag('2')">
+        <input
+          v-model="selectedTags"
+          type="checkbox"
+          value="2"
+          @change="filterTag"
+        >
         tag2
-      </button>
-      <button @click="filterTag('3')">
+        <input
+          v-model="selectedTags"
+          type="checkbox"
+          value="3"
+          @change="filterTag"
+        >
         tag3
-      </button>
+      </div>
+      <div class="tag-reset-button">
+        <button @click="selectAllEvent">
+          {{ $t('select-all') }}
+        </button>
+        <button @click="deselectAllEvent">
+          {{ $t('deselect-all') }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -58,7 +77,8 @@ export default {
         { title: '태그3-1', start: '2023-11-14', end: '2023-11-17', color: '#005AAA', tag: '3' },
         { title: '태그3-2', start: '2023-11-15', end: '2023-11-18', color: '#005AAA', tag: '3' }
       ],
-      filteredEventList: []
+      filteredEventList: [],
+      selectedTags: []
     }
   },
   computed: {
@@ -132,13 +152,18 @@ export default {
         eventCalendarApi.gotoDate(date.view.currentStart)
       }
     },
-    resetTag () {
+    selectAllEvent () {
       this.filteredEventList = this.defaultEventList
     },
-    filterTag (tag) {
+    deselectAllEvent () {
+      this.filteredEventList = []
+    },
+    filterTag () {
       const newEventList = []
+      console.log(this.selectedTags)
       this.defaultEventList.forEach((event) => {
-        if (event.tag === tag) {
+        console.log(event.tag)
+        if (this.selectedTags.includes(event.tag)) {
           newEventList.push(event)
         }
       })
@@ -152,9 +177,13 @@ export default {
 ko:
   locale: 'ko'
   tag: '태그'
+  select-all: '모두 선택'
+  deselect-all: '모두 해제'
 en:
   locale: 'en'
   tag: 'Tag'
+  select-all: 'Select All'
+  deselect-all: 'Deselect All'
 </i18n>
 
 <style lang="scss" scoped>
