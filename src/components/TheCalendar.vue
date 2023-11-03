@@ -18,6 +18,9 @@
       <h2 class="calendar-tag">
         {{ $t('tag') }}
       </h2>
+      <button @click="resetTag">
+        reset
+      </button>
       <button @click="filterTag('1')">
         tag1
       </button>
@@ -55,14 +58,7 @@ export default {
         { title: '태그3-1', start: '2023-11-14', end: '2023-11-17', color: '#005AAA', tag: '3' },
         { title: '태그3-2', start: '2023-11-15', end: '2023-11-18', color: '#005AAA', tag: '3' }
       ],
-      filteredEventList: [
-        { title: '태그1-1', date: '2023-11-14', color: '#005AAA', tag: '1' },
-        { title: '태그1-2', start: '2023-11-22', end: '2023-11-24', allday: true, color: '#005AAA', tag: '1' },
-        { title: '태그2-1', date: '2023-11-25', color: '#005AAA', tag: '2' },
-        { title: '태그2-2', start: '2023-11-28', end: '2023-11-31', allday: true, color: '#ED3A3A', tag: '2' },
-        { title: '태그3-1', start: '2023-11-14', end: '2023-11-17', color: '#005AAA', tag: '3' },
-        { title: '태그3-2', start: '2023-11-15', end: '2023-11-18', color: '#005AAA', tag: '3' }
-      ]
+      filteredEventList: []
     }
   },
   computed: {
@@ -126,6 +122,7 @@ export default {
     // if (prevButton) {
     //   prevButton.addEventListener('click', () => this.$refs.eventCalendar.getApi().prev())
     // }
+    this.filteredEventList = this.defaultEventList
   },
   methods: {
     syncCalendars (date) {
@@ -134,6 +131,9 @@ export default {
       if (eventCalendarApi) {
         eventCalendarApi.gotoDate(date.view.currentStart)
       }
+    },
+    resetTag () {
+      this.filteredEventList = this.defaultEventList
     },
     filterTag (tag) {
       const newEventList = []
