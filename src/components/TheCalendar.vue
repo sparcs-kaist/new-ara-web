@@ -160,9 +160,7 @@ export default {
     },
     filterTag () {
       const newEventList = []
-      console.log(this.selectedTags)
       this.defaultEventList.forEach((event) => {
-        console.log(event.tag)
         if (this.selectedTags.includes(event.tag)) {
           newEventList.push(event)
         }

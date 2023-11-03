@@ -129,6 +129,11 @@
             <i class="material-icons is-hidden-desktop">navigate_next</i>
             <span>{{ $t('top') }}</span>
           </router-link>
+
+          <router-link to="/calender" class="navbar-item">
+            <i class="material-icons is-hidden-desktop">navigate_next</i>
+            <span>{{ $t('calendar') }}</span>
+          </router-link>
         </div>
 
         <div class="navbar-end">
@@ -354,6 +359,7 @@ ko:
     money: '거래'
     clubs: '학생 단체 및 동아리'
   morealarm: '알림 더 보기'
+  calendar: '캘린더'
 
 en:
   language: '한국어'
@@ -370,6 +376,7 @@ en:
     money: 'Money'
     clubs: 'Organizations and Clubs'
   morealarm: 'See more Alarms'
+  calendar: 'Calendar'
 </i18n>
 
 <style lang="scss" scoped>

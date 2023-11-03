@@ -37,12 +37,6 @@
             {{ $t('ask') }}
           </a>
         </div>
-
-        <div class="footer-item">
-          <router-link to="/calender">
-            {{ "캘린더" }}
-          </router-link>
-        </div>
       </div>
 
       <div class="footer-contact is-hidden-mobile">
