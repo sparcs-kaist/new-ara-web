@@ -176,15 +176,6 @@ export default {
     }
   },
   mounted () {
-    // const nextButton = this.$refs.mainCalendar.$el.querySelector('.fc-next-button')
-    // const prevButton = this.$refs.mainCalendar.$el.querySelector('.fc-prev-button')
-
-    // if (nextButton) {
-    //   nextButton.addEventListener('click', () => this.$refs.eventCalendar.getApi().next())
-    // }
-    // if (prevButton) {
-    //   prevButton.addEventListener('click', () => this.$refs.eventCalendar.getApi().prev())
-    // }
     this.filteredEventList = this.defaultEventList
     // add color
     this.filteredEventList.forEach((event) => {
@@ -221,12 +212,12 @@ export default {
           }
         })
       })
-      // delete duplicate events in newEventList using each event.eventId
-      this.filteredEventList = newEventList.forEach((event) => {
-        if (!this.filteredEventList.find((filteredEvent) => filteredEvent.eventId === event.eventId)) {
-          this.filteredEventList.push(event)
-        }
-      })
+      // delete duplicate events in newEventList using each eventId
+      this.filteredEventList = newEventList.filter((event, index, self) =>
+        index === self.findIndex((t) => (
+          t.eventId === event.eventId
+        ))
+      )
       // add color using colorlist with tag
       this.filteredEventList.forEach((event) => {
         event.color = this.colorList.find((color) => color.tag === event.tagList[0]).color
