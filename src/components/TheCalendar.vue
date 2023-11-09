@@ -1,16 +1,42 @@
 <template>
   <div class="calendar">
-    <div class="calendar-search">
-      <div class="search-icon">
-        <i class="material-icons">search</i>
+    <div class="calendar-top">
+      <div calss="calendar-prev">
+        <button class="calendar-prev-button" @click="prev">
+          <i class="material-icons">chevron_left</i>
+        </button>
       </div>
-      <input
-        v-model="keyword"
-        class="calendar-search-input"
-        type="text"
-        placeholder="일정 검색"
-        @keyup.enter="searchEvent(keyword)"
-      >
+      <div class="calendar-date">
+        <!-- {{ this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' }) }} -->
+      </div>
+      <div calss="calendar-next">
+        <button class="calendar-next-button" @click="next">
+          <i class="material-icons">chevron_right</i>
+        </button>
+      </div>
+      <div class="calendar-search">
+        <div class="search-icon">
+          <i class="material-icons">search</i>
+        </div>
+        <input
+          v-model="keyword"
+          class="calendar-search-input"
+          type="text"
+          placeholder="일정 검색"
+          @keyup.enter="searchEvent(keyword)"
+        >
+      </div>
+      <div class="calendar-view">
+        <!-- <button class="calendar-view-button" @clcik="monthView">
+          {{ $t('month') }}
+        </button>
+        <button class="calendar-view-button" @clcik="weekView">
+          {{ $t('week') }}
+        </button>
+        <button class="calendar-view-button" @clcik="dayView">
+          {{ $t('day') }}
+        </button> -->
+      </div>
     </div>
     <div class="calendar-content">
       <FullCalendar
@@ -77,19 +103,24 @@ export default {
   data () {
     return {
       defaultEventList: [
-        { title: 'KAIST 신입생 면접', date: '2023-11-29', color: '#88d7da', tag: '1' },
-        { title: '정기 정전', date: '2023-11-05', color: '#88d7da', tag: '1' },
-        { title: '뭔가 있음', date: '2023-11-25', color: '#f49963', tag: '2' },
-        { title: '검색 기능 테스트를 위한 긴 텍스트', start: '2023-11-28', end: '2023-11-31', allday: true, color: '#f49963', tag: '2' },
-        { title: 'G-Star 행사', start: '2023-11-18', end: '2023-11-20', color: '#ee82a1', tag: '3' },
-        { title: 'Ara 회식', start: '2023-11-13', color: '#ee82a1', tag: '3' }
+        { eventId: 1, title: 'KAIST 신입생 면접', date: '2023-11-29', tagList: [1] },
+        { eventId: 2, title: '정기 정전', date: '2023-11-05', tagList: [1] },
+        { eventId: 3, title: '뭔가 있음', date: '2023-11-25', tagList: [2] },
+        { eventId: 4, title: '검색 기능 테스트를 위한 긴 텍스트', start: '2023-11-28', end: '2023-11-31', allday: true, tagList: [1, 2] },
+        { eventId: 5, title: 'G-Star 행사', start: '2023-11-18', end: '2023-11-20', tagList: [1, 3] },
+        { eventId: 6, title: 'Ara 회식', start: '2023-11-13', tagList: [3] }
       ],
       filteredEventList: [],
       selectedTags: [],
+      colorList: [
+        { tag: 1, color: '#88d7da' },
+        { tag: 2, color: '#f49963' },
+        { tag: 3, color: '#ee82a1' }
+      ],
       tags: [
-        { name: 'tag1', value: '1' },
-        { name: 'tag2', value: '2' },
-        { name: 'tag3', value: '3' }],
+        { name: 'tag1', value: 1 },
+        { name: 'tag2', value: 2 },
+        { name: 'tag3', value: 3 }],
       keyword: ''
     }
   },
@@ -102,7 +133,7 @@ export default {
         headerToolbar: {
           start: 'prev next',
           center: 'title',
-          end: 'dayGridMonth,dayGridWeek,dayGridDay today'
+          end: 'dayGridMonth dayGridWeek dayGridDay today'
         },
         buttonText: {
           today: '오늘',
@@ -155,6 +186,10 @@ export default {
     //   prevButton.addEventListener('click', () => this.$refs.eventCalendar.getApi().prev())
     // }
     this.filteredEventList = this.defaultEventList
+    // add color
+    this.filteredEventList.forEach((event) => {
+      event.color = this.colorList.find((color) => color.tag === event.tagList[0]).color
+    })
     this.selectedTags = this.tags.map((tag) => tag.value)
   },
   methods: {
@@ -168,6 +203,10 @@ export default {
     selectAllEvent () {
       this.selectedTags = this.tags.map((tag) => tag.value)
       this.filteredEventList = this.defaultEventList
+      // add color
+      this.filteredEventList.forEach((event) => {
+        event.color = this.colorList.find((color) => color.tag === event.tagList[0]).color
+      })
     },
     deselectAllEvent () {
       this.selectedTags = []
@@ -176,11 +215,22 @@ export default {
     filterTag () {
       const newEventList = []
       this.defaultEventList.forEach((event) => {
-        if (this.selectedTags.includes(event.tag)) {
-          newEventList.push(event)
+        event.tagList.forEach((tag) => {
+          if (this.selectedTags.includes(tag)) {
+            newEventList.push(event)
+          }
+        })
+      })
+      // delete duplicate events in newEventList using each event.eventId
+      this.filteredEventList = newEventList.forEach((event) => {
+        if (!this.filteredEventList.find((filteredEvent) => filteredEvent.eventId === event.eventId)) {
+          this.filteredEventList.push(event)
         }
       })
-      this.filteredEventList = newEventList
+      // add color using colorlist with tag
+      this.filteredEventList.forEach((event) => {
+        event.color = this.colorList.find((color) => color.tag === event.tagList[0]).color
+      })
     },
     searchEvent (keyword) {
       const newEventList = []
@@ -190,6 +240,30 @@ export default {
         }
       })
       this.filteredEventList = newEventList
+      // add color using colorlist with tag
+      this.filteredEventList.forEach((event) => {
+        event.color = this.colorList.find((color) => color.tag === event.tagList[0]).color
+      })
+    },
+    next () {
+      this.$refs.mainCalendar.getApi().next()
+      this.$refs.eventCalendar.getApi().next()
+    },
+    prev () {
+      this.$refs.mainCalendar.getApi().prev()
+      this.$refs.eventCalendar.getApi().prev()
+    },
+    monthView () {
+      // this.$refs.mainCalendar.getApi().changeView('dayGridMonth')
+      // this.$refs.eventCalendar.getApi().changeView('listMonth')
+    },
+    weekView () {
+      // this.$refs.mainCalendar.getApi().changeView('dayGridWeek')
+      // this.$refs.eventCalendar.getApi().changeView('listWeek')
+    },
+    dayView () {
+      // this.$refs.mainCalendar.getApi().changeView('dayGridDay')
+      // this.$refs.eventCalendar.getApi().changeView('listDay')
     }
   }
 }
@@ -201,11 +275,17 @@ ko:
   tag: '태그'
   select-all: '모두 선택'
   deselect-all: '모두 해제'
+  month: '월'
+  week: '주'
+  day: '일'
 en:
   locale: 'en'
   tag: 'Tag'
   select-all: 'Select All'
   deselect-all: 'Deselect All'
+  month: 'Month'
+  week: 'Week'
+  day: 'Day'
 </i18n>
 
 <style lang="scss" scoped>
