@@ -1,41 +1,52 @@
 <template>
   <div class="calendar">
     <div class="calendar-top">
-      <div calss="calendar-prev">
-        <button class="calendar-prev-button" @click="prev">
-          <i class="material-icons">chevron_left</i>
-        </button>
-      </div>
-      <div class="calendar-date">
-        <!-- {{ this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' }) }} -->
-      </div>
-      <div calss="calendar-next">
-        <button class="calendar-next-button" @click="next">
-          <i class="material-icons">chevron_right</i>
-        </button>
-      </div>
-      <div class="calendar-search">
-        <div class="search-icon">
-          <i class="material-icons">search</i>
+      <div class="calendar-top-start">
+        <div class="calendar-prev">
+          <button class="calendar-prev-button" @click="prev">
+            <i class="material-icons">chevron_left</i>
+          </button>
         </div>
-        <input
-          v-model="keyword"
-          class="calendar-search-input"
-          type="text"
-          placeholder="일정 검색"
-          @keyup.enter="searchEvent(keyword)"
-        >
+        <div class="calendar-date">
+          {{ calendarTitle }}
+        </div>
+        <div class="calendar-next">
+          <button class="calendar-next-button" @click="next">
+            <i class="material-icons">chevron_right</i>
+          </button>
+        </div>
       </div>
-      <div class="calendar-view">
-        <!-- <button class="calendar-view-button" @clcik="monthView">
-          {{ $t('month') }}
-        </button>
-        <button class="calendar-view-button" @clcik="weekView">
-          {{ $t('week') }}
-        </button>
-        <button class="calendar-view-button" @clcik="dayView">
-          {{ $t('day') }}
-        </button> -->
+      <div class="calendar-top-center">
+        <div class="calendar-search">
+          <div class="search-icon">
+            <i class="material-icons">search</i>
+          </div>
+          <input
+            v-model="keyword"
+            class="calendar-search-input"
+            type="text"
+            placeholder="일정 검색"
+            @keyup.enter="searchEvent(keyword)"
+          >
+        </div>
+      </div>
+      <div class="calendar-top-end">
+        <div class="calendar-view">
+          <button class="calendar-view-button" @click="monthView">
+            {{ $t('month') }}
+          </button>
+          <button class="calendar-view-button" @click="weekView">
+            {{ $t('week') }}
+          </button>
+          <button class="calendar-view-button" @click="dayView">
+            {{ $t('day') }}
+          </button>
+        </div>
+        <div class="calendar-today">
+          <button class="calendar-today-button" @click="todayView">
+            {{ $t('today') }}
+          </button>
+        </div>
       </div>
     </div>
     <div class="calendar-content">
@@ -121,7 +132,8 @@ export default {
         { name: 'tag1', value: 1 },
         { name: 'tag2', value: 2 },
         { name: 'tag3', value: 3 }],
-      keyword: ''
+      keyword: '',
+      calendarTitle: ''
     }
   },
   computed: {
@@ -131,9 +143,9 @@ export default {
         plugins: [ dayGridPlugin ],
         titleFormat: { year: 'numeric', month: 'long' },
         headerToolbar: {
-          start: 'prev next',
-          center: 'title',
-          end: 'dayGridMonth dayGridWeek dayGridDay today'
+          start: '',
+          center: '',
+          end: ''
         },
         buttonText: {
           today: '오늘',
@@ -182,6 +194,7 @@ export default {
       event.color = this.colorList.find((color) => color.tag === event.tagList[0]).color
     })
     this.selectedTags = this.tags.map((tag) => tag.value)
+    this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' })
   },
   methods: {
     syncCalendars (date) {
@@ -225,7 +238,7 @@ export default {
     },
     searchEvent (keyword) {
       const newEventList = []
-      this.defaultEventList.forEach((event) => {
+      this.filteredEventList.forEach((event) => {
         if (event.title.includes(keyword)) {
           newEventList.push(event)
         }
@@ -239,22 +252,29 @@ export default {
     next () {
       this.$refs.mainCalendar.getApi().next()
       this.$refs.eventCalendar.getApi().next()
+      this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' })
     },
     prev () {
       this.$refs.mainCalendar.getApi().prev()
       this.$refs.eventCalendar.getApi().prev()
+      this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' })
     },
     monthView () {
-      // this.$refs.mainCalendar.getApi().changeView('dayGridMonth')
-      // this.$refs.eventCalendar.getApi().changeView('listMonth')
+      this.$refs.mainCalendar.getApi().changeView('dayGridMonth')
+      this.$refs.eventCalendar.getApi().changeView('listMonth')
     },
     weekView () {
-      // this.$refs.mainCalendar.getApi().changeView('dayGridWeek')
-      // this.$refs.eventCalendar.getApi().changeView('listWeek')
+      this.$refs.mainCalendar.getApi().changeView('dayGridWeek')
+      this.$refs.eventCalendar.getApi().changeView('listWeek')
     },
     dayView () {
-      // this.$refs.mainCalendar.getApi().changeView('dayGridDay')
-      // this.$refs.eventCalendar.getApi().changeView('listDay')
+      this.$refs.mainCalendar.getApi().changeView('dayGridDay')
+      this.$refs.eventCalendar.getApi().changeView('listDay')
+    },
+    todayView () {
+      this.$refs.mainCalendar.getApi().today()
+      this.$refs.eventCalendar.getApi().today()
+      this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' })
     }
   }
 }
@@ -269,6 +289,7 @@ ko:
   month: '월'
   week: '주'
   day: '일'
+  today: '오늘'
 en:
   locale: 'en'
   tag: 'Tag'
@@ -277,6 +298,7 @@ en:
   month: 'Month'
   week: 'Week'
   day: 'Day'
+  today: 'Today'
 </i18n>
 
 <style lang="scss" scoped>
@@ -371,14 +393,6 @@ en:
     padding-top: 3px;
     padding-bottom: 3px
   }
-
-  & .fc-today-button {
-    width: 70px;
-    border: 1px solid var(--fc-border-color);
-    border-radius: 15px;
-    background-color: white;
-    color: black;
-  }
 }
 
 .event-calendar /deep/ {
@@ -388,6 +402,178 @@ en:
   }
 }
 
+.calendar-top {
+  width: 100%;
+  height: 70px;
+  border-radius: 20px;
+  align-items: center;
+  box-shadow: 0px 3px 6px 0px #0000001A;
+  border: 1px solid #F0F0F0;
+  position: relative;
+}
+
+.calendar-top-start {
+  float: left;
+  width: 32%;
+  height: 36px;
+  top: 50%;
+  left: 20px;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  .calendar-prev {
+    width: 5%;
+    height: 24px;
+    align-items: center;
+    float: left;
+    margin-left: 20px;
+    justify-content: center;
+    .calendar-prev-button {
+      height: 24px;
+      color: #A9A9A9;
+      background: none;
+      border: none;
+      align-items: center;
+      font-weight: 700;
+      text-align: center;
+      .material-icons {
+        font-size: 24px;
+        font-weight: 500;
+        align-items: center;
+        text-align: center;
+      }
+    }
+
+    .calendar-prev-button:hover {
+      color: #E15858;
+    }
+  }
+
+  .calendar-date {
+    width: 40%;
+    height: 36px;
+    float: left;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #000000;
+    margin-left: 15px;
+  }
+  .calendar-next {
+    width: 5%;
+    height: 24px;
+    align-items: center;
+    float: left;
+    justify-content: center;
+    .calendar-next-button {
+      height: 24px;
+      color: #A9A9A9;
+      background: none;
+      border: none;
+      align-items: center;
+      font-weight: 700;
+      text-align: center;
+      .material-icons {
+        font-size: 24px;
+        font-weight: 500;
+        align-items: center;
+        text-align: center;
+      }
+    }
+
+    .calendar-next-button:hover {
+      color: #E15858;
+    }
+  }
+}
+
+.calendar-top-center {
+  float: left;
+  width: 33%;
+  margin-right: 10px;
+  .calendar-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    top: 50%;
+    left: 399px;
+    border-radius: 15px;
+    background: #F0F0F0;
+    border-style: none;
+  }
+  .search-icon {
+    width: 18.3px;
+    height: 18.3px;
+    top: 26.7px;
+    left: 410.7px;
+    .material-icons {
+      font-size: 18.3px;
+      font-weight: 500;
+      color: #A9A9A9;
+    }
+  }
+  .calendar-search-input {
+    width: 70px;
+    height: 23px;
+    top: 23px;
+    left: 568px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 23px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #A9A9A9;
+  }
+}
+
+.calendar-top-end {
+  float: right;
+  width: 30%;
+}
+.calandar-view {
+  height: 100%;
+  float: left;
+  align-items: center;
+  justify-content: center;
+  top: 15px;
+  left: 877px;
+  border-radius: 15px;
+  background-color: var(--fc-neutral-bg-color);
+}
+
+.calendar-view-button {
+  background-color: transparent;
+  border-color: transparent;
+  width: 60px;
+  color: #A9A9A9;
+  margin: 5px 6px;
+  padding-top: 3px;
+  padding-bottom: 3px
+}
+
+.calendar-today {
+  height: 100%;
+  float: left;
+  align-items: center;
+}
+
+.calendar-today-button {
+  width: 70px;
+  height: 40px;
+  top: 15px;
+  left: 1112px;
+  padding: 8px, 20px, 8px, 20px;
+  border-radius: 15px;
+  gap: 10px;
+  border: 1px solid var(--fc-border-color);
+  background-color: white;
+  color: black;
+}
 .calendar-bottom {
   display: flex;
   flex-direction: row;
@@ -461,43 +647,5 @@ input[type="checkbox"]:checked + label {
   letter-spacing: 0em;
   text-align: center;
   color: #333333;
-}
-
-.calendar-search {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 40px;
-  top: 15px;
-  left: 399px;
-  border-radius: 15px;
-  background: #F0F0F0;
-  border-style: none;
-}
-.search-icon {
-  width: 18.3px;
-  height: 18.3px;
-  top: 26.7px;
-  left: 410.7px;
-  .material-icons {
-    font-size: 18.3px;
-    font-weight: 500;
-    color: #A9A9A9;
-  }
-}
-.calendar-search-input {
-  width: 70px;
-  height: 23px;
-  top: 23px;
-  left: 568px;
-  background: none;
-  border: none;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 23px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #A9A9A9;
 }
 </style>
