@@ -1,5 +1,7 @@
 <template>
   <div class="calendar">
+    <CalendarPopup v-if="hoveringEvent" />
+
     <div class="calendar-top">
       <div class="calendar-top-start">
         <div class="calendar-prev">
@@ -103,23 +105,24 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import listPlugin from '@fullcalendar/list'
 import esLocale from '@fullcalendar/core/locales/es'
 import koLocale from '@fullcalendar/core/locales/ko'
-// import interactionPlugin from '@fullcalendar/interaction'
+import CalendarPopup from './CalendarPopup.vue'
 
 export default {
   name: 'TheCalendar',
 
   components: {
-    FullCalendar // make the <FullCalendar> tag available
+    FullCalendar,
+    CalendarPopup
   },
   data () {
     return {
       defaultEventList: [
-        { eventId: 1, title: 'KAIST 신입생 면접', date: '2023-11-29', tagList: [1] },
-        { eventId: 2, title: '정기 정전', date: '2023-11-05', tagList: [1] },
-        { eventId: 3, title: '뭔가 있음', date: '2023-11-25', tagList: [2] },
-        { eventId: 4, title: '검색 기능 테스트를 위한 긴 텍스트', start: '2023-11-28', end: '2023-11-31', allday: true, tagList: [1, 2] },
-        { eventId: 5, title: 'G-Star 행사', start: '2023-11-18', end: '2023-11-20', tagList: [1, 3] },
-        { eventId: 6, title: 'Ara 회식', start: '2023-11-13', tagList: [3] }
+        { id: 1, title: 'KAIST 신입생 면접', date: '2023-11-29', tagList: [1] },
+        { id: 2, title: '정기 정전', date: '2023-11-05', tagList: [1] },
+        { id: 3, title: '뭔가 있음', date: '2023-11-25', tagList: [2] },
+        { id: 4, title: '검색 기능 테스트를 위한 긴 텍스트', start: '2023-11-28', end: '2023-11-31', allday: true, tagList: [1, 2] },
+        { id: 5, title: 'G-Star 행사', start: '2023-11-18', end: '2023-11-20', tagList: [1, 3] },
+        { id: 6, title: 'Ara 회식', start: '2023-11-13', tagList: [3] }
       ],
       filteredEventList: [],
       selectedTags: [],
@@ -133,7 +136,8 @@ export default {
         { name: 'tag2', value: 2 },
         { name: 'tag3', value: 3 }],
       keyword: '',
-      calendarTitle: ''
+      calendarTitle: '',
+      hoveringEvent: null
     }
   },
   computed: {
@@ -165,7 +169,8 @@ export default {
         },
         datesSet: this.syncCalendars,
         events: this.filteredEventList,
-        eventDidMount: this.hoverEvent
+        eventMouseEnter: this.hoverEventEnter,
+        eventMouseLeave: this.hoverEventLeave
       }
     },
     eventCalendarOptions () {
@@ -277,14 +282,11 @@ export default {
       this.$refs.eventCalendar.getApi().today()
       this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' })
     },
-    hoverEvent (info) {
-      // TODO!
-      // var tooltip = new Tooltip(info.el, {
-      //   title: info.event.extendedProps.description,
-      //   placement: 'top',
-      //   trigger: 'hover',
-      //   container: 'body'
-      // })
+    hoverEventEnter ({ event, el, jsEvent, view }) {
+      this.hoveringEvent = event
+    },
+    hoverEventLeave ({ event, el, jsEvent, view }) {
+      this.hoveringEvent = null
     }
   }
 }
