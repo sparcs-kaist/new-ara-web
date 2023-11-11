@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { cacheAdapterEnhancer } from 'axios-extensions'
 import cookie from '@/utils/cookie'
 import router from '@/router'
 import { getValidatorError } from '@/helper'
@@ -20,7 +21,8 @@ const baseApiAddress = `${apiUrl}/api/`
 
 const instance = axios.create({
   baseURL: baseApiAddress,
-  withCredentials: true
+  withCredentials: true,
+  adapter: cacheAdapterEnhancer(axios.defaults.adapter, { enabledByDefault: false })
 })
 
 instance.interceptors
