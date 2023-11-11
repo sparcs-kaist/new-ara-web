@@ -164,7 +164,8 @@ export default {
           return arg.dayNumberText.replace('일', '')
         },
         datesSet: this.syncCalendars,
-        events: this.filteredEventList
+        events: this.filteredEventList,
+        eventDidMount: this.hoverEvent
       }
     },
     eventCalendarOptions () {
@@ -275,6 +276,15 @@ export default {
       this.$refs.mainCalendar.getApi().today()
       this.$refs.eventCalendar.getApi().today()
       this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' })
+    },
+    hoverEvent (info) {
+      // TODO!
+      // var tooltip = new Tooltip(info.el, {
+      //   title: info.event.extendedProps.description,
+      //   placement: 'top',
+      //   trigger: 'hover',
+      //   container: 'body'
+      // })
     }
   }
 }
