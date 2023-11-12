@@ -1,7 +1,8 @@
 <template>
   <div
     class="calendar-popup"
-    :style="{ top: (y-67)+10+'px', left: x+10+'px' }"
+    :style="{ top: y+'px', left: x+'px' }"
+    @mouseleave="$emit('mouseleave')"
   >
     <div class="calendar-popup-header">
       <div class="calendar-popup-header__title">
@@ -130,7 +131,7 @@ export default {
   position: absolute;
   background: rgba(250, 250, 250, 0.8);
   z-index: 30;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(7px);
   box-shadow: 0px 6px 12px 0px #33333333;
   width: 300px;
   border: 0.5px solid #A9A9A9;
@@ -172,6 +173,7 @@ export default {
 
   &__date {
     font-size: 14px;
+    width: 50%;
   }
 
   &__description {

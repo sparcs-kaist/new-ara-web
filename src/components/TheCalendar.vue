@@ -1,11 +1,12 @@
 <template>
-  <div class="calendar">
+  <div ref="calendarContainer" class="calendar">
     <transition name="fade" duration="1000">
       <CalendarPopup
         v-if="hoveringEvent"
         :event="hoveringEvent"
         :x="hoveringPosition.x"
         :y="hoveringPosition.y"
+        @mouseleave="hoverEventLeave"
       />
     </transition>
 
@@ -145,7 +146,7 @@ export default {
       keyword: '',
       calendarTitle: '',
       hoveringEvent: null,
-      hoveringPosition: { x: null, y: null }
+      hoveringPosition: { x: 0, y: 0 }
     }
   },
   computed: {
@@ -177,8 +178,7 @@ export default {
         },
         datesSet: this.syncCalendars,
         events: this.filteredEventList,
-        eventMouseEnter: this.hoverEventEnter,
-        eventMouseLeave: this.hoverEventLeave
+        eventMouseEnter: this.hoverEventEnter
       }
     },
     eventCalendarOptions () {
@@ -291,13 +291,12 @@ export default {
       this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' })
     },
     hoverEventEnter ({ event, el, jsEvent, view }) {
-      console.log(jsEvent)
+      const rect = this.$refs.calendarContainer.getBoundingClientRect()
       this.hoveringEvent = event
-      this.hoveringPosition = { x: jsEvent.pageX, y: jsEvent.pageY }
+      this.hoveringPosition = { x: jsEvent.x - rect.left - 20, y: jsEvent.y - rect.top - 30 }
     },
-    hoverEventLeave ({ event, el, jsEvent, view }) {
-      this.hoveringEvent = null
-      this.hoveringPosition = { x: null, y: null }
+    hoverEventLeave () {
+      // this.hoveringEvent = null
     }
   }
 }
