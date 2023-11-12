@@ -296,7 +296,7 @@ export default {
       this.hoveringPosition = { x: jsEvent.x - rect.left - 20, y: jsEvent.y - rect.top - 30 }
     },
     hoverEventLeave () {
-      // this.hoveringEvent = null
+      this.hoveringEvent = null
     }
   }
 }
