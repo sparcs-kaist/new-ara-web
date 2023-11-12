@@ -1,5 +1,8 @@
 <template>
-  <div class="calendar-popup">
+  <div
+    class="calendar-popup"
+    :style="{ top: (y-67)+10+'px', left: x+10+'px' }"
+  >
     <div class="calendar-popup-header">
       <div class="calendar-popup-header__title">
         <div
@@ -102,7 +105,22 @@
 
 <script>
 export default {
-  name: 'CalendarPopup'
+  name: 'CalendarPopup',
+
+  props: {
+    event: {
+      type: Object,
+      required: true
+    },
+    x: {
+      type: Number,
+      required: true
+    },
+    y: {
+      type: Number,
+      required: true
+    }
+  }
 }
 </script>
 
@@ -110,8 +128,6 @@ export default {
 @import "@/theme.scss";
 .calendar-popup {
   position: absolute;
-  top: 300px;
-  left: 50px;
   background: rgba(250, 250, 250, 0.8);
   z-index: 30;
   backdrop-filter: blur(5px);

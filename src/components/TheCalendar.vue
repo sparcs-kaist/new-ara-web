@@ -1,6 +1,13 @@
 <template>
   <div class="calendar">
-    <CalendarPopup v-if="hoveringEvent" />
+    <transition name="fade" duration="1000">
+      <CalendarPopup
+        v-if="hoveringEvent"
+        :event="hoveringEvent"
+        :x="hoveringPosition.x"
+        :y="hoveringPosition.y"
+      />
+    </transition>
 
     <div class="calendar-top">
       <div class="calendar-top-start">
@@ -137,7 +144,8 @@ export default {
         { name: 'tag3', value: 3 }],
       keyword: '',
       calendarTitle: '',
-      hoveringEvent: null
+      hoveringEvent: null,
+      hoveringPosition: { x: null, y: null }
     }
   },
   computed: {
@@ -283,10 +291,13 @@ export default {
       this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' })
     },
     hoverEventEnter ({ event, el, jsEvent, view }) {
+      console.log(jsEvent)
       this.hoveringEvent = event
+      this.hoveringPosition = { x: jsEvent.pageX, y: jsEvent.pageY }
     },
     hoverEventLeave ({ event, el, jsEvent, view }) {
       this.hoveringEvent = null
+      this.hoveringPosition = { x: null, y: null }
     }
   }
 }
@@ -659,5 +670,13 @@ input[type="checkbox"]:checked + label {
   letter-spacing: 0em;
   text-align: center;
   color: #333333;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0 !important;
 }
 </style>
