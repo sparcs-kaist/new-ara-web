@@ -244,24 +244,9 @@ export default {
       this.filteredEventList = []
     },
     filterTag () {
-      const newEventList = []
-      this.defaultEventList.forEach((event) => {
-        event.tagList.forEach((tag) => {
-          if (this.selectedTags.includes(tag)) {
-            newEventList.push(event)
-          }
-        })
-      })
-      // delete duplicate events in newEventList using each eventId
-      this.filteredEventList = newEventList.filter((event, index, self) =>
-        index === self.findIndex((t) => (
-          t.id === event.id
-        ))
+      this.filteredEventList = this.defaultEventList.filter((event) =>
+        event.tagList.filter((tag) => this.selectedTags.includes(tag)).length > 0
       )
-      // add color using colorlist with tag
-      this.filteredEventList.forEach((event) => {
-        event.color = this.colorList.find((color) => color.tag === event.tagList[0]).color
-      })
     },
     searchEvent (keyword) {
       const newEventList = []
