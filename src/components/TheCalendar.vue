@@ -42,13 +42,25 @@
       </div>
       <div class="calendar-top-end">
         <div class="calendar-view">
-          <button class="calendar-view-button" @click="monthView">
+          <button
+            class="calendar-view-button"
+            :class="{'calendar-view-active': activeBtn === 'month' }"
+            @click="changeView('month')"
+          >
             {{ $t('month') }}
           </button>
-          <button class="calendar-view-button" @click="weekView">
+          <button
+            class="calendar-view-button"
+            :class="{'calendar-view-active': activeBtn === 'week' }"
+            @click="changeView('week')"
+          >
             {{ $t('week') }}
           </button>
-          <button class="calendar-view-button" @click="dayView">
+          <button
+            class="calendar-view-button"
+            :class="{'calendar-view-active': activeBtn === 'day' }"
+            @click="changeView('day')"
+          >
             {{ $t('day') }}
           </button>
         </div>
@@ -146,7 +158,8 @@ export default {
       keyword: '',
       calendarTitle: '',
       hoveringEvent: null,
-      hoveringPosition: { x: 0, y: 0 }
+      hoveringPosition: { x: 0, y: 0 },
+      activeBtn: 'month'
     }
   },
   computed: {
@@ -242,7 +255,7 @@ export default {
       // delete duplicate events in newEventList using each eventId
       this.filteredEventList = newEventList.filter((event, index, self) =>
         index === self.findIndex((t) => (
-          t.eventId === event.eventId
+          t.id === event.id
         ))
       )
       // add color using colorlist with tag
@@ -265,13 +278,22 @@ export default {
     },
     next () {
       this.$refs.mainCalendar.getApi().next()
-      this.$refs.eventCalendar.getApi().next()
       this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' })
     },
     prev () {
       this.$refs.mainCalendar.getApi().prev()
-      this.$refs.eventCalendar.getApi().prev()
       this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' })
+    },
+    changeView (view) {
+      const viewList = [
+        ['month', 'dayGridMonth', 'listMonth'],
+        ['week', 'dayGridWeek', 'listWeek'],
+        ['day', 'dayGridDay', 'listDay']
+      ]
+      const viewType = viewList.find((viewType) => viewType[0] === view)
+      this.$refs.mainCalendar.getApi().changeView(viewType[1])
+      this.$refs.eventCalendar.getApi().changeView(viewType[2])
+      this.activeBtn = view
     },
     monthView () {
       this.$refs.mainCalendar.getApi().changeView('dayGridMonth')
@@ -287,7 +309,6 @@ export default {
     },
     todayView () {
       this.$refs.mainCalendar.getApi().today()
-      this.$refs.eventCalendar.getApi().today()
       this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' })
     },
     hoverEventEnter ({ event, el, jsEvent, view }) {
@@ -432,6 +453,7 @@ en:
   box-shadow: 0px 3px 6px 0px #0000001A;
   border: 1px solid #F0F0F0;
   position: relative;
+  display: flex;
 }
 
 .calendar-top-start {
@@ -439,16 +461,15 @@ en:
   width: 32%;
   height: 36px;
   top: 50%;
-  left: 20px;
   gap: 20px;
   align-items: center;
   justify-content: center;
+  display: flex;
   .calendar-prev {
     width: 5%;
     height: 24px;
     align-items: center;
     float: left;
-    margin-left: 20px;
     justify-content: center;
     .calendar-prev-button {
       height: 24px;
@@ -556,8 +577,10 @@ en:
 .calendar-top-end {
   float: right;
   width: 30%;
+  display: flex;
+;
 }
-.calandar-view {
+.calendar-view {
   height: 100%;
   float: left;
   align-items: center;
@@ -565,7 +588,9 @@ en:
   top: 15px;
   left: 877px;
   border-radius: 15px;
-  background-color: var(--fc-neutral-bg-color);
+  background-color: #F0F0F0;
+  margin-right: 20px;
+  margin-left: 30px;
 }
 
 .calendar-view-button {
@@ -575,7 +600,19 @@ en:
   color: #A9A9A9;
   margin: 5px 6px;
   padding-top: 3px;
-  padding-bottom: 3px
+  padding-bottom: 3px;
+}
+
+.calendar-view-active {
+  background-color: white;
+  color: black;
+  border: transparent;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px 0 rgba($color: #000000, $alpha: 0.1);
+}
+
+.calendar-view-button:hover {
+  color: #E15858;
 }
 
 .calendar-today {
