@@ -76,13 +76,11 @@
         ref="mainCalendar"
         class="main-calendar"
         :options="mainCalendarOptions"
-        :events="filteredEventList"
       />
       <FullCalendar
         ref="eventCalendar"
         class="event-calendar"
         :options="eventCalendarOptions"
-        :events="filteredEventList"
       />
     </div>
     <div class="calendar-bottom">
@@ -137,12 +135,12 @@ export default {
   data () {
     return {
       defaultEventList: [
-        { id: 1, title: 'KAIST 신입생 면접', date: '2023-11-29', tagList: [1] },
-        { id: 2, title: '정기 정전', date: '2023-11-05', tagList: [1] },
-        { id: 3, title: '뭔가 있음', date: '2023-11-25', tagList: [2] },
-        { id: 4, title: '검색 기능 테스트를 위한 긴 텍스트', start: '2023-11-28', end: '2023-11-31', allday: true, tagList: [1, 2] },
-        { id: 5, title: 'G-Star 행사', start: '2023-11-18', end: '2023-11-20', tagList: [1, 3] },
-        { id: 6, title: 'Ara 회식', start: '2023-11-13', tagList: [3] },
+        { id: 1, title: '', ko_title: 'KAIST 신입생 면접', date: '2023-11-29', tagList: [1] },
+        { id: 2, ko_title: '정기 정전', date: '2023-11-05', tagList: [1] },
+        { id: 3, ko_title: '뭔가 있음', date: '2023-11-25', tagList: [2] },
+        { id: 4, ko_title: '검색 기능 테스트를 위한 긴 텍스트', start: '2023-11-28', end: '2023-11-31', allday: true, tagList: [1, 2] },
+        { id: 5, ko_title: 'G-Star 행사', start: '2023-11-18', end: '2023-11-20', tagList: [1, 3] },
+        { id: 6, ko_title: 'Ara 회식', start: '2023-11-13', tagList: [3] },
         { id: 7, ko_title: '가을학기 석·박사과정 신입생 수강신청', location: '(E3) 정보전자공학동 1101', url: 'https://cais.kaist.ac.kr', start: new Date('2023-12-07 23:00'), end: new Date('2023-12-11 4:00'), allday: false, tagList: [1, 2, 3], ko_description: '가을학기 석·박사과정 신입생 수강신청 기간입니다.' }
       ],
       filteredEventList: [],
@@ -164,6 +162,15 @@ export default {
     }
   },
   computed: {
+    eventList () {
+      return this.filteredEventList.map((event) => {
+        return {
+          ...event,
+          title: this.$i18n.locale === 'ko' ? event.ko_title : event.en_title,
+          description: this.$i18n.locale === 'ko' ? event.ko_description : event.en_description
+        }
+      })
+    },
     mainCalendarOptions () {
       return {
         initialView: 'dayGridMonth',
@@ -191,7 +198,7 @@ export default {
           return arg.dayNumberText.replace('일', '')
         },
         datesSet: this.syncCalendars,
-        events: this.filteredEventList,
+        events: this.eventList,
         eventMouseEnter: this.hoverEventEnter
       }
     },
@@ -211,7 +218,7 @@ export default {
         listDayFormat: (date) => {
           return date.date.day + '일'
         },
-        events: this.filteredEventList
+        events: this.eventList
       }
     }
   },
