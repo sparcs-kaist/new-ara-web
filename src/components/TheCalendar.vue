@@ -142,7 +142,8 @@ export default {
         { id: 3, title: '뭔가 있음', date: '2023-11-25', tagList: [2] },
         { id: 4, title: '검색 기능 테스트를 위한 긴 텍스트', start: '2023-11-28', end: '2023-11-31', allday: true, tagList: [1, 2] },
         { id: 5, title: 'G-Star 행사', start: '2023-11-18', end: '2023-11-20', tagList: [1, 3] },
-        { id: 6, title: 'Ara 회식', start: '2023-11-13', tagList: [3] }
+        { id: 6, title: 'Ara 회식', start: '2023-11-13', tagList: [3] },
+        { id: 7, ko_title: '가을학기 석·박사과정 신입생 수강신청', location: '(E3) 정보전자공학동 1101', url: 'https://cais.kaist.ac.kr', start: new Date('2023-12-07 23:00'), end: new Date('2023-12-11 4:00'), allday: false, tagList: [1, 2, 3], ko_description: '가을학기 석·박사과정 신입생 수강신청 기간입니다.' }
       ],
       filteredEventList: [],
       selectedTags: [],

@@ -104,13 +104,15 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+import { CalendarEvent } from '@/types'
+export default Vue.extend({
   name: 'CalendarPopup',
 
   props: {
     event: {
-      type: Object,
+      type: Object as () => CalendarEvent,
       required: true
     },
     x: {
@@ -122,7 +124,7 @@ export default {
       required: true
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
