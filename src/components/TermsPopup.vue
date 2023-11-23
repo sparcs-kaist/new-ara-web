@@ -72,6 +72,7 @@
 
 <script>
 import { changeLocale } from '@/i18n'
+import store from '@/store'
 export default {
   name: 'TermsPopup',
 
@@ -115,6 +116,10 @@ export default {
       this.termsPopup = false
     },
     openTermsPopup () {
+      if (!store.getters.isLoggedIn) {
+        this.$router.push('/login')
+        return
+      }
       this.termsPopup = true
     },
     changeLocale
@@ -125,6 +130,7 @@ export default {
 <i18n>
 ko:
   language: 'English'
+  login-required: '로그인이 필요합니다.'
   title: '이용 약관'
   agreed: '동의하셨습니다'
   already-agreed: '이미 동의하셨습니다.'
@@ -210,6 +216,7 @@ ko:
 en:
   language: '한국어'
   title: 'Terms of service'
+  login-required: 'Login required'
   agreed: "You've agreed to the Terms of Service"
   already-agreed: "You've already agreed."
   exit-confirm: 'If you do not agree to the terms of service, you will not be able to use the service. Would you like to leave?'

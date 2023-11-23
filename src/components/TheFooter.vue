@@ -21,12 +21,6 @@
         </div>
 
         <div class="footer-item">
-          <a href="https://sparcs.org">
-            {{ $t('license') }}
-          </a>
-        </div>
-
-        <div class="footer-item">
           <a @click="$refs.terms.openTermsPopup()">
             {{ $t('rules') }}
           </a>
@@ -88,13 +82,11 @@ export default {
 <i18n>
 ko:
   credit: '만든 사람들'
-  license: '라이센스'
   rules: '이용 약관'
   contact: '문의'
   ask: '채널톡 문의하기'
 en:
   credit: 'Credit'
-  license: 'License'
   rules: 'Terms of Service'
   contact: 'Contact'
   ask: 'Ask ChannelTalk'
