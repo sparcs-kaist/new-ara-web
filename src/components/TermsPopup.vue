@@ -118,10 +118,9 @@ export default {
     openTermsPopup () {
       if (!store.getters.isLoggedIn) {
         alert(this.$t('login-required'))
-        this.$router.push('/login')
-        return
+      } else {
+        this.termsPopup = true
       }
-      this.termsPopup = true
     },
     changeLocale
   }
