@@ -35,7 +35,7 @@
             v-model="keyword"
             class="calendar-search-input"
             type="text"
-            placeholder="일정 검색"
+            :placeholder="$t('search')"
             @keyup.enter="searchEvent(keyword)"
           >
         </div>
@@ -135,13 +135,13 @@ export default {
   data () {
     return {
       defaultEventList: [
-        { id: 1, title: '', ko_title: 'KAIST 신입생 면접', date: '2023-11-29', tagList: [1] },
-        { id: 2, ko_title: '정기 정전', date: '2023-11-05', tagList: [1] },
-        { id: 3, ko_title: '뭔가 있음', date: '2023-11-25', tagList: [2] },
-        { id: 4, ko_title: '검색 기능 테스트를 위한 긴 텍스트', start: '2023-11-28', end: '2023-11-31', allday: true, tagList: [1, 2] },
-        { id: 5, ko_title: 'G-Star 행사', start: '2023-11-18', end: '2023-11-20', tagList: [1, 3] },
-        { id: 6, ko_title: 'Ara 회식', start: '2023-11-13', tagList: [3] },
-        { id: 7, ko_title: '가을학기 석·박사과정 신입생 수강신청', location: '(E3) 정보전자공학동 1101', url: 'https://cais.kaist.ac.kr', start: new Date('2023-12-07 23:00'), end: new Date('2023-12-11 4:00'), allday: false, tagList: [1, 2, 3], ko_description: '가을학기 석·박사과정 신입생 수강신청 기간입니다.' }
+        { id: 1, ko_title: 'KAIST 신입생 면접', en_title: 'en title example1', date: '2023-11-29', tagList: [1] },
+        { id: 2, ko_title: '정기 정전', en_title: 'en title example2', date: '2023-11-05', tagList: [1] },
+        { id: 3, ko_title: '뭔가 있음', en_title: 'en title example3', date: '2023-11-25', tagList: [2] },
+        { id: 4, ko_title: '검색 기능 테스트를 위한 긴 텍스트', en_title: 'en title example4', start: '2023-11-28', end: '2023-11-31', allday: true, tagList: [1, 2] },
+        { id: 5, ko_title: 'G-Star 행사', start: '2023-11-18', en_title: 'en title example5', end: '2023-11-20', tagList: [1, 3] },
+        { id: 6, ko_title: 'Ara 회식', start: '2023-11-13', en_title: 'en title example6', tagList: [3] },
+        { id: 7, ko_title: '가을학기 석·박사과정 신입생 수강신청', en_title: 'en title example7', location: '(E3) 정보전자공학동 1101', url: 'https://cais.kaist.ac.kr', start: new Date('2023-12-07 23:00'), end: new Date('2023-12-11 4:00'), allday: false, tagList: [1, 2, 3], ko_description: '가을학기 석·박사과정 신입생 수강신청 기간입니다.' }
       ],
       filteredEventList: [],
       selectedTags: [],
@@ -151,9 +151,9 @@ export default {
         { tag: 3, color: '#ee82a1' }
       ],
       tags: [
-        { name: 'tag1', value: 1 },
-        { name: 'tag2', value: 2 },
-        { name: 'tag3', value: 3 }],
+        { name: '', ko_name: '태그1', en_name: 'tag1', value: 1 },
+        { name: '', ko_name: '태그2', en_name: 'tag2', value: 2 },
+        { name: '', ko_name: '태그3', en_name: 'tag3', value: 3 }],
       keyword: '',
       calendarTitle: '',
       hoveringEvent: null,
@@ -175,7 +175,7 @@ export default {
       return {
         initialView: 'dayGridMonth',
         plugins: [ dayGridPlugin ],
-        titleFormat: { year: 'numeric', month: 'long' },
+        titleFormat: { year: 'numeric', month: 'short' },
         headerToolbar: {
           start: '',
           center: '',
@@ -206,6 +206,8 @@ export default {
       return {
         initialView: 'listMonth',
         plugins: [ listPlugin ],
+        listDayFormat: { year: 'numeric', month: 'short', day: 'numeric' },
+        listDayAltFormat: { month: 'short', weekday: 'short' },
         headerToolbar: {
           start: '',
           center: '',
@@ -215,11 +217,16 @@ export default {
         height: '635px',
         locales: [ esLocale, koLocale ],
         locale: this.$t('locale'),
-        listDayFormat: (date) => {
-          return date.date.day + '일'
-        },
         events: this.eventList
       }
+    }
+  },
+  watch: {
+    '$i18n.locale': function (newLocale, oldLocale) {
+      this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(newLocale, { year: 'numeric', month: 'short' })
+      this.tags.forEach((tag) => {
+        tag.name = newLocale === 'ko' ? tag.ko_name : tag.en_name
+      })
     }
   },
   mounted () {
@@ -229,7 +236,10 @@ export default {
       event.color = this.colorList.find((color) => color.tag === event.tagList[0]).color
     })
     this.selectedTags = this.tags.map((tag) => tag.value)
-    this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' })
+    this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'short' })
+    this.tags.forEach((tag) => {
+      tag.name = this.$i18n.locale === 'ko' ? tag.ko_name : tag.en_name
+    })
   },
   methods: {
     syncCalendars (date) {
@@ -258,9 +268,16 @@ export default {
     },
     searchEvent (keyword) {
       const newEventList = []
+      this.filterTag()
       this.filteredEventList.forEach((event) => {
-        if (event.title.includes(keyword)) {
-          newEventList.push(event)
+        if (this.$i18n.locale === 'ko') {
+          if (event.ko_title.includes(keyword)) {
+            newEventList.push(event)
+          }
+        } else {
+          if (event.en_title.includes(keyword)) {
+            newEventList.push(event)
+          }
         }
       })
       this.filteredEventList = newEventList
@@ -271,11 +288,11 @@ export default {
     },
     next () {
       this.$refs.mainCalendar.getApi().next()
-      this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' })
+      this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'short' })
     },
     prev () {
       this.$refs.mainCalendar.getApi().prev()
-      this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'long' })
+      this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'short' })
     },
     changeView (view) {
       const viewList = [
@@ -326,15 +343,17 @@ ko:
   week: '주'
   day: '일'
   today: '오늘'
+  search: '일정 검색'
 en:
   locale: 'en'
   tag: 'Tag'
   select-all: 'Select All'
-  deselect-all: 'Deselect All'
+  deselect-all: 'Reset'
   month: 'Month'
   week: 'Week'
   day: 'Day'
   today: 'Today'
+  search: 'Search'
 </i18n>
 
 <style lang="scss" scoped>
@@ -625,6 +644,10 @@ en:
   border: 1px solid var(--fc-border-color);
   background-color: white;
   color: black;
+}
+
+.calendar-today-button:hover {
+  color: #E15858;
 }
 .calendar-bottom {
   display: flex;
