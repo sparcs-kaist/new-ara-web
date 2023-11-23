@@ -207,7 +207,7 @@ export default {
         initialView: 'listMonth',
         plugins: [ listPlugin ],
         listDayFormat: { year: 'numeric', month: 'short', day: 'numeric' },
-        listDayAltFormat: { month: 'short', weekday: 'short' },
+        listDaySideFormat: { weekday: 'short' },
         headerToolbar: {
           start: '',
           center: '',
