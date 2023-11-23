@@ -122,16 +122,18 @@ export default Vue.extend({
     startTimeLeft (): string {
       const now = new Date()
       const diff = this.event.start.getTime() - now.getTime()
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-      return `${days}일 ${hours}시간`
+      const days = Math.floor(Math.abs(diff) / (1000 * 60 * 60 * 24))
+      const hours = Math.floor((Math.abs(diff) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+      const sign = diff < 0 ? '-' : ''
+      return `${sign}${days}${this.$t('day')} ${hours}${this.$t('hour')}`
     },
     endTimeLeft (): string {
       const now = new Date()
       const diff = this.event.end.getTime() - now.getTime()
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-      return `${days}일 ${hours}시간`
+      const days = Math.floor(Math.abs(diff) / (1000 * 60 * 60 * 24))
+      const hours = Math.floor((Math.abs(diff) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+      const sign = diff < 0 ? '-' : ''
+      return `${sign}${days}${this.$t('day')} ${hours}${this.$t('hour')}`
     },
     eventTagList (): Tag[] {
       return this.tags.filter(tag => this.event.tagList.includes(tag.value))
@@ -146,11 +148,15 @@ ko:
   end: '종료'
   no-description: '설명이 없습니다.'
   tag: '태그'
+  day: '일'
+  hour: '시간'
 en:
   start: 'Start'
   end: 'End'
   no-description: 'No description provided.'
   tag: 'Tag'
+  day: 'd'
+  hour: 'h'
 </i18n>
 
 <style lang="scss" scoped>

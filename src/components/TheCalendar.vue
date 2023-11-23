@@ -595,6 +595,7 @@ en:
 ;
 }
 .calendar-view {
+  display: flex;
   height: 100%;
   float: left;
   align-items: center;
