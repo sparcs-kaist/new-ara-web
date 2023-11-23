@@ -256,7 +256,7 @@ export default {
       this.filteredEventList = this.defaultEventList
       // add color
       this.filteredEventList.forEach((event) => {
-        event.color = this.tags.find((tag) => tag.tag === event.tagList[0]).color
+        event.color = this.tags.find((tag) => tag.value === event.tagList[0]).color
       })
     },
     deselectAllEvent () {
