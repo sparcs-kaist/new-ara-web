@@ -4,6 +4,7 @@
       <CalendarPopup
         v-if="hoveringEvent"
         :event="hoveringEvent"
+        :tags="tags"
         :x="hoveringPosition.x"
         :y="hoveringPosition.y"
         @mouseleave="hoverEventLeave"
@@ -135,25 +136,26 @@ export default {
   data () {
     return {
       defaultEventList: [
-        { id: 1, ko_title: 'KAIST 신입생 면접', en_title: 'en title example1', date: '2023-11-29', tagList: [1] },
-        { id: 2, ko_title: '정기 정전', en_title: 'en title example2', date: '2023-11-05', tagList: [1] },
-        { id: 3, ko_title: '뭔가 있음', en_title: 'en title example3', date: '2023-11-25', tagList: [2] },
-        { id: 4, ko_title: '검색 기능 테스트를 위한 긴 텍스트', en_title: 'en title example4', start: '2023-11-28', end: '2023-11-31', allday: true, tagList: [1, 2] },
-        { id: 5, ko_title: 'G-Star 행사', start: '2023-11-18', en_title: 'en title example5', end: '2023-11-20', tagList: [1, 3] },
-        { id: 6, ko_title: 'Ara 회식', start: '2023-11-13', en_title: 'en title example6', tagList: [3] },
-        { id: 7, ko_title: '가을학기 석·박사과정 신입생 수강신청', en_title: 'en title example7', location: '(E3) 정보전자공학동 1101', url: 'https://cais.kaist.ac.kr', start: new Date('2023-12-07 23:00'), end: new Date('2023-12-11 4:00'), allday: false, tagList: [1, 2, 3], ko_description: '가을학기 석·박사과정 신입생 수강신청 기간입니다.' }
+        { id: '1', title: '', ko_title: 'KAIST 신입생 면접', en_title: 'en title example1', start: new Date('2023-11-29'), end: new Date('2023-11-30'), allday: true, tagList: [1] },
+        { id: '2', ko_title: '정기 정전', en_title: 'en title example2', start: new Date('2023-11-05 9:00'), end: new Date('2023-11-05 17:00'), allday: true, tagList: [1] },
+        { id: '3', ko_title: '뭔가 있음', en_title: 'en title example3', start: new Date('2023-11-25'), end: new Date('2023-11-26'), allday: true, tagList: [2] },
+        { id: '4', ko_title: '검색 기능 테스트를 위한 긴 텍스트', en_title: 'en title example4', start: new Date('2023-11-28'), end: new Date('2023-11-31'), allday: true, tagList: [1, 2] },
+        { id: '5', ko_title: 'G-Star 행사', en_title: 'en title example5', start: new Date('2023-11-18'), end: new Date('2023-11-20'), tagList: [1, 3] },
+        { id: '6', ko_title: 'Ara 회식', en_title: 'en title example6', start: new Date('2023-11-13'), end: new Date('2023-11-14'), tagList: [3] },
+        { id: '7', ko_title: '가을학기 석·박사과정 신입생 수강신청', en_title: 'Fall', location: '(E3) 정보전자공학동 1101', url: 'https://cais.kaist.ac.kr', start: new Date('2023-12-07 23:00'), end: new Date('2023-12-11 4:00'), allday: false, tagList: [1, 2, 3], ko_description: '가을학기 석·박사과정 신입생 수강신청 기간입니다.' }
       ],
       filteredEventList: [],
       selectedTags: [],
-      colorList: [
-        { tag: 1, color: '#88d7da' },
-        { tag: 2, color: '#f49963' },
-        { tag: 3, color: '#ee82a1' }
-      ],
+      // colorList: [
+      //   { tag: 1, color: '#88d7da' },
+      //   { tag: 2, color: '#f49963' },
+      //   { tag: 3, color: '#ee82a1' }
+      // ],
       tags: [
-        { name: '', ko_name: '태그1', en_name: 'tag1', value: 1 },
-        { name: '', ko_name: '태그2', en_name: 'tag2', value: 2 },
-        { name: '', ko_name: '태그3', en_name: 'tag3', value: 3 }],
+        { name: 'tag1', ko_name: '태그1', en_name: 'tag1', value: 1, color: '#88d7da' },
+        { name: 'tag2', ko_name: '태그2', en_name: 'tag2', value: 2, color: '#f49963' },
+        { name: 'tag3', ko_name: '태그3', en_name: 'tag3', value: 3, color: '#ee82a1' }
+      ],
       keyword: '',
       calendarTitle: '',
       hoveringEvent: null,
@@ -233,7 +235,7 @@ export default {
     this.filteredEventList = this.defaultEventList
     // add color
     this.filteredEventList.forEach((event) => {
-      event.color = this.colorList.find((color) => color.tag === event.tagList[0]).color
+      event.color = this.tags.find((tag) => tag.value === event.tagList[0]).color
     })
     this.selectedTags = this.tags.map((tag) => tag.value)
     this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'short' })
@@ -254,7 +256,7 @@ export default {
       this.filteredEventList = this.defaultEventList
       // add color
       this.filteredEventList.forEach((event) => {
-        event.color = this.colorList.find((color) => color.tag === event.tagList[0]).color
+        event.color = this.tags.find((tag) => tag.tag === event.tagList[0]).color
       })
     },
     deselectAllEvent () {
@@ -283,7 +285,7 @@ export default {
       this.filteredEventList = newEventList
       // add color using colorlist with tag
       this.filteredEventList.forEach((event) => {
-        event.color = this.colorList.find((color) => color.tag === event.tagList[0]).color
+        event.color = this.tags.find((tag) => tag.tag === event.tagList[0]).color
       })
     },
     next () {
@@ -323,7 +325,7 @@ export default {
     },
     hoverEventEnter ({ event, el, jsEvent, view }) {
       const rect = this.$refs.calendarContainer.getBoundingClientRect()
-      this.hoveringEvent = event
+      this.hoveringEvent = this.eventList.find((e) => e.id === event.id)
       this.hoveringPosition = { x: jsEvent.x - rect.left - 20, y: jsEvent.y - rect.top - 30 }
     },
     hoverEventLeave () {

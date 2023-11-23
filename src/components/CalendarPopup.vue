@@ -9,30 +9,30 @@
         <div
           style="
             width: 5px;
-            background: #005AAA;
             border-radius: 3px;
           "
+          :style="{ backgroundColor: event.color }"
         />
         <h3 class="calendar-popup-header__title--inner">
-          {{ '가을학기 석·박사과정 신입생 수강신청' }}
+          {{ event.title }}
         </h3>
       </div>
-      <div class="calendar-popup-header__location">
+      <div v-if="event.location" class="calendar-popup-header__location">
         <i class="calendar-popup-icon material-icons-outlined">
           location_on
         </i>
-        {{ '(E3) 정보전자공학동 1101' }}
+        {{ event.location }}
       </div>
-      <div class="calendar-popup-header__link">
+      <div v-if="event.url" class="calendar-popup-header__link">
         <i class="calendar-popup-icon material-icons-outlined">
           link
         </i>
         <a
-          href="https://cais.kaist.ac.kr"
+          :href="event.url"
           target="_blank"
           rel="noopener noreferrer"
         >
-          {{ 'https://cais.kaist.ac.kr' }}
+          {{ event.url }}
         </a>
       </div>
     </div>
@@ -42,61 +42,51 @@
         <div id="calendar-popup-body__date--start" class="calendar-popup-body__date">
           <p>
             <span style="color: #A9A9A9">
-              {{ '시작' }}
+              {{ $t('start') }}
             </span>
             <span style="color: red">
-              {{ '5일 23시간' }}
+              {{ startTimeLeft }}
             </span>
           </p>
           <p>
-            {{ '2023년 8월 7일 (월) 오후 11:00' }}
+            {{ event.start.toLocaleString($i18n.locale, { year: 'numeric', month: 'long', day: 'numeric', weekday: 'narrow', hour: 'numeric', minute: 'numeric' }) }}
           </p>
         </div>
         <div id="calendar-popup-body__date--end" class="calendar-popup-body__date">
           <p>
             <span style="color: #A9A9A9">
-              {{ '종료' }}
+              {{ $t('end') }}
             </span>
             <span style="color: red">
-              {{ '9일 5시간' }}
+              {{ endTimeLeft }}
             </span>
           </p>
           <p>
-            {{ '2023년 8월 11일 (금) 오전 4:00' }}
+            {{ event.end.toLocaleString($i18n.locale, { year: 'numeric', month: 'long', day: 'numeric', weekday: 'narrow', hour: 'numeric', minute: 'numeric' }) }}
           </p>
         </div>
       </div>
       <div class="calendar-popup-body__description">
-        {{ '가을학기 석·박사과정 신입생 수강신청 기간입니다.' }}
+        {{ event.description || $t('no-description') }}
       </div>
     </div>
     <hr class="calendar-popup-line">
     <div class="calendar-popup-footer">
       <div class="calendar-popup-footer__tag">
         <p class="calendar-popup-footer__tag--title">
-          {{ '태그' }}
+          {{ $t('tag') }}
         </p>
         <div class="calendar-popup-footer__tag--box">
-          <div class="calendar-popup-footer__tag--item">
+          <div
+            v-for="tag in eventTagList"
+            :key="tag.value"
+            class="calendar-popup-footer__tag--item"
+          >
             <div
               class="calendar-popup-footer__tag--item--circle"
-              style="background: #005AAA"
+              :style="{ backgroundColor: tag.color }"
             />
-            {{ '학사 일정' }}
-          </div>
-          <div class="calendar-popup-footer__tag--item">
-            <div
-              class="calendar-popup-footer__tag--item--circle"
-              style="background: #E9008C"
-            />
-            {{ '석·박사' }}
-          </div>
-          <div class="calendar-popup-footer__tag--item">
-            <div
-              class="calendar-popup-footer__tag--item--circle"
-              style="background: #EBA12A"
-            />
-            {{ '동아리' }}
+            {{ tag.name }}
           </div>
         </div>
       </div>
@@ -106,13 +96,17 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CalendarEvent } from '@/types'
+import { CalendarEvent, Tag } from '@/types'
 export default Vue.extend({
   name: 'CalendarPopup',
 
   props: {
     event: {
       type: Object as () => CalendarEvent,
+      required: true
+    },
+    tags: {
+      type: Array as () => Tag[],
       required: true
     },
     x: {
@@ -123,9 +117,41 @@ export default Vue.extend({
       type: Number,
       required: true
     }
+  },
+  computed: {
+    startTimeLeft (): string {
+      const now = new Date()
+      const diff = this.event.start.getTime() - now.getTime()
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+      return `${days}일 ${hours}시간`
+    },
+    endTimeLeft (): string {
+      const now = new Date()
+      const diff = this.event.end.getTime() - now.getTime()
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+      return `${days}일 ${hours}시간`
+    },
+    eventTagList (): Tag[] {
+      return this.tags.filter(tag => this.event.tagList.includes(tag.value))
+    }
   }
 })
 </script>
+
+<i18n>
+ko:
+  start: '시작'
+  end: '종료'
+  no-description: '설명이 없습니다.'
+  tag: '태그'
+en:
+  start: 'Start'
+  end: 'End'
+  no-description: 'No description provided.'
+  tag: 'Tag'
+</i18n>
 
 <style lang="scss" scoped>
 @import "@/theme.scss";
