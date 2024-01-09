@@ -266,7 +266,7 @@ export default {
       this.filteredEventList = this.defaultEventList
       // add color
       this.filteredEventList.forEach((event) => {
-        event.color = this.tags.find((tag) => tag.id === event.tagList[0]).color
+        event.color = event.tags[0].color
       })
     },
     deselectAllEvent () {
@@ -275,7 +275,7 @@ export default {
     },
     filterTag () {
       this.filteredEventList = this.defaultEventList.filter((event) =>
-        event.tagList.filter((tag) => this.selectedTags.includes(tag)).length > 0
+        event.tags.filter((tag) => this.selectedTags.includes(tag.id)).length > 0
       )
     },
     searchEvent (keyword) {
@@ -295,7 +295,7 @@ export default {
       this.filteredEventList = newEventList
       // add color using colorlist with tag
       this.filteredEventList.forEach((event) => {
-        event.color = this.tags.find((tag) => tag.id === event.tagList[0]).color
+        event.color = event.tags[0].color
       })
     },
     next () {
