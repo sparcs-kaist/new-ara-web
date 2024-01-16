@@ -92,13 +92,13 @@
         <div class="tag-select">
           <div
             v-for="tag in tags"
-            :key="tag.value"
+            :key="tag.id"
             class="tag-checkbox"
           >
             <input
               :id="tag.name"
               v-model="selectedTags"
-              :value="tag.value"
+              :value="tag.id"
               type="checkbox"
               @change="filterTag"
             >
@@ -153,7 +153,7 @@ export default {
       //   { name: '', id: 2, ko_name: '태그2', en_name: 'tag2', color: '#f49963' },
       //   { name: '', id: 3, ko_name: '태그3', en_name: 'tag3', color: '#ee82a1' }],
       defaultEventList: [],
-      // tags: [],
+      tags: [],
       filteredEventList: [],
       selectedTags: [],
       keyword: '',
@@ -236,13 +236,13 @@ export default {
     var eventList = fetchEventList()
     eventList.then((res) => {
       this.defaultEventList = res.results
-      this.filteredEventList = this.defaultEventList
-      this.filteredEventList.forEach((event) => {
+      this.defaultEventList.forEach((event) => {
         event.start = event.start_at
         event.end = event.end_at
         event.allday = event.is_all_day
         event.color = event.tags[0].color
       })
+      this.filteredEventList = this.defaultEventList
     })
     var tagList = fetchTagList()
     tagList.then((res) => {
@@ -262,12 +262,8 @@ export default {
       }
     },
     selectAllEvent () {
-      this.selectedTags = this.tags.map((tag) => tag.value)
+      this.selectedTags = this.tags.map((tag) => tag.id)
       this.filteredEventList = this.defaultEventList
-      // add color
-      this.filteredEventList.forEach((event) => {
-        event.color = event.tags[0].color
-      })
     },
     deselectAllEvent () {
       this.selectedTags = []
@@ -293,10 +289,6 @@ export default {
         }
       })
       this.filteredEventList = newEventList
-      // add color using colorlist with tag
-      this.filteredEventList.forEach((event) => {
-        event.color = event.tags[0].color
-      })
     },
     next () {
       this.$refs.mainCalendar.getApi().next()
