@@ -139,19 +139,6 @@ export default {
   },
   data () {
     return {
-      // testEventList: [
-      //   { id: 1, ko_title: 'KAIST 신입생 면접', en_title: 'en title example1', date: '2023-11-29', tagList: [1] },
-      //   { id: 2, ko_title: '정기 정전', en_title: 'en title example2', date: '2023-11-05', tagList: [1] },
-      //   { id: 3, ko_title: '뭔가 있음', en_title: 'en title example3', date: '2023-11-25', tagList: [2] },
-      //   { id: 4, ko_title: '검색 기능 테스트를 위한 긴 텍스트', en_title: 'en title example4', start: '2023-11-28', end: '2023-11-31', allday: true, tagList: [1, 2] },
-      //   { id: 5, ko_title: 'G-Star 행사', start: '2023-11-18', en_title: 'en title example5', end: '2023-11-20', tagList: [1, 3] },
-      //   { id: 6, ko_title: 'Ara 회식', start: '2023-11-13', en_title: 'en title example6', tagList: [3] },
-      //   { id: 7, ko_title: '가을학기 석·박사과정 신입생 수강신청', en_title: 'en title example7', location: '(E3) 정보전자공학동 1101', url: 'https://cais.kaist.ac.kr', start: new Date('2023-12-07 23:00'), end: new Date('2023-12-11 4:00'), allday: false, tagList: [1, 2, 3], ko_description: '가을학기 석·박사과정 신입생 수강신청 기간입니다.' }
-      // ],
-      // tags: [
-      //   { name: '', id: 1, ko_name: '태그1', en_name: 'tag1', color: '#88d7da' },
-      //   { name: '', id: 2, ko_name: '태그2', en_name: 'tag2', color: '#f49963' },
-      //   { name: '', id: 3, ko_name: '태그3', en_name: 'tag3', color: '#ee82a1' }],
       defaultEventList: [],
       tags: [],
       filteredEventList: [],
@@ -243,6 +230,7 @@ export default {
         event.color = event.tags[0].color
       })
       this.filteredEventList = this.defaultEventList
+      this.selectAllEvent()
     })
     var tagList = fetchTagList()
     tagList.then((res) => {
@@ -250,8 +238,8 @@ export default {
       this.tags.forEach((tag) => {
         tag.name = this.$i18n.locale === 'ko' ? tag.ko_name : tag.en_name
       })
+      this.selectedTags = this.tags.map((tag) => tag.id)
     })
-    this.selectedTags = this.tags.map((tag) => tag.id)
   },
   methods: {
     syncCalendars (date) {
@@ -293,10 +281,38 @@ export default {
     next () {
       this.$refs.mainCalendar.getApi().next()
       this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'short' })
+      // fetch eventList when month changes
+      // var eventList = fetchEventList()
+      // eventList.then((res) => {
+      //   this.defaultEventList = res.results
+      //   this.defaultEventList.forEach((event) => {
+      //     event.start = event.start_at
+      //     event.end = event.end_at
+      //     event.allday = event.is_all_day
+      //     event.color = event.tags[0].color
+      //   })
+      //   this.filteredEventList = this.defaultEventList.filter((event) =>
+      //     event.tags.filter((tag) => this.selectedTags.includes(tag.id)).length > 0
+      //   )
+      // })
     },
     prev () {
       this.$refs.mainCalendar.getApi().prev()
       this.calendarTitle = this.$refs.mainCalendar.getApi().getDate().toLocaleString(this.$i18n.locale, { year: 'numeric', month: 'short' })
+      // fetch eventList when month changes
+      // var eventList = fetchEventList()
+      // eventList.then((res) => {
+      //   this.defaultEventList = res.results
+      //   this.defaultEventList.forEach((event) => {
+      //     event.start = event.start_at
+      //     event.end = event.end_at
+      //     event.allday = event.is_all_day
+      //     event.color = event.tags[0].color
+      //   })
+      //   this.filteredEventList = this.defaultEventList.filter((event) =>
+      //     event.tags.filter((tag) => this.selectedTags.includes(tag.id)).length > 0
+      //   )
+      // })
     },
     changeView (view) {
       const viewList = [
