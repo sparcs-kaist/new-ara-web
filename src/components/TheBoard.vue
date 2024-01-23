@@ -89,7 +89,7 @@ export default {
       }
 
       if (this.$route.query.page) {
-        query.from_page = this.$route.query.page
+        query.current = this.$route.query.page
       }
 
       return query

@@ -5,6 +5,10 @@ export const fetchBoardList = () =>
   http.get('boards/')
     .then(({ data }) => data)
 
+export const fetchBoardGroups = () =>
+  http.get('board_groups/')
+    .then(({ data }) => data)
+
 export const fetchArticles = ({ boardId, query, page, pageSize, topicId, username, ordering, filter } = {}) => {
   const context = {}
   if (boardId) {
@@ -25,6 +29,24 @@ export const fetchArticles = ({ boardId, query, page, pageSize, topicId, usernam
   if (pageSize) context.page_size = pageSize
   if (username) context.created_by = username
   return http.get(`articles/?${queryBuilder(context)}`)
+    .then(({ data }) => data)
+}
+
+export const fetchTopArticles = ({ query, page, pageSize, username, ordering, filter } = {}) => {
+  const context = {}
+  if (ordering) context.ordering = ordering
+  if (query) context.main_search__contains = query
+  if (filter) {
+    if (filter.communication_article__school_response_status !== undefined) {
+      context.communication_article__school_response_status = filter.communication_article__school_response_status
+    } else if (filter.communication_article__school_response_status__lt !== undefined) {
+      context.communication_article__school_response_status__lt = filter.communication_article__school_response_status__lt
+    }
+  }
+  if (page) context.page = page
+  if (pageSize) context.page_size = pageSize
+  if (username) context.created_by = username
+  return http.get(`articles/top/?${queryBuilder(context)}`)
     .then(({ data }) => data)
 }
 

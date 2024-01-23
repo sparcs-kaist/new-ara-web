@@ -171,7 +171,7 @@
 
 <script>
 import store from '@/store'
-import { fetchArticles } from '@/api'
+import { fetchArticles, fetchTopArticles } from '@/api'
 import { fetchWithProgress } from '@/views/helper'
 import TheBoard from '@/components/TheBoard.vue'
 import TheLayout from '@/components/TheLayout.vue'
@@ -190,6 +190,7 @@ export default {
     return {
       board: {},
       boardId: null,
+      boardSlug: '',
       selectedOrdering: this.$route.query.ordering ? 0 : 1,
       selectedFilter: this.$route.query.communication_article__school_response_status ? 0 : (this.$route.query.communication_article__school_response_status__lt ? 1 : 2)
     }
@@ -205,6 +206,7 @@ export default {
     },
     topic () { return this.topics.find(topic => topic.slug === this.topicId) },
     boardName () {
+      if (this.boardSlug === 'top') return this.$t('top')
       return this.$store.getters.getNameById(this.boardId, this.$i18n.locale)
     },
     bannerDetail () {
@@ -237,6 +239,10 @@ export default {
           current
         }
       }
+
+      if (this.boardSlug === 'top') {
+        return { from_view: 'top', current }
+      }
       return { from_view: 'all', current }
     }
   },
@@ -267,11 +273,16 @@ export default {
     const topicId = topic ? topic.id : null
 
     const [ board ] = await fetchWithProgress(
-      [ fetchArticles({ boardId, topicId, ...query, filter }) ], 'board-failed-fetch'
+      [
+        boardSlug === 'top'
+          ? fetchTopArticles({ ...query, filter })
+          : fetchArticles({ boardId, topicId, ...query, filter })
+      ], 'board-failed-fetch'
     )
     next(vm => {
       vm.board = board
       vm.boardId = boardId
+      vm.boardSlug = boardSlug
       document.title = `Ara - ${vm.boardName}`
     })
   },
@@ -297,10 +308,15 @@ export default {
 
     const topicId = topic ? topic.id : null
     const [ board ] = await fetchWithProgress(
-      [ fetchArticles({ boardId, topicId, ...query, filter }) ], 'board-failed-fetch'
+      [
+        boardSlug === 'top'
+          ? fetchTopArticles({ ...query, filter })
+          : fetchArticles({ boardId, topicId, ...query, filter })
+      ], 'board-failed-fetch'
     )
     this.board = board
     this.boardId = boardId
+    this.boardSlug = boardSlug
     document.title = `Ara - ${this.boardName}`
     next()
   },
@@ -349,6 +365,7 @@ export default {
 
 <i18n>
 ko:
+  top: '인기글 게시판'
   no-filter: '없음'
   filter: '필터'
   exclude_portal: '포탈 공지글 제외하기'
@@ -359,6 +376,7 @@ ko:
   answered: '답변 완료'
 
 en:
+  top: 'Top Articles'
   no-filter: 'No Filter'
   filter: 'Filter'
   exclude_portal: 'Exclude portal notices'

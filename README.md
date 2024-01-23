@@ -2,7 +2,7 @@
 <br />
 <br />
 <p align="center">
-  <a href="https://github.com/github_username/repo">
+  <a href="https://newara.sparcs.org">
     <img src="src/assets/ServiceAra.svg" alt="Logo" height="150">
   </a>
   

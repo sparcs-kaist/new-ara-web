@@ -131,7 +131,7 @@ export default {
       return Object.values(this.chips).some(isClicked => isClicked)
     },
     iconName () {
-      return icons[this.dialog.type]
+      return this.dialog.icon || icons[this.dialog.type]
     },
     hasButtons () {
       return !this.dialog.toast

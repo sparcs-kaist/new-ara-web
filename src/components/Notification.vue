@@ -11,7 +11,9 @@
     :class="{ 'is-read' : isRead }"
     class="noti"
   >
-    <i class="noti__icon material-icons-outlined">chat</i>
+    <i class="noti__icon material-icons-outlined">
+      {{ isSubcomment ? 'forum_outlined' : 'chat_bubble_outline_outlined' }}
+    </i>
     <div class="noti__container">
       <h3 class="noti__title">
         {{ notification.title }}
@@ -22,12 +24,6 @@
       <div class="noti__related">
         <div class="noti__subcomment-container">
           <div>{{ $t('article') }}: [{{ boardName }}] {{ relatedArticle }}</div>
-          <i
-            v-if="!isSubcomment"
-            class="noti__subcomment-icon material-icons-outlined"
-          >
-            chat
-          </i>
         </div>
         <div v-if="isSubcomment">
           {{ $t('comment') }}: {{ relatedComment }}
@@ -140,14 +136,16 @@ en:
     color: white;
     background-color: var(--theme-400);
     border-radius: 15px;
-    text-align: center;
     line-height: 30px;
+    text-align: center;
+    padding-left: 5px;
 
     @include breakPoint(mobile) {
       height: 20px;
       width: 20px;
       font-size: 15px;
       line-height: 20px;
+      padding-left: 2px;
     }
   }
 

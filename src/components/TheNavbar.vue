@@ -77,24 +77,37 @@
           </router-link>
 
           <div
-            v-for="(groupClicked, groupName, groupId) in boardGroup"
-            :key="groupName"
+            v-for="group in boardGroups"
+            :key="group.id"
             class="navbar-item has-dropdown is-hoverable boardlist"
           >
-            <div class="navbar-item" @click="click(groupName)">
-              <i v-if="groupClicked" class="material-icons is-hidden-desktop">expand_less</i>
+            <router-link
+              v-if="group.boards.length <= 1"
+              :to="{ name: 'board', params: { boardSlug: 'talk' } }"
+              class="navbar-item"
+            >
+              <i class="material-icons is-hidden-desktop">navigate_next</i>
+              <span>{{ group[[`${$i18n.locale}_name`]] }}</span>
+            </router-link>
+            <div
+              v-if="group.boards.length > 1"
+              class="navbar-item"
+              @click="click(group.slug)"
+            >
+              <i v-if="group.clicked" class="material-icons is-hidden-desktop">expand_less</i>
               <i v-else class="material-icons is-hidden-desktop">expand_more</i>
-              <span>{{ $t(`group.${groupName}`) }}</span>
+              <span>{{ group[[`${$i18n.locale}_name`]] }}</span>
             </div>
             <div
+              v-if="group.boards.length > 1"
               :class="{
-                'navbar-clicked': !groupClicked,
+                'navbar-clicked': !group.clicked,
                 'is-boxed': true
               }"
               class="navbar-dropdown"
             >
               <router-link
-                v-for="board in groupedBoardList[groupId+1]"
+                v-for="board in group.boards"
                 :key="board.id"
                 :to="{
                   name: 'board',
@@ -108,6 +121,14 @@
               </router-link>
             </div>
           </div>
+
+          <router-link
+            :to="{ name: 'board', params: { boardSlug: 'top' } }"
+            class="navbar-item"
+          >
+            <i class="material-icons is-hidden-desktop">navigate_next</i>
+            <span>{{ $t('top') }}</span>
+          </router-link>
         </div>
 
         <div class="navbar-end">
@@ -237,20 +258,13 @@ export default {
       notifications: [],
       isUnreadNotificationExist: false,
       isHome: true,
-      boardGroup: {
-        notice: false,
-        talk: false,
-        clubs: false,
-        money: false,
-        communication: false
-      },
       isAlramShow: false,
       isMobileAlarmShow: false
     }
   },
 
   computed: {
-    ...mapState(['boardList']),
+    ...mapState(['boardList', 'boardGroups']),
     ...mapGetters(['userNickname', 'userPicture']),
     boardListVisible () {
       return this.boardList.filter(v => !v.is_hidden)
@@ -286,15 +300,14 @@ export default {
     },
     changeLocale,
     ...mapActions(['toggleDarkMode']),
-    click (boardName) {
-      if (this.boardGroup[boardName]) {
-        this.boardGroup[boardName] = false
-        return
+    click (groupSlug) {
+      const group = this.boardGroups.filter(group => group.slug === groupSlug)[0]
+
+      if (!group.clicked) {
+        this.boardGroups.forEach(group => { group.clicked = false })
       }
-      for (const board in this.boardGroup) {
-        this.boardGroup[board] = false
-      }
-      this.boardGroup[boardName] = true
+
+      group.clicked = !group.clicked
     },
     toggleAlram () {
       this.isAlramShow = !this.isAlramShow
@@ -331,14 +344,15 @@ ko:
   notification: '알림'
   write: '게시글 작성하기'
   all: '전체보기'
+  top: '인기글 게시판'
+  talk: '자유게시판'
   my-page: '마이페이지'
   logout: '로그아웃'
   group:
     notice: '공지'
-    talk: '잡담'
-    clubs: '학생 단체 및 동아리'
-    money: '거래'
     communication: '소통'
+    money: '거래'
+    clubs: '학생 단체 및 동아리'
   morealarm: '알림 더 보기'
 
 en:
@@ -346,14 +360,15 @@ en:
   notification: 'Notifications'
   write: 'Write Post'
   all: 'All'
+  top: 'Top Articles'
+  talk: 'Talk'
   my-page: 'My Page'
   logout: 'Logout'
   group:
     notice: 'Notice'
-    talk: 'Talk'
-    clubs: 'Organizations and Clubs'
-    money: 'Money'
     communication: 'Communication'
+    money: 'Money'
+    clubs: 'Organizations and Clubs'
   morealarm: 'See more Alarms'
 </i18n>
 

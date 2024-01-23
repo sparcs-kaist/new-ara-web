@@ -8,9 +8,9 @@ import { acquireFCMToken, releaseFCMToken } from '@/firebase'
 
 export const authGuard = async (to, from, next) => {
   await store.dispatch('fetchMe')
-
   if (!store.getters.isLoggedIn) {
-    next('/login')
+    const urlRef = (to.path && to.path !== '/') ? `?next=${location.protocol}//${location.host}${to.fullPath}` : `?next=${location.protocol}//${location.host}/`
+    next(`/login${urlRef}`)
   } else {
     try {
       await store.dispatch('fetchBoardList')
@@ -49,7 +49,8 @@ export default [
     name: 'login-handler',
     beforeEnter: (to, from, next) => {
       store.commit('setAuthState', true)
-      next('/')
+      var host = location.protocol + '//' + location.host
+      next(to.query.link.substr(host.length))
     }
   },
   {
@@ -65,6 +66,7 @@ export default [
           await logout(store.getters.userId)
         } catch (err) {}
         store.commit('setAuthState', false)
+        store.commit('setUserProfile', {})
       }
 
       next('/login')

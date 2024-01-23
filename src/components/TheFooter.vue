@@ -31,6 +31,12 @@
             {{ $t('rules') }}
           </a>
         </div>
+
+        <div class="footer-item">
+          <a @click="openChannelService()">
+            {{ $t('ask') }}
+          </a>
+        </div>
       </div>
 
       <div class="footer-contact is-hidden-mobile">
@@ -50,6 +56,8 @@
 
 <script>
 import TermsPopup from '@/components/TermsPopup.vue'
+import ChannelService from '@/channel.js'
+
 export default {
   name: 'TheFooter',
 
@@ -61,6 +69,18 @@ export default {
     agreeTosAt () {
       return this.$store.state.auth.userProfile?.agree_terms_of_service_at
     }
+  },
+
+  methods: {
+    openChannelService () {
+      ChannelService.updateUser({
+        profile: {
+          name: this.$store.state.auth.userProfile?.nickname,
+          email: this.$store.state.auth.userProfile?.email
+        }
+      })
+      ChannelService.showMessenger()
+    }
   }
 }
 </script>
@@ -71,11 +91,13 @@ ko:
   license: '라이센스'
   rules: '이용 약관'
   contact: '문의'
+  ask: '채널톡 문의하기'
 en:
   credit: 'Credit'
   license: 'License'
   rules: 'Terms of Service'
   contact: 'Contact'
+  ask: 'Ask ChannelTalk'
 </i18n>
 
 <style lang="scss" scoped>

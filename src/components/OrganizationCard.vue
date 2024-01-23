@@ -5,7 +5,11 @@
       :style="{ 'background-color': backgroundColor }"
       class="organization-card"
     >
-      <i v-if="icon" class="logo logo--icon material-icons">{{ icon }}</i>
+      <i
+        v-if="icon"
+        :style="{ 'color': color }"
+        class="logo logo--icon material-icons"
+      >{{ icon }}</i>
       <img
         v-else-if="id"
         :src="require(`@/assets/Logo${id}.png`)"
@@ -33,6 +37,7 @@ export default {
       type: String,
       default: '#fdf0f0'
     },
+    color: String,
     icon: String,
     slug: String
   },
@@ -50,6 +55,13 @@ export default {
         case 'all':
           return {
             name: 'board'
+          }
+        case 'top':
+          return {
+            name: 'board',
+            params: {
+              boardSlug: 'top'
+            }
           }
         default:
           return this.generateOrganizationHref()
@@ -81,6 +93,7 @@ export default {
 ko:
   portal-notice: '포탈공지'
   all-posts: '전체 게시물'
+  top-board: '인기글 게시판'
   clubs-union: '동아리연합회'
   dormitory-council: '생활관 자치회'
   welfare-committee: '학생복지위원회'
@@ -92,6 +105,7 @@ ko:
 en:
   portal-notice: 'Portal Notice'
   all-posts: 'All Posts'
+  top-board: 'Top Articles'
   clubs-union: 'Clubs Union'
   dormitory-council: 'Dormitory Council'
   welfare-committee: 'Welfare Committee'

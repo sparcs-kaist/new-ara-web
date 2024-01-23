@@ -69,8 +69,6 @@
 </template>
 
 <script>
-import { getAttachmentUrls } from '@/api'
-
 const ALLOWED_EXTENSIONS = [
   'txt', 'docx', 'doc', 'pptx', 'ppt', 'pdf', 'hwp', 'zip', '7z',
   'png', 'jpg', 'jpeg', 'gif'
@@ -155,18 +153,17 @@ export default {
   },
 
   methods: {
-    async init (attachmentIds) {
-      const attachmentInfo = await getAttachmentUrls(attachmentIds)
-      attachmentInfo.forEach(({ data: info }) => {
-        const name = decodeURIComponent(new URL(info.file).pathname.split('/').pop())
-        const type = info.mimetype.split('/')[0]
+    async init (attachments) {
+      attachments.forEach(({ id, file, mimetype }) => {
+        const name = decodeURIComponent(new URL(file).pathname.split('/').pop())
+        const type = mimetype.split('/')[0]
 
         this.files.push({
-          key: `${info.id}`,
+          key: id,
           type,
           name,
-          url: info.file,
-          blobUrl: type === 'image' ? info.file : null,
+          url: file,
+          blobUrl: type === 'image' ? file : null,
           uploaded: true
         })
       })

@@ -64,7 +64,7 @@
       </div>
     </div>
 
-    <div v-if="!post.is_hidden || !(post.name_type === 1)" class="post__footer">
+    <div v-if="!post.is_hidden || !(post.name_type === 2)" class="post__footer">
       <LikeButton
         v-if="!post.is_hidden"
         :item="post"
@@ -73,67 +73,77 @@
         :is-mine="post.is_mine"
         @vote="$emit('vote', $event)"
       />
-      <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons">
-        <template v-if="isMine && (post.can_override_hidden !== false) && post.hidden_at === '0001-01-01T08:28:00+08:28'">
-          <button class="button" @click="deletePost">
-            <i class="like-button__icon material-icons-outlined">
-              delete
-            </i>
-            {{ $t('delete') }}
-          </button>
+      <div :class="{ 'post__buttons--hidden': post.is_hidden }" class="post__buttons-box">
+        <div class="post__buttons">
+          <template v-if="isMine && (post.can_override_hidden !== false) && !post.is_hidden">
+            <button class="button mobile-button" @click="deletePost">
+              <i class="like-button__icon material-icons-outlined">
+                delete
+              </i>
+              <label class="button-text">{{ $t('delete') }}</label>
+            </button>
 
-          <router-link
-            :to="{
-              name: 'write',
-              params: {
-                postId
-              }
-            }"
-            class="button"
-          >
-            <i class="like-button__icon material-icons-outlined">
-              edit
-            </i>
-            {{ $t('edit' ) }}
-          </router-link>
-        </template>
-        <template v-else>
-          <button
-            class="button"
-            @click="subscribePost"
-          >
-            {{ $t("subscribe") }}
-          </button>
+            <router-link
+              :to="{
+                name: 'write',
+                params: {
+                  postId
+                }
+              }"
+              class="button mobile-button"
+            >
+              <i class="like-button__icon material-icons-outlined">
+                edit
+              </i>
+              <label class="button-text">{{ $t('edit') }}</label>
+            </router-link>
+          </template>
+          <template v-else>
+            <button
+              v-if="isRegular"
+              class="button mobile-button"
+              @click="$emit('block')"
+            >
+              <i class="like-button__icon material-icons-outlined">
+                remove_circle_outline
+              </i>
+              <label class="button-text">{{ $t(isBlocked ? 'unblock' : 'block') }}</label>
+            </button>
+
+            <button
+              v-if="!post.is_hidden && isNotRealName"
+              class="button mobile-button"
+              @click="$emit('report')"
+            >
+              <i class="like-button__icon material-icons-outlined">
+                campaign
+              </i>
+              <label class="button-text">{{ $t('report') }}</label>
+            </button>
+          </template>
+        </div>
+        <div class="post__buttons">
           <button
             v-if="isRegular"
             class="button"
             @click="$emit('block')"
+            v-if="!post.is_hidden"
+            class="button mobile-button"
+            @click="$emit('copy-url')"
           >
-            <i class="like-button__icon material-icons-outlined">
-              remove_circle_outline
-            </i>
-            {{ $t(isBlocked ? 'unblock' : 'block') }}
+            <i class="like-button__icon material-icons-outlined">content_copy</i>
+            <label class="button-text">{{ $t('copy-url') }}</label>
           </button>
-
           <button
-            v-if="!post.is_hidden && isNotRealName"
-            class="button"
-            @click="$emit('report')"
+            v-if="!post.is_hidden"
+            class="button archive-button mobile-button"
+            :class="{ 'button--clicked': post.my_scrap }"
+            @click="$emit('archive')"
           >
-            <i class="like-button__icon material-icons-outlined">
-              campaign
-            </i>
-            {{ $t('report') }}
+            <i class="like-button__icon material-icons-outlined">add</i>
+            <label class="button-text">{{ $t('archive') }}</label>
           </button>
-        </template>
-        <button
-          v-if="!post.is_hidden"
-          class="button archive-button"
-          @click="$emit('archive')"
-        >
-          <i class="like-button__icon material-icons-outlined">add</i>
-          {{ $t(post.my_scrap ? 'unarchive' : 'archive') }}
-        </button>
+        </div>
       </div>
     </div>
     <hr class="divider">
@@ -141,7 +151,7 @@
 </template>
 
 <script>
-import { getAttachmentUrls, deletePost as apiDeletePost } from '@/api'
+import { deletePost as apiDeletePost } from '@/api'
 import LikeButton from '@/components/LikeButton.vue'
 import TextEditor from '@/components/TheTextEditor.vue'
 import ThePostBookmark from '@/components/ThePostBookmark.vue'
@@ -194,10 +204,10 @@ export default {
       return this.post && this.post.is_mine
     },
     isRegular () {
-      return this.post.name_type === 0
+      return this.post.name_type === 1
     },
     isNotRealName () {
-      return this.post.name_type !== 2
+      return this.post.name_type !== 4
     },
     hiddenReason () {
       const title = `<div class="has-text-weight-bold"> ${this.post.why_hidden.map(v => i18n.t(v)).join('<br>')}</div>`
@@ -227,11 +237,10 @@ export default {
         if (!attachments) {
           return
         }
-        const results = await getAttachmentUrls(attachments)
-        this.attachments = results.map(({ data }) => ({
-          url: data.file,
-          file: decodeURIComponent(new URL(data.file).pathname.split('/').pop()),
-          id: data.id
+        this.attachments = attachments.map(({ id, file }) => ({
+          id: id,
+          url: file,
+          file: decodeURIComponent(new URL(file).pathname.split('/').pop())
         }))
       },
       immediate: true
@@ -272,11 +281,12 @@ export default {
 ko:
   archive: '담아두기'
   unarchive: '담아두기 취소'
-  block: '차단하기'
-  unblock: '차단해제'
-  report: '신고하기'
+  block: '차단'
+  unblock: '차단 해제'
+  report: '신고'
   edit: '수정'
   delete: '삭제'
+  copy-url: 'URL 복사'
   attachments: '첨부파일 모아보기'
   more: '{author} 님의 게시글 더 보기'
   show-hidden: '숨김글 보기'
@@ -293,11 +303,12 @@ ko:
 en:
   archive: 'Bookmark'
   unarchive: 'Delete Bookmark'
-  block: 'Block User'
-  unblock: 'Unblock User'
+  block: 'Block'
+  unblock: 'Unblock'
   report: 'Report'
   edit: 'Edit'
   delete: 'Delete'
+  copy-url: 'Copy URL'
   attachments: 'Attachments'
   more: 'Read more posts by {author}'
   subscribe: 'Comment subscribe'
@@ -313,6 +324,8 @@ en:
 </i18n>
 
 <style lang="scss" scoped>
+@import '@/theme.scss';
+
 #title {
   margin-bottom: 0.25rem;
 }
@@ -321,9 +334,24 @@ en:
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
     font-size: 0.9rem;
+    @include breakPoint(mobile) {
+      flex-direction: column;
+      display: right;
+    }
   }
+
+  &__buttons-box {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    @include breakPoint(mobile) {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
   &__buttons {
     display: flex;
     align-items: center;
@@ -343,9 +371,32 @@ en:
       display: flex;
       align-items: center;
       line-height: 0.9rem;
+      transition: background-color 0.2s ease-in-out;
+
+      &--clicked {
+        background-color: var(--theme-400);
+        color: white;
+      }
+
+      .button-text {
+        cursor: pointer;
+      }
+
       .like-button__icon {
         margin-right: 5px;
         font-size: 18px;
+      }
+    }
+
+    & > .mobile-button {
+      @include breakPoint(mobile) {
+        .button-text {
+          display: none;
+        }
+        .like-button__icon {
+          margin-right: 0px;
+          font-size: 18px;
+        }
       }
     }
   }
@@ -353,6 +404,16 @@ en:
     font-size: 1.0rem;
     margin-left: -6px;
     margin-top: 10px;
+    @include breakPoint(mobile) {
+      margin-top:25px;
+    }
+  }
+}
+
+.post__like {
+  @include breakPoint(mobile) {
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 }
 

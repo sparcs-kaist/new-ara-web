@@ -46,7 +46,6 @@ export default {
       return userProfile.extra_preferences && userProfile.extra_preferences.darkMode
     },
     isCommunicationAdmin ({ userProfile }) {
-      // console.log('is_school_admin', userProfile)
       return userProfile.group === 6
     }
   },

@@ -2,13 +2,15 @@
   <div class="post">
     <div class="title">
       <a class="title__board">
-        <i class="material-icons title__board--icon">arrow_back_ios</i>
-        <span class="title__board--name" @click="hasHistory() ? $router.back() : $router.push(beforeBoard)">
-          {{ beforeBoardName }}
-        </span>
-        <span v-if="beforeBoardName === '전체보기' || beforeBoardName === 'All'" class="title__info">
-          <router-link :to="{name: 'board', params: { boardSlug: post.parent_board['slug'] }} " class="title__info">
-            | {{ post.parent_board[`${$i18n.locale}_name`] }}
+        <div class="title__board" @click="beforeBoardName === $t('prev-page') ? $router.back() : $router.push(beforeBoard)">
+          <i class="material-icons title__board--icon">arrow_back_ios</i>
+          <span class="title__board--name">
+            {{ beforeBoardName }}
+          </span>
+        </div>
+        <span v-if="[ $t('all'), $t('top'), $t('archive-board'), $t('recent-board'), $t('prev-page') ].includes(beforeBoardName)" class="title__info">
+          <router-link :to="{name: 'board', params: { boardSlug }} " class="title__info">
+            | {{ boardName }}
           </router-link>
         </span>
       </a>
@@ -118,11 +120,7 @@ export default {
       return this.post.communication_article_status ?? 0
     },
     isCommunicationPost () {
-      if (this.post.parent_board?.id === 14) {
-        return true
-      } else {
-        return false
-      }
+      return this.post.parent_board?.id === 14
     },
     statusText () {
       const t = ['polling', 'preparing', 'answered'][this.status]
@@ -152,7 +150,7 @@ export default {
       return this.post.title
     },
     isRegular () {
-      return this.post.name_type === 0
+      return this.post.name_type === 1
     },
     beforeBoard () {
       const { from_view: fromView, topic_id: topicId, current } = this.$route.query
@@ -166,10 +164,16 @@ export default {
         return { name, params, query: { ...query, topic: topicId } }
       }
       if (fromView === 'scrap') {
-        return { name: 'archive', query }
+        return { name: 'my-info', query: { board: 'archive', ...query } }
+      }
+      if (fromView === 'recent') {
+        return { name: 'my-info', query: { board: 'recent', ...query } }
       }
       if (fromView === '-portal') {
         return { name, query: { ...query, portal: 'exclude' } }
+      }
+      if (fromView === 'top') {
+        return { name, params: { boardSlug: 'top' }, query }
       }
       return { name, query }
     },
@@ -179,7 +183,13 @@ export default {
         return this.boardName
       }
       if (fromView === 'scrap') {
-        return this.$t('archive')
+        return this.$t('archive-board')
+      }
+      if (fromView === 'recent') {
+        return this.$t('recent-board')
+      }
+      if (fromView === 'top') {
+        return this.$t('top')
       }
       if (this.hasHistory()) {
         if (fromView === 'all') {
@@ -219,7 +229,10 @@ ko:
   unblock: '사용자 차단해제'
   confirm-delete: '정말로 삭제하시겠습니까?'
   all: '전체보기'
+  top: '인기글 게시판'
   prev-page: '이전 페이지'
+  recent-board: '최근 본 글'
+  archive-board: '담아둔 글'
   status:
     polling: '달성전'
     preparing: '답변 준비중'
@@ -240,7 +253,10 @@ en:
   unblock: 'Unblock User'
   confirm-delete: 'Are you really want to delete this post?'
   all: 'All'
+  top: 'Top Articles'
   prev-page: 'Previous Page'
+  recent-board: 'Recent Articles'
+  archive-board: 'Bookmarks'
   status:
     polling: 'Polling'
     preparing: 'Preparing'

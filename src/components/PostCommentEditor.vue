@@ -82,11 +82,14 @@ export default {
       return this.post.my_comment_profile ? this.post.my_comment_profile.profile.picture : this.post.created_by?.profile.picture
     },
     authorRed () {
-      return this.post.name_type !== 0 && this.post.is_mine ? 'author_red' : ''
+      return this.post.name_type !== 1 && this.post.is_mine ? 'author_red' : ''
     },
     isVerified () {
+      if (!this.post.my_comment_profile || !this.post.parent_board) {
+        return false
+      }
       const profile = this.post.my_comment_profile.profile
-      return this.post.parent_board.id === 14 ? profile?.is_school_admin : profile?.is_official
+      return this.post.parent_board.id === 14 ? profile.is_school_admin : profile.is_official
     }
   },
 
@@ -102,6 +105,13 @@ export default {
     },
     async saveComment () {
       if (this.isUploading) {
+        return
+      }
+      if (!this.content) {
+        this.$store.dispatch('dialog/toast', {
+          type: 'warning',
+          text: this.$t('no-empty')
+        })
         return
       }
 
@@ -121,7 +131,6 @@ export default {
             content: this.content,
             name_type: this.post.name_type
           }))
-        // console.log('After update/create comment...')
         this.$emit('upload', result)
         this.content = ''
         this.autosize()
@@ -149,14 +158,16 @@ ko:
   placeholder: '댓글을 작성하세요.'
   new-comment: '등록'
   close-comment: '취소'
-  write-failed: '댓글 작성에 실패하였습니다'
+  write-failed: '댓글 작성을 실패했습니다.'
+  no-empty: '내용을 입력해주세요.'
   author: '글쓴이'
 
 en:
   placeholder: 'Type here...'
-  new-comment: 'Send'
+  new-comment: 'Write'
   close-comment: 'Cancel'
-  write-failed: 'Failed to write comment'
+  write-failed: 'Failed to write comment.'
+  no-empty: 'Please fill in the empty input.'
   author: 'Author'
 </i18n>
 

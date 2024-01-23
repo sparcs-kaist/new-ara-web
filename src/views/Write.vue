@@ -104,7 +104,7 @@ export default {
 
   methods: {
     async savePost (newArticle) {
-      const { title, boardId, categoryId, isSexual, isSocial, attachments } = newArticle
+      const { title, boardId, categoryId, isSocial, isSexual, nameType, attachments } = newArticle
 
       this.emptyWarnings = []
       if (title === '') {
@@ -172,7 +172,8 @@ export default {
         attachments: attachmentIds,
         parent_topic: categoryId,
         is_content_sexual: isSexual,
-        is_content_social: isSocial
+        is_content_social: isSocial,
+        name_type: nameType
       }
 
       let result

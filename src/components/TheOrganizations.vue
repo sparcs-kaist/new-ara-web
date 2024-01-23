@@ -71,7 +71,8 @@ export default {
     return {
       organizations: [
         { name: 'portal-notice', id: 'KAIST', backgroundColor: '#dbdbdb' },
-        { name: 'all-posts', id: 'all', icon: 'dashboard', backgroundColor: '#e15858' },
+        { name: 'all-posts', id: 'all', icon: 'dashboard', backgroundColor: '#ed3a3a' },
+        { name: 'top-board', id: 'top', icon: 'trending_up', backgroundColor: '#fafafa', color: '#ed3a3a' },
         { name: 'clubs-union', id: 'UA', slug: 'clubs-union' },
         { name: 'dormitory-council', id: 'GSDC', slug: 'dorm-council' },
         { name: 'welfare-committee', id: 'SWF', slug: 'welfare-cmte' },
@@ -82,7 +83,7 @@ export default {
       ],
       primaryOptions: {
         type: 'loop',
-        perPage: 9,
+        perPage: 10,
         interval: 3000,
         perMove: 1,
         gap: '1rem',

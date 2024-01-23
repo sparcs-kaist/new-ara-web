@@ -45,14 +45,20 @@
 <script>
 import { apiUrl } from '@/http'
 import { changeLocale } from '@/i18n'
+import ChannelService from '@/channel.js'
 
 export default {
   name: 'Facade',
 
   computed: {
     loginUrl () {
-      return `${apiUrl}/api/users/sso_login/?next=${location.protocol}//${location.host}/login-handler`
+      var referrer = this.$route.query.next
+      return `${apiUrl}/api/users/sso_login/?next=${location.protocol}//${location.host}/login-handler?link=${referrer}`
     }
+  },
+
+  created () {
+    ChannelService.showChannelButton()
   },
 
   methods: {

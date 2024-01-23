@@ -195,12 +195,12 @@ en:
   &--sidebar & {
     &__name {
       font-size: 15px;
+      padding-left: 0;
     }
 
     &__post {
       font-size: 13px;
       padding: 0;
-      padding-left: 1rem;
 
       .post__title {
         font-size: 13px;
@@ -211,6 +211,10 @@ en:
         font-size: 11px;
       }
     }
+  }
+
+  &--sidebar .red-box {
+    margin-left: 0;
   }
 }
 </style>

@@ -1,5 +1,5 @@
-$theme-red: #e15858;
-$theme-red-dark: rgb(204, 59, 59);
+$theme-red: #ed3a3a;
+$theme-red-dark: #c62626;
 $dark: #333333;
 $gray: #666666;
 $family-sans-serif: var(--font);
@@ -8,8 +8,8 @@ $body-rendering: auto;
 
 :root {
   // global theme variables
-  --theme-500: rgb(204, 59, 59);
-  --theme-400: #e15858;
+  --theme-500: #c62626;
+  --theme-400: #ed3a3a;
   --theme-300: #f9c7c7;
   --theme-100: #fdf0f0;
 
