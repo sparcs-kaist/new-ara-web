@@ -124,10 +124,6 @@
         </div>
         <div class="post__buttons">
           <button
-            v-if="isRegular"
-            class="button"
-            @click="$emit('block')"
-            v-if="!post.is_hidden"
             class="button mobile-button"
             @click="$emit('copy-url')"
           >

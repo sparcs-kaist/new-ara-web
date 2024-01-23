@@ -117,6 +117,58 @@
               </div>
             </div>
           </div>
+
+          <div class="box">
+            <div class="redbox" />
+            <h1 class="box__title">
+              {{ $t('alarm-title') }}
+            </h1>
+            <h2 class="box__subtitle">
+              {{ $t('alarm-subtitle') }}
+            </h2>
+
+            <div class="box__container">
+              <div
+                v-for="group in boardGroups"
+                :key="group.id"
+                class="settings"
+              >
+                <div
+                  v-if="group.boards.length <= 1"
+                >
+                  <div class="settings__container">
+                    <span class="label">{{ group[[`${$i18n.locale}_name`]] }}</span>
+                    <div @click="updateSetting('sexual')">
+                      <i v-if="user.sexual" class="material-icons toggle-on">
+                        toggle_on
+                      </i>
+                      <i v-else class="material-icons">
+                        toggle_off
+                      </i>
+                    </div>
+                  </div>
+                </div>
+                <div v-else>
+                  <span class="label">{{ group[`${$i18n.locale}_name`] }}</span>
+                  <div
+                    v-for="board in group.boards"
+                    :key="board.id"
+                    class="settings__container"
+                  >
+                    <span class="label">{{ board[`${$i18n.locale}_name`] }}</span>
+                    <div @click="updateSetting('sexual')">
+                      <i v-if="user.sexual" class="material-icons toggle-on">
+                        toggle_on
+                      </i>
+                      <i v-else class="material-icons">
+                        toggle_off
+                      </i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </template>
@@ -292,7 +344,7 @@ export default {
   },
 
   computed: {
-    ...mapState([ 'recentPosts', 'archivedPosts' ]),
+    ...mapState([ 'recentPosts', 'archivedPosts', 'boardList', 'boardGroups' ]),
     ...mapGetters([ 'userId' ]),
 
     fromQuery () {
@@ -477,6 +529,13 @@ ko:
   blocked-title: '내가 차단한 유저 목록'
   blocked-subtitle: '{user} 님이 차단하신 유저 목록입니다.<br />하루에 최대 10번만 변경 가능합니다.'
   blocked-empty: '차단한 유저가 없습니다.'
+  alarm-title: '알림 설정'
+  alarm-subtitle: '알림을 받을 게시판을 설정해주세요.'
+  group:
+    notice: '공지'
+    communication: '소통'
+    money: '거래'
+    clubs: '학생 단체 및 동아리'
   empty-email: '이메일 주소가 없습니다.'
   save: '확인'
   cancel: '취소'
@@ -507,6 +566,13 @@ en:
   blocked-title: 'Blocked users'
   blocked-subtitle: 'Users that you blocked<br />You could change it at most 10 times a day'
   blocked-empty: 'There are no blocked users.'
+  alarm-title: 'Alarm settings'
+  alarm-subtitle: 'Choose boards you want to receive notifications.'
+  group:
+    notice: 'Notice'
+    communication: 'Communication'
+    money: 'Money'
+    clubs: 'Organizations and Clubs'
   empty-email: 'No email address'
   save: 'Confirm'
   cancel: 'Cancel'
