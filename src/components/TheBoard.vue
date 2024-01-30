@@ -11,17 +11,22 @@
         {{ queryTitle }}
         <slot name="title" />
       </h1>
+      <button
+        class="board__subscribe button"
+        @click="toggleSubscribe"
+      >
+        <i v-if="toggle" class="material-icons toggle-on">
+          notifications_active
+        </i>
+        <i v-else class="material-icons toggle-off">
+          notifications_none
+        </i>
+      </button>
 
       <div class="board__options">
         <slot name="option" />
         <slot name="filter" />
         <slot name="order" />
-        <button
-          class="board__subscribe button"
-          @click="toggleSubscribe"
-        >
-          {{ $t("subscribe") }}
-        </button>
         <SearchBar
           v-if="!simplify"
           class="board__tablet-search is-flex-touch is-hidden-mobile"
@@ -49,11 +54,13 @@
 </template>
 
 <script>
+import store from '@/store'
 import SearchBar from '@/components/SearchBar.vue'
 import ThePaginator from '@/components/ThePaginator.vue'
 import TheBoardTable from '@/components/TheBoardTable.vue'
 import Banner from '@/components/Banner.vue'
 import { patchFCMTopic, getFCMTopic } from '@/api/user'
+import { fetchWithProgress } from '@/views/helper'
 
 export default {
   name: 'TheBoard',
@@ -76,6 +83,29 @@ export default {
     bannerImage: String,
     fromQuery: Object,
     simplify: Boolean
+  },
+
+  data () {
+    return {
+      user: {
+        nickname: null,
+        email: null,
+        picture: null,
+        pictureSrc: '',
+        sexual: null,
+        social: null,
+        num_articles: null,
+        num_comments: null,
+        num_positive_votes: null
+      },
+      posts: null,
+      blocks: null,
+      updating: false,
+      tabIndex: 0,
+      isNicknameEditable: false,
+      newNickname: null,
+      mobileSettings: false
+    }
   },
 
   computed: {
@@ -110,6 +140,32 @@ export default {
       }
       return true
     }
+  },
+
+  async beforeRouteEnter ({ query }, from, next) {
+    const [ , posts, blocks ] = await fetchWithProgress([
+      store.dispatch('fetchMe')
+    ], 'myinfo-failed-fetch')
+
+    const { userNickname, userEmail, userPicture, userConfig, userActivity } = store.getters
+
+    next(vm => {
+      vm.user = {
+        nickname: userNickname,
+        email: userEmail,
+        pictureSrc: userPicture,
+        sexual: userConfig.sexual,
+        social: userConfig.social,
+        num_articles: userActivity.articles,
+        num_comments: userActivity.comments,
+        num_positive_votes: userActivity.positiveVotes
+      }
+
+      vm.posts = posts
+      vm.blocks = blocks
+
+      document.title = vm.$t('document-title')
+    })
   },
 
   methods: {
@@ -193,6 +249,41 @@ en:
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+  }
+
+  &__subscribe {
+    border: transparent;
+    box-shadow: none;
+    margin-bottom: 10px;
+    background: transparent;
+    color: #333333;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+
+    &:hover {
+      color: #ED3A3A;
+      box-shadow: none;
+      border: transparent;
+      background: transparent;
+    }
+    &.toggle-on {
+      color: #ED3A3A;
+      box-shadow: none;
+      border: transparent;
+      background: transparent;
+    }
+
+    &.toggle-off {
+      color: #333333;
+      box-shadow: none;
+      border: transparent;
+      background: transparent;
+    }
+    .material-icons {
+      font-size: 1.5rem;
+      position: relative;
+    }
   }
 
   &__divider {

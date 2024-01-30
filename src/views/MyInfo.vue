@@ -134,7 +134,7 @@
                 class="settings"
               >
                 <div
-                  v-if="group.boards.length <= 1"
+                  v-if="group.boards.length < 1"
                 >
                   <div class="settings__container">
                     <span class="label">{{ group[[`${$i18n.locale}_name`]] }}</span>
