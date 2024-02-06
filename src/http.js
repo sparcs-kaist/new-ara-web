@@ -8,6 +8,8 @@ const apiUrl = (function () {
     return process.env.VUE_APP_API_HOST
   } if (process.env.VUE_APP_API_MODE === 'development') {
     return 'https://newara.dev.sparcs.org' // if local, use 'http://127.0.0.1:9000'
+  } else if (process.env.VUE_APP_API_MODE === 'staging') {
+    return 'https://ara-staging-api.sparcs.org'
   } else if (process.env.NODE_ENV === 'production') {
     return 'https://newara-api.sparcs.org'
   } else if (process.env.NODE_ENV === 'staging') {
