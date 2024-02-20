@@ -7,22 +7,23 @@ import { getMessaging, getToken, onMessage } from 'firebase/messaging'
 import { updateFCMToken, deleteFCMToken } from './api'
 
 const firebaseConfig = JSON.parse(process.env.VUE_APP_FIREBASE_CONFIG || '{}')
-
+console.log('fcm test')
 const app = firebase.initializeApp(firebaseConfig)
 let acquired = false
-const fcmDisable = true
+const fcmDisable = false
 
 export const acquireFCMToken = async () => {
   if (fcmDisable) return
   if (!acquired && 'Notification' in window) {
     Notification.requestPermission().then(function (result) {
       if (result === 'granted') {
+        console.log('granted')
         getToken(getMessaging(app), { vapidKey: process.env.VUE_APP_FIREBASE_VAPID_KEY })
           .then((currentToken) => {
             if (currentToken) {
               // Send the token to your server and update the UI if necessary
-              // console.log('[Notification] client token', currentToken)
               updateFCMToken(currentToken)
+              console.log('[Notification] client token', currentToken)
               acquired = true // prevent from acquiring token again after first access. If the page is reloaded, the token will be acquired again.
             } else {
               // Show permission request UI
