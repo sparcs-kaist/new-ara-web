@@ -16,20 +16,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14.21
-      - name: Create .env
-        run: |
-          echo VUE_APP_API_MODE=production >> .env
-          echo VUE_APP_FIREBASE_CONFIG=$FIREBASE_CONFIG_PROD >> .env
-          echo VUE_FIREBASE_VAPID_KEY=$FIREBASE_VAPID_KEY_PROD >> .env
-          echo VUE_CHANNEL_PLUGIN_KEY=$CHANNEL_PLUGIN_KEY >> .env
-        env:
-          FIREBASE_CONFIG_PROD: ${{ secrets.FIREBASE_CONFIG_PROD }}
-          FIREBASE_VAPID_KEY_PROD: ${{ secrets.FIREBASE_VAPID_KEY_PROD }}
-          CHANNEL_PLUGIN_KEY: ${{ secrets.CHANNEL_PLUGIN_KEY }}
       - name: Install dependencies
         run: npm ci
       - name: Build
         run: npm run build
+        env:
+          VUE_APP_API_MODE: production
+          VUE_APP_FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_PROD }}
+          VUE_FIREBASE_VAPID_KEY: ${{ secrets.FIREBASE_VAPID_KEY_PROD }}
+          VUE_CHANNEL_PLUGIN_KEY: ${{ secrets.CHANNEL_PLUGIN_KEY }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
