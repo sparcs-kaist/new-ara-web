@@ -23,8 +23,8 @@ jobs:
         env:
           VUE_APP_API_MODE: production
           VUE_APP_FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_PROD }}
-          VUE_FIREBASE_VAPID_KEY: ${{ secrets.FIREBASE_VAPID_KEY_PROD }}
-          VUE_CHANNEL_PLUGIN_KEY: ${{ secrets.CHANNEL_PLUGIN_KEY }}
+          VUE_APP_FIREBASE_VAPID_KEY: ${{ secrets.FIREBASE_VAPID_KEY_PROD }}
+          VUE_APP_CHANNEL_PLUGIN_KEY: ${{ secrets.CHANNEL_PLUGIN_KEY }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
