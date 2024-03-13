@@ -11,7 +11,7 @@ const apiUrl = (function () {
   } else if (process.env.VUE_APP_API_MODE === 'staging') {
     return 'https://ara-staging-api.sparcs.org'
   } else if (process.env.NODE_ENV === 'production') {
-    return 'https://newara-api.sparcs.org'
+    return 'https://newara.sparcs.org'
   } else if (process.env.NODE_ENV === 'staging') {
     return 'https://ara-staging-api.sparcs.org'
   } else if (process.env.NODE_ENV === 'development') {
