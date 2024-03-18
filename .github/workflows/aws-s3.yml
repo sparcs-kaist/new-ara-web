@@ -1,0 +1,50 @@
+name: Deploy to Amazon S3 newara-front
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.21
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+        env:
+          VUE_APP_API_MODE: production
+          VUE_APP_FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_PROD }}
+          VUE_APP_FIREBASE_VAPID_KEY: ${{ secrets.FIREBASE_VAPID_KEY_PROD }}
+          VUE_APP_CHANNEL_PLUGIN_KEY: ${{ secrets.CHANNEL_PLUGIN_KEY }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+      - name: Deploy to Amazon S3
+        run: aws s3 sync dist/ s3://newara-front --delete
+      - name: Invalidate CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+
+      - name: collect dist to make tarball
+        run: |
+          cd dist
+          tar cvfz ../$REF.tar.gz .
+          cd ..
+        env:
+          REF: ${{ github.ref_name }}
+      - name: Upload to S3 Backup Bucket
+        run: aws s3 cp $REF.tar.gz s3://sparcs-newara-backup/web-backup/$REF.tar.gz
+        env:
+          REF: ${{ github.ref_name }}
