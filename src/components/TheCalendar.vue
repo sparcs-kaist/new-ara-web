@@ -224,10 +224,17 @@ export default {
     eventList.then((res) => {
       this.defaultEventList = res.results
       this.defaultEventList.forEach((event) => {
-        event.start = event.start_at
-        event.end = event.end_at
+        event.title = this.$i18n.locale === 'ko' ? event.ko_title : event.en_title
+        var start = new Date(event.start_at)
+        event.start = start
+        var end = new Date(event.end_at)
+        event.end = end
         event.allday = event.is_all_day
         event.color = event.tags[0].color
+        event.description = this.$i18n.locale === 'ko' ? event.ko_description : event.en_description
+        event.tags.forEach((tag) => {
+          tag.name = this.$i18n.locale === 'ko' ? tag.ko_name : tag.en_name
+        })
       })
       this.filteredEventList = this.defaultEventList
       this.selectAllEvent()
@@ -343,7 +350,7 @@ export default {
     },
     hoverEventEnter ({ event, el, jsEvent, view }) {
       const rect = this.$refs.calendarContainer.getBoundingClientRect()
-      this.hoveringEvent = this.eventList.find((e) => e.id === event.id)
+      this.hoveringEvent = this.filteredEventList.find((e) => e.id === parseInt(event.id))
       this.hoveringPosition = { x: jsEvent.x - rect.left - 20, y: jsEvent.y - rect.top - 30 }
     },
     hoverEventLeave () {

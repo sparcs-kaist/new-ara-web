@@ -79,7 +79,7 @@
         <div class="calendar-popup-footer__tag--box">
           <div
             v-for="tag in eventTagList"
-            :key="tag.value"
+            :key="tag.id"
             class="calendar-popup-footer__tag--item"
           >
             <div
@@ -136,7 +136,7 @@ export default Vue.extend({
       return `${sign}${days}${this.$t('day')} ${hours}${this.$t('hour')}`
     },
     eventTagList (): Tag[] {
-      return this.tags.filter(tag => this.event.tagList.includes(tag.value))
+      return this.event.tags
     }
   }
 })
