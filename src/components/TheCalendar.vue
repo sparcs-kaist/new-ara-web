@@ -102,7 +102,12 @@
               type="checkbox"
               @change="filterTag"
             >
-            <label class="tag-label" :for="tag.name">{{ tag.name }}</label>
+            <label
+              class="tag-label"
+              :for="tag.name"
+            >
+              {{ tag.name }}
+            </label>
           </div>
         </div>
         <div class="tag-reset">
@@ -145,6 +150,7 @@ export default {
       selectedTags: [],
       keyword: '',
       calendarTitle: '',
+      hoveredTag: null,
       hoveringEvent: null,
       hoveringPosition: { x: 0, y: 0 },
       activeBtn: 'month'
@@ -436,7 +442,7 @@ en:
     border-right: none;
   }
   & .fc-day-today{
-    background-color: #e8f5e9;
+    background-color: #FDF0F0;
   }
 
   & .fc-button-primary {
@@ -712,6 +718,7 @@ en:
   border: 1px solid #DBDBDB;
   border-style: dashed;
   display: inline-block;
+  align-items: center;
   text-align: center;
   color: #DBDBDB;
   font-size: 16px;
