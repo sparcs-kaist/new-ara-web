@@ -21,7 +21,7 @@ const router = new Router({
       component: NotFound
     }
   ],
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior (to, from, savedPosition) {
     if (to.hash) {
       return { selector: to.hash }
     } else if (savedPosition) {
@@ -38,10 +38,10 @@ router.beforeEach((to, from, next) => {
 
   // 약관에 동의하지 않은 경우 약관 페이지로 리다이렉트
   if (!userAgreed && to.path !== '/terms') {
-    next('/terms');
+    next('/terms')
   } else {
-    next();
+    next()
   }
-});
+})
 
-export default router;
+export default router
