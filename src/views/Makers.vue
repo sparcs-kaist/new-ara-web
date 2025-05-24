@@ -198,20 +198,20 @@ const projects = [
       또한 아라의 아이덴티티가 잘 드러나도록 홈페이지 디자인을 개선하였습니다.`,
     members: {
       PM: [
-        ['yuwol:황인준', '2022~' ], ['jessie:윤지수', '2021'], ['victory:김주연', '2020'],
-        ['leo:정진우', '2019'], ['yujingaya:김유진', '2018'], ['swan:지수환', '2018'],
-        ['raon:김강인', '2017']
+        ['killerwhale:박승범', '2025~'], ['hyooyh:권효진', '2024'], ['yuwol:황인준', '2022~2023' ],
+        ['jessie:윤지수', '2021'], ['victory:김주연', '2020'], ['leo:정진우', '2019'],
+        ['yujingaya:김유진', '2018'], ['swan:지수환', '2018'], ['raon:김강인', '2017']
       ],
       DV: [
-        'hyuk:장승혁', 'king:김세종', 'roul:신도윤', 'hyooyh:권효진',
-        'default:김현수', 'phenol:권영완', 'arcticfox:고예준', 'alvin:김상오',
-        'retro:최상아', 'ina:송인화', 'ddungiii:김기영', 'duncan:이동재',
-        'panya:김지연', 'ivy:이융희', 'jungnoh:노정훈', 'water:김윤수',
-        'triangle:주예준', 'hanski:한석휘', 'idev:이재현', 'doolly:김제윤',
-        'nenw:김요한', 'fi:김도현', 'james:문재호', 'busan:안재웅',
-        'kidevelop:함종현', 'holymolly:김태원', 'gunwoo:김건우', 'todo:김동관',
-        'his:황인승', 'rongrong:이승민', 'leesia:강현우', 'seol:설윤아',
-        'youns:최윤서', 'appleseed:강찬규'
+        'casio:임가은', 'soom:이수민', 'edge:정재현', 'hyuk:장승혁',
+        'king:김세종', 'roul:신도윤', 'default:김현수', 'phenol:권영완',
+        'arcticfox:고예준', 'alvin:김상오', 'retro:최상아', 'ina:송인화',
+        'ddungiii:김기영', 'duncan:이동재', 'panya:김지연', 'ivy:이융희',
+        'jungnoh:노정훈', 'water:김윤수', 'triangle:주예준', 'hanski:한석휘',
+        'idev:이재현', 'doolly:김제윤', 'nenw:김요한', 'fi:김도현',
+        'james:문재호', 'busan:안재웅', 'kidevelop:함종현', 'holymolly:김태원',
+        'gunwoo:김건우', 'todo:김동관', 'his:황인승', 'rongrong:이승민',
+        'leesia:강현우', 'seol:설윤아', 'youns:최윤서', 'appleseed:강찬규'
       ],
       DS: [
         'yumyum:조유민', 'nine:배세윤', 'cheddar:최다은',
