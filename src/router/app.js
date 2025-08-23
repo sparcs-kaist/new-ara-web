@@ -9,6 +9,7 @@ import NotFound from '@/views/NotFound.vue'
 import RenewalLandingPage from '@/views/RenewalLandingPage.vue'
 import Makers from '@/views/Makers.vue'
 import Deleted from '@/views/Deleted.vue'
+import Calendar from '@/views/Calendar.vue'
 import { authGuard } from './auth.js'
 import { readNotification } from '@/api/user.js'
 
@@ -81,6 +82,12 @@ export default [
     path: '/makers',
     name: 'makers',
     component: Makers,
+    beforeEnter: authGuard
+  },
+  {
+    path: '/calender',
+    name: 'calender',
+    component: Calendar,
     beforeEnter: authGuard
   }
 ]

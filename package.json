@@ -13,6 +13,10 @@
     "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.9",
+    "@fullcalendar/daygrid": "^6.1.9",
+    "@fullcalendar/list": "^6.1.9",
+    "@fullcalendar/vue": "^6.1.9",
     "@splidejs/vue-splide": "^0.3.5",
     "axios": "^0.25.0",
     "bulma": "^0.7.1",
