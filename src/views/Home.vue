@@ -64,7 +64,6 @@ import SmallBoard from '@/components/SmallBoard.vue'
 import TheHomeSearchbar from '@/components/TheHomeSearchbar.vue'
 import TheOrganizations from '@/components/TheOrganizations.vue'
 import TheLayout from '@/components/TheLayout.vue'
-import AraBetaSidebar from '@/components/NewAraExtends/AraBetaSidebar.vue'
 
 export default {
   name: 'Home',
@@ -73,8 +72,7 @@ export default {
     SmallBoard,
     TheHomeSearchbar,
     TheOrganizations,
-    TheLayout,
-    AraBetaSidebar
+    TheLayout
   },
 
   data () {
