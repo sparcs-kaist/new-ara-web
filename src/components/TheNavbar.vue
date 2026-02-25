@@ -86,6 +86,7 @@
               :to="{ name: 'board', params: { boardSlug: 'talk' } }"
               class="navbar-item"
             >
+              <i class="material-icons is-hidden-desktop">navigate_next</i>
               <span>{{ group[[`${$i18n.locale}_name`]] }}</span>
             </router-link>
             <div
@@ -120,6 +121,14 @@
               </router-link>
             </div>
           </div>
+
+          <router-link
+            :to="{ name: 'board', params: { boardSlug: 'top' } }"
+            class="navbar-item"
+          >
+            <i class="material-icons is-hidden-desktop">navigate_next</i>
+            <span>{{ $t('top') }}</span>
+          </router-link>
         </div>
 
         <div class="navbar-end">
@@ -335,6 +344,7 @@ ko:
   notification: '알림'
   write: '게시글 작성하기'
   all: '전체보기'
+  top: '인기글 게시판'
   talk: '자유게시판'
   my-page: '마이페이지'
   logout: '로그아웃'
@@ -350,6 +360,7 @@ en:
   notification: 'Notifications'
   write: 'Write Post'
   all: 'All'
+  top: 'Top Articles'
   talk: 'Talk'
   my-page: 'My Page'
   logout: 'Logout'

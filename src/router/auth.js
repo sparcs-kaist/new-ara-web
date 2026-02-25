@@ -8,8 +8,10 @@ import { acquireFCMToken, releaseFCMToken } from '@/firebase'
 
 export const authGuard = async (to, from, next) => {
   await store.dispatch('fetchMe')
-
   if (!store.getters.isLoggedIn) {
+    if (to.path !== '/') {
+      alert('로그인이 필요합니다.(Login required)')
+    }
     const urlRef = (to.path && to.path !== '/') ? `?next=${location.protocol}//${location.host}${to.fullPath}` : `?next=${location.protocol}//${location.host}/`
     next(`/login${urlRef}`)
   } else {
@@ -67,6 +69,7 @@ export default [
           await logout(store.getters.userId)
         } catch (err) {}
         store.commit('setAuthState', false)
+        store.commit('setUserProfile', {})
       }
 
       next('/login')

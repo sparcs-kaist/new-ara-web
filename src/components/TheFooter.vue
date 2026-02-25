@@ -16,14 +16,8 @@
       <div class="footer-items">
         <div class="footer-item">
           <router-link to="/makers">
-            {{ $t('credit') }}
+            {{ $t('contributors') }}
           </router-link>
-        </div>
-
-        <div class="footer-item">
-          <a href="https://sparcs.org">
-            {{ $t('license') }}
-          </a>
         </div>
 
         <div class="footer-item">
@@ -34,15 +28,15 @@
 
         <div class="footer-item">
           <a @click="openChannelService()">
-            {{ $t('ask') }}
+            {{ $t('inquiry') }}
           </a>
         </div>
       </div>
 
       <div class="footer-contact is-hidden-mobile">
         {{ $t('contact') }}:
-        <a href="mailto:new-ara@sparcs.org">
-          new-ara@sparcs.org
+        <a href="mailto:ara@sparcs.org">
+          ara@sparcs.org
         </a>
       </div>
     </div>
@@ -87,17 +81,15 @@ export default {
 
 <i18n>
 ko:
-  credit: '만든 사람들'
-  license: '라이센스'
+  contributors: '만든 사람들'
   rules: '이용 약관'
   contact: '문의'
-  ask: '채널톡 문의하기'
+  inquiry: '문의하기'
 en:
-  credit: 'Credit'
-  license: 'License'
+  contributors: 'Contributors'
   rules: 'Terms of Service'
   contact: 'Contact'
-  ask: 'Ask ChannelTalk'
+  inquiry: 'Inquiry'
 </i18n>
 
 <style lang="scss" scoped>
