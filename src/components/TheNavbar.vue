@@ -76,6 +76,23 @@
             <span>{{ $t('all') }}</span>
           </router-link>
 
+          <router-link
+            :to="{ name: 'board', params: { boardSlug: 'top' } }"
+            class="navbar-item"
+          >
+            <i class="material-icons is-hidden-desktop">navigate_next</i>
+            <span>{{ $t('top') }}</span>
+          </router-link>
+
+          <router-link to="/calender" class="navbar-item">
+            <i class="material-icons is-hidden-desktop">navigate_next</i>
+            <span>{{ $t('calendar') }}</span>
+          </router-link>
+
+          <span class="divider">
+            |
+          </span>
+
           <div
             v-for="group in boardGroups"
             :key="group.id"
@@ -121,14 +138,6 @@
               </router-link>
             </div>
           </div>
-
-          <router-link
-            :to="{ name: 'board', params: { boardSlug: 'top' } }"
-            class="navbar-item"
-          >
-            <i class="material-icons is-hidden-desktop">navigate_next</i>
-            <span>{{ $t('top') }}</span>
-          </router-link>
         </div>
 
         <div class="navbar-end">
@@ -344,7 +353,7 @@ ko:
   notification: '알림'
   write: '게시글 작성하기'
   all: '전체보기'
-  top: '인기글 게시판'
+  top: '인기글'
   talk: '자유게시판'
   my-page: '마이페이지'
   logout: '로그아웃'
@@ -354,13 +363,14 @@ ko:
     money: '거래'
     clubs: '학생 단체 및 동아리'
   morealarm: '알림 더 보기'
+  calendar: '캘린더'
 
 en:
   language: '한국어'
   notification: 'Notifications'
   write: 'Write Post'
   all: 'All'
-  top: 'Top Articles'
+  top: 'Top'
   talk: 'Talk'
   my-page: 'My Page'
   logout: 'Logout'
@@ -370,6 +380,7 @@ en:
     money: 'Money'
     clubs: 'Organizations and Clubs'
   morealarm: 'See more Alarms'
+  calendar: 'Calendar'
 </i18n>
 
 <style lang="scss" scoped>
@@ -725,5 +736,12 @@ div {
     left: 5px;
     right: 10px;
   }
+}
+
+.divider {
+  color: #A9A9A9;
+  font-size: 18px;
+  padding-left:2px;
+  padding-right: 2px;
 }
 </style>
