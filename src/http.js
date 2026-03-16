@@ -7,7 +7,7 @@ const apiUrl = (function () {
   if (process.env.VUE_APP_API_HOST) {
     return process.env.VUE_APP_API_HOST
   } if (process.env.VUE_APP_API_MODE === 'development') {
-    return 'https://newara.dev.sparcs.org' // if local, use 'http://127.0.0.1:9000'
+    return 'https://newara-api.dev.sparcs.org' // if local, use 'http://127.0.0.1:9000'
   } else if (process.env.VUE_APP_API_MODE === 'staging') {
     return 'https://ara-staging-api.sparcs.org'
   } else if (process.env.NODE_ENV === 'production') {
@@ -15,7 +15,7 @@ const apiUrl = (function () {
   } else if (process.env.NODE_ENV === 'staging') {
     return 'https://ara-staging-api.sparcs.org'
   } else if (process.env.NODE_ENV === 'development') {
-    return 'https://newara.dev.sparcs.org' // if local, use 'http://127.0.0.1:9000'
+    return 'https://newara-api.dev.sparcs.org' // if local, use 'http://127.0.0.1:9000'
   } else {
     throw Error('Unknown NODE_ENV')
   }
