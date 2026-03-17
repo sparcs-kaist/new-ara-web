@@ -6,11 +6,19 @@ export const fetchMe = () =>
     .then(({ data }) => data)
 
 export const updateFCMToken = (token) =>
-  http.patch('fcm_token/update', { token })
+  http.patch('fcm/token/update', { token })
     .then(({ data }) => data)
 
 export const deleteFCMToken = (token) =>
-  http.patch('fcm_token/delete', { token })
+  http.patch('fcm/token/delete', { token })
+    .then(({ data }) => data)
+
+export const getFCMTopic = () =>
+  http.get('fcm/topic')
+    .then(({ data }) => data)
+
+export const patchFCMTopic = (putTopics, deleteTopics) =>
+  http.patch('fcm/topic', { put: putTopics ?? [], delete: deleteTopics ?? [] })
     .then(({ data }) => data)
 
 export const fetchUser = (userId) =>

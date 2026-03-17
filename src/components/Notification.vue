@@ -16,7 +16,7 @@
     </i>
     <div class="noti__container">
       <h3 class="noti__title">
-        {{ $t(isSubcomment ? 'comment-title' : 'article-title') }}
+        {{ notification.title }}
       </h3>
       <p class="noti__content">
         {{ notification.content }}

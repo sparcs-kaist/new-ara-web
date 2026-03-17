@@ -11,6 +11,7 @@
       :from-query="fromQuery"
       :banner-details="bannerDetail"
       :banner-image="bannerImage"
+      :board-id="boardId"
     >
       <template v-if="topic" #title>
         <span class="board__topic">
